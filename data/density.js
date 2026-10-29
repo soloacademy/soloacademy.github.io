@@ -2,10 +2,12 @@ window.UNIT={
 no:"1-1",title:"密度",
 sections:[
 {type:"problem",title:"例題",
- body:'<p>60cm³の水を入れたメスシリンダーに、ある金属39.4gを沈めたところ、目もりは65cm³になった。</p>',
+ body:'<p>60cm³の水を入れたメスシリンダーに、ある金属39.4gを沈めたところ、目もりは65cm³になった。</p>'+
+ '<p>(1) この金属の密度(g/cm³)を求めなさい。答えは、小数第2位を四捨五入して、小数第1位まで求めなさい。</p>'+
+ '<p>(2) この金属100cm³の質量(g)を求めなさい。(1)の答えを使って計算しなさい。</p>',
  parts:[
-  {label:"(1)",unit:"g/cm³（小数第2位を四捨五入）",type:"number",accept:[7.9,7.88],tol:0.005},
-  {label:"(2)",unit:"g（この金属100cm³の質量）",type:"number",accept:[790,788],tol:0.5}
+  {label:"(1)",unit:"g/cm³",type:"number",accept:[7.9,7.88],tol:0.005},
+  {label:"(2)",unit:"g",type:"number",accept:[790,788],tol:0.5}
  ]},
 {type:"text",title:"解説",html:
  '<p>密度は「1cm³あたりの質量」です。</p>'+
