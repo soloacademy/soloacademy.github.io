@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ソロアカデミー 中学理科</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<h1>ソロアカデミー 中学理科</h1>
+<p>授業のきっかけになる、短い問題と解説です。解いたあとに解説を読む順番で使ってください。</p>
+<h2>中学1年</h2>
+<ul class="list" id="list"></ul>
+<p class="note">単元は順次増やしていきます。</p>
+<footer>ソロアカデミー</footer>
+</div>
+<script src="data/units.js"></script>
+<script>
+var ul=document.getElementById("list");
+(window.UNITS||[]).forEach(function(u){
+  var li=document.createElement("li"),a=document.createElement("a");
+  a.href="unit.html?u="+u.id;a.textContent=u.no+"　"+u.title;
+  li.appendChild(a);ul.appendChild(li);
+});
+</script>
+</body>
+</html>
