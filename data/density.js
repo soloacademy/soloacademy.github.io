@@ -31,7 +31,7 @@ function fade(id,inner){
 function tube(x,level,lab,hang){
  var w=72,T0=24,B0=236,Y=function(v){return 130-(v-65)*4},L=Y(level),s="";
  s+='<rect x="'+x+'" y="'+L+'" width="'+w+'" height="'+(B0-L)+'" fill="#cfe0f3"/>';
- if(hang)s+=line(x+w/2,T0,x+w/2,155,"#5d6874",1)+'<circle cx="'+(x+w/2)+'" cy="176" r="21" fill="#8a949f" fill-opacity=".75" stroke="#5d6874" stroke-width="1"/>';
+ if(hang)s+=line(x+w/2,T0,x+w/2,155,"#5d6874",1)+'<circle cx="'+(x+w/2)+'" cy="176" r="21" fill="#8a949f" fill-opacity=".75" stroke="#5d6874" stroke-width="1"/><ellipse cx="'+(x+w/2-7)+'" cy="168" rx="6" ry="4" fill="#fff" fill-opacity=".45"/>';
  s+='<path d="M'+x+','+T0+' V'+B0+' M'+(x+w)+','+T0+' V'+B0+'" stroke="'+INK+'" stroke-width="1.5" fill="none"/>';
  s+='<path d="M'+x+','+(L-3)+' Q'+(x+w/2)+','+(L+3)+' '+(x+w)+','+(L-3)+'" fill="none" stroke="'+BLUE+'" stroke-width="2"/>';
  for(var v=44;v<=86;v++){var y=Y(v),t=v%10===0,f=v%5===0;
