@@ -1,4 +1,4 @@
-:root{--ink:#26303b;--muted:#5d6874;--accent:#1f5fa8;--rule:#dde2e7;--tint:#f4f6f8;--ok:#1c7a4a;--ng:#b3402f}
+:root{--ink:#26303b;--muted:#5d6874;--accent:#1f5fa8;--mass:#c2410c;--rule:#dde2e7;--tint:#f4f6f8;--ok:#1c7a4a;--ng:#b3402f}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#fff;color:var(--ink);font:17px/1.9 "Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Yu Gothic","Noto Sans JP",Meiryo,sans-serif}
@@ -35,3 +35,8 @@ th:first-child,td:first-child{text-align:left}
 .list a:hover{background:var(--tint)}
 footer{margin-top:4rem;padding-top:1rem;border-top:1px solid var(--rule);font-size:.85rem;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.m{color:var(--mass)}.v{color:var(--accent)}
+.fig{margin:1rem 0}
+.fig svg{display:block;width:100%;max-width:21rem;height:auto}
+.fig text{fill:var(--ink);font-family:inherit}
+.fig .m{fill:var(--mass)}.fig .v{fill:var(--accent)}.fig .g{fill:var(--muted)}.fig .b{font-weight:700}
