@@ -23,28 +23,28 @@ rows.forEach(function(r,i){var y=26+i*52;
  b2+=cube(14,y,30,r[2])+T(62,y+30,17,r[0])+T(310,y+30,18,r[1]+"g","m b","end")+line(0,y+50,320,y+50,"#dde2e7")});
 var fig2=svg(320,286,"水素0.00008g、エタノール0.79g、水1.00g、鉄7.87g、金19.30gが、それぞれ1cm³あたりの質量です",b2);
 
-/* 図3：メスシリンダーの拡大図（60〜70cm³の周り、上下はフェードアウト、金属は糸でつるす） */
+/* 図3：メスシリンダーの拡大図（太め・上下はフェードアウト・金属の球を糸でつるす。1cm³=4） */
 var uid=0;
 function fade(id,inner){
  return '<defs><linearGradient id="'+id+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000"/><stop offset=".16" stop-color="#fff"/><stop offset=".84" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>'+
   '<mask id="'+id+'" maskUnits="userSpaceOnUse" x="0" y="20" width="320" height="220"><rect x="0" y="20" width="320" height="220" fill="url(#'+id+'g)"/></mask></defs><g mask="url(#'+id+')">'+inner+'</g>'}
 function tube(x,level,lab,hang){
- var w=50,T0=24,B0=236,Y=function(v){return 210-(v-55)*8},L=Y(level),s="";
+ var w=72,T0=24,B0=236,Y=function(v){return 130-(v-65)*4},L=Y(level),s="";
  s+='<rect x="'+x+'" y="'+L+'" width="'+w+'" height="'+(B0-L)+'" fill="#cfe0f3"/>';
- if(hang)s+=line(x+w/2,T0,x+w/2,118,INK,1)+'<rect x="'+(x+w/2-10)+'" y="118" width="20" height="22" rx="2" fill="#8a949f" stroke="'+INK+'"/>';
+ if(hang)s+=line(x+w/2,T0,x+w/2,155,INK,1)+'<circle cx="'+(x+w/2)+'" cy="176" r="21" fill="#8a949f" stroke="'+INK+'"/><ellipse cx="'+(x+w/2-7)+'" cy="168" rx="6" ry="4" fill="#fff" fill-opacity=".35"/>';
  s+='<path d="M'+x+','+T0+' V'+B0+' M'+(x+w)+','+T0+' V'+B0+'" stroke="'+INK+'" stroke-width="1.5" fill="none"/>';
  s+='<path d="M'+x+','+(L-3)+' Q'+(x+w/2)+','+(L+3)+' '+(x+w)+','+(L-3)+'" fill="none" stroke="'+BLUE+'" stroke-width="2"/>';
- for(var v=55;v<=75;v++){var y=Y(v),t=v%10===0,f=v%5===0;
-  s+=line(x,y,x+(t?10:f?7:4),y,INK,t?1.2:.7);
-  if(t&&lab)s+=T(x-5,y+4,13,v,"v b","end")}
+ for(var v=44;v<=86;v++){var y=Y(v),t=v%10===0,f=v%5===0;
+  s+=line(x,y,x+(t?12:f?8:5),y,INK,t?1.2:.7);
+  if(t&&lab)s+=T(x-5,y+4,13,v,(v===60||v===70)?"v b":"g","end")}
  return s}
 function fig3(show){
- var b=fade("fd"+(++uid),tube(40,60,true,false)+tube(170,70,false,true))+
-  line(205,129,228,129,RED,1)+T(232,133,13,"金属79g","m b")+
-  T(65,262,13,"水だけ 60cm³","b","middle")+T(195,262,13,"沈めたあと 70cm³","b","middle");
- if(show)b+=line(90,170,162,170,"#5d6874",1,true)+
-  '<path d="M170,90 H162 V170 H170" fill="none" stroke="'+BLUE+'" stroke-width="2"/>'+
-  T(156,126,17,"10cm³","v b","end")+T(156,146,12,"金属の体積","v","end");
+ var b=fade("fd"+(++uid),tube(34,60,true,false)+tube(182,70,false,true))+
+  line(239,176,266,176,RED,1)+T(268,180,12,"金属79g","m b")+
+  T(70,262,13,"水だけ 60cm³","b","middle")+T(218,262,13,"沈めたあと 70cm³","b","middle");
+ if(show)b+=line(106,150,174,150,"#5d6874",1,true)+
+  '<path d="M182,110 H174 V150 H182" fill="none" stroke="'+BLUE+'" stroke-width="2"/>'+
+  T(168,128,17,"10cm³","v b","end")+T(168,144,11,"金属の体積","v","end");
  return svg(320,270,show?"メスシリンダーの目もりの拡大図。糸でつるした金属79gを水に入れると、水面が60cm³から70cm³に上がり、増えた10cm³が金属の体積であることを表す図":"メスシリンダーの目もりの拡大図。60cm³の水に、糸でつるした金属79gを入れると、水面が70cm³まで上がる図",b)}
 
 window.UNIT={
