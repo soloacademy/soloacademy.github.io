@@ -34,27 +34,27 @@ s+='<rect x="'+(x-4)+'" y="19" width="'+(w+8)+'" height="6" rx="3" fill="#fff" s
  s+='<path d="M'+x+','+(L-3)+' Q'+(x+w/2)+','+(L+3)+' '+(x+w)+','+(L-3)+'" fill="none" stroke="'+BLUE+'" stroke-width="2"/>';
  for(var v=0;v<=100;v+=5){var y=Y(v),t=v%10===0;
   s+=line(x,y,x+(t?10:6),y,INK,t?1.2:.8);
-  if(t)s+=T(x-5,y+4,11,v,v===60?"b":"g","end")}
+  if(t)s+=T(x-5,y+4,11,v,(v===60||v===70)?"b":"g","end")}
  return s}
 function fig3(show){
- var b=tube(40,60,false)+tube(168,65,true)+
-  T(64,276,13,"水だけ 60cm³","b","middle")+T(192,276,13,"金属を入れる 65cm³","b","middle")+
-  line(204,225,230,225,RED,1)+T(234,229,12,"金属39.4g","m");
+ var b=tube(40,60,false)+tube(168,70,true)+
+  T(64,276,13,"水だけ 60cm³","b","middle")+T(192,276,13,"金属を入れる 70cm³","b","middle")+
+  line(204,225,230,225,RED,1)+T(234,229,12,"金属79g","m");
  if(show)b+=line(88,112,168,112,"#5d6874",1,true)+
-  '<path d="M232,102 h6 v10 h-6" fill="none" stroke="'+BLUE+'" stroke-width="2"/>'+
-  T(244,104,16,"5cm³","v b")+T(244,122,12,"金属の体積","v");
- return svg(320,284,show?"0から100cm³までの目もりがあるメスシリンダー。水が60cm³から65cm³に増え、増えた5cm³が金属の体積であることを表す図":"0から100cm³までの目もりがあるメスシリンダー。60cm³の水に金属を沈めると、目もりが65cm³になる図",b)}
+  '<path d="M232,92 h6 v20 h-6" fill="none" stroke="'+BLUE+'" stroke-width="2"/>'+
+  T(244,100,16,"10cm³","v b")+T(244,118,12,"金属の体積","v");
+ return svg(320,284,show?"0から100cm³までの目もりがあるメスシリンダー。水が60cm³から70cm³に増え、増えた10cm³が金属の体積であることを表す図":"0から100cm³までの目もりがあるメスシリンダー。60cm³の水に金属を沈めると、目もりが70cm³になる図",b)}
 
 window.UNIT={
 no:"1-1",title:"密度",
 sections:[
 {type:"problem",title:"例題",
- body:'<p>60cm³の水を入れたメスシリンダーに、ある金属39.4gを沈めたところ、目もりは65cm³になった。</p>'+fig3(false)+
- '<p>(1) この金属の密度(g/cm³)を求めなさい。答えは、小数第2位を四捨五入して、小数第1位まで求めなさい。</p>'+
+ body:'<p>60cm³の水を入れたメスシリンダーに、ある金属79gを沈めたところ、目もりは70cm³になった。</p>'+fig3(false)+
+ '<p>(1) この金属の密度(g/cm³)を求めなさい。</p>'+
  '<p>(2) この金属100cm³の質量(g)を求めなさい。(1)の答えを使って計算しなさい。</p>',
  parts:[
-  {label:"(1)",unit:"g/cm³",type:"number",accept:[7.9,7.88],tol:0.005},
-  {label:"(2)",unit:"g",type:"number",accept:[790,788],tol:0.5}
+  {label:"(1)",unit:"g/cm³",type:"number",accept:[7.9],tol:0.005},
+  {label:"(2)",unit:"g",type:"number",accept:[790],tol:0.5}
  ]},
 {type:"text",title:"解説",html:
  '<p>密度は「1cm³あたりの質量」です。</p>'+fig1+
@@ -64,7 +64,7 @@ sections:[
  '<p>メスシリンダーの目もりは、水面のへこみの一番低いところを、真横から読みます。</p>'+
  '<p>水の増加量が、沈めた金属の体積です。</p>'+fig3(true)},
 {type:"answer",title:"解答",html:
- '<p>(1) 金属の体積は 65cm³ − 60cm³ ＝ 5cm³。<br>密度は 39.4g ÷ 5cm³ ＝ 7.88g/cm³ ≒ <b>7.9g/cm³</b></p>'+
+ '<p>(1) 金属の体積は 70cm³ − 60cm³ ＝ 10cm³。<br>密度は 79g ÷ 10cm³ ＝ <b>7.9g/cm³</b></p>'+
  '<p>(2) 7.9g/cm³ × 100cm³ ＝ <b>790g</b><br><span class="note">g/cm³ × cm³ で、cm³ が約分されて g になります。</span></p>'},
 {type:"problem",title:"練習問題",
  body:'<p>次の物体A、B、C、Dを、密度の小さい順に並べなさい。</p>'+
