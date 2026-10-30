@@ -10,12 +10,6 @@ function T(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size=
 function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function line(x1,y1,x2,y2,k,w,dash){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+k+'" stroke-width="'+(w||1)+'"'+(dash?' stroke-dasharray="4 3"':'')+'/>'}
 
-/* 図1：1cm³あたりの質量 */
-var fig1=svg(320,150,"体積1cm³の立方体の質量が、密度になることを表す図",
- cube(24,24,70,"#dbe8f6",BLUE)+T(59,142,15,"体積 1cm³","v b","middle")+
- line(124,85,164,85,INK,2)+'<polygon points="172,85 162,79 162,91" fill="'+INK+'"/>'+
- T(180,66,14,"1cm³あたりの")+T(180,94,21,"質量(g)","m b")+T(180,120,14,"これが密度"));
-
 /* 図2：1cm³の立方体の比較（縦並び） */
 var rows=[["水素","0.00008","#ffffff"],["エタノール","0.79","#e3e8ee"],["水","1.00","#cfe0f3"],["鉄","7.87","#aeb4bb"],["金","19.30","#f0d48a"]];
 var b2=T(310,16,13,"1cm³あたりの質量","g","end");
@@ -63,6 +57,10 @@ var SOL='<p>密度は 質量÷体積 です。まず、4つを分数にします
 window.UNIT={
 no:"1-1",title:"密度",
 sections:[
+{type:"text",title:"確認",html:
+ '<p>密度は「1cm³あたりの質量」です。</p>'+fig2+
+ '<div class="formula">密度(g/cm³) ＝ <span class="frac"><span class="m">質量(g)</span><span class="v">体積(cm³)</span></span></div>'+
+ '<p class="note">g/cm³ の「/」は「÷」の意味です。</p>'},
 {type:"problem",title:"例題",
  body:'<p>60cm³の水を入れたメスシリンダーに、ある金属79gを沈めたところ、目もりは70cm³になった。</p>'+fig3(false)+
  '<p>(1) この金属の密度(g/cm³)を求めなさい。</p>'+
@@ -71,15 +69,10 @@ sections:[
   {label:"(1)",unit:"g/cm³",type:"number",accept:[7.9],tol:0.005},
   {label:"(2)",unit:"g",type:"number",accept:[790],tol:0.5}
  ]},
-{type:"text",title:"解説",html:
- '<p>密度は「1cm³あたりの質量」です。</p>'+fig1+
- '<div class="formula">密度(g/cm³) ＝ <span class="frac"><span class="m">質量(g)</span><span class="v">体積(cm³)</span></span></div>'+
- '<p class="note">g/cm³ の「/」は「÷」の意味です。分子が<span class="m">質量</span>、分母が<span class="v">体積</span>になります。</p>'+
- '<p>体積が同じ1cm³でも、物質によって質量はこれだけちがいます。この数字(g)が、そのまま密度(g/cm³)です。</p>'+fig2+
+{type:"answer",title:"解答・解説",html:
  '<p>メスシリンダーの目もりは、水面のへこみの一番低いところを、真横から読みます。</p>'+
- '<p>水の増加量が、沈めた金属の体積です。</p>'+fig3(true)},
-{type:"answer",title:"解答",html:
- '<p>(1) 金属の体積は 70cm³ − 60cm³ ＝ 10cm³。<br>密度は 79g ÷ 10cm³ ＝ <b>7.9g/cm³</b></p>'+
+ '<p>水の増加量が、沈めた金属の体積です。</p>'+fig3(true)+
+ '<p>(1) 金属の体積は 70cm³ − 60cm³ ＝ <span class="v">10cm³</span>。<br>密度は <span class="m">79g</span> ÷ <span class="v">10cm³</span> ＝ <b>7.9g/cm³</b></p>'+
  '<p>(2) 7.9g/cm³ × 100cm³ ＝ <b>790g</b><br><span class="note">g/cm³ × cm³ で、cm³ が約分されて g になります。</span></p>'},
 {type:"problem",title:"練習問題",
  body:'<p>次の物体A、B、C、Dを、密度の小さい順に並べなさい。</p>'+
