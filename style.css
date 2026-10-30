@@ -47,3 +47,11 @@ footer{margin-top:4rem;padding-top:1rem;border-top:1px solid var(--rule);font-si
 button.choice{background:#fff;color:var(--accent);min-width:3rem;padding:.4rem .9rem}
 button.choice:hover{background:var(--tint)}
 button.choice:disabled{opacity:.35;cursor:default}
+.frac>span{padding:0 .4rem}
+.frac .eqm{background:#fdefe8}.frac .eqv{background:#e3edf8}
+.fr4{display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;margin:.8rem 0}
+.item{display:inline-flex;align-items:center;gap:.4rem}
+.lab{font-weight:700;font-size:1.1em}
+.lt{margin:0 .7rem;font-weight:700}
+.cmp{border-top:1px solid var(--rule);padding:.7rem 0 .2rem;margin-top:.4rem}
+.cmp p{margin:.3rem 0 .2rem;font-size:.95rem}

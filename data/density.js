@@ -47,6 +47,19 @@ function fig3(show){
   T(168,128,17,"10cm³","v b","end")+T(168,144,11,"金属の体積","v","end");
  return svg(320,270,show?"メスシリンダーの目もりの拡大図。糸でつるした金属79gを水に入れると、水面が60cm³から70cm³に上がり、増えた10cm³が金属の体積であることを表す図":"メスシリンダーの目もりの拡大図。60cm³の水に、糸でつるした金属79gを入れると、水面が70cm³まで上がる図",b)}
 
+/* 練習問題の解説：分数で比べる */
+var D={A:[23,31],B:[23,37],C:[29,23],D:[29,31]};
+function fr(k,eq){var d=D[k];return '<span class="frac"><span class="m'+(eq==="m"?" eqm":"")+'">'+d[0]+'g</span><span class="v'+(eq==="v"?" eqv":"")+'">'+d[1]+'cm³</span></span>'}
+function it(k,eq){return '<span class="item"><span class="lab">'+k+'</span>'+fr(k,eq)+'</span>'}
+function cmp(a,b,eq,why){return '<div class="cmp">'+it(a,eq)+'<span class="lt">＜</span>'+it(b,eq)+'<p>'+why+'</p></div>'}
+var M='<span class="m">質量</span>',V='<span class="v">体積</span>';
+var SOL='<p>密度は 質量÷体積 です。まず、4つを分数にします。</p><div class="fr4">'+it("A")+it("B")+it("C")+it("D")+'</div>'+
+ '<p>次に、色のついた「そろっているところ」に目をつけて、2つずつ比べます。</p>'+
+ cmp("B","A","m",M+'がそろっている(23g)。'+V+'が大きいBのほうが、密度は小さい。')+
+ cmp("A","D","v",V+'がそろっている(31cm³)。'+M+'が大きいDのほうが、密度は大きい。')+
+ cmp("D","C","m",M+'がそろっている(29g)。'+V+'が小さいCのほうが、密度は大きい。')+
+ '<p>小さい順に <b>B、A、D、C</b></p>';
+
 window.UNIT={
 no:"1-1",title:"密度",
 sections:[
@@ -75,12 +88,6 @@ sections:[
  '<tr><td>体積</td><td>31cm³</td><td>37cm³</td><td>23cm³</td><td>31cm³</td></tr></table>'+
  '<p class="note">小さい順に、下のボタンを押して並べます。</p>',
  parts:[{label:"答え",type:"order",choices:["A","B","C","D"],accept:["BADC"]}],
- solution:'<p>計算しなくても、「そろっているところ」から比べられます。</p>'+
-'<p>・<span class="m">質量</span>が同じなら、<span class="v">体積</span>が大きいほど、密度は小さい。<br>・<span class="v">体積</span>が同じなら、<span class="m">質量</span>が大きいほど、密度は大きい。</p>'+
-'<p>AとB：<span class="m">質量</span>が同じ(23g)。<span class="v">体積</span>が大きいBのほうが小さい。→ B ＜ A<br>'+
-'AとD：<span class="v">体積</span>が同じ(31cm³)。<span class="m">質量</span>が大きいDのほうが大きい。→ A ＜ D<br>'+
-'CとD：<span class="m">質量</span>が同じ(29g)。<span class="v">体積</span>が小さいCのほうが大きい。→ D ＜ C</p>'+
-'<p>小さい順に <b>B、A、D、C</b></p>'+
-'<p class="note">確かめ：密度 ＝ 質量 ÷ 体積 で計算すると、B ≒ 0.62、A ≒ 0.74、D ≒ 0.94、C ≒ 1.26（g/cm³）です。</p>'}
+ solution:SOL}
 ]};
 })();
