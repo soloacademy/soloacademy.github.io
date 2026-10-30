@@ -30,8 +30,7 @@ function tube(x,level,metal){
  s+='<path d="M'+x+','+L+' H'+(x+w)+' V'+(B-r)+' Q'+(x+w)+','+B+' '+(x+w-r)+','+B+' H'+(x+r)+' Q'+x+','+B+' '+x+','+(B-r)+'Z" fill="#cfe0f3"/>';
  if(metal)s+='<rect x="'+(x+14)+'" y="214" width="20" height="22" rx="2" fill="#8a949f" stroke="'+INK+'"/>';
  s+='<path d="M'+x+',22 V'+(B-r)+' Q'+x+','+B+' '+(x+r)+','+B+' H'+(x+w-r)+' Q'+(x+w)+','+B+' '+(x+w)+','+(B-r)+' V22" fill="none" stroke="'+INK+'" stroke-width="1.5"/>';
- s+='<path d="M'+(x-3)+',22 H'+(x+w+3)+'" stroke="'+INK+'" stroke-width="2.5" stroke-linecap="round"/>';
- s+='<path d="M'+(x+w)+',22 L'+(x+w+9)+',17 L'+(x+w+5)+',27" fill="#fff" stroke="'+INK+'" stroke-width="1.2" stroke-linejoin="round"/>';
+s+='<rect x="'+(x-4)+'" y="19" width="'+(w+8)+'" height="6" rx="3" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>';
  s+='<path d="M'+x+','+(L-3)+' Q'+(x+w/2)+','+(L+3)+' '+(x+w)+','+(L-3)+'" fill="none" stroke="'+BLUE+'" stroke-width="2"/>';
  for(var v=0;v<=100;v+=5){var y=Y(v),t=v%10===0;
   s+=line(x,y,x+(t?10:6),y,INK,t?1.2:.8);
@@ -72,8 +71,8 @@ sections:[
  '<table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>'+
  '<tr><td>質量</td><td>23g</td><td>23g</td><td>29g</td><td>29g</td></tr>'+
  '<tr><td>体積</td><td>31cm³</td><td>37cm³</td><td>23cm³</td><td>31cm³</td></tr></table>'+
- '<p class="note">例：DCBA のように、記号だけを並べて入力します。</p>',
- parts:[{label:"答え",type:"text",accept:["BADC"]}],
+ '<p class="note">小さい順に、下のボタンを押して並べます。</p>',
+ parts:[{label:"答え",type:"order",choices:["A","B","C","D"],accept:["BADC"]}],
  solution:'<p>密度 ＝ 質量 ÷ 体積 で求めます。<br>A ≒ 0.74、B ≒ 0.62、C ≒ 1.26、D ≒ 0.94（g/cm³）</p><p>小さい順に <b>B、A、D、C</b></p>'}
 ]};
 })();
