@@ -75,6 +75,12 @@ sections:[
  '<tr><td>体積</td><td>31cm³</td><td>37cm³</td><td>23cm³</td><td>31cm³</td></tr></table>'+
  '<p class="note">小さい順に、下のボタンを押して並べます。</p>',
  parts:[{label:"答え",type:"order",choices:["A","B","C","D"],accept:["BADC"]}],
- solution:'<p>密度 ＝ 質量 ÷ 体積 で求めます。<br>A ≒ 0.74、B ≒ 0.62、C ≒ 1.26、D ≒ 0.94（g/cm³）</p><p>小さい順に <b>B、A、D、C</b></p>'}
+ solution:'<p>計算しなくても、「そろっているところ」から比べられます。</p>'+
+'<p>・<span class="m">質量</span>が同じなら、<span class="v">体積</span>が大きいほど、密度は小さい。<br>・<span class="v">体積</span>が同じなら、<span class="m">質量</span>が大きいほど、密度は大きい。</p>'+
+'<p>AとB：<span class="m">質量</span>が同じ(23g)。<span class="v">体積</span>が大きいBのほうが小さい。→ B ＜ A<br>'+
+'AとD：<span class="v">体積</span>が同じ(31cm³)。<span class="m">質量</span>が大きいDのほうが大きい。→ A ＜ D<br>'+
+'CとD：<span class="m">質量</span>が同じ(29g)。<span class="v">体積</span>が小さいCのほうが大きい。→ D ＜ C</p>'+
+'<p>小さい順に <b>B、A、D、C</b></p>'+
+'<p class="note">確かめ：密度 ＝ 質量 ÷ 体積 で計算すると、B ≒ 0.62、A ≒ 0.74、D ≒ 0.94、C ≒ 1.26（g/cm³）です。</p>'}
 ]};
 })();
