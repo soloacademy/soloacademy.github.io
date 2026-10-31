@@ -70,7 +70,7 @@ sections:[
  '<p>密度は「<span class="v">1cm³</span>あたりの<span class="m">質量</span>」です。</p>'+fig4s+
  '<div class="formula">密度(g/cm³) ＝ <span class="frac"><span class="m">質量(g)</span><span class="v">体積(cm³)</span></span></div>'+
  '<div class="formula"><span class="m">g</span>/<span class="v">cm³</span> ＝ <span class="m">g</span> ÷ <span class="v">cm³</span> ＝ <span class="frac"><span class="m">g</span><span class="v">cm³</span></span></div>'+
- '<p class="note">「/」は「÷」の意味です。左が分数の上（分子）、右が下（分母）になります。</p>'},
+ '<p class="note">「/」は「÷」の意味です。「/」の左が分数の上(分子)、右が下(分母)になります。</p>'},
 {type:"problem",title:"問題",
  body:'<p>60cm³の水を入れたメスシリンダーに、ある金属79gを沈めたところ、目もりは70cm³になった。</p>'+fig3(false)+
  '<p>(1) この金属の密度(g/cm³)を求めなさい。</p>'+
