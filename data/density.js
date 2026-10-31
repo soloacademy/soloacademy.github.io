@@ -11,11 +11,27 @@ function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+
 function line(x1,y1,x2,y2,k,w,dash){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+k+'" stroke-width="'+(w||1)+'"'+(dash?' stroke-dasharray="4 3"':'')+'/>'}
 
 /* 図2：同じ大きさ（1cm³）の立方体3つを横に並べ、質量をくらべる */
-var rows=[["水","1.00"],["鉄","7.87"],["金","19.30"]];
+var rows=[["水","1.00","#cfe0f3"],["鉄","7.87","#b4bbc3"],["金","19.30","#f0d48a"]];
 var b2="";
 rows.forEach(function(r,i){var cx=62+i*98,x=cx-26;
- b2+=cube(x,12,40,"#f4f6f8")+T(x+20,48,13,"1cm³","v b","middle")+T(cx,90,17,r[0],"","middle")+T(cx,116,19,r[1]+"g","m b","middle")});
+ b2+=cube(x,12,40,r[2])+T(x+20,48,13,"1cm³","v b","middle")+T(cx,90,17,r[0],"","middle")+T(cx,116,19,r[1]+"g","m b","middle")});
 var fig2=svg(320,128,"水、鉄、金の1cm³あたりの質量は、それぞれ1.00g、7.87g、19.30gです",b2);
+
+/* 図4：2cm³・20gを半分に分けると、1cm³あたり10g */
+var MET="#b4bbc3";
+function fig4(){
+ var px=14,py=14,pw=80,ph=40,d=12,b=py+d,t="";
+ t+=poly([[px,b],[px+pw,b],[px+pw,b+ph],[px,b+ph]],MET,INK)+
+  poly([[px,b],[px+d,py],[px+pw+d,py],[px+pw,b]],MET,INK,["#fff",.5])+
+  poly([[px+pw,b],[px+pw+d,py],[px+pw+d,py+ph],[px+pw,b+ph]],MET,INK,["#000",.12])+
+  line(px+40,b,px+40,b+ph,INK,1,true)+line(px+40,b,px+40+d,py,INK,1,true)+
+  T(px+40,b+ph/2+5,13,"2cm³","v b","middle")+T(px+(pw+d)/2,96,19,"20g","m b","middle");
+ t+=line(120,46,164,46,INK,1.5)+'<path d="M158,40 L164,46 L158,52" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+T(142,36,16,"÷2","b","middle");
+ [176,240].forEach(function(x){
+  t+=cube(x,14,40,MET)+T(x+20,51,13,"1cm³","v b","middle")+T(x+26,96,19,"10g","m b","middle")});
+ t+=T(160,126,14,"1cm³あたり 10g ＝ 密度 10g/cm³","b","middle");
+ return svg(320,136,"2cm³で20gのかたまりを2つに分けると、1cm³あたり10gになります。つまり密度は10g/cm³です",t)}
+var fig4s=fig4();
 
 /* 図3：メスシリンダーの拡大図（太め・上下はフェードアウト・金属の球を糸でつるす。1cm³=4） */
 var uid=0;
@@ -61,8 +77,7 @@ sections:[
  '<p>密度は「<span class="v">1cm³</span>あたりの<span class="m">質量</span>」です。</p>'+fig2+
  '<div class="formula">密度(g/cm³) ＝ <span class="frac"><span class="m">質量(g)</span><span class="v">体積(cm³)</span></span></div>'+
  '<p class="note">g/cm³ の「/」は「÷」の意味です。</p>'+
- '<p>たとえば鉄は、体積が1cm³なので、質量の数字がそのまま密度になります。</p>'+
- '<div class="formula"><span class="frac"><span class="m">7.87g</span><span class="v">1cm³</span></span> ＝ 7.87g/cm³</div>'},
+ fig4s},
 {type:"problem",title:"問題",
  body:'<p>60cm³の水を入れたメスシリンダーに、ある金属79gを沈めたところ、目もりは70cm³になった。</p>'+fig3(false)+
  '<p>(1) この金属の密度(g/cm³)を求めなさい。</p>'+
