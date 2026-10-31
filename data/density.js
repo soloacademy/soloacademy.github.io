@@ -66,7 +66,7 @@ var SOL='<p>密度は 質量÷体積 です。まず、4つを分数にします
 window.UNIT={
 no:"1-1",title:"密度",
 sections:[
-{type:"text",title:"ポイント",html:
+{type:"text",point:true,title:"ポイント",html:
  '<p>密度は「<span class="v">1cm³</span>あたりの<span class="m">質量</span>」です。</p>'+fig4s+
  '<div class="formula">密度(g/cm³) ＝ <span class="frac"><span class="m">質量(g)</span><span class="v">体積(cm³)</span></span></div>'+
  '<div class="formula"><span class="m">g</span>/<span class="v">cm³</span> ＝ <span class="m">g</span> ÷ <span class="v">cm³</span> ＝ <span class="frac"><span class="m">g</span><span class="v">cm³</span></span></div>'+

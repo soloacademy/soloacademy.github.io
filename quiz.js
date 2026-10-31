@@ -50,6 +50,7 @@ function render(u){
   root.appendChild(h("p","crumb",'<a href="index.html">ソロアカデミー</a>　中学1年 理科'));
   root.appendChild(h("h1",null,u.no+"　"+u.title));
   u.sections.forEach(function(s){
+    if(s.point){var bx=h("div","point");bx.appendChild(h("h2","point-label",s.title));bx.insertAdjacentHTML("beforeend",s.html);root.appendChild(bx);return}
     if(s.title)root.appendChild(h("h2",null,s.title));
     if(s.type==="problem"){
       root.appendChild(problem(s));
