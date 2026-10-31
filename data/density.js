@@ -57,11 +57,11 @@ var SOL='<p>密度は 質量÷体積 です。まず、4つを分数にします
 window.UNIT={
 no:"1-1",title:"密度",
 sections:[
-{type:"text",title:"確認",html:
+{type:"text",title:"ポイント",html:
  '<p>密度は「1cm³あたりの質量」です。</p>'+fig2+
  '<div class="formula">密度(g/cm³) ＝ <span class="frac"><span class="m">質量(g)</span><span class="v">体積(cm³)</span></span></div>'+
  '<p class="note">g/cm³ の「/」は「÷」の意味です。</p>'},
-{type:"problem",title:"例題",
+{type:"problem",title:"問題",
  body:'<p>60cm³の水を入れたメスシリンダーに、ある金属79gを沈めたところ、目もりは70cm³になった。</p>'+fig3(false)+
  '<p>(1) この金属の密度(g/cm³)を求めなさい。</p>'+
  '<p>(2) この金属100cm³の質量(g)を求めなさい。(1)の答えを使って計算しなさい。</p>',
@@ -69,12 +69,12 @@ sections:[
   {label:"(1)",unit:"g/cm³",type:"number",accept:[7.9],tol:0.005},
   {label:"(2)",unit:"g",type:"number",accept:[790],tol:0.5}
  ]},
-{type:"answer",title:"解答・解説",html:
+{type:"answer",title:"問題の解答と解説",html:
  '<p>メスシリンダーの目もりは、水面のへこみの一番低いところを、真横から読みます。</p>'+
  '<p>水の増加量が、沈めた金属の体積です。</p>'+fig3(true)+
  '<p>(1) 金属の体積は 70cm³ − 60cm³ ＝ <span class="v">10cm³</span>。<br>密度は <span class="m">79g</span> ÷ <span class="v">10cm³</span> ＝ <b>7.9g/cm³</b></p>'+
  '<p>(2) 7.9g/cm³ × 100cm³ ＝ <b>790g</b><br><span class="note">g/cm³ × cm³ で、cm³ が約分されて g になります。</span></p>'},
-{type:"problem",title:"練習問題",
+{type:"problem",title:"補充問題",
  body:'<p>次の物体A、B、C、Dを、密度の小さい順に並べなさい。</p>'+
  '<table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>'+
  '<tr><td>質量</td><td>23g</td><td>23g</td><td>29g</td><td>29g</td></tr>'+
