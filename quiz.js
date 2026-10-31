@@ -50,12 +50,12 @@ function render(u){
   root.appendChild(h("p","crumb",'<a href="index.html">ソロアカデミー</a>　中学1年 理科'));
   root.appendChild(h("h1",null,u.no+"　"+u.title));
   u.sections.forEach(function(s){
-    root.appendChild(h("h2",null,s.title));
+    if(s.title)root.appendChild(h("h2",null,s.title));
     if(s.type==="problem"){
       root.appendChild(problem(s));
       if(s.solution){var d=h("details");d.appendChild(h("summary",null,"補充問題の解答と解説を見る"));d.appendChild(h("div",null,s.solution));root.appendChild(d)}
     }else if(s.type==="answer"){
-      var d=h("details");d.appendChild(h("summary",null,"解答と解説を見る"));d.appendChild(h("div",null,s.html));root.appendChild(d);
+      var d=h("details");d.appendChild(h("summary",null,"問題の解答と解説を見る"));d.appendChild(h("div",null,s.html));root.appendChild(d);
     }else if(s.type==="video"){
       var v=h("div","video"),f=document.createElement("iframe");
       f.src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(s.id);

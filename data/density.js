@@ -69,7 +69,7 @@ sections:[
   {label:"(1)",unit:"g/cm³",type:"number",accept:[7.9],tol:0.005},
   {label:"(2)",unit:"g",type:"number",accept:[790],tol:0.5}
  ]},
-{type:"answer",title:"問題の解答と解説",html:
+{type:"answer",html:
  '<p>メスシリンダーの目もりは、水面のへこみの一番低いところを、真横から読みます。</p>'+
  '<p>水の増加量が、沈めた金属の体積です。</p>'+fig3(true)+
  '<p>(1) 金属の体積は 70cm³ − 60cm³ ＝ <span class="v">10cm³</span>。<br>密度は <span class="m">79g</span> ÷ <span class="v">10cm³</span> ＝ <b>7.9g/cm³</b></p>'+
