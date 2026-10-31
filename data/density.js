@@ -10,12 +10,12 @@ function T(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size=
 function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function line(x1,y1,x2,y2,k,w,dash){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+k+'" stroke-width="'+(w||1)+'"'+(dash?' stroke-dasharray="4 3"':'')+'/>'}
 
-/* 図2：1cm³の立方体の比較（縦並び） */
-var rows=[["水素","0.00008","#ffffff"],["エタノール","0.79","#e3e8ee"],["水","1.00","#cfe0f3"],["鉄","7.87","#aeb4bb"],["金","19.30","#f0d48a"]];
-var b2=T(310,16,13,"1cm³あたりの質量","g","end");
-rows.forEach(function(r,i){var y=26+i*52;
- b2+=cube(14,y,30,r[2])+T(62,y+30,17,r[0])+T(310,y+30,18,r[1]+"g","m b","end")+line(0,y+50,320,y+50,"#dde2e7")});
-var fig2=svg(320,286,"水素0.00008g、エタノール0.79g、水1.00g、鉄7.87g、金19.30gが、それぞれ1cm³あたりの質量です",b2);
+/* 図2：同じ大きさ（1cm³）の立方体3つを横に並べ、質量をくらべる */
+var rows=[["水","1.00"],["鉄","7.87"],["金","19.30"]];
+var b2="";
+rows.forEach(function(r,i){var cx=62+i*98,x=cx-26;
+ b2+=cube(x,12,40,"#f4f6f8")+T(x+20,48,13,"1cm³","v b","middle")+T(cx,90,17,r[0],"","middle")+T(cx,116,19,r[1]+"g","m b","middle")});
+var fig2=svg(320,128,"水、鉄、金の1cm³あたりの質量は、それぞれ1.00g、7.87g、19.30gです",b2);
 
 /* 図3：メスシリンダーの拡大図（太め・上下はフェードアウト・金属の球を糸でつるす。1cm³=4） */
 var uid=0;
@@ -58,9 +58,11 @@ window.UNIT={
 no:"1-1",title:"密度",
 sections:[
 {type:"text",title:"ポイント",html:
- '<p>密度は「1cm³あたりの質量」です。</p>'+fig2+
+ '<p>密度は「<span class="v">1cm³</span>あたりの<span class="m">質量</span>」です。</p>'+fig2+
  '<div class="formula">密度(g/cm³) ＝ <span class="frac"><span class="m">質量(g)</span><span class="v">体積(cm³)</span></span></div>'+
- '<p class="note">g/cm³ の「/」は「÷」の意味です。</p>'},
+ '<p class="note">g/cm³ の「/」は「÷」の意味です。</p>'+
+ '<p>たとえば鉄は、体積が1cm³なので、質量の数字がそのまま密度になります。</p>'+
+ '<div class="formula"><span class="frac"><span class="m">7.87g</span><span class="v">1cm³</span></span> ＝ 7.87g/cm³</div>'},
 {type:"problem",title:"問題",
  body:'<p>60cm³の水を入れたメスシリンダーに、ある金属79gを沈めたところ、目もりは70cm³になった。</p>'+fig3(false)+
  '<p>(1) この金属の密度(g/cm³)を求めなさい。</p>'+
