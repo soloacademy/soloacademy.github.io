@@ -82,6 +82,7 @@ h2.point-label{margin:.5rem 0 .4rem;padding:0;border:0;font-size:1.1rem}
 .pn{display:flex;justify-content:space-between;gap:1rem;margin:3rem 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
 .pn>*{flex:1;display:block;padding:.7rem .2rem;text-decoration:none}
 .pn a:hover{background:var(--tint)}
+.pn>span{flex:0 0 0;padding:0}
 .pn-n{text-align:right}
 .pn-l{display:block;font-size:.8rem;color:var(--muted);line-height:1.6}
 .pn-t{display:block;color:var(--accent)}
