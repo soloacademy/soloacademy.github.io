@@ -3,7 +3,7 @@ var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",PALE="#e3edf8",PALER="#fdefe8";
 function TN(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size="'+size+'" style="stroke:none"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 
-/* ビーカーとはかりの図：はかりの数字＝全体(溶液・青)、液の中の赤い粒＝一部(溶質・赤)。座標は元の絵のまま、viewBoxで切り出す */
+/* ビーカーとはかりの図：はかりの数字＝溶液(青)、液の中の赤い粒＝溶質(赤)。座標は元の絵のまま、viewBoxで切り出す */
 function beaker(whole,part,n){
  var dots=[[86,140],[112,162],[140,134],[100,188],[158,174],[130,198],[78,170],[170,152]],s='',w=String(parseFloat(whole))+".0 g";
  s+='<rect x="36" y="224" width="188" height="42" rx="8" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.5"/>'+
@@ -22,10 +22,10 @@ function beaker(whole,part,n){
  s+='<path d="M66,92 h14 M66,116 h14 M66,140 h14 M66,164 h14 M66,188 h14 M66,104 h8 M66,128 h8 M66,152 h8 M66,176 h8 M66,200 h8" stroke="#5d6874" fill="none"/>'+
   '<rect x="72" y="72" width="6" height="134" rx="3" fill="#fff" opacity=".5"/>'+
   '<path d="M214,116 H220 V214 H214" fill="none" stroke="'+BLUE+'" stroke-width="1.5"/>'+
-  '<text x="230" y="164" font-size="14" class="v b">全体 ＝ 溶液(食塩水)</text><text x="230" y="184" font-size="14" class="v b">'+whole+'</text>'+
+  '<text x="230" y="164" font-size="14" class="v b">溶液(食塩水)</text><text x="230" y="184" font-size="14" class="v b">'+whole+'</text>'+
   '<line x1="232" y1="82" x2="'+tg[0]+'" y2="'+(tg[1]-3)+'" stroke="'+RED+'" stroke-dasharray="4 3"/>'+
-  '<text x="236" y="80" font-size="14" class="m b">一部 ＝ 溶質(食塩)</text><text x="236" y="100" font-size="14" class="m b">'+part+'</text>';
- return '<div class="fig"><svg viewBox="30 44 366 232" role="img" aria-label="ビーカーとはかりの図。はかりが示す全体の溶液は'+whole+'。そのうち、溶けている溶質は'+part+'">'+s+'</svg></div>'}
+  '<text x="236" y="80" font-size="14" class="m b">溶質(食塩)</text><text x="236" y="100" font-size="14" class="m b">'+part+'</text>';
+ return '<div class="fig"><svg viewBox="30 44 366 232" role="img" aria-label="ビーカーとはかりの図。はかりが示す溶液(食塩水)は'+whole+'。そのうち、溶けている溶質(食塩)は'+part+'">'+s+'</svg></div>'}
 
 /* 溶質＋溶媒＝溶液 の図(解説の(2)用)。item=[名前,役割,質量] */
 function sbox(x,item,kind){
@@ -56,7 +56,7 @@ window.UNIT={
 no:"1-3",title:"質量パーセント濃度",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
- '<p>質量パーセント濃度は、<span class="v" style="white-space:nowrap">全体</span>のうちの<span class="m" style="white-space:nowrap">一部</span>が何%かを表したものです。</p>'+BEAKER1+
+ '<p>質量パーセント濃度は、<span class="v" style="white-space:nowrap">溶液</span>の質量のうち、<span class="m" style="white-space:nowrap">溶質</span>の質量が何%かを表したものです。</p>'+BEAKER1+
  '<div class="formula">質量パーセント濃度(%)<br>＝ '+fr("溶質の質量(g)","溶液の質量(g)")+' × 100<br>＝ '+fr("10g","40g")+' × 100 ＝ 25%</div>'+
  '<p class="note">「× 100」で、分数を%に直します。</p>'},
 {type:"problem",title:"問題",

@@ -79,3 +79,10 @@ h2.point-label{margin:.5rem 0 .4rem;padding:0;border:0;font-size:1.1rem}
 .mark.ng::after{background:linear-gradient(45deg,transparent 43%,#d63c2a 43%,#d63c2a 57%,transparent 57%),linear-gradient(-45deg,transparent 43%,#d63c2a 43%,#d63c2a 57%,transparent 57%)}
 @keyframes pop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
 @media (prefers-reduced-motion:reduce){.mark{animation:none!important}}
+.pn{display:flex;justify-content:space-between;gap:1rem;margin:3rem 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.pn>*{flex:1;display:block;padding:.7rem .2rem;text-decoration:none}
+.pn a:hover{background:var(--tint)}
+.pn-n{text-align:right}
+.pn-l{display:block;font-size:.8rem;color:var(--muted);line-height:1.6}
+.pn-t{display:block;color:var(--accent)}
+.pn+footer{margin-top:1.5rem}

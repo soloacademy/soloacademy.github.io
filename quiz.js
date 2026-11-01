@@ -65,6 +65,19 @@ function problem(sec){
   box.appendChild(b);box.appendChild(msg);
   return box;
 }
+function nav(){
+  var L=window.UNITS||[],i=-1;L.forEach(function(u,k){if(u.id===id)i=k});
+  if(i<0)return null;
+  var d=h("nav","pn");d.setAttribute("aria-label","前後の単元");
+  function cell(u,cls,lab){
+    if(!u)return h("span",cls);
+    var a=h("a",cls,'<span class="pn-l">'+lab+'</span><span class="pn-t">'+u.no+'　'+u.title+'</span>');
+    a.href="unit.html?u="+u.id;return a;
+  }
+  d.appendChild(cell(L[i-1],"pn-p","← 前の単元"));
+  d.appendChild(cell(L[i+1],"pn-n","次の単元 →"));
+  return d;
+}
 function render(u){
   document.title=u.no+" "+u.title+"｜ソロアカデミー";
   root.appendChild(h("p","crumb",'<a href="index.html">ソロアカデミー</a>　中学1年 理科'));
@@ -83,6 +96,7 @@ function render(u){
       f.title=s.title;f.allowFullscreen=true;f.loading="lazy";v.appendChild(f);root.appendChild(v);
     }else{root.appendChild(h("div",null,s.html))}
   });
+  var nv=nav();if(nv)root.appendChild(nv);
   root.appendChild(h("footer",null,"ソロアカデミー"));
 }
 if(!/^[a-z0-9-]+$/.test(id)){fail();return}
