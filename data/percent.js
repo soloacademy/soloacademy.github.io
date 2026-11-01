@@ -3,26 +3,36 @@ var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",PALE="#e3edf8",PALER="#fdefe8";
 function TN(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size="'+size+'" style="stroke:none"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 
-/* 溶質＋溶媒＝溶液 の図。item=[名前,役割,質量(省略可)] 溶質は赤、溶液は青、溶媒は黒 */
+/* 100マスの図：全体＝溶液100g、1マス＝1g。赤＝溶質、うすい青＝溶媒(水)。n＝溶質のg */
+function grid(n,solute,water,nm){
+ var s='<rect x="4" y="4" width="192" height="192" fill="#fff" stroke="'+BLUE+'" stroke-width="1.5"/>';
+ for(var i=0;i<100;i++){
+  var x=6+(i%10)*19,y=6+Math.floor(i/10)*19;
+  s+='<rect x="'+x+'" y="'+y+'" width="17" height="17" fill="'+(i<n?RED:PALE)+'"/>'}
+ s+='<rect x="204" y="6" width="14" height="14" fill="'+RED+'"/>'+TN(224,18,13,"溶質("+nm+")","m b")+TN(224,36,15,solute,"m b");
+ s+='<rect x="204" y="66" width="14" height="14" fill="'+PALE+'"/>'+TN(224,78,13,"溶媒(水)","b")+TN(224,96,15,water,"b");
+ s+='<rect x="204.75" y="126.75" width="12.5" height="12.5" fill="#fff" stroke="'+BLUE+'" stroke-width="1.5"/>'+TN(224,138,13,"溶液("+nm+"水)","v b")+TN(224,156,15,"100g","v b");
+ s+=TN(204,190,12,"1マス ＝ 1g","g");
+ s+='<text x="160" y="222" font-size="15" text-anchor="middle" class="b" style="stroke:none"><tspan class="v">溶液100g</tspan>のうち、<tspan class="m">溶質'+solute+'</tspan> ＝ '+(n)+'%</text>';
+ return svg(320,234,"100マスの図。全体を溶液100gとして、1マスを1gとします。そのうち溶質の"+solute+"が赤いマスで、残りの水"+water+"がうすい青のマスです。溶液100gのうち溶質"+solute+"なので、質量パーセント濃度は"+n+"%です",s)}
+
+/* 溶質＋溶媒＝溶液 の図(解説の(2)用)。item=[名前,役割,質量] */
 function sbox(x,item,kind){
  var f=kind==="m"?PALER:kind==="v"?PALE:"#fff",k=kind==="m"?RED:kind==="v"?BLUE:INK,c=kind==="m"?"m b":kind==="v"?"v b":"b",cx=x+43;
- var s='<rect x="'+x+'" y="4" width="86" height="76" rx="6" fill="'+f+'" stroke="'+k+'" stroke-width="1.5"/>';
- if(item[2])s+=TN(cx,28,15,item[0],"b","middle")+TN(cx,48,16,item[2],c,"middle")+TN(cx,68,12,item[1],c,"middle");
- else s+=TN(cx,38,16,item[0],"b","middle")+TN(cx,60,13,item[1],c,"middle");
- return s}
+ return '<rect x="'+x+'" y="4" width="86" height="76" rx="6" fill="'+f+'" stroke="'+k+'" stroke-width="1.5"/>'+
+  TN(cx,28,15,item[0],"b","middle")+TN(cx,48,16,item[2],c,"middle")+TN(cx,68,12,item[1],c,"middle")}
 function sum3(a,b,c,label){
- var s=sbox(2,a,"m")+TN(102.5,51,22,"＋",null,"middle")+sbox(117,b,"")+TN(217.5,51,22,"＝",null,"middle")+sbox(232,c,"v");
- return svg(320,84,label,s)}
+ return svg(320,84,label,sbox(2,a,"m")+TN(102.5,51,22,"＋",null,"middle")+sbox(117,b,"")+TN(217.5,51,22,"＝",null,"middle")+sbox(232,c,"v"))}
 
 function fr(a,b){return '<span class="frac"><span class="m">'+a+'</span><span class="v">'+b+'</span></span>'}
 function fp(a,b){return '<span class="frac"><span>'+a+'</span><span>'+b+'</span></span>'}
 var S='<span class="m">溶質</span>',Y='<span class="v">溶液</span>';
 
-var POINT=sum3(["食塩","溶質"],["水","溶媒"],["食塩水","溶液"],"溶質と溶媒を混ぜたものが溶液です。たとえば、溶質の食塩と、溶媒の水を混ぜると、溶液の食塩水になります");
-
+var GRID10=grid(10,"10g","90g","食塩"),GRID5=grid(5,"5g","95g","食塩");
 var FIG2=sum3(["食塩","溶質","25g"],["水","溶媒","100g"],["食塩水","溶液","125g"],"食塩25gを水100gに溶かすと、食塩水は125gになります");
 
-var SOL1='<p>(1) '+S+'は食塩5g、'+Y+'は食塩水100g。<br>'+fr("5g","100g")+' × 100 ＝ <b>5%</b></p>';
+var SOL1='<p>(1) '+S+'は食塩5g、'+Y+'は食塩水100g。</p>'+GRID5+
+ '<p>'+fr("5g","100g")+' × 100 ＝ <b>5%</b></p>';
 var SOL2='<p>(2) '+Y+'は、水100g ＋ 食塩25g ＝ 食塩水125g。</p>'+FIG2+
  '<p>'+fr("25g","125g")+' × 100 ＝ <b>20%</b><br><span class="note">水100gではなく、食塩水125gで割ります。</span></p>';
 
@@ -35,9 +45,9 @@ window.UNIT={
 no:"1-3",title:"質量パーセント濃度",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
- '<p>質量パーセント濃度は、'+Y+'(全体)の質量のうち、'+S+'が何%かを表します。</p>'+POINT+
+ '<p>質量パーセント濃度は、「'+Y+'100gあたりの'+S+'の質量」です。</p>'+GRID10+
  '<div class="formula">質量パーセント濃度(%)<br>＝ '+fr("溶質の質量(g)","溶液の質量(g)")+' × 100</div>'+
- '<p class="note">「× 100」で、分数を%に直します。(例：'+fp("1","4")+' ＝ 0.25 → 25%)</p>'},
+ '<p class="note">「× 100」で、分数を%に直します。<span style="white-space:nowrap">(例：'+fp("1","4")+' ＝ 0.25 → 25%)</span></p>'},
 {type:"problem",title:"問題",
  body:'<p>次の質量パーセント濃度を求めなさい。</p>'+
  '<p>(1) 食塩水100gに、食塩5gが溶けている。</p>'+
