@@ -3,16 +3,16 @@ var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",PALE="#e3edf8",PALER="#fdefe8";
 function TN(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size="'+size+'" style="stroke:none"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 
-/* 100マスの図：全体＝溶液100g、1マス＝1g。赤＝溶質(底辺の行)、うすい青＝水。n＝溶質のg(10以下) */
-function grid(n,solute,water){
- var s='';
- for(var i=0;i<100;i++){
-  var x=6+(i%10)*16,y=30+Math.floor(i/10)*16;
-  s+='<rect x="'+x+'" y="'+y+'" width="14" height="14" fill="'+(i>=90&&i<90+n?RED:PALE)+'"/>'}
- s+=TN(85,14,14,"溶液 100g","v b","middle")+'<path d="M6,26 V21 H164 V26" fill="none" stroke="'+BLUE+'" stroke-width="1.2"/>';
- s+='<path d="M170,174 H174 V188 H170" fill="none" stroke="'+RED+'" stroke-width="1.2"/>'+TN(182,186,14,"溶質 "+solute,"m b");
- s+=TN(85,220,20,"＝ "+n+"%","b","middle");
- return svg(320,232,"100マスの図。全体を溶液100gとして、1マスを1gとします。底辺の赤いマスが溶質"+solute+"、残りのうすい青いマスが水"+water+"です。溶液100gのうち溶質"+solute+"なので、質量パーセント濃度は"+n+"%です",s)}
+/* 帯の図：全体(溶液・青)の帯の一部(溶質・赤)。下に「一部/全体 × 100 ＝ %」 */
+function line(x1,y1,x2,y2,k,w){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+k+'" stroke-width="'+(w||1.5)+'"/>'}
+function bar(frac,segs,whole,part,pct){
+ var W=300,rw=Math.round(W*frac),s='',i;
+ s+=TN(160,16,14,"全体 ＝ 溶液 "+whole,"v b","middle")+'<path d="M10,24 V20 H310 V24" fill="none" stroke="'+BLUE+'" stroke-width="1.2"/>';
+ if(segs){for(i=0;i<segs;i++)s+='<rect x="'+(10+i*(W/segs))+'" y="28" width="'+(W/segs-2)+'" height="26" fill="'+(i===0?RED:PALE)+'"/>'}
+ else s+='<rect x="10" y="28" width="'+rw+'" height="26" fill="'+RED+'"/><rect x="'+(10+rw)+'" y="28" width="'+(W-rw)+'" height="26" fill="'+PALE+'"/>';
+ s+='<path d="M10,60 V64 H'+(10+rw)+' V60" fill="none" stroke="'+RED+'" stroke-width="1.2"/>'+TN(10,82,14,"一部 ＝ 溶質 "+part,"m b");
+ s+=TN(130,120,16,part,"m b","middle")+line(106,126,154,126,INK)+TN(130,146,16,whole,"v b","middle")+TN(172,133,18,"× 100 ＝ "+pct,"b");
+ return svg(320,160,"帯の図。全体である溶液"+whole+"の帯のうち、一部である溶質"+part+"が赤。"+part+"÷"+whole+"を100倍すると"+pct+"です",s)}
 
 /* 溶質＋溶媒＝溶液 の図(解説の(2)用)。item=[名前,役割,質量] */
 function sbox(x,item,kind){
@@ -26,11 +26,10 @@ function fr(a,b){return '<span class="frac"><span class="m">'+a+'</span><span cl
 function fp(a,b){return '<span class="frac"><span>'+a+'</span><span>'+b+'</span></span>'}
 var S='<span class="m">溶質</span>',Y='<span class="v">溶液</span>';
 
-var GRID10=grid(10,"10g","90g"),GRID5=grid(5,"5g","95g");
+var BAR1=bar(0.25,4,"40g","10g","25%"),BAR5=bar(0.05,0,"100g","5g","5%");
 var FIG2=sum3(["食塩","溶質","25g"],["水","溶媒","100g"],["食塩水","溶液","125g"],"食塩25gを水100gに溶かすと、食塩水は125gになります");
 
-var SOL1='<p>(1) '+S+'は食塩5g、'+Y+'は食塩水100g。</p>'+GRID5+
- '<p>'+fr("5g","100g")+' × 100 ＝ <b>5%</b></p>';
+var SOL1='<p>(1) '+S+'は食塩5g、'+Y+'は食塩水100g。</p>'+BAR5;
 var SOL2='<p>(2) '+Y+'は、水100g ＋ 食塩25g ＝ 食塩水125g。</p>'+FIG2+
  '<p>'+fr("25g","125g")+' × 100 ＝ <b>20%</b><br><span class="note">水100gではなく、食塩水125gで割ります。</span></p>';
 
@@ -43,9 +42,9 @@ window.UNIT={
 no:"1-3",title:"質量パーセント濃度",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
- '<p>質量パーセント濃度は、「'+Y+'100gあたりの'+S+'の質量」です。</p>'+GRID10+
+ '<p>質量パーセント濃度は、<span class="v">全体</span>(溶液)のうちの<span class="m">一部</span>(溶質)を、%で表したものです。</p>'+BAR1+
  '<div class="formula">質量パーセント濃度(%)<br>＝ '+fr("溶質の質量(g)","溶液の質量(g)")+' × 100</div>'+
- '<p class="note">「× 100」で、分数を%に直します。<span style="white-space:nowrap">(例：'+fp("1","4")+' ＝ 0.25 → 25%)</span></p>'},
+ '<p class="note">「× 100」で、分数を%に直します。</p>'},
 {type:"problem",title:"問題",
  body:'<p>次の質量パーセント濃度を求めなさい。</p>'+
  '<p>(1) 食塩水100gに、食塩5gが溶けている。</p>'+
