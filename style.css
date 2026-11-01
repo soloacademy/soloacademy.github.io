@@ -73,3 +73,9 @@ h2.point-label{margin:.5rem 0 .4rem;padding:0;border:0;font-size:1.1rem}
 .mx button.dot[aria-checked="true"]::before{border-color:var(--accent);background:var(--accent);box-shadow:inset 0 0 0 3px #fff}
 .mx .mark{font-weight:700;display:inline-block;min-width:1.5em}
 .mx .mark.ok{color:var(--ok)}.mx .mark.ng{color:var(--ng)}
+.part .mark.ok,.part .mark.ng,.mx .mark.ok,.mx .mark.ng{font-size:0;display:inline-block;width:1.7rem;height:1.7rem;min-width:0;vertical-align:middle;animation:pop .3s ease-out}
+.mark.ok::after,.mark.ng::after{content:"";display:block;width:100%;height:100%;box-sizing:border-box}
+.mark.ok::after{border:.28rem solid #17a05d;border-radius:50%}
+.mark.ng::after{background:linear-gradient(45deg,transparent 43%,#d63c2a 43%,#d63c2a 57%,transparent 57%),linear-gradient(-45deg,transparent 43%,#d63c2a 43%,#d63c2a 57%,transparent 57%)}
+@keyframes pop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.mark{animation:none!important}}
