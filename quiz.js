@@ -12,22 +12,34 @@ function judge(p,v){
 }
 function problem(sec){
   var box=h("div","problem",sec.body);
+  var mx=null;
   var rows=sec.parts.map(function(p){
+    if(p.type==="choice"){
+      if(!mx){
+        mx=h("table","mx");var hd=h("tr");hd.appendChild(h("th",null,""));
+        p.choices.forEach(function(c){var t=h("th",null,c);t.setAttribute("scope","col");hd.appendChild(t)});
+        hd.appendChild(h("th",null,""));mx.appendChild(hd);
+        var wrap=h("div");wrap.style.overflowX="auto";wrap.appendChild(mx);box.appendChild(wrap);
+      }
+      var tr=h("tr"),pl=p.label.replace(/<[^>]*>/g,""),iv={value:""},mk=h("span","mark");
+      tr.setAttribute("role","radiogroup");tr.setAttribute("aria-label",pl);mk.setAttribute("aria-live","polite");
+      tr.appendChild(h("td",null,p.label));
+      var dots=[];
+      p.choices.forEach(function(c){
+        var td=h("td"),x=h("button","dot");x.type="button";x.setAttribute("role","radio");x.setAttribute("aria-checked","false");x.setAttribute("aria-label",pl+" "+c);
+        x.onclick=function(){iv.value=c;dots.forEach(function(y){y.setAttribute("aria-checked",y===x?"true":"false")});mk.textContent="";mk.className="mark"};
+        dots.push(x);td.appendChild(x);tr.appendChild(td);
+      });
+      var tm=h("td");tm.appendChild(mk);tr.appendChild(tm);mx.appendChild(tr);
+      return {p:p,i:iv,m:mk};
+    }
     var r=h("div","part");
     r.appendChild(h("span",null,p.label));
     var i=h("input");i.type="text";i.autocomplete="off";i.setAttribute("aria-label",p.label+"の答え");
-    if(p.type==="order"){i.readOnly=true;i.className="ord"}else if(p.type==="choice"){i.type="hidden"}else if(p.type!=="text")i.inputMode="decimal";
+    if(p.type==="order"){i.readOnly=true;i.className="ord"}else if(p.type!=="text")i.inputMode="decimal";
     i.onkeydown=function(e){if(e.key==="Enter"&&!e.isComposing){e.preventDefault();b.click()}};
     var m=h("span","mark");m.setAttribute("aria-live","polite");
-    r.appendChild(i);if(p.unit)r.appendChild(h("span",null,p.unit));
-    if(p.type==="choice"){
-      var cb=h("span","choices"),sb=[];cb.style.margin="0";
-      p.choices.forEach(function(c){var x=h("button","choice",c);x.type="button";x.setAttribute("aria-pressed","false");
-        x.onclick=function(){i.value=c;sb.forEach(function(y){var on=y===x;y.setAttribute("aria-pressed",on?"true":"false");y.style.background=on?"var(--accent)":"";y.style.color=on?"#fff":""});m.textContent="";m.className="mark"};
-        sb.push(x);cb.appendChild(x)});
-      r.appendChild(cb);
-    }
-    r.appendChild(m);
+    r.appendChild(i);if(p.unit)r.appendChild(h("span",null,p.unit));r.appendChild(m);
     box.appendChild(r);
     if(p.type==="order"){
       var cs=h("div","choices"),bs=[];

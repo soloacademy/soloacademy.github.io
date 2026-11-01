@@ -78,14 +78,12 @@ sections:[
  '<p class="note">「空気より軽い」は、「空気より密度が小さい」という意味です。</p>'},
 {type:"problem",title:"問題",
  body:'<p>次の気体の集め方を、それぞれ選びなさい。</p>'+
- '<p>(1) '+g("酸素")+'<br>(2) '+g("二酸化炭素")+'<br>(3) '+g("水素")+'<br>(4) '+g("アンモニア")+'<br>(5) 水に非常に溶けやすく、空気より重い気体</p>'+
- '<p class="note">(2)の'+g("二酸化炭素")+'は、2つの方法があります。どちらか1つを選べば正解です。</p>',
+ '<p class="note">'+g("二酸化炭素")+'は、2つの方法があります。どちらか1つを選べば正解です。</p>',
  parts:[
-  {label:"(1)",type:"choice",choices:W,accept:["水上置換法"]},
-  {label:"(2)",type:"choice",choices:W,accept:["水上置換法","下方置換法"]},
-  {label:"(3)",type:"choice",choices:W,accept:["水上置換法"]},
-  {label:"(4)",type:"choice",choices:W,accept:["上方置換法"]},
-  {label:"(5)",type:"choice",choices:W,accept:["下方置換法"]}
+  {label:"(1) "+g("酸素"),type:"choice",choices:W,accept:["水上置換法"]},
+  {label:"(2) "+g("二酸化炭素"),type:"choice",choices:W,accept:["水上置換法","下方置換法"]},
+  {label:"(3) "+g("水素"),type:"choice",choices:W,accept:["水上置換法"]},
+  {label:"(4) "+g("アンモニア"),type:"choice",choices:W,accept:["上方置換法"]}
  ]},
 {type:"answer",html:
  '<p>集め方は、次の順に考えます。</p>'+FLOW+
@@ -93,7 +91,6 @@ sections:[
  '<p>(2) '+gb("二酸化炭素")+'：空気より重いので、<b>下方置換法</b>。水に少し溶けますが、<b>水上置換法</b>でも集められます。</p>'+
  '<p>(3) '+gb("水素")+'：水に溶けにくいので、<b>水上置換法</b>。</p>'+
  '<p>(4) '+gb("アンモニア")+'：水に非常に溶けやすいので、水上置換法は使えません。空気より軽いので、<b>上方置換法</b>。</p>'+
- '<p>(5) 水に溶けやすいので、水上置換法は使えません。空気より重いので、<b>下方置換法</b>。</p>'+
  '<div style="border-top:1px solid var(--rule);margin-top:1.2rem;padding-top:.6rem"><p><b>気体の見分けるポイント</b>(補充問題で使います)</p>'+LOOK+'</div>'},
 {type:"problem",title:"補充問題",
  body:'<p>次の(1)〜(4)の実験で調べた気体は、どれか。選びなさい。</p>'+
