@@ -7,12 +7,12 @@ function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+
 function line(x1,y1,x2,y2,k,w){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+k+'" stroke-width="'+(w||1.5)+'"/>'}
 function bar(frac,segs,whole,part,pct){
  var W=300,rw=Math.round(W*frac),s='',i;
- s+=TN(160,16,14,"全体 ＝ 溶液 "+whole,"v b","middle")+'<path d="M10,24 V20 H310 V24" fill="none" stroke="'+BLUE+'" stroke-width="1.2"/>';
+ s+='<path d="M10,24 V20 H'+(10+rw)+' V24" fill="none" stroke="'+RED+'" stroke-width="1.2"/>'+TN(10,16,14,"一部 ＝ 溶質 "+part,"m b");
  if(segs){for(i=0;i<segs;i++)s+='<rect x="'+(10+i*(W/segs))+'" y="28" width="'+(W/segs-2)+'" height="26" fill="'+(i===0?RED:PALE)+'"/>'}
  else s+='<rect x="10" y="28" width="'+rw+'" height="26" fill="'+RED+'"/><rect x="'+(10+rw)+'" y="28" width="'+(W-rw)+'" height="26" fill="'+PALE+'"/>';
- s+='<path d="M10,60 V64 H'+(10+rw)+' V60" fill="none" stroke="'+RED+'" stroke-width="1.2"/>'+TN(10,82,14,"一部 ＝ 溶質 "+part,"m b");
- s+=TN(130,120,16,part,"m b","middle")+line(106,126,154,126,INK)+TN(130,146,16,whole,"v b","middle")+TN(172,133,18,"× 100 ＝ "+pct,"b");
- return svg(320,160,"帯の図。全体である溶液"+whole+"の帯のうち、一部である溶質"+part+"が赤。"+part+"÷"+whole+"を100倍すると"+pct+"です",s)}
+ s+='<path d="M10,58 V62 H310 V58" fill="none" stroke="'+BLUE+'" stroke-width="1.2"/>'+TN(160,80,14,"全体 ＝ 溶液 "+whole,"v b","middle");
+ s+=TN(130,118,16,part,"m b","middle")+line(106,124,154,124,INK)+TN(130,144,16,whole,"v b","middle")+TN(172,131,18,"× 100 ＝ "+pct,"b");
+ return svg(320,156,"帯の図。帯の一部である溶質"+part+"が赤、帯の全体である溶液"+whole+"が青。"+part+"÷"+whole+"を100倍すると"+pct+"です",s)}
 
 /* 溶質＋溶媒＝溶液 の図(解説の(2)用)。item=[名前,役割,質量] */
 function sbox(x,item,kind){
@@ -42,6 +42,7 @@ window.UNIT={
 no:"1-3",title:"質量パーセント濃度",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
+ '<p>'+S+'(食塩)を溶媒(水)に溶かしたものが、'+Y+'(食塩水)です。</p>'+
  '<p>質量パーセント濃度は、<span class="v">全体</span>(溶液)のうちの<span class="m">一部</span>(溶質)を、%で表したものです。</p>'+BAR1+
  '<div class="formula">質量パーセント濃度(%)<br>＝ '+fr("溶質の質量(g)","溶液の質量(g)")+' × 100</div>'+
  '<p class="note">「× 100」で、分数を%に直します。</p>'},
