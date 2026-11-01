@@ -6,7 +6,7 @@ function fail(){root.appendChild(h("p",null,'この単元は見つかりませ�
 function norm(s){return String(s).normalize("NFKC").replace(/[\s,、，→>＞<＜]/g,"").toUpperCase()}
 function num(s){var m=String(s).normalize("NFKC").match(/-?\d+(?:\.\d+)?/);return m?parseFloat(m[0]):NaN}
 function judge(p,v){
-  if(p.type==="text"||p.type==="order")return p.accept.some(function(a){return norm(a)===norm(v)});
+  if(p.type==="text"||p.type==="order"||p.type==="choice")return p.accept.some(function(a){return norm(a)===norm(v)});
   var n=num(v);if(isNaN(n))return false;
   return p.accept.some(function(a){return Math.abs(a-n)<=(p.tol||0)});
 }
@@ -16,10 +16,18 @@ function problem(sec){
     var r=h("div","part");
     r.appendChild(h("span",null,p.label));
     var i=h("input");i.type="text";i.autocomplete="off";i.setAttribute("aria-label",p.label+"の答え");
-    if(p.type==="order"){i.readOnly=true;i.className="ord"}else if(p.type!=="text")i.inputMode="decimal";
+    if(p.type==="order"){i.readOnly=true;i.className="ord"}else if(p.type==="choice"){i.type="hidden"}else if(p.type!=="text")i.inputMode="decimal";
     i.onkeydown=function(e){if(e.key==="Enter"&&!e.isComposing){e.preventDefault();b.click()}};
     var m=h("span","mark");m.setAttribute("aria-live","polite");
-    r.appendChild(i);if(p.unit)r.appendChild(h("span",null,p.unit));r.appendChild(m);
+    r.appendChild(i);if(p.unit)r.appendChild(h("span",null,p.unit));
+    if(p.type==="choice"){
+      var cb=h("span","choices"),sb=[];cb.style.margin="0";
+      p.choices.forEach(function(c){var x=h("button","choice",c);x.type="button";x.setAttribute("aria-pressed","false");
+        x.onclick=function(){i.value=c;sb.forEach(function(y){var on=y===x;y.setAttribute("aria-pressed",on?"true":"false");y.style.background=on?"var(--accent)":"";y.style.color=on?"#fff":""});m.textContent="";m.className="mark"};
+        sb.push(x);cb.appendChild(x)});
+      r.appendChild(cb);
+    }
+    r.appendChild(m);
     box.appendChild(r);
     if(p.type==="order"){
       var cs=h("div","choices"),bs=[];
@@ -39,7 +47,7 @@ function problem(sec){
       var c=judge(r.p,r.i.value);if(c)ok++;
       r.m.textContent=c?"○":"×";r.m.className="mark "+(c?"ok":"ng");
     });
-    msg.textContent=blank?"入力していない欄があります。":
+    msg.textContent=blank?"答えていない欄があります。":
       ok===rows.length?"全問正解です。":"×の欄をもう一度考えてみましょう。";
   };
   box.appendChild(b);box.appendChild(msg);
