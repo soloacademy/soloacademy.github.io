@@ -12,8 +12,8 @@ function fig1(){
  var s='<g transform="translate(50,0)">'+
  '<path d="M138,252 C118,256 100,248 92,232 C110,234 126,240 140,246 Z" fill="#d9e8cf" stroke="#7f9a75" stroke-width="1.5"/>'+
  '<path d="M202,252 C222,256 240,248 248,232 C230,234 214,240 200,246 Z" fill="#d9e8cf" stroke="#7f9a75" stroke-width="1.5"/>'+
- '<path d="M134,242 C96,232 40,196 20,160 C16,150 24,144 30,148 L38,154 C40,142 48,138 56,142 C100,160 140,212 150,238 Z" fill="#fbe3e8" stroke="#c9929f" stroke-width="1.5"/>'+
- '<path d="M206,242 C244,232 300,196 320,160 C324,150 316,144 310,148 L302,154 C300,142 292,138 284,142 C240,160 200,212 190,238 Z" fill="#fbe3e8" stroke="#c9929f" stroke-width="1.5"/>'+
+ '<path transform="translate(140,240) rotate(-42)" d="M0,0 C-38,-22 -38,-100 -6,-128 L0,-118 L6,-128 C38,-100 38,-22 0,0 Z" fill="#fbe3e8" stroke="#c9929f" stroke-width="1.5"/>'+
+ '<path transform="translate(200,240) rotate(42)" d="M0,0 C-38,-22 -38,-100 -6,-128 L0,-118 L6,-128 C38,-100 38,-22 0,0 Z" fill="#fbe3e8" stroke="#c9929f" stroke-width="1.5"/>'+
  '<rect x="163" y="258" width="14" height="38" fill="#d9e8cf" stroke="#7f9a75" stroke-width="1.5"/>'+
  '<path d="M136,236 C138,262 202,262 204,236 Z" fill="#d9e8cf" stroke="#7f9a75" stroke-width="1.5"/>'+
  '<g fill="none" stroke="#7c8791" stroke-width="3.5"><path d="M132,238 C112,212 104,182 104,150"/><path d="M208,238 C228,212 236,182 236,150"/></g>'+
