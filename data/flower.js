@@ -3,7 +3,7 @@ var INK="#26303b",MUTED="#5d6874";
 function T(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function TN(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size="'+size+'" style="stroke:none"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function L(x,y,txt,cls,anchor){return T(x,y,15,txt,cls,anchor)}
-function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+h+'" style="max-width:'+(w/16)+'rem" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
+function svg(w,h,label,body,y0){y0=y0||0;return '<div class="fig"><svg viewBox="0 '+y0+' '+w+' '+(h-y0)+'" style="max-width:'+(w/16)+'rem" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function ln(x1,y1,x2,y2){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+MUTED+'" stroke-width="1"/>'}
 function mk(x,y,c){return '<circle cx="'+x+'" cy="'+y+'" r="10" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'+TN(x,y+5,15,c,"b","middle")}
 
@@ -24,10 +24,12 @@ function fig1(){
  '<ellipse cx="170" cy="204" rx="24" ry="34" fill="#e3edf8" stroke="#1f5fa8" stroke-width="1.5"/>'+
  '<circle cx="170" cy="204" r="5.5" fill="#c2410c"/>'+
  '<rect x="140" y="92" width="60" height="150" rx="12" fill="none" stroke="'+MUTED+'" stroke-width="1.2" stroke-dasharray="4 3"/>'+
- ln(14,108,157,108)+ln(14,170,54,170)+ln(14,214,113,214)+ln(14,250,96,240)+
- ln(245,132,326,128)+ln(200,160,326,160)+ln(194,196,326,196)+ln(176,207,326,228)+
- L(10,113,"柱頭",null,"end")+L(10,175,"花弁",null,"end")+L(10,219,"おしべ",null,"end")+L(10,255,"がく",null,"end")+
- L(330,133,"やく")+L(330,165,"めしべ","b")+L(330,201,"子房","v b")+L(330,233,"胚珠","m b")+
+ '<rect x="88" y="116" width="48" height="130" rx="10" fill="none" stroke="'+MUTED+'" stroke-width="1.2" stroke-dasharray="4 3"/>'+
+ '<rect x="204" y="116" width="48" height="130" rx="10" fill="none" stroke="'+MUTED+'" stroke-width="1.2" stroke-dasharray="4 3"/>'+
+ ln(-9,96,36,98)+ln(5,126,88,126)+ln(4,156,96,144)+ln(-9,250,96,240)+
+ ln(322,96,200,96)+ln(338,126,181,106)+ln(338,160,193,190)+ln(338,192,176,205)+
+ L(-44,101,"花弁")+L(-44,131,"おしべ","b")+L(-30,161,"やく")+L(-44,255,"がく")+
+ L(326,101,"めしべ","b")+L(342,131,"柱頭")+L(342,165,"子房","v")+L(342,197,"胚珠","m")+
  '</g>'+
  '<line x1="20" y1="318" x2="420" y2="318" stroke="#dde2e7" stroke-width="1"/>'+
  '<g transform="translate(0,336)">'+
@@ -42,7 +44,7 @@ function fig1(){
  '<ellipse cx="330" cy="75" rx="13" ry="17" fill="#c2410c"/>'+
  ln(343,75,398,75)+L(402,80,"種子","m b")+
  '</g>';
- return svg(440,490,"花の縦断面の図と、受粉後の変化の図。上は花の縦断面。中心の点線で囲んだ部分がめしべで、柱頭、花柱、子房からなり、子房の中に胚珠が1個ある。まわりにおしべ、花弁、がくがある。下は、受粉すると、子房が果実に、胚珠が種子になる図",s)}
+ return svg(440,490,"花の縦断面の図と、受粉後の変化の図。上は花の縦断面。中心の点線で囲んだ部分がめしべで、柱頭、花柱、子房からなり、子房の中に胚珠が1個ある。まわりにおしべ、花弁、がくがある。下は、受粉すると、子房が果実に、胚珠が種子になる図",s,66)}
 
 /* 補充問題の図1：被子植物(A＝子房の中、B＝やくの中) */
 function fig2a(){
