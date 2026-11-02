@@ -66,10 +66,10 @@ function fig2a(){
 function fig2b(){
  var s=L(4,20,"裸子植物(マツ)","b")+'<g transform="translate(40,0)">'+
  '<path d="M104,350 C100,300 108,240 102,180 C98,135 106,90 104,44" fill="none" stroke="#8a6a4a" stroke-width="7" stroke-linecap="round"/>'+
- '<g stroke="#9bbd7f" stroke-width="1.3" stroke-linecap="round" fill="none"><line x1="104" y1="116" x2="98" y2="72"/><line x1="104" y1="116" x2="99.2" y2="70"/><line x1="104" y1="116" x2="100.4" y2="71"/><line x1="104" y1="116" x2="101.6" y2="69"/><line x1="104" y1="116" x2="102.8" y2="68"/><line x1="104" y1="116" x2="104" y2="67"/><line x1="104" y1="116" x2="105.2" y2="69"/><line x1="104" y1="116" x2="106.4" y2="70"/><line x1="104" y1="116" x2="107.6" y2="68"/><line x1="104" y1="116" x2="108.8" y2="71"/><line x1="104" y1="116" x2="110" y2="73"/></g>'+
+ '<g stroke="#8fb872" stroke-width="2.2" stroke-linecap="round" fill="none"><line x1="102" y1="118" x2="100" y2="70"/><line x1="102" y1="118" x2="102" y2="67"/><line x1="102" y1="118" x2="104" y2="66"/><line x1="102" y1="118" x2="106" y2="68"/><line x1="102" y1="118" x2="108" y2="71"/></g>'+
+ '<g fill="#f0d57a" stroke="#a68a2a" stroke-width="1.2"><ellipse cx="103" cy="124" rx="5" ry="9"/><ellipse cx="110" cy="130" rx="5" ry="9"/><ellipse cx="117" cy="126" rx="5" ry="9"/><ellipse cx="106" cy="140" rx="5" ry="9"/><ellipse cx="113" cy="142" rx="5" ry="9"/><ellipse cx="120" cy="138" rx="5" ry="9"/></g>'+
  '<g stroke="#5f8a5a" stroke-width="2" stroke-linecap="round" fill="none"><line x1="101" y1="254" x2="50" y2="204"/><line x1="101" y1="254" x2="55" y2="198"/><line x1="101" y1="254" x2="61" y2="194"/><line x1="101" y1="254" x2="68" y2="190"/><line x1="101" y1="254" x2="75" y2="187"/><line x1="101" y1="254" x2="83" y2="185"/><line x1="105" y1="254" x2="156" y2="204"/><line x1="105" y1="254" x2="151" y2="198"/><line x1="105" y1="254" x2="145" y2="194"/><line x1="105" y1="254" x2="138" y2="190"/><line x1="105" y1="254" x2="131" y2="187"/><line x1="105" y1="254" x2="123" y2="185"/></g>'+
  '<g fill="#d98aa0" stroke="#a0526b" stroke-width="1.5"><ellipse cx="102" cy="32" rx="9" ry="13"/><ellipse cx="86" cy="50" rx="8" ry="11"/><ellipse cx="118" cy="50" rx="8" ry="11"/></g>'+
- '<g fill="#f0d57a" stroke="#a68a2a" stroke-width="1.2"><ellipse cx="112" cy="124" rx="5" ry="9"/><ellipse cx="120" cy="130" rx="5" ry="9"/><ellipse cx="128" cy="126" rx="5" ry="9"/><ellipse cx="116" cy="140" rx="5" ry="9"/><ellipse cx="124" cy="142" rx="5" ry="9"/><ellipse cx="132" cy="138" rx="5" ry="9"/></g>'+
  '<line x1="100" y1="144" x2="86" y2="154" stroke="#8a6a4a" stroke-width="3"/>'+
  '<ellipse cx="75" cy="162" rx="10" ry="14" transform="rotate(53 75 162)" fill="#b3a56a" stroke="#6f6535" stroke-width="1.5"/>'+
  '<line x1="104" y1="270" x2="124" y2="284" stroke="#8a6a4a" stroke-width="3"/>'+
@@ -77,8 +77,8 @@ function fig2b(){
  '<g fill="none" stroke="#7a5c35" stroke-width="1"><path d="M132,286 Q148,294 164,286"/><path d="M130,298 Q148,306 166,298"/><path d="M130,310 Q148,318 166,310"/><path d="M134,322 Q148,328 162,322"/></g></g>'+
  ln(62,50,76,50)+ln(62,163,66,163)+ln(62,232,79,232)+ln(166,326,186,331)+
  L(58,55,"雌花",null,"end")+L(58,168,"昨年の雌花",null,"end")+L(58,237,"葉",null,"end")+
- L(124,168,"雄花",null,"middle")+L(190,334,"マツカサ")+L(190,354,"(一昨年の雌花)")+
- '<g stroke="'+INK+'" stroke-width="1.5" fill="none"><line x1="132" y1="48" x2="262" y2="58"/><path d="M254,52 L262,58 L254,64"/><line x1="142" y1="134" x2="268" y2="190"/><path d="M261,184 L268,190 L259,193"/></g>'+
+ L(112,168,"雄花",null,"middle")+L(190,334,"マツカサ")+L(190,354,"(一昨年の雌花)")+
+ '<g stroke="'+INK+'" stroke-width="1.5" fill="none"><line x1="132" y1="48" x2="262" y2="58"/><path d="M254,52 L262,58 L254,64"/><line x1="134" y1="134" x2="268" y2="190"/><path d="M261,184 L268,190 L259,193"/></g>'+
  L(197,44,"拡大",null,"middle")+L(190,147,"拡大",null,"middle")+
  '<path d="M292,126 C290,108 270,96 268,64 C266,36 286,20 305,20 C324,20 344,36 342,64 C340,96 320,108 318,126 Z" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.5"/>'+
  '<ellipse cx="293" cy="100" rx="7" ry="10" fill="#c2410c" transform="rotate(15 293 100)"/>'+
