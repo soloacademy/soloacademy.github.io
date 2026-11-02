@@ -26,9 +26,9 @@ function fig1(){
  '<rect x="140" y="92" width="60" height="150" rx="12" fill="none" stroke="'+MUTED+'" stroke-width="1.2" stroke-dasharray="4 3"/>'+
  '<rect x="204" y="116" width="48" height="130" rx="10" fill="none" stroke="'+MUTED+'" stroke-width="1.2" stroke-dasharray="4 3"/>'+
  ln(5,97,140,97)+ln(4,127,159,108)+ln(4,161,147,196)+ln(4,193,164,204)+
- ln(322,204,260,206)+ln(322,127,252,127)+ln(338,157,244,146)+ln(322,251,240,246)+
+ ln(322,204,260,206)+ln(322,127,252,127)+ln(338,157,244,146)+ln(322,262,227,250.5)+
  L(-44,101,"めしべ","b")+L(-30,131,"柱頭")+L(-30,165,"子房","v")+L(-30,197,"胚珠","m")+
- L(326,209,"花弁")+L(326,131,"おしべ","b")+L(342,161,"やく")+L(326,255,"がく")+
+ L(326,209,"花弁")+L(326,131,"おしべ","b")+L(342,161,"やく")+L(326,267,"がく")+
  '</g>'+
  '<line x1="20" y1="318" x2="420" y2="318" stroke="#dde2e7" stroke-width="1"/>'+
  '<g transform="translate(0,336)">'+
@@ -64,21 +64,35 @@ function fig2a(){
 
 /* 補充問題の図2：裸子植物(マツ)の枝と、雌花・雄花のりん片の拡大 */
 function fig2b(){
+ var R=Math.PI/180,i,j,y,a,x2,y2,cx,cy;
+ /* 来年の葉：とても短い葉が、何段も重なって茎をおおう */
+ var yg='<g stroke="#8fb872" stroke-width="2.2" stroke-linecap="round" fill="none">';
+ for(y=112;y>=62;y-=5){for(j=-2;j<=2;j++){a=j*20*R;yg+='<line x1="103" y1="'+y+'" x2="'+(103+13*Math.sin(a)).toFixed(1)+'" y2="'+(y-13*Math.cos(a)).toFixed(1)+'"/>'}}
+ yg+='</g>';
+ /* 葉：長い葉が、茎から何段も出る。角度は、もとの6本と同じ(1段おきに3本ずつ) */
+ var AN=[44.4,50.6,56.3,62.7,68.8,75.4],lg='<g stroke="#5f8a5a" stroke-width="2" stroke-linecap="round" fill="none">';
+ for(i=0;i<7;i++){y=262+i*10;for(j=i%2;j<6;j+=2){a=AN[j]*R;x2=88*Math.cos(a);y2=88*Math.sin(a);
+  lg+='<line x1="104" y1="'+y+'" x2="'+(104-x2).toFixed(1)+'" y2="'+(y-y2).toFixed(1)+'"/><line x1="104" y1="'+y+'" x2="'+(104+x2).toFixed(1)+'" y2="'+(y-y2).toFixed(1)+'"/>'}}
+ lg+='</g>';
+ /* 雄花：茎から直接はえる(根もとを茎に合わせ、外向きにかたむける) */
+ var ml='<g fill="#f0d57a" stroke="#a68a2a" stroke-width="1.2">';
+ [[140,-30],[132,-42],[124,-28],[116,-38],[154,26],[148,46],[142,12],[138,34],[130,48],[124,20],[116,40]].forEach(function(p){
+  a=p[1]*R;cx=(102+9.5*Math.sin(a)).toFixed(1);cy=(p[0]-9.5*Math.cos(a)).toFixed(1);
+  ml+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="5" ry="9.5" transform="rotate('+p[1]+' '+cx+' '+cy+')"/>'});
+ ml+='</g>';
  var s=L(4,20,"裸子植物(マツ)","b")+'<g transform="translate(40,0)">'+
- '<path d="M104,350 C100,300 108,240 102,180 C98,135 106,90 104,44" fill="none" stroke="#8a6a4a" stroke-width="7" stroke-linecap="round"/>'+
- '<g stroke="#8fb872" stroke-width="2.2" stroke-linecap="round" fill="none"><line x1="102" y1="118" x2="100" y2="70"/><line x1="102" y1="118" x2="102" y2="67"/><line x1="102" y1="118" x2="104" y2="66"/><line x1="102" y1="118" x2="106" y2="68"/><line x1="102" y1="118" x2="108" y2="71"/></g>'+
- '<g fill="#f0d57a" stroke="#a68a2a" stroke-width="1.2"><ellipse cx="103" cy="124" rx="5" ry="9"/><ellipse cx="110" cy="130" rx="5" ry="9"/><ellipse cx="117" cy="126" rx="5" ry="9"/><ellipse cx="106" cy="140" rx="5" ry="9"/><ellipse cx="113" cy="142" rx="5" ry="9"/><ellipse cx="120" cy="138" rx="5" ry="9"/></g>'+
- '<g stroke="#5f8a5a" stroke-width="2" stroke-linecap="round" fill="none"><line x1="101" y1="254" x2="50" y2="204"/><line x1="101" y1="254" x2="55" y2="198"/><line x1="101" y1="254" x2="61" y2="194"/><line x1="101" y1="254" x2="68" y2="190"/><line x1="101" y1="254" x2="75" y2="187"/><line x1="101" y1="254" x2="83" y2="185"/><line x1="105" y1="254" x2="156" y2="204"/><line x1="105" y1="254" x2="151" y2="198"/><line x1="105" y1="254" x2="145" y2="194"/><line x1="105" y1="254" x2="138" y2="190"/><line x1="105" y1="254" x2="131" y2="187"/><line x1="105" y1="254" x2="123" y2="185"/></g>'+
- '<g fill="#d98aa0" stroke="#a0526b" stroke-width="1.5"><ellipse cx="102" cy="32" rx="9" ry="13"/><ellipse cx="86" cy="50" rx="8" ry="11"/><ellipse cx="118" cy="50" rx="8" ry="11"/></g>'+
+ '<path d="M104,376 C100,320 108,250 102,180 C98,135 106,90 104,44" fill="none" stroke="#8a6a4a" stroke-width="7" stroke-linecap="round"/>'+
+ lg+yg+ml+
+ '<g fill="#d98aa0" stroke="#a0526b" stroke-width="1.5"><ellipse cx="93" cy="36" rx="9" ry="13"/><ellipse cx="114" cy="40" rx="9" ry="13"/></g>'+
  '<line x1="100" y1="144" x2="86" y2="154" stroke="#8a6a4a" stroke-width="3"/>'+
  '<ellipse cx="75" cy="162" rx="10" ry="14" transform="rotate(53 75 162)" fill="#b3a56a" stroke="#6f6535" stroke-width="1.5"/>'+
- '<line x1="104" y1="270" x2="124" y2="284" stroke="#8a6a4a" stroke-width="3"/>'+
- '<g transform="rotate(-54 148 302)"><ellipse cx="148" cy="302" rx="19" ry="30" fill="#b08d5f" stroke="#7a5c35" stroke-width="1.5"/>'+
- '<g fill="none" stroke="#7a5c35" stroke-width="1"><path d="M132,286 Q148,294 164,286"/><path d="M130,298 Q148,306 166,298"/><path d="M130,310 Q148,318 166,310"/><path d="M134,322 Q148,328 162,322"/></g></g>'+
- ln(54,50,78,50)+ln(54,166,63,166)+ln(54,232,79,232)+ln(171,319,187,329)+
- L(50,55,"雌花",null,"end")+L(50,171,"昨年の雌花",null,"end")+L(50,237,"葉",null,"end")+
- L(112,168,"雄花",null,"middle")+L(190,334,"マツカサ")+L(190,354,"(一昨年の雌花)")+
- '<g stroke="'+INK+'" stroke-width="1.5" fill="none"><line x1="132" y1="48" x2="262" y2="58"/><path d="M254,52 L262,58 L254,64"/><line x1="134" y1="134" x2="268" y2="190"/><path d="M261,184 L268,190 L259,193"/></g>'+
+ '<line x1="103" y1="340" x2="123" y2="354" stroke="#8a6a4a" stroke-width="3"/>'+
+ '<g transform="translate(-1,70)"><g transform="rotate(-54 148 302)"><ellipse cx="148" cy="302" rx="19" ry="30" fill="#b08d5f" stroke="#7a5c35" stroke-width="1.5"/>'+
+ '<g fill="none" stroke="#7a5c35" stroke-width="1"><path d="M132,286 Q148,294 164,286"/><path d="M130,298 Q148,306 166,298"/><path d="M130,310 Q148,318 166,310"/><path d="M134,322 Q148,328 162,322"/></g></g></g>'+
+ ln(54,38,84,38)+ln(54,166,63,166)+ln(33,240,42,240)+ln(170,389,186,399)+
+ L(50,43,"雌花",null,"end")+L(50,171,"昨年の雌花",null,"end")+L(30,245,"葉",null,"end")+
+ L(112,172,"雄花",null,"middle")+L(189,404,"マツカサ")+L(189,424,"(一昨年の雌花)")+
+ '<g stroke="'+INK+'" stroke-width="1.5" fill="none"><line x1="126" y1="43" x2="262" y2="58"/><path d="M254,52 L262,58 L254,64"/><line x1="126" y1="134" x2="268" y2="190"/><path d="M261,184 L268,190 L259,193"/></g>'+
  L(197,44,"拡大",null,"middle")+L(190,147,"拡大",null,"middle")+
  '<path d="M292,126 C290,108 270,96 268,64 C266,36 286,20 305,20 C324,20 344,36 342,64 C340,96 320,108 318,126 Z" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.5"/>'+
  '<ellipse cx="293" cy="100" rx="7" ry="10" fill="#c2410c" transform="rotate(15 293 100)"/>'+
@@ -89,7 +103,7 @@ function fig2b(){
  '<g fill="#d9a400"><circle cx="294" cy="208" r="2"/><circle cx="290" cy="218" r="2"/><circle cx="294" cy="228" r="2"/><circle cx="316" cy="208" r="2"/><circle cx="320" cy="218" r="2"/><circle cx="316" cy="228" r="2"/></g>'+
  ln(360,218,322,218)+mk(370,218,"B")+ln(270,218,287,218)+L(266,223,"花粉のう",null,"end")+L(305,295,"雄花のりん片",null,"middle")+
  '</g>';
- return svg(440,380,"マツの枝と、りん片の拡大図。枝の先端に今年の雌花、その下に来年の葉、その付け根に雄花と昨年の雌花、さらに下に葉、その根もとにマツカサ(一昨年の雌花)がある。右は、雌花のりん片の拡大図で、むき出しの胚珠にA、雄花のりん片の拡大図で、花粉のうの中にBがある",s)}
+ return svg(440,436,"マツの枝と、りん片の拡大図。枝の先端に今年の雌花が2つ、その下に来年の葉が短く何段も重なって茎をおおい、その下に雄花が茎から出ている。雄花の下に昨年の雌花があり、さらに下に長い葉が茎から何段も連なり、その下にマツカサ(一昨年の雌花)がある。右は、雌花のりん片の拡大図で、むき出しの胚珠にA、雄花のりん片の拡大図で、花粉のうの中にBがある",s)}
 
 function g(n,c){return '<span class="'+c+'">'+n+'</span>'}
 function tbl(hd,rows){
