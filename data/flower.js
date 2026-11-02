@@ -71,16 +71,18 @@ sections:[
  '<p class="note">花粉がめしべの柱頭につくことを、受粉といいます。図はエンドウの花とさやです。</p>'},
 {type:"problem",title:"問題",
  body:'<p>(1) 次の花のつくりを、花の中心から外側へ向かって並べなさい。</p>'+
- '<p>(2) 被子植物の子房と胚珠は、受粉後に成長すると、それぞれ何になるか。</p>'+
+ '<p>(2) 受粉後、被子植物の子房は何になるか。</p>'+
+ '<p>(3) 受粉後、被子植物の胚珠は何になるか。</p>'+
  '<p class="note">(1)は、中心に近い順に、下のボタンを押して並べます。</p>',
  parts:[
   {label:"(1)",type:"order",choices:["がく","おしべ","めしべ","花弁"],accept:["めしべ→おしべ→花弁→がく"]},
-  {label:g("子房","v")+"→",type:"choice",choices:C2,accept:["果実"]},
-  {label:g("胚珠","m")+"→",type:"choice",choices:C2,accept:["種子"]}
+  {label:"(2) "+g("子房","v"),type:"choice",choices:C2,accept:["果実"]},
+  {label:"(3) "+g("胚珠","m"),type:"choice",choices:C2,accept:["種子"]}
  ]},
 {type:"answer",html:
  '<p>(1) <b>めしべ → おしべ → 花弁 → がく</b><br>中心にめしべがあり、外へ向かっておしべ、花弁、がくの順です。がくは、つぼみのときに花を守っています。</p>'+
- '<p>(2) '+g("子房","v")+'→<b class="v">果実</b>　'+g("胚珠","m")+'→<b class="m">種子</b><br>エンドウでは、さやが果実、中の豆が種子です。</p>'+
+ '<p>(2) '+g("子房","v")+'→<b class="v">果実</b></p>'+
+ '<p>(3) '+g("胚珠","m")+'→<b class="m">種子</b><br>エンドウでは、さやが果実、中の豆が種子です。</p>'+
  '<div style="border-top:1px solid var(--rule);margin-top:1.2rem;padding-top:.6rem"><p><b>被子植物と裸子植物の花</b>(補充問題で使います)</p>'+PART+'</div>'},
 {type:"problem",title:"補充問題",
  body:'<p>被子植物と裸子植物の花について、図のA・Bに入る語を選びなさい。</p>'+fig2()+
