@@ -49,7 +49,24 @@ function flow(){
  s+=line(64,122,64,162,INK,1.2)+head("M59,156 L64,162 L69,156")+T(72,148,12,"いいえ");
  return svg(320,212,"集め方の考え方の順番を表す図。水に溶けにくければ水上置換法。溶けやすければ、空気より軽いかどうかを考え、軽ければ上方置換法、重ければ下方置換法",s)}
 
-var PLANE=plane(),FLOW=flow();
+/* 厳選ポイントの最初の図：3つの集め方を横一列に(上＝水上置換法、上方置換法、下方置換法) */
+function methods(){
+ var K='fill="none" stroke="'+INK+'" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"';
+ function dots(a){return a.map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="2.5" fill="'+BLUE+'"/>'}).join('')}
+ function P(x,b,n){return '<g transform="translate('+x+',0)">'+b+T(55,148,13,n,"b","middle")+'</g>'}
+ var a='<rect x="8" y="84" width="92" height="40" fill="'+PALE+'"/><rect x="30" y="58" width="30" height="26" fill="'+PALE+'"/>'+
+  line(8,84,30,84,BLUE,1)+line(60,84,100,84,BLUE,1)+line(30,58,60,58,BLUE,1)+
+  '<path d="M8,70 V124 H100 V70" '+K+'/><path d="M30,104 V24 H60 V104" '+K+'/><path d="M104,52 H84 V112 H45 V106" '+K+'/>'+
+  '<g fill="none" stroke="'+INK+'" stroke-width="1"><circle cx="45" cy="98" r="2"/><circle cx="47" cy="90" r="2.5"/></g>'+
+  dots([[38,32],[52,34],[45,42],[38,50],[53,50]]);
+ var b='<path d="M30,104 V24 H60 V104" '+K+'/><path d="M104,118 H45 V34" '+K+'/>'+
+  dots([[36,32],[54,32],[36,46],[54,46],[37,60],[54,60]]);
+ var c='<path d="M30,28 V110 Q30,124 45,124 Q60,124 60,110 V28" '+K+'/><path d="M104,16 H45 V114" '+K+'/>'+
+  dots([[36,104],[54,104],[36,92],[54,92],[36,80],[54,80]]);
+ return svg(330,156,"3つの気体の集め方の図。左の水上置換法は、水を満たした容器を水そうに逆さに立て、水と入れ替えて気体を集める。中央の上方置換法は、容器を逆さにして、下から入れた気体を上にためる。右の下方置換法は、容器を立てて、上から入れた気体を底にためる",
+  P(0,a,"水上置換法")+P(110,b,"上方置換法")+P(220,c,"下方置換法"))}
+
+var PLANE=plane(),FLOW=flow(),METH=methods();
 var W=["水上置換法","上方置換法","下方置換法"],GAS=["酸素","二酸化炭素","水素","アンモニア"];
 
 /* 気体の見分けるポイント(問題の解答と解説の最後に置く表) */
@@ -73,7 +90,7 @@ window.UNIT={
 no:"1-2",title:"気体の性質",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
- '<p>気体の集め方は、「水への溶けやすさ」と「空気との重さ」で決まります。</p>'+PLANE+
+ METH+'<p>気体の集め方は、「水への溶けやすさ」と「空気との重さ」で決まります。</p>'+PLANE+
  '<p class="note">「空気より軽い」は、「空気より密度が小さい」という意味です。</p>'},
 {type:"problem",title:"問題",
  body:'<p>次の気体の集め方を、それぞれ選びなさい。</p>'+
