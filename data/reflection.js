@@ -22,11 +22,11 @@ function mirror(a,x1,x2){return line(px(x1),a.py(0),px(x2),a.py(0),INK,4)+T(px(x
 function real(a,x,y,k){var X=px(x),Y=a.py(y);return '<circle cx="'+X+'" cy="'+Y+'" r="9" fill="'+PALER+'" stroke="'+RED+'" stroke-width="1.5"/>'+TN(X,Y+5,13,k,"m b","middle")}
 function virt(a,x,y,k){var X=px(x),Y=a.py(y);return '<circle cx="'+X+'" cy="'+Y+'" r="9" fill="'+PALE+'" stroke="'+BLUE+'" stroke-width="1.5" stroke-dasharray="3 2"/>'+TN(X,Y+4,11,k+"'","v b","middle")}
 
-/* 問題の図：鏡は左から3〜6マス、自分(2,-5)、A〜Dは鏡から3マス下に4マスずつ(2,6,10,14)。見えるのはBだけ */
+/* 問題の図：鏡は左から3〜6マス(上下は鏡から6マスずつ)、自分(2,-5)、A〜Dは鏡から3マス下に4マスずつ(2,6,10,14)。見えるのはBだけ */
 var Ex=2,Ey=-5,M1=3,M2=6,PT={A:[2,-3],B:[6,-3],C:[10,-3],D:[14,-3]},KS=["A","B","C","D"];
 function eye(a){var X=px(Ex),Y=a.py(Ey);return '<circle cx="'+X+'" cy="'+Y+'" r="5" fill="'+INK+'"/>'+T(X,Y+18,13,"自分","b","middle")}
-var LBL="格子の上の端に、横長の鏡があります。鏡は、左から3マス目から6マス目までです。鏡の下に、自分(左から2マス目、鏡から5マス下)があります。A、B、C、Dは、鏡から3マス下に、左から2マス目、6マス目、10マス目、14マス目と、同じ間かくで一列に並んでいます";
-function figProblem(){var a=area(0,-6),s=a.grid+mirror(a,M1,M2);
+var LBL="格子の真ん中の高さに、横長の鏡があります。鏡は、左から3マス目から6マス目までです。鏡の下に、自分(左から2マス目、鏡から5マス下)があります。A、B、C、Dは、鏡から3マス下に、左から2マス目、6マス目、10マス目、14マス目と、同じ間かくで一列に並んでいます。鏡の上は、6マス分の空きです";
+function figProblem(){var a=area(6,-6),s=a.grid+mirror(a,M1,M2);
  KS.forEach(function(k){s+=real(a,PT[k][0],PT[k][1],k)});
  return svg(a.h,LBL,s+eye(a))}
 
@@ -43,7 +43,7 @@ function dl(x1,y1,x2,y2,k,w,da){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'
 function frame(a,sx,sy){return dl(px(0),a.py(0),px(NX),a.py(0),GRAY,1.2,"6 4")+
  dl(px(sx),a.py(sy),px(M1),a.py(0),INK,1,"2 3")+dl(px(sx),a.py(sy),px(M2),a.py(0),INK,1,"2 3")+
  line(px(M1),a.py(0),px(M2),a.py(0),INK,4)+T(px(M1)-12,a.py(0)-5,13,"鏡","b","end")}
-function figAns(){var a=area(5,-6),s=cone(a,Ex,Ey,5)+cone(a,Ex,-Ey,-6,PALER)+a.grid+frame(a,Ex,Ey);
+function figAns(){var a=area(6,-6),s=cone(a,Ex,Ey,6)+cone(a,Ex,-Ey,-6,PALER)+a.grid+frame(a,Ex,Ey);
  s+=TN(px(6.6),a.py(5)+16,12,"虚像が見える範囲","v","middle")+TN(px(7.1),a.py(-5)+16,12,"物体が見える範囲","m","middle");
  KS.forEach(function(k){s+=real(a,PT[k][0],PT[k][1],k)});
  KS.forEach(function(k){s+=virt(a,PT[k][0],-PT[k][1],k)});
