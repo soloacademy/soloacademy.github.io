@@ -14,6 +14,42 @@ function problem(sec){
   var box=h("div","problem",sec.body);
   var mx=null;
   var rows=sec.parts.map(function(p){
+    if(p.type==="tree"){
+      var wrap=h("div",null,p.svg),vals={},marks={},sel=null,ids=Object.keys(p.answers),bs={};
+      box.appendChild(wrap);
+      var gs=function(id){return Array.prototype.slice.call(wrap.querySelectorAll('[data-b="'+id+'"]'))};
+      var setSel=function(id){sel=id;ids.forEach(function(k){gs(k).forEach(function(g){g.classList.toggle("sel",k===id)})})};
+      var put=function(id,w){vals[id]=w;marks[id].className="mark";gs(id).forEach(function(g){g.querySelector(".bt").textContent=w;g.setAttribute("aria-label","空欄 "+(w||"未記入"))})};
+      var cs=h("div","choices");
+      var rs=ids.map(function(id){
+        var m={};
+        Object.defineProperty(m,"className",{set:function(v){var k=v.indexOf("ok")>=0?"ok":v.indexOf("ng")>=0?"ng":"";gs(id).forEach(function(g){g.setAttribute("class","bl"+(k?" "+k:"")+(sel===id?" sel":""));g.querySelector(".bm").textContent=k==="ok"?"○":k==="ng"?"×":""})}});
+        Object.defineProperty(m,"textContent",{set:function(){}});
+        marks[id]=m;
+        gs(id).forEach(function(g){g.setAttribute("role","button");g.setAttribute("tabindex","0");g.setAttribute("aria-label","空欄 未記入")});
+        return {p:{type:"choice",accept:[p.answers[id]]},i:{get value(){return vals[id]||""}},m:m};
+      });
+      wrap.addEventListener("click",function(e){
+        var g=e.target.closest?e.target.closest("[data-b]"):null;if(!g)return;
+        var id=g.getAttribute("data-b");
+        if(vals[id]){bs[vals[id]].disabled=false;put(id,"")}
+        setSel(id);
+      });
+      wrap.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){var g=e.target.closest&&e.target.closest("[data-b]");if(g){e.preventDefault();g.dispatchEvent(new MouseEvent("click",{bubbles:true}))}}});
+      p.choices.forEach(function(c){
+        var x=h("button","choice",c);x.type="button";bs[c]=x;
+        x.onclick=function(){
+          var t=(sel&&!vals[sel])?sel:ids.filter(function(k){return !vals[k]})[0];
+          if(!t)return;
+          put(t,c);x.disabled=true;setSel(null);
+        };
+        cs.appendChild(x);
+      });
+      var z=h("button","choice","やり直し");z.type="button";
+      z.onclick=function(){ids.forEach(function(k){if(vals[k]){bs[vals[k]].disabled=false;put(k,"")}});setSel(null)};
+      cs.appendChild(z);box.appendChild(cs);
+      return rs;
+    }
     if(p.type==="choice"){
       if(!mx){
         mx=h("table","mx");var hd=h("tr");hd.appendChild(h("th",null,""));
@@ -50,6 +86,7 @@ function problem(sec){
     }
     return {p:p,i:i,m:m};
   });
+  rows=[].concat.apply([],rows);
   var msg=h("p","msg");msg.setAttribute("aria-live","polite");
   var b=h("button",null,"答え合わせ");b.type="button";
   b.onclick=function(){
@@ -87,9 +124,9 @@ function render(u){
     if(s.title)root.appendChild(h("h2",null,s.title));
     if(s.type==="problem"){
       root.appendChild(problem(s));
-      if(s.solution){var d=h("details");d.appendChild(h("summary",null,"補充問題の解答と解説を見る"));d.appendChild(h("div",null,s.solution));root.appendChild(d)}
+      if(s.solution){var d=h("details");d.appendChild(h("summary",null,s.solutionLabel||"補充問題の解答と解説を見る"));d.appendChild(h("div",null,s.solution));root.appendChild(d)}
     }else if(s.type==="answer"){
-      var d=h("details");d.appendChild(h("summary",null,"問題の解答と解説を見る"));d.appendChild(h("div",null,s.html));root.appendChild(d);
+      var d=h("details");d.appendChild(h("summary",null,s.label||"問題の解答と解説を見る"));d.appendChild(h("div",null,s.html));root.appendChild(d);
     }else if(s.type==="video"){
       var v=h("div","video"),f=document.createElement("iframe");
       f.src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(s.id);
