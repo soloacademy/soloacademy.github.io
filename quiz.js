@@ -5,6 +5,12 @@ function h(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cl
 function fail(){root.appendChild(h("p",null,'この単元は見つかりませんでした。<a href="index.html">一覧へ戻る</a>'))}
 function norm(s){return String(s).normalize("NFKC").replace(/[\s,、，→>＞<＜]/g,"").toUpperCase()}
 function num(s){var m=String(s).normalize("NFKC").match(/-?\d+(?:\.\d+)?/);return m?parseFloat(m[0]):NaN}
+function setBt(e,w){
+  e.textContent="";
+  if(w.indexOf("その他の")===0&&w.length>5){
+    [w.slice(0,4),w.slice(4)].forEach(function(t,k){var s=document.createElementNS("http://www.w3.org/2000/svg","tspan");s.setAttribute("x",e.getAttribute("x"));if(k)s.setAttribute("dy","16");s.textContent=t;e.appendChild(s)});
+  }else e.textContent=w;
+}
 function judge(p,v){
   if(p.type==="text"||p.type==="order"||p.type==="choice")return p.accept.some(function(a){return norm(a)===norm(v)});
   var n=num(v);if(isNaN(n))return false;
@@ -19,7 +25,7 @@ function problem(sec){
       box.appendChild(wrap);
       var gs=function(id){return Array.prototype.slice.call(wrap.querySelectorAll('[data-b="'+id+'"]'))};
       var setSel=function(id){sel=id;ids.forEach(function(k){gs(k).forEach(function(g){g.classList.toggle("sel",k===id)})})};
-      var put=function(id,w){vals[id]=w;marks[id].className="mark";gs(id).forEach(function(g){g.querySelector(".bt").textContent=w;g.setAttribute("aria-label","空欄 "+(w||"未記入"))})};
+      var put=function(id,w){vals[id]=w;marks[id].className="mark";gs(id).forEach(function(g){setBt(g.querySelector(".bt"),w);g.setAttribute("aria-label","空欄 "+(w||"未記入"))})};
       var cs=h("div","choices");
       var nextId=function(){return ids.filter(function(k){return !vals[k]})[0]||null};
       var rs=ids.map(function(id){
