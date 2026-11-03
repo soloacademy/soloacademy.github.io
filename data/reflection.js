@@ -70,21 +70,22 @@ function figLight(){
 /* 補充問題の図：横から見た図。1cm＝1.6 */
 var FY=270;
 function sy(cm){return FY-1.6*cm}
-function stick(x,k,dash){return '<line x1="'+x+'" y1="'+sy(0)+'" x2="'+x+'" y2="'+sy(140)+'" stroke="'+k+'" stroke-width="3" stroke-linecap="round"'+(dash?' stroke-dasharray="1 6"':'')+'/>'}
+/* Aさん：人のアイコン。身長140cm＝高さ224(1cm＝1.6)。xc＝体の中心(頭の中心)のx。光の道すじは、この中心の線の上の、頭の上・目・足の先を通る */
+function aSan(xc,f){return ic("man",xc-43.8,sy(140),2.24,2.24,f)}
 function figSideQ(){
- var s=stick(100,INK)+line(250,sy(140),250,sy(0),INK,4)+T(250,36,13,"鏡","b","middle")+
-  '<path d="M82,'+sy(140)+' H76 V'+sy(0)+' H82" fill="none" stroke="'+GRAY+'" stroke-width="1.2"/>'+
-  T(70,(sy(140)+sy(0))/2+5,13,"140cm","b","end")+T(100,FY+20,13,"Aさん","b","middle");
+ var s=aSan(130,INK)+line(250,sy(140),250,sy(0),INK,4)+T(250,36,13,"鏡","b","middle")+
+  '<path d="M78,'+sy(140)+' H72 V'+sy(0)+' H78" fill="none" stroke="'+GRAY+'" stroke-width="1.2"/>'+
+  T(66,(sy(140)+sy(0))/2+5,13,"140cm","b","end")+T(130,FY+20,13,"Aさん","b","middle");
  return svg(300,"横から見た図。身長140cmのAさんが、鏡の前に立っている",s)}
 function figSideA(){
- var xp=70,xm=170,xv=270,ey=sy(130),h1=sy(135),h2=sy(65),s='';
- s+=stick(xp,INK)+stick(xv,BLUE,true)+line(xm,h1,xm,h2,INK,4);
- s+=line(xm,h1,xv,sy(140),BLUE,1.5,true)+line(xm,h2,xv,sy(0),BLUE,1.5,true);
+ var xp=60,xm=170,xv=280,ey=sy(130),h1=sy(135),h2=sy(65),s='';
+ s+=line(xm,h1,xv,sy(140),BLUE,1.5,true)+line(xm,h2,xv,sy(0),BLUE,1.5,true)+line(xm,h1,xm,h2,INK,4);
  s+=line(xp,sy(140),xm,h1,INK,1.5)+arw(xp,sy(140),xm,h1)+line(xm,h1,xp,ey,INK,1.5)+arw(xm,h1,xp,ey)+
   line(xp,sy(0),xm,h2,INK,1.5)+arw(xp,sy(0),xm,h2)+line(xm,h2,xp,ey,INK,1.5)+arw(xm,h2,xp,ey);
- s+='<circle cx="'+xm+'" cy="'+h1+'" r="3" fill="'+INK+'"/><circle cx="'+xm+'" cy="'+h2+'" r="3" fill="'+INK+'"/>'+
-  '<circle cx="'+xp+'" cy="'+ey+'" r="5" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'+
-  T(xp-10,ey+5,13,"目","b","end")+T(xm+10,(h1+h2)/2+5,13,"70cm","b")+
+ s+=aSan(xp,INK)+aSan(xv,BLUE)+
+  '<circle cx="'+xm+'" cy="'+h1+'" r="3" fill="'+INK+'"/><circle cx="'+xm+'" cy="'+h2+'" r="3" fill="'+INK+'"/>'+
+  '<circle cx="'+xp+'" cy="'+ey+'" r="3.5" fill="#fff"/>'+
+  T(xp-25,ey+5,13,"目","b","end")+T(xm+10,(h1+h2)/2+5,13,"70cm","b")+
   T(xp,FY+20,13,"Aさん","b","middle")+T(xv,FY+20,13,"虚像","v b","middle");
  return svg(300,"横から見た図。Aさんの目から見て、頭のてっぺんの虚像は鏡の上の端で、足の先の虚像は鏡の下の端で見える。頭からの光は、目と頭の真ん中で反射し、足からの光は、目と足の真ん中で反射する。鏡の長さは70cm",s)}
 
