@@ -26,32 +26,36 @@ var VERT=[
 ];
 
 /* 図の組み立て。o.v＝セキツイ動物の部分、o.i＝無セキツイ動物の部分、o.e＝具体例を表示、o.B＝空欄 */
+var CH=[
+ {id:"ins",n:"昆虫類",w:58,f:["頭部、胸部、腹部","足3対、羽2対","気門"],x:["クワガタ、ハチ、","バッタ"]},
+ {id:"cru",n:"甲殻類",w:58,f:["エラ呼吸"],x:["カニ、エビ、","ミジンコ"]},
+ {id:"oart",n:"その他の節足動物",w:72,f:[],x:["クモ、ムカデ"]}
+];
 function build(o){
- var B=o.B,e=o.e,y=10,s="",XB=186,cyv=[],cy2v=0,cy2i=0,k;
+ var B=o.B,e=o.e,y=10,s="",XB=174,cyv=[],cy2v=0,cy2i=0;
  if(o.v){
   VERT.forEach(function(d){
    cyv.push(y+17);
    s+=bx(XB,y,62,d.n,d.id,B)+Tx(XB,y+48,d.f)+(e?Tx(XB,y+48+14*d.f.length,d.x,"m"):"");
    y=after(y,34,d.f.length+(e?d.x.length:0))});
   cy2v=(cyv[0]+cyv[cyv.length-1])/2;
-  s+=ln(162,cy2v,180,cy2v)+ln(180,cyv[0],180,cyv[cyv.length-1]);
-  cyv.forEach(function(c){s+=ln(180,c,186,c)});
-  s+=bx(58,cy2v-17,104,"セキツイ動物","vert",B)+Tx(58,cy2v+31,["背骨がある"]);
+  s+=ln(152,cy2v,168,cy2v)+ln(168,cyv[0],168,cyv[cyv.length-1]);
+  cyv.forEach(function(c){s+=ln(168,c,XB,c)});
+  s+=bx(48,cy2v-17,104,"セキツイ動物","vert",B)+Tx(48,cy2v+31,["背骨がある"]);
   if(o.i)y+=6;
  }
  if(o.i){
-  var ya=y,cyA=ya+17;
-  s+=bx(XB,ya,72,"節足動物","art",B)+Tx(202,ya+48,["足に節がある・外骨格"]);
-  y=after(ya,34,1);
-  var yi=y,fi=["頭部、胸部、腹部","足3対、羽2対、気門"],xi=["クワガタ、ハチ、バッタ"];
-  s+=bx(210,yi,58,"昆虫類","ins",B)+Tx(210,yi+48,fi)+(e?Tx(210,yi+48+14*fi.length,xi,"m"):"");
-  y=after(yi,34,fi.length+(e?1:0));
-  var yc=y,fc=["エラ呼吸"],xc=["カニ、エビ、ミジンコ"];
-  s+=bx(210,yc,58,"甲殻類","cru",B)+Tx(210,yc+48,fc)+(e?Tx(210,yc+48+14*fc.length,xc,"m"):"");
-  y=after(yc,34,fc.length+(e?1:0));
-  var yo=y;
-  s+=bx(210,yo,72,"その他の節足動物","oart",B)+(e?Tx(210,yo+56,["クモ、ムカデ"],"m"):"");
-  y=after(yo,42,e?1:0);
+  var cyc=[];
+  CH.forEach(function(d){
+   var h=d.n.indexOf("その他の")===0?42:34;
+   cyc.push(y+h/2);
+   s+=bx(246,y,d.w,d.n,d.id,B)+Tx(246,y+h+14,d.f)+(e?Tx(246,y+h+14+14*d.f.length,d.x,"m"):"");
+   y=after(y,h,d.f.length+(e?d.x.length:0))});
+  var cyA=(cyc[0]+cyc[2])/2;
+  s+=bx(XB,cyA-17,62,"節足動物","art",B)+Tx(XB,cyA+31,["足に節がある","外骨格"]);
+  s+=ln(236,cyA,241,cyA)+ln(241,cyc[0],241,cyc[2]);
+  cyc.forEach(function(c){s+=ln(241,c,246,c)});
+  y=Math.max(y,cyA+31+14+4+12);
   var ym=y,fm=["内臓が外とう膜で","おおわれている"],xm=["タコ、イカ、マイマイ"];
   s+=bx(XB,ym,72,"軟体動物","mol",B)+Tx(XB,ym+48,fm)+(e?Tx(XB,ym+48+14*fm.length,xm,"m"):"");
   y=after(ym,34,fm.length+(e?1:0));
@@ -60,14 +64,13 @@ function build(o){
   y=after(yz,42,e?1:0);
   var cyM=ym+17,cyZ=yz+21;
   cy2i=(cyA+cyZ)/2;
-  s+=ln(174,cy2i,180,cy2i)+ln(180,cyA,180,cyZ)+ln(180,cyA,186,cyA)+ln(180,cyM,186,cyM)+ln(180,cyZ,186,cyZ);
-  s+=ln(194,ya+34,194,yo+21)+ln(194,yi+17,210,yi+17)+ln(194,yc+17,210,yc+17)+ln(194,yo+21,210,yo+21);
-  s+=bx(58,cy2i-17,116,"無セキツイ動物","inv",B)+Tx(58,cy2i+31,["背骨がない"]);
+  s+=ln(164,cy2i,168,cy2i)+ln(168,cyA,168,cyZ)+ln(168,cyA,XB,cyA)+ln(168,cyM,XB,cyM)+ln(168,cyZ,XB,cyZ);
+  s+=bx(48,cy2i-17,116,"無セキツイ動物","inv",B)+Tx(48,cy2i+31,["背骨がない"]);
  }
  var cy=o.v&&o.i?(cy2v+cy2i)/2:(o.v?cy2v:cy2i);
- if(o.v&&o.i)s+=ln(48,cy,53,cy)+ln(53,cy2v,53,cy2i)+ln(53,cy2v,58,cy2v)+ln(53,cy2i,58,cy2i);
- else s+=ln(48,cy,58,cy);
- s+=bx(4,cy-17,44,"動物","animal",{});
+ if(o.v&&o.i)s+=ln(42,cy,45,cy)+ln(45,cy2v,45,cy2i)+ln(45,cy2v,48,cy2v)+ln(45,cy2i,48,cy2i);
+ else s+=ln(42,cy,48,cy);
+ s+=bx(2,cy-17,40,"動物","animal",{});
  return {body:s,h:Math.ceil(y)}}
 
 var LV="動物は、背骨があるセキツイ動物と、背骨がない無セキツイ動物に分かれる。",
