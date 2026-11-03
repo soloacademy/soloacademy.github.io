@@ -91,7 +91,7 @@ h2.point-label{margin:.5rem 0 .4rem;padding:0;border:0;font-size:1.1rem}
 .bl rect{fill:#fff;stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
 .fig .bl text.bt{fill:var(--accent);font-weight:700;stroke:none}
 .fig .bl text.bm{font-weight:700;stroke:none}
-.bl.sel rect{fill:#e3edf8;stroke-dasharray:none}
+.bl.sel rect{fill:#cfe0f3;stroke:var(--accent);stroke-width:3.5;stroke-dasharray:none}
 .bl.ok rect{stroke:var(--ok);stroke-width:3;stroke-dasharray:none}
 .bl.ng rect{stroke:var(--ng);stroke-width:3;stroke-dasharray:none}
 .fig .bl.ok text.bm{fill:var(--ok)}.fig .bl.ng text.bm{fill:var(--ng)}

@@ -21,6 +21,7 @@ function problem(sec){
       var setSel=function(id){sel=id;ids.forEach(function(k){gs(k).forEach(function(g){g.classList.toggle("sel",k===id)})})};
       var put=function(id,w){vals[id]=w;marks[id].className="mark";gs(id).forEach(function(g){g.querySelector(".bt").textContent=w;g.setAttribute("aria-label","空欄 "+(w||"未記入"))})};
       var cs=h("div","choices");
+      var nextId=function(){return ids.filter(function(k){return !vals[k]})[0]||null};
       var rs=ids.map(function(id){
         var m={};
         Object.defineProperty(m,"className",{set:function(v){var k=v.indexOf("ok")>=0?"ok":v.indexOf("ng")>=0?"ng":"";gs(id).forEach(function(g){g.setAttribute("class","bl"+(k?" "+k:"")+(sel===id?" sel":""));g.querySelector(".bm").textContent=k==="ok"?"○":k==="ng"?"×":""})}});
@@ -41,13 +42,13 @@ function problem(sec){
         x.onclick=function(){
           var t=(sel&&!vals[sel])?sel:ids.filter(function(k){return !vals[k]})[0];
           if(!t)return;
-          put(t,c);x.disabled=true;setSel(null);
+          put(t,c);x.disabled=true;setSel(nextId());
         };
         cs.appendChild(x);
       });
       var z=h("button","choice","やり直し");z.type="button";
-      z.onclick=function(){ids.forEach(function(k){if(vals[k]){bs[vals[k]].disabled=false;put(k,"")}});setSel(null)};
-      cs.appendChild(z);box.appendChild(cs);
+      z.onclick=function(){ids.forEach(function(k){if(vals[k]){bs[vals[k]].disabled=false;put(k,"")}});setSel(nextId())};
+      cs.appendChild(z);box.appendChild(cs);setSel(nextId());
       return rs;
     }
     if(p.type==="choice"){
