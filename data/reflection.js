@@ -1,6 +1,6 @@
 (function(){
 var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",GRID="#e4e8ec",GRAY="#8a949f",PALE="#e3edf8",PALER="#fdefe8";
-var C=20,X0=20,Y0=10,NX=15;
+var C=20,X0=10,Y0=10,NX=16;
 function px(x){return X0+C*x}
 function T(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 /* 色つきの面の上の文字：まわりの白いふちを消す */
@@ -12,7 +12,7 @@ function arw(x1,y1,x2,y2){var mx=(x1+x2)/2,my=(y1+y2)/2,a=Math.atan2(y2-y1,x2-x1
  function p(t){return (mx-L*Math.cos(a+t)).toFixed(1)+','+(my-L*Math.sin(a+t)).toFixed(1)}
  return '<path d="M'+p(s)+' L'+mx.toFixed(1)+','+my.toFixed(1)+' L'+p(-s)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 
-/* うすい格子。1マス＝20。横は0〜15、縦は ymin〜ymax。鏡の高さが y=0 */
+/* うすい格子。1マス＝20。横は0〜16、縦は ymin〜ymax。鏡の高さが y=0 */
 function area(ymax,ymin){
  var py=function(y){return Y0+C*(ymax-y)},d='',x,y;
  for(x=0;x<=NX;x++)d+='M'+px(x)+' '+py(ymax)+'V'+py(ymin);
@@ -22,11 +22,11 @@ function mirror(a,x1,x2){return line(px(x1),a.py(0),px(x2),a.py(0),INK,4)+T(px(x
 function real(a,x,y,k){var X=px(x),Y=a.py(y);return '<circle cx="'+X+'" cy="'+Y+'" r="9" fill="'+PALER+'" stroke="'+RED+'" stroke-width="1.5"/>'+TN(X,Y+5,13,k,"m b","middle")}
 function virt(a,x,y,k){var X=px(x),Y=a.py(y);return '<circle cx="'+X+'" cy="'+Y+'" r="9" fill="'+PALE+'" stroke="'+BLUE+'" stroke-width="1.5" stroke-dasharray="3 2"/>'+TN(X,Y+4,11,k+"'","v b","middle")}
 
-/* 問題の図：鏡は左から5〜10マス、自分(2,-6)、A(1,-4) B(8,-3) C(14,-2) D(4,-4) */
-var Ex=2,Ey=-6,M1=5,M2=10,PT={A:[1,-4],B:[8,-3],C:[14,-2],D:[4,-4]},KS=["A","B","C","D"];
+/* 問題の図：鏡は左から3〜6マス、自分(2,-5)、A〜Dは鏡から3マス下に4マスずつ(2,6,10,14)。見えるのはBだけ */
+var Ex=2,Ey=-5,M1=3,M2=6,PT={A:[2,-3],B:[6,-3],C:[10,-3],D:[14,-3]},KS=["A","B","C","D"];
 function eye(a){var X=px(Ex),Y=a.py(Ey);return '<circle cx="'+X+'" cy="'+Y+'" r="5" fill="'+INK+'"/>'+T(X,Y+18,13,"自分","b","middle")}
-var LBL="格子の上に、横長の鏡が真ん中の高さにあります。鏡は、左から5マス目から10マス目までです。鏡の下に、自分(左から2マス目、鏡から6マス下)と、A(左から1マス目、4マス下)、B(左から8マス目、3マス下)、C(左から14マス目、2マス下)、D(左から4マス目、4マス下)があります。鏡の上は、空いています";
-function figProblem(){var a=area(7,-7),s=a.grid+mirror(a,M1,M2);
+var LBL="格子の上の端に、横長の鏡があります。鏡は、左から3マス目から6マス目までです。鏡の下に、自分(左から2マス目、鏡から5マス下)があります。A、B、C、Dは、鏡から3マス下に、左から2マス目、6マス目、10マス目、14マス目と、同じ間かくで一列に並んでいます";
+function figProblem(){var a=area(0,-6),s=a.grid+mirror(a,M1,M2);
  KS.forEach(function(k){s+=real(a,PT[k][0],PT[k][1],k)});
  return svg(a.h,LBL,s+eye(a))}
 
@@ -43,15 +43,15 @@ function dl(x1,y1,x2,y2,k,w,da){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'
 function frame(a,sx,sy){return dl(px(0),a.py(0),px(NX),a.py(0),GRAY,1.2,"6 4")+
  dl(px(sx),a.py(sy),px(M1),a.py(0),INK,1,"2 3")+dl(px(sx),a.py(sy),px(M2),a.py(0),INK,1,"2 3")+
  line(px(M1),a.py(0),px(M2),a.py(0),INK,4)+T(px(M1)-12,a.py(0)-5,13,"鏡","b","end")}
-function figAns(){var a=area(7,-7),s=cone(a,Ex,Ey,7)+cone(a,Ex,-Ey,-7,PALER)+a.grid+frame(a,Ex,Ey);
- s+=TN(px(11.5),44,13,"虚像が見える範囲","v","middle")+TN(px(11.5),264,13,"物体が見える範囲","m","middle");
+function figAns(){var a=area(5,-6),s=cone(a,Ex,Ey,5)+cone(a,Ex,-Ey,-6,PALER)+a.grid+frame(a,Ex,Ey);
+ s+=TN(px(6.6),a.py(5)+16,12,"虚像が見える範囲","v","middle")+TN(px(7.1),a.py(-5)+16,12,"物体が見える範囲","m","middle");
  KS.forEach(function(k){s+=real(a,PT[k][0],PT[k][1],k)});
  KS.forEach(function(k){s+=virt(a,PT[k][0],-PT[k][1],k)});
  return svg(a.h,"鏡を軸にして、A、B、C、Dの線対称の位置に、虚像A'、B'、C'、D'を描いた図。自分から鏡の両端までを点線で結び、その先の、鏡の向こうの範囲が、うすい青の「虚像が見える範囲」になっている。この範囲に入っている虚像は、B'だけ。鏡の手前には、鏡を軸にした線対称の位置に、うすい赤の「物体が見える範囲」がある。この範囲に入っている点は、Bだけ",s+eye(a))}
 
 /* 別解の図(小さめ)：自分の虚像から、鏡の両端を通る線の間の、鏡の手前の範囲をうすい青にする。範囲に入る点が見える */
-function figAlt(){var a=area(7,-7),s=cone(a,Ex,-Ey,-7,PALER)+a.grid+frame(a,Ex,-Ey),X=px(Ex),Y=a.py(-Ey);
- s+=TN(px(11.5),264,13,"物体が見える範囲","m","middle");
+function figAlt(){var a=area(6,-6),s=cone(a,Ex,-Ey,-6,PALER)+a.grid+frame(a,Ex,-Ey),X=px(Ex),Y=a.py(-Ey);
+ s+=TN(px(7.1),a.py(-5)+16,12,"物体が見える範囲","m","middle");
  KS.forEach(function(k){s+=real(a,PT[k][0],PT[k][1],k)});
  s+='<circle cx="'+X+'" cy="'+Y+'" r="5" fill="'+BLUE+'"/>'+T(X,Y-10,13,"自分の虚像","v b","middle");
  return svg(a.h,"自分の虚像から鏡の両端までを点線で結び、その先の、鏡の手前の範囲が、うすい赤の「物体が見える範囲」になっている図。この範囲に入っている点は、Bだけ",s).replace('<svg ','<svg style="max-width:17rem" ')}
