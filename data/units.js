@@ -5,5 +5,6 @@ window.UNITS=[
   {id:"solubility",no:"1-4",title:"溶解度"},
   {id:"flower",no:"1-5",title:"花のつくり"},
   {id:"plant",no:"1-6",title:"植物の分類"},
-  {id:"animal",no:"1-7",title:"動物の分類"}
+  {id:"animal",no:"1-7",title:"動物の分類"},
+  {id:"reflection",no:"1-8",title:"光の反射"}
 ];
