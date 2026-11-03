@@ -31,23 +31,30 @@ function figProblem(){var a=area(7,-7),s=a.grid+mirror(a,M1,M2);
  return svg(a.h,LBL,s+eye(a))}
 
 /* 解説の図：虚像A'〜D'を描き、自分から見える鏡の向こうの範囲をうすい青にする。
-   範囲は、自分から鏡の両端を通る線の間(格子の端で切る)。範囲に入る虚像だけが見える */
+   範囲は、自分から鏡の両端を通る線の間(格子の端で切る)。範囲に入る虚像だけが見える
+   鏡の両側の点線は、鏡の向こうの世界と、実際の世界の境目。自分から鏡の両端までも点線 */
 function cone(a,sx,sy,Y){
  var f=(Y-sy)/(0-sy),xl=sx+(M1-sx)*f,xr=sx+(M2-sx)*f,P=[[M1,0],[xl,Y]];
  if(xr>NX)P.push([NX,Y],[NX,sy+(0-sy)*(NX-sx)/(M2-sx)]);else P.push([xr,Y]);
  P.push([M2,0]);
  return '<polygon points="'+P.map(function(p){return px(p[0])+','+a.py(p[1])}).join(' ')+'" fill="'+PALE+'"/>'}
-function figAns(){var a=area(7,-7),s=cone(a,Ex,Ey,7)+a.grid+mirror(a,M1,M2);
- s+=T(px(0),22,12,"鏡の向こう(虚像の世界)","g");
+function dl(x1,y1,x2,y2,k,w,da){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+k+'" stroke-width="'+w+'" stroke-dasharray="'+da+'"/>'}
+/* 境目の点線(格子の左端から右端まで)・自分から鏡の両端までの点線・鏡(ラベルは線の上側) */
+function frame(a,sx,sy){return dl(px(0),a.py(0),px(NX),a.py(0),GRAY,1.2,"6 4")+
+ dl(px(sx),a.py(sy),px(M1),a.py(0),INK,1,"2 3")+dl(px(sx),a.py(sy),px(M2),a.py(0),INK,1,"2 3")+
+ line(px(M1),a.py(0),px(M2),a.py(0),INK,4)+T(px(M1)-12,a.py(0)-5,13,"鏡","b","end")}
+function figAns(){var a=area(7,-7),s=cone(a,Ex,Ey,7)+a.grid+frame(a,Ex,Ey);
+ s+=T(px(0),22,12,"鏡の向こう(虚像の世界)","g")+T(px(0),168,12,"実際の世界","g")+TN(px(11.5),44,13,"見える範囲","v","middle");
  KS.forEach(function(k){s+=real(a,PT[k][0],PT[k][1],k)});
  KS.forEach(function(k){s+=virt(a,PT[k][0],-PT[k][1],k)});
- return svg(a.h,"鏡を軸にして、A、B、C、Dの線対称の位置に、虚像A'、B'、C'、D'を描いた図。自分から鏡の両端を通る線の間の、鏡の向こうの範囲が、うすい青になっている。この範囲に入っている虚像は、B'だけ",s+eye(a))}
+ return svg(a.h,"鏡を軸にして、A、B、C、Dの線対称の位置に、虚像A'、B'、C'、D'を描いた図。鏡の両側の点線の上が鏡の向こうの世界、下が実際の世界。自分から鏡の両端までを点線で結び、その先の、鏡の向こうの範囲が、うすい青の「見える範囲」になっている。この範囲に入っている虚像は、B'だけ",s+eye(a))}
 
 /* 別解の図(小さめ)：自分の虚像から、鏡の両端を通る線の間の、鏡の手前の範囲をうすい青にする。範囲に入る点が見える */
-function figAlt(){var a=area(7,-7),s=cone(a,Ex,-Ey,-7)+a.grid+mirror(a,M1,M2),X=px(Ex),Y=a.py(-Ey);
+function figAlt(){var a=area(7,-7),s=cone(a,Ex,-Ey,-7)+a.grid+frame(a,Ex,-Ey),X=px(Ex),Y=a.py(-Ey);
+ s+=TN(px(11.5),264,13,"見える範囲","v","middle");
  KS.forEach(function(k){s+=real(a,PT[k][0],PT[k][1],k)});
  s+='<circle cx="'+X+'" cy="'+Y+'" r="5" fill="'+BLUE+'"/>'+T(X,Y-10,13,"自分の虚像","v b","middle");
- return svg(a.h,"自分の虚像から、鏡の両端を通る線の間の、鏡の手前の範囲が、うすい青になっている図。この範囲に入っている点は、Bだけ",s).replace('<svg ','<svg style="max-width:17rem" ')}
+ return svg(a.h,"自分の虚像から鏡の両端までを点線で結び、その先の、鏡の手前の範囲が、うすい青の「見える範囲」になっている図。この範囲に入っている点は、Bだけ",s).replace('<svg ','<svg style="max-width:17rem" ')}
 
 /* アイコン(商用利用可のフリーアイコンの輪郭をSVGにしたもの)：幅または高さ100の座標 */
 var IC={
@@ -98,11 +105,11 @@ function figSideA(){
 var M='<span class="m" style="white-space:nowrap">物体</span>',V='<span class="v" style="white-space:nowrap">虚像</span>';
 var SOL='<p>鏡は、虚像を見る「窓」と考えます。鏡の向こうに、虚像の世界があります。</p>'+figAns()+
  '<p>① 鏡を軸にして、A、B、C、Dの線対称の位置に、虚像(A\', B\', C\', D\')を描く。</p>'+
- '<p>② 自分から鏡の両端を通る線を、鏡の向こうへのばす。その間が、自分から見える範囲(図のうすい青)。</p>'+
+ '<p>② 自分から鏡の両端まで、点線を引く。その先の、鏡の向こうの範囲が、自分から見える範囲(図のうすい青)。</p>'+
  '<p>③ 範囲に入っている虚像を選ぶ。</p>'+
  '<p>範囲に入っているのは、B\'だけです。見えるのは<b>B</b>です。A、C、Dの虚像は、範囲の外にあるので、見えません。</p>'+
- '<p><b>別解</b><br>自分の虚像から、鏡の両端を通る線を引きます。</p>'+figAlt()+
- '<p>うすい青の範囲に入っている点が、鏡に映って見えます。入っているのは<b>B</b>だけです。</p>';
+ '<p><b>別解</b><br>自分の虚像から、鏡の両端まで、点線を引きます。</p>'+figAlt()+
+ '<p>その先の、鏡の手前のうすい青の範囲に入っている点が、鏡に映って見えます。入っているのは<b>B</b>だけです。</p>';
 var SOL2='<p>鏡に全身が映るとき、頭のてっぺんと足の先の虚像が、鏡の中に見えます。</p>'+figSideA()+
  '<p>① 頭からの光は、目と頭の真ん中で反射する。<br>② 足からの光は、目と足の真ん中で反射する。</p>'+
  '<p>鏡に必要な長さは、この2つの点の間です。<br>140cm ÷ 2 ＝ <b>70cm</b></p>'+
