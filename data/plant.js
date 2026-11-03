@@ -58,8 +58,7 @@ window.UNIT={
 no:"1-6",title:"植物の分類",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
- '<p>植物は、次のように分類されます。</p>'+figAll({},false,true)+
- '<p>分類に迷ったら、合弁花類にしましょう。</p>'},
+ '<p>植物は、次のように分類されます。</p>'+figAll({},false,true)},
 {type:"problem",title:"問題",
  body:'<p>表の空欄に入る名称を、下のボタンを押して入れなさい。</p>'+
  '<p class="note">太い青の枠の空欄に入ります。別の空欄を押すと、そこに移ります。</p>',
@@ -73,6 +72,6 @@ sections:[
  body:'<p>表全体の、10個の空欄に入る名称を入れなさい。</p>',
  parts:[{type:"tree",svg:figAll({s:1,sp:1,ang:1,gym:1,fern:1,moss:1,mono:1,di:1,li:1,go:1},true),answers:A3,choices:C3}]},
 {type:"text",title:"ノートに書いてみよう",html:
- '<p>何も見ずに、ノートに植物の分類表を書いてみましょう。<br>名称・特徴・具体例を書いたら、厳選ポイントの表と見比べます。</p>'}
+ '<p>何も見ずに、ノートに植物の分類表を書いてみましょう。</p>'}
 ]};
 })();
