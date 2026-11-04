@@ -57,7 +57,7 @@ function fig2a(){
  '<circle cx="110" cy="132" r="5.5" fill="#c2410c"/>'+
  '<path d="M92,164 C94,180 126,180 128,164 Z" fill="#d9e8cf" stroke="#7f9a75" stroke-width="1.5"/>'+
  '<rect x="104" y="176" width="12" height="22" fill="#d9e8cf" stroke="#7f9a75" stroke-width="1.5"/>'+
- ln(60,118,105,131)+ln(62,168,92,150)+ln(180,100,154,86)+ln(170,52,158,64)+
+ ln(60,118,105,131)+ln(62,168,92,150)+ln(180,100,154,86)+ln(171,53,155,65)+
  mk(50,116,"A")+mk(190,104,"B")+
  L(44,175,"子房","v b","middle")+L(172,49,"やく");
  return svg(220,214,"被子植物の花の図。めしべの根もとの子房の中にA、おしべのやくの中にBがある",s)}
@@ -98,7 +98,8 @@ function fig2b(){
  lg+sh+ml+
  '<g fill="#d98aa0" stroke="#a0526b" stroke-width="1.5"><g transform="translate(125,96) rotate(-12)"><ellipse cx="0" cy="-13" rx="9" ry="13"/>'+arcs(-13,9,13,2.2,4.6,"#a0526b",1)+'</g><g transform="translate(135,96) rotate(12)"><ellipse cx="0" cy="-13" rx="9" ry="13"/>'+arcs(-13,9,13,2.2,4.6,"#a0526b",1)+'</g></g>'+
  '<line x1="130" y1="258" x2="112" y2="268" stroke="#8a6a4a" stroke-width="3"/>'+
- '<ellipse cx="101" cy="276" rx="11" ry="15" transform="rotate(53 101 276)" fill="#b3a56a" stroke="#6f6535" stroke-width="1.5"/>'+
+ '<g transform="translate(101,276) rotate(53)"><ellipse cx="0" cy="0" rx="11" ry="15" fill="#b3a56a" stroke="#6f6535" stroke-width="1.5"/>'+
+ '<g fill="none" stroke="#6f6535" stroke-width="1"><path d="M-8,-8 Q0,-4 8,-8"/><path d="M-9.5,-1 Q0,3 9.5,-1"/><path d="M-9,6 Q0,10 9,6"/><path d="M-6,12 Q0,15 6,12"/></g></g>'+
  '<line x1="129" y1="300" x2="149" y2="314" stroke="#8a6a4a" stroke-width="3"/>'+
  '<g transform="translate(24,30)"><g transform="rotate(-54 148 302)"><ellipse cx="148" cy="302" rx="19" ry="30" fill="#b08d5f" stroke="#7a5c35" stroke-width="1.5"/>'+
  '<g fill="none" stroke="#7a5c35" stroke-width="1"><path d="M132,286 Q148,294 164,286"/><path d="M130,298 Q148,306 166,298"/><path d="M130,310 Q148,318 166,310"/><path d="M134,322 Q148,328 162,322"/></g></g></g>'+
@@ -149,7 +150,7 @@ sections:[
 {type:"answer",html:
  '<p>(1) <b>めしべ → おしべ → 花弁 → がく</b><br>中心にめしべがあり、外へ向かっておしべ、花弁、がくの順です。がくは、つぼみのときに花を守っています。</p>'+
  '<p>(2) '+g("子房","v")+'→<b class="v">果実</b></p>'+
- '<p>(3) '+g("胚珠","m")+'→<b class="m">種子</b><br>サクランボでは、実が果実、その中にできる種が種子です。</p>'+
+ '<p>(3) '+g("胚珠","m")+'→<b class="m">種子</b></p>'+
  '<div style="border-top:1px solid var(--rule);margin-top:1.2rem;padding-top:.6rem"><p><b>被子植物と裸子植物の花</b>(補充問題で使います)</p>'+PART+'</div>'},
 {type:"problem",title:"補充問題",
  body:'<p>被子植物と裸子植物の花について、図のA・Bに入る語を選びなさい。</p>'+fig2a()+fig2b()+
