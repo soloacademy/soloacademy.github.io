@@ -51,7 +51,7 @@ function beaker(){
  s+='<path d="M66,92 h14 M66,116 h14 M66,140 h14 M66,164 h14 M66,188 h14 M66,104 h8 M66,128 h8 M66,152 h8 M66,176 h8 M66,200 h8" stroke="#5d6874" fill="none"/>'+
   '<rect x="72" y="72" width="6" height="134" rx="3" fill="#fff" opacity=".5"/>'+
   '<path d="M214,116 H220 V214 H214" fill="none" stroke="'+BLUE+'" stroke-width="1.5"/>'+
-  T(230,170,14,"水100g","v b")+
+  T(230,170,14,"水はいつも100g","v b")+
   line(232,30,156,28,RED,1,true)+T(236,35,14,"物質A","m b");
  return svg(0,0,"水100gが入ったビーカーに、物質Aの粒を入れて溶かしている図",s,"30 0 366 232")}
 var BEAKER=beaker();
