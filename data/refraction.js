@@ -37,15 +37,30 @@ function trace(poly,p0,d,m,box){
  return {p0:p0,q1:q1,q2:q2,end:clip(q2,d2,box),d:d2,d0:d,d1:d1,N1:h1.N,N2:h2.N}}
 
 
-/* 光の帯の先頭の線：境界面を先に通る端(A)と、あとの端(B)。first＝"in"(入るとき：Aが遅い＝青)、"out"(出るとき：Aが速い＝赤) */
-function dot(p,k){return '<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="4.5" fill="'+k+'"/>'}
-function wfpts(q,d,N,L){
- var cs=-(d[0]*N[0]+d[1]*N[1]),p=[-d[1],d[0]];if(p[0]*N[0]+p[1]*N[1]<0)p=[-p[0],-p[1]];
- var s=(L/2)*Math.sqrt(1-cs*cs)/cs,c=[q[0]-s*d[0],q[1]-s*d[1]];
- return {c:c,A:[c[0]-(L/2)*p[0],c[1]-(L/2)*p[1]],B:[c[0]+(L/2)*p[0],c[1]+(L/2)*p[1]]}}
-function wf(q,d,N,L,first){var w=wfpts(q,d,N,L),a=first==="in"?BLUE:RED,b=first==="in"?RED:BLUE;
- return line(w.A[0],w.A[1],w.B[0],w.B[1],LIGHT,2)+dot(w.A,a)+dot(w.B,b)}
-function leg(x,y){return dot([x+5,y],RED)+TN(x+16,y+5,13,"速い","m b")+dot([x+5,y+20],BLUE)+TN(x+16,y+25,13,"遅い","v b")}
+/* 光の帯(幅は一定)。境界面ごとに、なめらかに曲げる。先に境界面を通る側(A)が新しい物質、あとの側(B)は前の物質の速さ。
+   bn＝[{K:境界面の点,din:入る向き,dout:出る向き,N:光が来る側を向く垂直な線,first:"in"(入る：Aは遅い＝青)か"out"(出る：Aは速い＝赤)}] */
+function leg(x,y){return line(x,y,x+14,y,RED,3.5)+TN(x+20,y+5,13,"速い","m b")+line(x,y+20,x+14,y+20,BLUE,3.5)+TN(x+20,y+25,13,"遅い","v b")}
+function tanOf(d,N){var c=-(d[0]*N[0]+d[1]*N[1]);return Math.sqrt(1-c*c)/c}
+function band(P0,d0,bn,E,W){
+ var pts=[[P0,d0]],rg=[],N=16,k,i;
+ bn.forEach(function(b){
+  var L1=W*tanOf(b.din,b.N),L2=W*tanOf(b.dout,b.N),
+   M1=[b.K[0]-L1*b.din[0],b.K[1]-L1*b.din[1]],M2=[b.K[0]+L2*b.dout[0],b.K[1]+L2*b.dout[1]];
+  pts.push([M1,b.din]);var i0=pts.length;
+  for(k=0;k<=N;k++){var t=k/N,a=(1-t)*(1-t),c=2*(1-t)*t,e=t*t,
+   x=a*M1[0]+c*b.K[0]+e*M2[0],y=a*M1[1]+c*b.K[1]+e*M2[1],
+   tx=2*(1-t)*(b.K[0]-M1[0])+2*t*(M2[0]-b.K[0]),ty=2*(1-t)*(b.K[1]-M1[1])+2*t*(M2[1]-b.K[1]),l=Math.hypot(tx,ty);
+   pts.push([[x,y],[tx/l,ty/l]])}
+  rg.push({i0:i0,i1:pts.length-1,A:(b.din[1]*b.N[0]-b.din[0]*b.N[1])>0?"R":"L",first:b.first})});
+ pts.push([E,bn[bn.length-1].dout]);
+ function edge(s){return pts.map(function(q){return [q[0][0]+s*W*q[1][1],q[0][1]-s*W*q[1][0]]})}
+ var L=edge(1),R=edge(-1),C=pts.map(function(q){return q[0]}),o=pgon(L.concat(R.slice().reverse()),LFILL)+pline(L,LIGHT,1.2)+pline(R,LIGHT,1.2);
+ rg.forEach(function(r){var Ae=r.A==="R"?R:L,Be=r.A==="R"?L:R,ca=r.first==="in"?BLUE:RED,cb=r.first==="in"?RED:BLUE;
+  o+=pline(Ae.slice(r.i0,r.i1+1),ca,2.5,"round")+pline(Be.slice(r.i0,r.i1+1),cb,2.5,"round")+
+   line(R[r.i0][0],R[r.i0][1],L[r.i0][0],L[r.i0][1],LIGHT,1.5)+line(R[r.i1][0],R[r.i1][1],L[r.i1][0],L[r.i1][1],LIGHT,1.5)});
+ o+=pline(C,"#8a5a0b",1.2)+arw(C[0][0],C[0][1],C[1][0],C[1][1],"#8a5a0b")+arw(C[C.length-2][0],C[C.length-2][1],C[C.length-1][0],C[C.length-1][1],"#8a5a0b");
+ return {svg:o,L:L,R:R,C:C,rg:rg}}
+function bandOf(t,W){return band(t.p0,t.d0,[{K:t.q1,din:t.d0,dout:t.d1,N:t.N1,first:"in"},{K:t.q2,din:t.d1,dout:t.d,N:t.N2,first:"out"}],t.end,W)}
 
 /* ---------- 特訓問題の図 ---------- */
 function opt(poly,p0,d,box,key,w,h,label){
@@ -57,10 +72,8 @@ function opt(poly,p0,d,box,key,w,h,label){
   s+=pline([t.q1,t.q2,t.end],LIGHT,2)+'<circle cx="'+c[0].toFixed(1)+'" cy="'+c[1].toFixed(1)+'" r="11" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+TN(c[0],c[1]+5,14,L[i],"b","middle")});
  return {html:svg(w,h,label,s),ans:ans,tr:tr}}
 function ansFig(poly,p0,d,box,w,h,label){
- var t=trace(poly,p0,d,"c",box),s=pgon(poly,GLASS,MUTED,1.5);
- s+=ray(p0,t.q1)+line(t.q1[0],t.q1[1],t.q2[0],t.q2[1],LIGHT,2)+arw(t.q1[0],t.q1[1],t.q2[0],t.q2[1])+ray(t.q2,t.end)+
-  wf(t.q1,t.d0,t.N1,28,"in")+wf(t.q2,t.d1,t.N2,28,"out")+leg(8,14);
- return svg(w,h,label,s)}
+ var t=trace(poly,p0,d,"c",box);
+ return svg(w,h,label,pgon(poly,GLASS,MUTED,1.5)+bandOf(t,9).svg+leg(8,14))}
 
 var RECT=[[40,120],[300,120],[300,190],[40,190]],RB=[0,0,330,260.7];
 var TRI=[[170,60],[249.3,230],[90.7,230]],TRI2=[[90.7,60],[249.3,60],[170,230]],TB=[0,0,316,300];
@@ -69,8 +82,8 @@ var Q1=opt(RECT,[29.3,49.3],[s2,s2],RB,function(e){return e[0]},340,290,"直方�
 var Q2=opt(RECT,[310.7,49.3],[-s2,s2],RB,function(e){return e[0]},340,290,"直方体のガラスに、右上から光が当たる図。光の道すじの候補が、A、B、Cの3つある");
 var Q3=opt(TRI,[20,150],[1,0],TB,function(e){return e[1]},340,260,"三角柱のガラスに、左から水平に光が当たる図。頂点が上。光の道すじの候補が、A、B、Cの3つある");
 var Q4=opt(TRI2,[20,140],[1,0],TB,function(e){return e[1]},340,260,"三角柱のガラスに、左から水平に光が当たる図。頂点が下。光の道すじの候補が、A、B、Cの3つある");
-var A1=ansFig(RECT,[29.3,49.3],[s2,s2],RB,340,290,"(1)の正しい道すじ。光の帯の先に通る側が先に速さが変わり、光は遅い側(青)に曲がる");
-var A2=ansFig(RECT,[310.7,49.3],[-s2,s2],RB,340,290,"(2)の正しい道すじ。光の帯の先に通る側が先に速さが変わり、光は遅い側(青)に曲がる");
+var A1=ansFig(RECT,[29.3,49.3],[s2,s2],RB,340,290,"(1)の正しい道すじ。光の帯の線を、速い側は赤、遅い側は青で表す。光は、遅い側(青)に曲がる");
+var A2=ansFig(RECT,[310.7,49.3],[-s2,s2],RB,340,290,"(2)の正しい道すじ。光の帯の線を、速い側は赤、遅い側は青で表す。光は、遅い側(青)に曲がる");
 var A3=ansFig(TRI,[20,150],[1,0],TB,340,260,"(3)の正しい道すじ。どちらの面でも、遅い側(青)の下に曲がる");
 var A4=ansFig(TRI2,[20,140],[1,0],TB,340,260,"(4)の正しい道すじ。どちらの面でも、遅い側(青)の上に曲がる");
 
@@ -129,17 +142,17 @@ function figTotal(){
 var BLK=[[60,85],[260,85],[260,135],[60,135]],PEN=[110,30];
 var TP=trace(BLK,PEN,nrm([40,55]),"c",[0,0,340,215]),EYE=TP.end,
  PA=[TP.q2[0]-(TP.q2[1]-PEN[1])*TP.d[0]/TP.d[1],PEN[1]];
-function topBase(){return pgon(BLK,GLASS,MUTED,1.5)+TN(66,129,12,"ガラス","g")+
- '<circle cx="'+PEN[0]+'" cy="'+PEN[1]+'" r="5" fill="'+INK+'"/>'+T(PEN[0],17,14,"鉛筆","b","middle")+
+function topBlock(){return pgon(BLK,GLASS,MUTED,1.5)+TN(66,129,12,"ガラス","g")}
+function topDots(){return '<circle cx="'+PEN[0]+'" cy="'+PEN[1]+'" r="5" fill="'+INK+'"/>'+T(PEN[0],17,14,"鉛筆","b","middle")+
  '<circle cx="'+EYE[0].toFixed(1)+'" cy="'+EYE[1].toFixed(1)+'" r="5" fill="'+INK+'"/>'+T(EYE[0],EYE[1]+20,14,"自分","b","middle")}
-function figPQ(){return svg(340,240,"上から見た図。ガラスの向こうに鉛筆が立っている。ガラスの右手前に、自分がいる",topBase())}
+function figPQ(){return svg(340,240,"上から見た図。ガラスの向こうに鉛筆が立っている。ガラスの右手前に、自分がいる",topBlock()+topDots())}
 function figPA(){
- var s=topBase()+pline([PEN,TP.q1,TP.q2,EYE],LIGHT,2)+arw(PEN[0],PEN[1],TP.q1[0],TP.q1[1])+arw(TP.q2[0],TP.q2[1],EYE[0],EYE[1])+
+ var bd=bandOf(TP,6).svg,
+  s=topBlock()+bd+topDots()+
   line(TP.q2[0],TP.q2[1],PA[0],PA[1],BLUE,1.5,true)+
   '<circle cx="'+PA[0].toFixed(1)+'" cy="'+PA[1].toFixed(1)+'" r="5" fill="#fff" stroke="'+BLUE+'" stroke-width="1.5" stroke-dasharray="3 2"/>'+
-  T(PA[0]-9,PA[1]+5,13,"見える位置","v b","end")+
-  wf(TP.q1,TP.d0,TP.N1,22,"in")+wf(TP.q2,TP.d1,TP.N2,22,"out")+leg(268,16);
- return svg(340,240,"上から見た図。鉛筆から出た光は、ガラスに入るとき先に入った側(青)が遅くなり、出るときガラスに残った側(青)が遅いので、どちらも遅い側に曲がって、自分の目に届く。自分には、光が来た向きの延長線上の、鉛筆の本当の位置より左に、鉛筆があるように見える",s)}
+  T(PA[0]-9,PA[1]+5,13,"見える位置","v b","end")+leg(268,16);
+ return svg(340,240,"上から見た図。鉛筆から出た光の帯は、ガラスに入るときも出るときも、遅い側(青)に曲がって、自分の目に届く。自分には、光が来た向きの延長線上の、鉛筆の本当の位置より左に、鉛筆があるように見える",s)}
 function figPO(){
  var s='',cx=[60,170,280],sh=[-9,0,9],nm=["①","②","③"],i;
  for(i=0;i<3;i++){
@@ -162,15 +175,14 @@ var TOTAL='<p>ガラス(水)から空気に出るとき、入射角が大きい�
 
 var QBODY='<p>光がガラスに当たったとき、光の進み方として正しいものを、A〜Cから選びなさい。</p>'+
  '<p>(1)</p>'+Q1.html+'<p>(2)</p>'+Q2.html+'<p>(3)</p>'+Q3.html+'<p>(4)</p>'+Q4.html;
-var SOL='<p>光は、境界面で、<b>遅い方に曲がります</b>。光の帯で考えます。境界面を先に通る側が、先に速さが変わります。</p>'+
- '<p class="note">図の赤い点は速い側、青い点は遅い側です。空気中は速く、ガラスの中は遅くなります。</p>'+
- '<p>(1) <b>'+Q1.ans+'</b><br>空気からガラスに入るとき、先にガラスに入った側(青)が遅くなるので、光は青い方に曲がります。<br>ガラスから空気に出るとき、先に空気に出た側(赤)が速くなり、ガラスに残った側(青)は遅いままなので、光は青い方に曲がります。</p>'+A1+
- '<p>(2) <b>'+Q2.ans+'</b><br>向きが変わっても、光は遅い方(青)に曲がります。</p>'+A2+
- '<p>(3) <b>'+Q3.ans+'</b><br>三角柱でも同じです。どちらの面でも、青い点が下にあるので、光は下に曲がります。</p>'+A3+
- '<p>(4) <b>'+Q4.ans+'</b><br>三角柱が逆さまでも同じです。どちらの面でも、青い点が上にあるので、光は上に曲がります。</p>'+A4;
-var SOL2='<p>鉛筆から出た光が、目に届くまでの道すじを考えます。光は、遅い方に曲がります。</p>'+figPA()+
- '<p>① ガラスに入るとき、先にガラスに入った側(青)が遅くなるので、光は青い方に曲がる。<br>② ガラスから出るとき、ガラスに残った側(青)が遅いので、光は青い方に曲がる。<br>③ 目には、光が来た向きの延長線上(点線の先)に、鉛筆があるように見える。</p>'+
- '<p>ガラス越しの下半分は、本当の位置より左にずれて見えます。答えは<b>①</b>です。</p>';
+var SOL='<p>光は、<b>遅い方に曲がります</b>。</p>'+
+ '<p class="note">光の帯の線は、赤が速い側、青が遅い側です。空気中は速く、ガラスの中は遅くなります。</p>'+
+ '<p>(1) <b>'+Q1.ans+'</b><br>入るとき：先にガラスに入った側が遅い → 青い方に曲がる。<br>出るとき：先に空気に出た側が速い → 青い方に曲がる。</p>'+A1+
+ '<p>(2) <b>'+Q2.ans+'</b><br>向きが変わっても、青い方に曲がります。</p>'+A2+
+ '<p>(3) <b>'+Q3.ans+'</b><br>どちらの面でも、青が下側 → 下に曲がる。</p>'+A3+
+ '<p>(4) <b>'+Q4.ans+'</b><br>どちらの面でも、青が上側 → 上に曲がる。</p>'+A4;
+var SOL2='<p>光は、遅い方(青)に曲がります。</p>'+figPA()+
+ '<p>目には、光が来た向きの延長線上(点線の先)に、鉛筆があるように見えます。<br>ガラス越しの下半分は、本当の位置より左にずれます。答えは<b>①</b>です。</p>';
 
 window.UNIT={
 no:"1-9",title:"光の屈折",
