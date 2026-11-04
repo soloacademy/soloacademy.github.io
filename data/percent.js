@@ -58,7 +58,7 @@ sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
  '<p>質量パーセント濃度は、<span class="v" style="white-space:nowrap">溶液</span>の質量のうち、<span class="m" style="white-space:nowrap">溶質</span>の質量が何%かを表したものです。</p>'+BEAKER1+
  '<div class="formula">質量パーセント濃度(%)<br>＝ '+fr("溶質の質量(g)","溶液の質量(g)")+' × 100<br>＝ '+fr("10g","40g")+' × 100 ＝ 25%</div>'+
- '<p class="note">「× 100」で、分数を%に直します。</p>'},
+ '<p class="note">分数や小数は「× 100」で%になります。</p>'},
 {type:"problem",title:"問題",
  body:'<p>次の質量パーセント濃度を求めなさい。</p>'+
  '<p>(1) 食塩水100gに、食塩5gが溶けている。</p>'+
