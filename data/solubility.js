@@ -3,12 +3,15 @@ var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",GRID="#e4e8ec";
 function T(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function svg(w,h,label,body,vb){return '<div class="fig"><svg viewBox="'+(vb||('0 0 '+w+' '+h))+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 
-/* 溶解度曲線：物質A。0℃で20g、20℃で30g、40℃で60g、50℃で100g。点の間はなめらかにつなぐ */
+/* 溶解度曲線：物質A。20℃で20g、40℃で60g、50℃で100gを通る、なめらかな曲線(y＝A×e^(B×t)＋C)。10℃ごとに、曲線の傾きに合わせてつなぐ */
 function X(t){return 50+t*250/60}
 function Y(g){return 230-g*2}
-var TT=[0,10,20,30,40,50],VV=[20,25,30,40,60,100],MM=[.5,.5,2*.5*1/1.5,2*1*2/3,2*2*4/6,5];
+var UU=(1+Math.sqrt(5))/2,BB=Math.log(UU)/10,AA=40/(UU*UU*(UU*UU-1)),CC=20-AA*UU*UU;
+function F(t){return AA*Math.exp(BB*t)+CC}
+function FD(t){return AA*BB*Math.exp(BB*t)}
+var TT=[0,10,20,30,40,50],VV=TT.map(F),MM=TT.map(FD);
 function curve(){
- var s='M'+X(0)+','+Y(20),k=2/(250/60);
+ var s='M'+X(0)+','+Y(VV[0]).toFixed(1),k=2/(250/60);
  for(var i=0;i<5;i++){
   var dx=(X(TT[i+1])-X(TT[i]))/3;
   s+=' C'+(X(TT[i])+dx).toFixed(1)+','+(Y(VV[i])-MM[i]*k*dx).toFixed(1)+' '+(X(TT[i+1])-dx).toFixed(1)+','+(Y(VV[i+1])+MM[i+1]*k*dx).toFixed(1)+' '+X(TT[i+1]).toFixed(1)+','+Y(VV[i+1]).toFixed(1);
@@ -35,9 +38,9 @@ var YT="水100gに溶ける質量(g)";
 var GRAPH_POINT=graph({yt:"溶ける質量(g)",pts:[[40,60]],label:"物質Aの溶解度曲線。40℃から上に進み、曲線で左に曲がると60gと読めます。40℃の水100gに60gまで溶けます",
  extra:line(150,68,X(40)-5,Y(60)-5,"#8a949f",1)+T(62,52,13,"40℃の水100gに","v b")+T(62,70,13,"60gまで溶ける","m b")});
 var GRAPH_PLAIN=graph({yt:YT,pts:[],label:"物質Aの溶解度曲線。温度が高いほど、水100gに溶ける質量が大きくなります"});
-var GRAPH_ANS=graph({yt:YT,pts:[[50,100],[20,30]],label:"物質Aの溶解度曲線。50℃では100g、20℃では30gまで溶けます。その差の70gが結晶になります",
- extra:line(X(50)+2,Y(100),268,Y(100),"#8a949f",1,true)+line(X(20)+2,Y(30),268,Y(30),"#8a949f",1,true)+
-  '<path d="M268,'+Y(100)+' H274 V'+Y(30)+' H268" fill="none" stroke="'+RED+'" stroke-width="1.5"/>'+T(278,Y(65)-2,13,"結晶","m b")+T(278,Y(65)+16,14,"70g","m b")});
+var GRAPH_ANS=graph({yt:YT,pts:[[50,100],[20,30]],label:"物質Aの溶解度曲線。50℃では100g、20℃では20gまで溶けます。その差の80gが結晶になります",
+ extra:line(X(50)+2,Y(100),268,Y(100),"#8a949f",1,true)+line(X(20)+2,Y(20),268,Y(20),"#8a949f",1,true)+
+  '<path d="M268,'+Y(100)+' H274 V'+Y(20)+' H268" fill="none" stroke="'+RED+'" stroke-width="1.5"/>'+T(278,Y(60)-2,13,"結晶","m b")+T(278,Y(60)+16,14,"80g","m b")});
 
 /* 厳選ポイントの図：水100gに物質Aを溶かす(1-3のビーカーと同じ描き方。はかりなし) */
 function beaker(){
@@ -59,14 +62,14 @@ var BEAKER=beaker();
 var C='<span class="v">',R='<span class="m">',E='</span>';
 
 var SOL='<p>グラフから、水100gに溶ける限度を読みます。</p>'+GRAPH_ANS+
- '<p>50℃：'+R+'100g'+E+'　20℃：'+R+'30g'+E+'<br>冷やすと、溶けきれなくなった分が結晶になって出てきます。</p>'+
- '<p>100g − 30g ＝ <b class="m">70g</b></p>'+
+ '<p>50℃：'+R+'100g'+E+'　20℃：'+R+'20g'+E+'<br>冷やすと、溶けきれなくなった分が結晶になって出てきます。</p>'+
+ '<p>100g − 20g ＝ <b class="m">80g</b></p>'+
  '<p class="note">限界まで溶けた水溶液を、「飽和水溶液」といいます。</p>';
 
 var SOL2='<p>水200gは、水100gの2倍です。溶ける限度も、2倍になります。</p>'+
- '<p>① 水200gに溶ける限度<br>50℃：100g × 2 ＝ '+R+'<b>200g</b>'+E+'<br>20℃：30g × 2 ＝ '+R+'<b>60g</b>'+E+'</p>'+
- '<p>② 出てくる結晶<br>200g − 60g ＝ <b>140g</b></p>'+
- '<p class="note">問題の答え(70g)を2倍して、70g × 2 ＝ 140g と求めることもできます。</p>';
+ '<p>① 水200gに溶ける限度<br>50℃：100g × 2 ＝ '+R+'<b>200g</b>'+E+'<br>20℃：20g × 2 ＝ '+R+'<b>40g</b>'+E+'</p>'+
+ '<p>② 出てくる結晶<br>200g − 40g ＝ <b>160g</b></p>'+
+ '<p class="note">問題の答え(80g)を2倍して、80g × 2 ＝ 160g と求めることもできます。</p>';
 
 window.UNIT={
 no:"1-4",title:"溶解度",
@@ -75,11 +78,11 @@ sections:[
  '<p>溶解度は、<span class="v" style="white-space:nowrap">水100g</span>に溶ける物質の限度の<span class="m" style="white-space:nowrap">質量</span>です。</p>'+BEAKER+GRAPH_POINT},
 {type:"problem",title:"問題",
  body:'<p>50℃の水100gに、物質Aを限界まで溶かした。これを20℃まで冷やすと、結晶は何g出てくるか。グラフを使って求めなさい。</p>'+GRAPH_PLAIN,
- parts:[{label:"答え",unit:"g",type:"number",accept:[70],tol:0.5}]},
+ parts:[{label:"答え",unit:"g",type:"number",accept:[80],tol:0.5}]},
 {type:"answer",html:SOL},
 {type:"problem",title:"補充問題",
  body:'<p>50℃の水200gに、物質Aを限界まで溶かした。これを20℃まで冷やすと、結晶は何g出てくるか。</p>'+GRAPH_PLAIN,
- parts:[{label:"答え",unit:"g",type:"number",accept:[140],tol:0.5}],
+ parts:[{label:"答え",unit:"g",type:"number",accept:[160],tol:0.5}],
  solution:SOL2}
 ]};
 })();
