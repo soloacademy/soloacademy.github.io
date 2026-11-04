@@ -71,8 +71,7 @@ function opt(poly,p0,d,box,key,w,h,label){
  s+='<circle cx="'+q1[0].toFixed(1)+'" cy="'+q1[1].toFixed(1)+'" r="3.5" fill="#fff" stroke="'+LIGHT+'" stroke-width="1.2"/>';
  tr.forEach(function(o,i){var t=o.t,c=[t.end[0]+13*t.d[0],t.end[1]+13*t.d[1]];
   if(o.m==="c")ans=L[i];
-  s+='<circle cx="'+c[0].toFixed(1)+'" cy="'+c[1].toFixed(1)+'" r="11" fill="'+INK+'"/>'+
-   '<text x="'+c[0].toFixed(1)+'" y="'+(c[1]+5).toFixed(1)+'" font-size="14" class="b" style="stroke:none;fill:#fff" text-anchor="middle">'+L[i]+'</text>'});
+  s+='<circle cx="'+c[0].toFixed(1)+'" cy="'+c[1].toFixed(1)+'" r="11" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+TN(c[0],c[1]+5,14,L[i],"b","middle")});
  return {html:svg(w,h,label,s),ans:ans,tr:tr}}
 function ansFig(poly,p0,d,box,w,h,label){
  var t=trace(poly,p0,d,"c",box);
