@@ -64,12 +64,15 @@ function bandOf(t,W){return band(t.p0,t.d0,[{K:t.q1,din:t.d0,dout:t.d1,N:t.N1,fi
 
 /* ---------- 特訓問題の図 ---------- */
 function opt(poly,p0,d,box,key,w,h,label){
- var tr=["s","c","w"].map(function(m){return {m:m,t:trace(poly,p0,d,m,box)}}),L=["A","B","C"],ans="",s="";
- tr.sort(function(a,b){return key(a.t.end)-key(b.t.end)});
- s=pgon(poly,GLASS,MUTED,1.5)+ray(p0,tr[0].t.q1);
+ var tr=["s","c","w"].map(function(m){return {m:m,t:trace(poly,p0,d,m,box)}}),L=["A","B","C"],ans="",q1,s="";
+ tr.sort(function(a,b){return key(a.t.end)-key(b.t.end)});q1=tr[0].t.q1;
+ s=pgon(poly,PALE,PALE,4)+line(p0[0],p0[1],q1[0],q1[1],LIGHT,1.5)+arw(p0[0],p0[1],q1[0],q1[1]);
+ tr.forEach(function(o){s+=pline([o.t.q1,o.t.q2,o.t.end],LIGHT,1.5,"round")});
+ s+='<circle cx="'+q1[0].toFixed(1)+'" cy="'+q1[1].toFixed(1)+'" r="3.5" fill="#fff" stroke="'+LIGHT+'" stroke-width="1.2"/>';
  tr.forEach(function(o,i){var t=o.t,c=[t.end[0]+13*t.d[0],t.end[1]+13*t.d[1]];
   if(o.m==="c")ans=L[i];
-  s+=pline([t.q1,t.q2,t.end],LIGHT,2)+'<circle cx="'+c[0].toFixed(1)+'" cy="'+c[1].toFixed(1)+'" r="11" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+TN(c[0],c[1]+5,14,L[i],"b","middle")});
+  s+='<circle cx="'+c[0].toFixed(1)+'" cy="'+c[1].toFixed(1)+'" r="11" fill="'+INK+'"/>'+
+   '<text x="'+c[0].toFixed(1)+'" y="'+(c[1]+5).toFixed(1)+'" font-size="14" class="b" style="stroke:none;fill:#fff" text-anchor="middle">'+L[i]+'</text>'});
  return {html:svg(w,h,label,s),ans:ans,tr:tr}}
 function ansFig(poly,p0,d,box,w,h,label){
  var t=trace(poly,p0,d,"c",box);
@@ -167,8 +170,8 @@ var POINT='<div><p>光は、同じ物質の中では<b>直進</b>します。</p
  '<div style="margin-top:1.8rem"><p>光は、境界面で、<b>遅い方に曲がります</b>。これを光の屈折といいます。</p>'+figBend()+
  '<p class="note">先にガラスに入った側(青)が遅くなるので、光は、そちら(遅い方)に曲がります。</p>'+
  '<p class="note">入射角は、境界面に垂直な線と、入る光がつくる角です。屈折角は、境界面に垂直な線と、曲がった光がつくる角です。</p>'+
- '<p>「遅い方に曲がる」を覚えておけば、角の大小は覚えなくても分かります。<br>光が遅い方に曲がるので、空気からガラスに入るときは、<b>屈折角＜入射角</b>になります。</p>'+
- '<p class="note">ガラスから空気に出るときは、反対に、屈折角＞入射角になります。</p></div>';
+ '<p>「遅い方に曲がる」を覚えておけば、角の大小は覚えなくても分かります。</p>'+
+ '<p class="note">光が遅い方に曲がるので、空気からガラスに入るときは屈折角＜入射角、ガラスから空気に出るときは、反対に屈折角＞入射角になります。</p></div>';
 
 var TOTAL='<p>ガラス(水)から空気に出るとき、入射角が大きいと、光は境界面ですべて反射します。これを全反射といいます。</p>'+figTotal()+
  '<p>空気からガラス(水)に入るときは、入射角が大きくても、全反射は起こりません。</p>';
