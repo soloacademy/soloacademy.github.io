@@ -6,5 +6,6 @@ window.UNITS=[
   {id:"flower",no:"1-5",title:"花のつくり"},
   {id:"plant",no:"1-6",title:"植物の分類"},
   {id:"animal",no:"1-7",title:"動物の分類"},
-  {id:"reflection",no:"1-8",title:"光の反射"}
+  {id:"reflection",no:"1-8",title:"光の反射"},
+  {id:"refraction",no:"1-9",title:"光の屈折"}
 ];
