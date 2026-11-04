@@ -63,8 +63,11 @@ function fig2a(){
  return svg(220,214,"被子植物の花の図。めしべの根もとの子房の中にA、おしべのやくの中にBがある",s)}
 
 /* 補充問題の図2：裸子植物(マツ)。左＝枝、右＝りん片1枚の拡大(雌花・雄花) */
-/* りん片のもよう(小さな弧を重ねる)：楕円(rx,ry)の中、cy＝中心の高さ、rows＝弧の高さ */
-function arcs(cy,rx,ry,rows,col,sw){return '<g fill="none" stroke="'+col+'" stroke-width="'+sw+'" stroke-linecap="round">'+rows.map(function(y){var w=rx*Math.sqrt(1-y*y/(ry*ry))*.92;return '<path d="M'+(-w).toFixed(1)+','+(cy+y)+' Q0,'+(cy+y+3)+' '+w.toFixed(1)+','+(cy+y)+'"/>'}).join('')+'</g>'}
+/* りん片のもよう：小さな「逆Vの字」(∧)を、ずらしながら散りばめる。cy＝楕円の中心の高さ、a＝∧の半分の幅(高さも同じ)、st＝段の間隔 */
+function arcs(cy,rx,ry,a,st,col,sw){var d='',y,x,k=0,ok=function(x,y){return x*x/(rx*rx)+y*y/(ry*ry)<=.8};
+ for(y=-ry*.78;y<=ry*.6;y+=st,k++){for(x=-rx+(k%2?a*1.4:0);x<=rx;x+=a*2.8){
+  if(ok(x-a,y+a)&&ok(x+a,y+a)&&ok(x,y))d+='M'+(x-a).toFixed(1)+','+(cy+y+a).toFixed(1)+' L'+x.toFixed(1)+','+(cy+y).toFixed(1)+' L'+(x+a).toFixed(1)+','+(cy+y+a).toFixed(1)}}
+ return '<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="'+sw+'" stroke-linecap="round" stroke-linejoin="round"/>'}
 function fig2b(){
  var R=Math.PI/180,i,j,d,y,a,L2,x2,y2,cx,cy,ey,tx=999,ty=0,
   sh='<g stroke="#8fb872" stroke-width="2.2" stroke-linecap="round" fill="none">',
@@ -85,7 +88,7 @@ function fig2b(){
  /* 雄花：新しい枝の根もとに、ぎっしり集まる */
  [[228,-48],[220,-34],[214,-52],[206,-24],[198,-42],[190,-30],[182,-46],[176,-20],[228,48],[222,30],[214,54],[208,22],[200,40],[192,28],[184,46],[178,18],[212,-6],[196,8],[186,-4]].forEach(function(p){
   a=p[1]*R;cx=(130+11*Math.sin(a)).toFixed(1);cy=(p[0]-11*Math.cos(a)).toFixed(1);
-  ml+='<g transform="translate('+cx+' '+cy+') rotate('+p[1]+')"><ellipse cx="0" cy="0" rx="5.5" ry="11"/>'+arcs(0,5.5,11,[-6,-1,4],"#a68a2a",.8)+'</g>'});
+  ml+='<g transform="translate('+cx+' '+cy+') rotate('+p[1]+')"><ellipse cx="0" cy="0" rx="5.5" ry="11"/>'+arcs(0,5.5,11,1.4,3.6,"#a68a2a",.7)+'</g>'});
  ml+='</g>';
  var ar='<g fill="none" stroke-linecap="round"><g stroke="#fff" stroke-width="6"><line x1="158" y1="86" x2="300" y2="86"/><line x1="158" y1="212" x2="322" y2="205"/></g>'+
   '<g stroke="'+INK+'" stroke-width="1.5"><line x1="156" y1="86" x2="302" y2="86"/><path d="M294,80 L302,86 L294,92"/><line x1="156" y1="212" x2="324" y2="205"/><path d="M316,199 L324,205 L315,211"/></g></g>';
@@ -93,7 +96,7 @@ function fig2b(){
  '<path d="M130,376 C126,340 134,290 130,222" fill="none" stroke="#8a6a4a" stroke-width="7" stroke-linecap="round"/>'+
  '<path d="M130,226 C129,190 131,140 130,94" fill="none" stroke="#7fa06a" stroke-width="6" stroke-linecap="round"/>'+
  lg+sh+ml+
- '<g fill="#d98aa0" stroke="#a0526b" stroke-width="1.5"><g transform="translate(125,96) rotate(-12)"><ellipse cx="0" cy="-13" rx="9" ry="13"/>'+arcs(-13,9,13,[-8,-3,2,7],"#a0526b",1)+'</g><g transform="translate(135,96) rotate(12)"><ellipse cx="0" cy="-13" rx="9" ry="13"/>'+arcs(-13,9,13,[-8,-3,2,7],"#a0526b",1)+'</g></g>'+
+ '<g fill="#d98aa0" stroke="#a0526b" stroke-width="1.5"><g transform="translate(125,96) rotate(-12)"><ellipse cx="0" cy="-13" rx="9" ry="13"/>'+arcs(-13,9,13,2.2,4.6,"#a0526b",1)+'</g><g transform="translate(135,96) rotate(12)"><ellipse cx="0" cy="-13" rx="9" ry="13"/>'+arcs(-13,9,13,2.2,4.6,"#a0526b",1)+'</g></g>'+
  '<line x1="130" y1="258" x2="112" y2="268" stroke="#8a6a4a" stroke-width="3"/>'+
  '<ellipse cx="101" cy="276" rx="11" ry="15" transform="rotate(53 101 276)" fill="#b3a56a" stroke="#6f6535" stroke-width="1.5"/>'+
  '<line x1="129" y1="300" x2="149" y2="314" stroke="#8a6a4a" stroke-width="3"/>'+
