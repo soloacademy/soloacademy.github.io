@@ -8,5 +8,6 @@ window.UNITS=[
   {id:"animal",no:"1-7",title:"動物の分類"},
   {id:"reflection",no:"1-8",title:"光の反射"},
   {id:"refraction",no:"1-9",title:"光の屈折"},
-  {id:"lens-real",no:"1-10",title:"凸レンズ(実像)"}
+  {id:"lens-real",no:"1-10",title:"凸レンズ(実像)"},
+  {id:"lens-virtual",no:"1-11",title:"凸レンズ(虚像)"}
 ];
