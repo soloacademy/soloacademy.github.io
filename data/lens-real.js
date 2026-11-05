@@ -68,6 +68,33 @@ function figCmp(){
   T(270,16,13,"作図の場合","b","middle")+T(270,138,12,"薄いレンズとして","g","middle")+T(270,152,12,"中心の線で1回曲がる","g","middle");
  return svgY(0,160,"凸レンズの上半分を、大きくした図。左は、実際のレンズ。光は、レンズに入るときと、出るときの2回曲がって、焦点に向かう。右向きの矢印のあと、右は、作図の場合。薄いレンズを、実際の太さで描いている。光は、レンズの中心の線で、1回だけ曲がって、焦点に向かう",s)}
 
+
+/* ---------- 厳選ポイントの図3：レンズの中心を通る光。実際のレンズ(ほんの少しずれるだけ)と、作図の場合(直進)
+   実際のレンズの光は、左上から20度の向きで入り、レンズの中心を通る道すじを、屈折の法則で計算する ---------- */
+function figCenter(){
+ var S=1.6,ay=86,xs=[60,250],a=20*Math.PI/180,d=[Math.cos(a),-Math.sin(a)],C1=[-LS+LR,0],C2=[LS-LR,0];
+ function tr(y0){var P0=[-30,y0],w=[P0[0]-C1[0],P0[1]-C1[1]],b=w[0]*d[0]+w[1]*d[1],c=w[0]*w[0]+w[1]*w[1]-LR*LR,
+  s1=-b-Math.sqrt(b*b-c),P=[P0[0]+s1*d[0],P0[1]+s1*d[1]],N1=[(P[0]-C1[0])/LR,(P[1]-C1[1])/LR],t1=refr(d,N1,1/1.5),
+  w2=[P[0]-C2[0],P[1]-C2[1]],b2=w2[0]*t1[0]+w2[1]*t1[1],c2=w2[0]*w2[0]+w2[1]*w2[1]-LR*LR,s2=-b2+Math.sqrt(b2*b2-c2),
+  Q=[P[0]+s2*t1[0],P[1]+s2*t1[1]],N2=[-(Q[0]-C2[0])/LR,-(Q[1]-C2[1])/LR],t2=refr(t1,N2,1.5);
+  return {P0:P0,P:P,Q:Q,t2:t2,mid:(P[1]+Q[1])/2}}
+ var lo=0,hi=30,i,m;for(i=0;i<50;i++){m=(lo+hi)/2;if(tr(m).mid>0)hi=m;else lo=m}
+ var r=tr((lo+hi)/2),E=[30,r.Q[1]+(30-r.Q[0])/r.t2[0]*r.t2[1]],s='',H=LH*S;
+ function X(k,x){return xs[k]+x*S}function Y(y){return ay-y*S}
+ function lensFull(xc){return '<path d="M'+xc+','+n(ay-H)+' A'+LR*S+','+LR*S+' 0 0 0 '+xc+','+n(ay+H)+' A'+LR*S+','+LR*S+' 0 0 0 '+xc+','+n(ay-H)+' Z" fill="'+GLASS+'" stroke="'+INK+'" stroke-width="1.5" stroke-linejoin="round"/>'}
+ /* 実際のレンズ */
+ var P0=[X(0,r.P0[0]),Y(r.P0[1])],P=[X(0,r.P[0]),Y(r.P[1])],Q=[X(0,r.Q[0]),Y(r.Q[1])],Ee=[X(0,E[0]),Y(E[1])];
+ s+=line(xs[0]-50,ay,xs[0]+50,ay,MUTED,1)+lensFull(xs[0])+
+  line(P0[0],P0[1],P[0],P[1],LIGHT,1.5)+chevOn(P0,P)+line(P[0],P[1],Q[0],Q[1],LIGHT,1.5)+line(Q[0],Q[1],Ee[0],Ee[1],LIGHT,1.5)+chevOn(Q,Ee)+entry(P[0],P[1])+entry(Q[0],Q[1]);
+ /* 作図の場合 */
+ var A=[X(1,-30),Y(30*Math.tan(a))],B=[X(1,30),Y(-30*Math.tan(a))],Cc=[xs[1],ay];
+ s+=line(xs[1]-50,ay,xs[1]+50,ay,MUTED,1)+lensFull(xs[1])+line(xs[1],ay-H,xs[1],ay+H,INK,3)+
+  line(A[0],A[1],B[0],B[1],LIGHT,1.5)+chevOn(A,Cc)+chevOn(Cc,B)+entry(Cc[0],Cc[1]);
+ s+=line(135,ay,157,ay,INK,1.5)+'<path d="M151,81 L157,86 L151,91" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+
+  T(60,16,13,"実際のレンズ","b","middle")+T(60,158,12,"ほんの少し、ずれるだけ","g","middle")+
+  T(250,16,13,"作図の場合","b","middle")+T(250,158,12,"まっすぐ進む","g","middle");
+ return svgY(0,170,"凸レンズの中心を通る光の図。左は、実際のレンズ。光は、レンズに入るときと出るときに曲がるが、もとの向きにもどるので、ほんの少しずれるだけで、ほぼ直進する。右向きの矢印のあと、右は、作図の場合。光は、レンズの中心を、まっすぐ進む",s)}
+
 /* ---------- 厳選ポイントの図(光線なし) ---------- */
 function figStd(){
  var s=axis()+lens()+T(LX,32,13,"凸レンズ","b","middle")+
@@ -132,6 +159,7 @@ var C3=["大きくなる","小さくなる","変わらない"];
 
 var POINT='<p>凸レンズに垂直に入った光は、レンズを通ったあと、1点に集まります。この点を<b>焦点</b>といいます。焦点は、レンズの両側にあります。</p>'+figSun()+
  '<p>実際のレンズでは、光は、レンズに入るときと出るときの2回、曲がります。作図では、レンズを薄いものと考えて、レンズの中心の線で、1回だけ曲がることにします。</p>'+figCmp()+
+ '<p>レンズの中心を通る光は、実際のレンズでも、ほとんどまっすぐ進みます。作図では、まっすぐ進むことにします。</p>'+figCenter()+
  '<p>'+M+'を、焦点距離の<b>2倍</b>の位置に置くと、反対側の焦点距離の2倍の位置に、同じ大きさの'+V+'ができます。</p>'+figStd()+
  '<p class="note">実像は、スクリーンにうつる像です。上下左右が逆さまになります。</p>';
 
