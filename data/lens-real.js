@@ -91,7 +91,7 @@ function figStd(){
 function figMany(){
  var hs=[66,90,110,130,150,170,194],tx=80,ty=AX-HO,ix=260,iy=AX+HO,s=axis()+lensH(70);
  /* 凸レンズに当たらない光：先端から、真上・左斜め上・左・左斜め下・右斜め上へ、短い矢印 */
- [-90,-135,180,135,-45].forEach(function(g){var a=g*Math.PI/180,e=[tx+26*Math.cos(a),ty+26*Math.sin(a)];s+=line(tx,ty,e[0],e[1],LIGHT,1)+chev(e[0],e[1],a)});
+ [-90,-135,180,135,-45].forEach(function(g){var a=g*Math.PI/180,e=[tx+36*Math.cos(a),ty+36*Math.sin(a)];s+=line(tx,ty,e[0],e[1],LIGHT,1)+chev(e[0],e[1],a)});
  function ray(h,w){return pline([[tx,ty],[LX,h],[ix,iy],ext([LX,h],[ix,iy],14)],LIGHT,w)}
  hs.forEach(function(h){if(h!==90&&h!==130)s+=ray(h,1)});
  s+=ray(90,2.5)+ray(130,2.5)+
