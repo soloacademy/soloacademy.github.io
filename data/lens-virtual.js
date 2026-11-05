@@ -54,6 +54,25 @@ function cand(kind){
   :"物体は、焦点の内側にある。物体の先端から出た光が、レンズの中心に当たる。通ったあとの光を、反対向きにのばした点線の候補が、A、B、Cの3つある";
  return {html:svg(h,lab,s),ans:L.charAt(ok)}}
 
+/* ---------- 解答の図：mode=1 垂直な光、2 中心を通る光、3 2本の点線が交わる点 ---------- */
+function figAns(mode){
+ var XE=270,y1=TY+HO/F*(XE-LX),y2=AX+HO/OD*(XE-LX),ex=90,
+  e1=[ex,TY-HO/F*(LX-ex)],e2=[ex,AX-HO/OD*(LX-ex)],ix=80,iy=55,
+  s=axis()+lens()+dot(FL,AX)+dot(FR,AX)+T(FL,148,13,"焦点","b","middle")+arrowUp(OX,RED)+T(OX+6,166,13,"物体","m b","middle"),
+  lab,c;
+ function r1(){return pline([[OX,TY],[LX,TY],[XE,y1]],LIGHT,1.5)+chevOn([OX,TY],[LX,TY])+chevOn([LX,TY],[XE,y1],30)+entry(LX,TY)}
+ function r2(){return pline([[OX,TY],[LX,AX],[XE,y2]],LIGHT,1.5)+chevOn([OX,TY],[LX,AX])+chevOn([LX,AX],[XE,y2],40)+entry(LX,AX)}
+ function ball(e,k){var u=[e[0]-LX,e[1]-(k===1?TY:AX)],l=Math.hypot(u[0],u[1]),cx=e[0]+13*u[0]/l,cy=e[1]+13*u[1]/l;
+  return '<circle cx="'+n(cx)+'" cy="'+n(cy)+'" r="11" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+TN(cx,cy+5,14,k===1?Q1.ans:Q2.ans,"b","middle")}
+ if(mode===1){s+=r1()+line(LX,TY,e1[0],e1[1],LIGHT,1.5,true)+ball(e1,1)+T(FR+4,124,13,"焦点を通る","b");
+  lab="(1)の答えの図。物体の先端から出た、凸レンズに垂直な光は、レンズを通ったあと、右の焦点を通る。この光を、反対向き(左)にのばした点線が、正しい候補"}
+ else if(mode===2){s+=r2()+line(LX,AX,e2[0],e2[1],LIGHT,1.5,true)+ball(e2,2)+T(FR+4,124,13,"焦点","b")+T(240,160,13,"直進","b");
+  lab="(2)の答えの図。レンズの中心を通る光は、そのまま直進する。この光を、反対向き(左)にのばした点線が、正しい候補"}
+ else{s+=r1()+r2()+line(LX,TY,ix,iy,LIGHT,1.5,true)+line(OX,TY,ix,iy,LIGHT,1.5,true)+T(FR+4,124,13,"焦点","b")+
+  '<circle cx="'+ix+'" cy="'+iy+'" r="8" fill="none" stroke="'+BLUE+'" stroke-width="2"/>'+T(ix,iy-16,13,"虚像の先端","v b","middle");
+  lab="2本の点線が交わる点が、虚像の先端になる図"}
+ return svg(mode===3?236:224,lab,s)}
+
 function tbl(hd,rows){
  var L2='style="text-align:left"',N='style="white-space:nowrap;text-align:left"';
  return '<div style="overflow-x:auto"><table style="background:#fff"><tr>'+hd.map(function(t,i){return '<th '+(i?L2:N)+'>'+t+'</th>'}).join('')+'</tr>'+
@@ -81,13 +100,12 @@ var TABLE=tbl(["","実像","虚像"],[
  ["<b>見え方</b>","上下左右が逆さま","物体と同じ向きで、大きい"]
 ]);
 
-var ANS='<p>光は、実像のときと同じルールで進みます。</p>'+
- '<p>① 凸レンズに垂直な光は、レンズを通ったあと、<b>焦点</b>を通る。<br>② レンズの中心を通る光は、そのまま<b>直進</b>する。</p>'+
- '<p>物体が焦点の内側にあるので、レンズを通ったあとの光は広がります。これを、反対向きにのばします。</p>'+
- '<p>(1) <b>'+Q1.ans+'</b><br>レンズを通った光は、右の焦点を通る向きに進む。この線を、左へのばした線を選ぶ。</p>'+
- '<p>(2) <b>'+Q2.ans+'</b><br>中心を通る光は直進する。この線を、そのまま左へのばした線を選ぶ。</p>'+
- '<p>2本の点線が交わる点が、'+V+'の先端です。</p>'+
- '<p class="note">'+V+'の位置には、光は実際には集まりません。そのため、スクリーンにはうつりません。</p>'+
+var ANS='<p>(1) <b>'+Q1.ans+'</b></p>'+figAns(1)+
+ '<p>垂直な光は、焦点を通る。</p>'+
+ '<p>(2) <b>'+Q2.ans+'</b></p>'+figAns(2)+
+ '<p>中心を通る光は、直進する。</p>'+
+ '<p>2本の点線が交わる点が、'+V+'の先端です。</p>'+figAns(3)+
+ '<p class="note">'+V+'の位置には、光は集まりません。そのため、スクリーンにはうつりません。</p>'+
  '<div style="border-top:1px solid var(--rule);margin-top:1.2rem;padding-top:.6rem"><p><b>実像と虚像</b>(補充問題で使います)</p>'+TABLE+'</div>';
 
 var SBODY='<p>焦点距離が20cmの凸レンズがある。物体を、凸レンズから次の(1)〜(4)の距離に置いたとき、できる像は実像か虚像か。選びなさい。</p>'+
