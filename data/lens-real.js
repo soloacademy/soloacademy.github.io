@@ -21,9 +21,52 @@ function entry(x,y){return '<circle cx="'+n(x)+'" cy="'+n(y)+'" r="3.5" fill="#f
 function arrowV(x,tip,col){var s=tip<AX?1:-1;
  return line(x,AX,x,tip+s*10,col,3)+'<polygon points="'+n(x)+','+n(tip)+' '+n(x-5.5)+','+n(tip+s*12)+' '+n(x+5.5)+','+n(tip+s*12)+'" fill="'+col+'"/>'}
 function lens(){return '<path d="M170,45 C183,85 183,175 170,215 C157,175 157,85 170,45 Z" fill="'+GLASS+'" stroke="'+INK+'" stroke-width="1.5" stroke-linejoin="round"/>'}
-function axis(){return line(4,AX,336,AX,MUTED,1)+T(4,148,12,"光軸","g")}
+function axis(){return line(4,AX,336,AX,MUTED,1)}
 /* 焦点の文字：左は光軸の下、右は光軸の上(右上へずらして、光の線と重ならないようにする) */
 function focal(){return dot(FL,AX)+dot(FR,AX)+T(FL,148,13,"焦点","b","middle")+T(FR+4,124,13,"焦点","b")}
+
+
+function lensH(half){var a=AX-half,b=AX+half,u=AX-half*.47,v=AX+half*.47;
+ return '<path d="M170,'+n(a)+' C183,'+n(u)+' 183,'+n(v)+' 170,'+n(b)+' C157,'+n(v)+' 157,'+n(u)+' 170,'+n(a)+' Z" fill="'+GLASS+'" stroke="'+INK+'" stroke-width="1.5" stroke-linejoin="round"/>'}
+function svgY(y0,h,label,body){return '<div class="fig"><svg viewBox="0 '+y0+' 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
+
+/* ---------- 厳選ポイントの図1：太陽の光(凸レンズに垂直な光)が、凸レンズを通って焦点に集まる ---------- */
+function figSun(){
+ var s=lensH(62)+dot(FL,AX)+T(FL,148,13,"焦点","b","middle")+T(FR+4,124,13,"焦点","b");
+ [-48,-24,0,24,48].forEach(function(o){var y=AX+o;
+  s+=line(20,y,LX,y,LIGHT,1.5)+chevOn([20,y],[LX,y])+line(LX,y,FR,AX,LIGHT,1.5);
+  if(o)s+=chevOn([LX,y],[FR,AX],(Math.hypot(FR-LX,AX-y))/2)});
+ s+=dot(FR,AX)+T(4,72,13,"太陽の光","b");
+ return svgY(60,140,"太陽の光のように、凸レンズに垂直な、何本もの光が、左から凸レンズに当たる。光は、レンズを通ったあと、右の焦点の1点に集まる",s)}
+
+/* ---------- 厳選ポイントの図2：実際のレンズ(2回曲がる)と、理想の凸レンズ(中心の線で1回だけ曲がる) ----------
+   実際のレンズ：両面が円の一部(半径60、屈折率1.5)。光の道すじは、屈折の法則で計算する */
+function refr(d,N,eta){var ci=-(N[0]*d[0]+N[1]*d[1]),k=1-eta*eta*(1-ci*ci),c=eta*ci-Math.sqrt(k);
+ return [eta*d[0]+c*N[0],eta*d[1]+c*N[1]]}
+var LR=60,LH=30,LS=LR-Math.sqrt(LR*LR-LH*LH),LHT=18;
+var RC=(function(){
+ var C1=[-LS+LR,0],C2=[LS-LR,0],y=LHT,
+  p=[C1[0]-Math.sqrt(LR*LR-y*y),y],N1=[(p[0]-C1[0])/LR,(p[1]-C1[1])/LR],t1=refr([1,0],N1,1/1.5),
+  w=[p[0]-C2[0],p[1]-C2[1]],b=w[0]*t1[0]+w[1]*t1[1],c=w[0]*w[0]+w[1]*w[1]-LR*LR,s=-b+Math.sqrt(b*b-c),
+  q=[p[0]+s*t1[0],p[1]+s*t1[1]],N2=[-(q[0]-C2[0])/LR,-(q[1]-C2[1])/LR],t2=refr(t1,N2,1.5),
+  u=-q[1]/t2[1];
+ return {p:p,q:q,fx:q[0]+u*t2[0]}})();
+function figCmp(){
+ var ay=75,s='',xs=[50,240],k;
+ for(k=0;k<2;k++){var xc=xs[k],xf=xc+RC.fx;
+  s+=line(xc-48,ay,xf+20,ay,MUTED,1);
+  if(k===0)s+='<path d="M'+xc+','+(ay-LH)+' A'+LR+','+LR+' 0 0 0 '+xc+','+(ay+LH)+' A'+LR+','+LR+' 0 0 0 '+xc+','+(ay-LH)+' Z" fill="'+GLASS+'" stroke="'+INK+'" stroke-width="1.5" stroke-linejoin="round"/>';
+  else s+=line(xc,ay-LH,xc,ay+LH,INK,3);
+  [1,-1].forEach(function(m){
+   var a=[xc-45,ay-m*LHT],P=k===0?[xc+RC.p[0],ay-m*RC.p[1]]:[xc,ay-m*LHT],Q=k===0?[xc+RC.q[0],ay-m*RC.q[1]]:null,E=[xf,ay];
+   s+=line(a[0],a[1],P[0],P[1],LIGHT,1.5)+chevOn(a,P);
+   if(Q)s+=line(P[0],P[1],Q[0],Q[1],LIGHT,1.5)+line(Q[0],Q[1],E[0],E[1],LIGHT,1.5)+chevOn(Q,E,18);
+   else s+=line(P[0],P[1],E[0],E[1],LIGHT,1.5)+chevOn(P,E,18)});
+  s+=dot(xf,ay)+T(xf,96,12,"焦点","b","middle")}
+ s+=line(158,ay,180,ay,INK,1.5)+'<path d="M174,70 L180,75 L174,80" fill="none" stroke="'+INK+'" stroke-width="1.5"/>';
+ s+=T(80,14,12,"実際のレンズ","b","middle")+T(80,138,12,"光は、2回曲がる","g","middle")+
+  T(265,14,12,"理想の凸レンズ","b","middle")+T(265,138,12,"中心で1回だけ曲がる","g","middle");
+ return svgY(0,150,"左は、実際の凸レンズの図。光は、レンズに入るときと、出るときの2回曲がって、焦点に向かう。右向きの矢印のあと、右は、理想の凸レンズの図。光は、レンズの中心の線で、1回だけ曲がって、焦点に向かう",s)}
 
 /* ---------- 厳選ポイントの図(光線なし) ---------- */
 function figStd(){
@@ -53,7 +96,7 @@ function rule(kind){
   var cx=ex+12*Math.cos(a),cy=ey+12*Math.sin(a);
   s+='<circle cx="'+n(cx)+'" cy="'+n(cy)+'" r="11" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+TN(cx,cy+5,14,"ABC".charAt(i),"b","middle")}
  s+=entry(hit[0],hit[1]);
- var lab=kind===1?"凸レンズに、光軸に平行な光が、左から当たる図。通ったあとの道すじの候補が、A、B、Cの3つある":"凸レンズの中心に、光が左上から当たる図。通ったあとの道すじの候補が、A、B、Cの3つある";
+ var lab=kind===1?"凸レンズに垂直な光が、左から当たる図。通ったあとの道すじの候補が、A、B、Cの3つある":"凸レンズの中心に、光が左上から当たる図。通ったあとの道すじの候補が、A、B、Cの3つある";
  return {html:svg(h,lab,s),ans:"ABC".charAt(ok)}}
 
 /* ---------- 作図の図(光線あり)：物体の位置は、レンズから焦点距離の mult 倍。像の位置と大きさは計算で出す
@@ -67,7 +110,7 @@ function draw(mult,c1,c2,label){
   arrowV(ox,ty,RED)+T(ox,72,13,"物体","m b","middle")+
   arrowV(ix,iy,BLUE)+T(ix,iy+24,13,"実像","v b","middle");
  return svg(Math.ceil(Math.max(224,iy+38)),label,s)}
-var DRAW0=draw(2,20,55,"作図の図。物体の先端から、光軸に平行な線を引くと、レンズを通ったあと、焦点を通る。物体の先端から、レンズの中心に線を引くと、そのまま直進する。2本が交わる点が、実像の先端。物体が焦点距離の2倍の位置にあるとき、実像も反対側の2倍の位置にでき、物体と同じ大きさになる");
+var DRAW0=draw(2,20,55,"作図の図。物体の先端から、凸レンズに垂直な線を引くと、レンズを通ったあと、焦点を通る。物体の先端から、レンズの中心に線を引くと、そのまま直進する。2本が交わる点が、実像の先端。物体が焦点距離の2倍の位置にあるとき、実像も反対側の2倍の位置にでき、物体と同じ大きさになる");
 var DRAW1=draw(1.5,24,70,"作図の図。物体を焦点に近づけた場合。2本の線が交わる点が、実像の先端。実像は、凸レンズから遠い位置にでき、物体より大きい");
 var DRAW2=draw(3,11,30,"作図の図。物体を焦点から遠ざけた場合。2本の線が交わる点が、実像の先端。実像は、凸レンズに近い位置にでき、物体より小さい");
 
@@ -87,22 +130,23 @@ var M='<span class="m" style="white-space:nowrap">物体</span>',V='<span class=
 var Q1=rule(1),Q2=rule(2);
 var C3=["大きくなる","小さくなる","変わらない"];
 
-var POINT='<p>光軸に平行な光が、凸レンズを通って集まる点を、<b>焦点</b>といいます。焦点は、レンズの両側にあります。</p>'+
- '<p class="note">光軸は、レンズの中心を通り、レンズに垂直な線です。レンズの中心から焦点までの距離を、焦点距離といいます。</p>'+
+var POINT='<p>凸レンズに垂直に入った光は、レンズを通ったあと、1点に集まります。この点を<b>焦点</b>といいます。焦点は、レンズの両側にあります。</p>'+figSun()+
+ '<p>実際のレンズでは、光は、2回曲がります。作図では、右のような「理想の凸レンズ」で考え、レンズの中心で1回だけ曲がることにします。</p>'+figCmp()+
+ '<p class="note">レンズの中心から焦点までの距離を、焦点距離といいます。</p>'+
  '<p>'+M+'を、焦点距離の<b>2倍</b>の位置に置くと、反対側の焦点距離の2倍の位置に、同じ大きさの'+V+'ができます。</p>'+figStd()+
  '<p class="note">実像は、スクリーンにうつる像です。上下左右が逆さまになります。</p>';
 
 var QBODY='<p>光が凸レンズに入ります。通ったあとの光の道すじとして正しいものを、A〜Cから選びなさい。</p>'+
- '<p>(1) 光軸に平行な光</p>'+Q1.html+
+ '<p>(1) 凸レンズに垂直な光</p>'+Q1.html+
  '<p>(2) レンズの中心を通る光</p>'+Q2.html;
 
 var ANS='<p>光は、次のルールで進みます。</p>'+
- '<p>① 光軸に平行な光は、レンズを通ったあと、<b>焦点</b>を通る。<br>② レンズの中心を通る光は、そのまま<b>直進</b>する。</p>'+
+ '<p>① 凸レンズに垂直な光は、レンズを通ったあと、<b>焦点</b>を通る。<br>② レンズの中心を通る光は、そのまま<b>直進</b>する。</p>'+
  '<p>(1) <b>'+Q1.ans+'</b>　(2) <b>'+Q2.ans+'</b></p>'+
  '<p>この2つのルールで、実像を作図できます。</p>'+DRAW0+
- '<p>① '+M+'の先端から、光軸に平行な線を引く。レンズを通ったあと、焦点を通る。<br>'+
+ '<p>① '+M+'の先端から、凸レンズに垂直な線(横にまっすぐな線)を引く。レンズを通ったあと、焦点を通る。<br>'+
  '② 物体の先端から、レンズの中心へ線を引く。そのまま直進する。<br>'+
- '③ 2本が交わる点が、'+V+'の先端。そこから光軸に垂直な線を引く。</p>'+
+ '③ 2本が交わる点が、'+V+'の先端。そこから、中央の横線まで、矢印を引く。</p>'+
  '<p>物体が焦点距離の2倍の位置にあるとき、実像も反対側の2倍の位置にでき、大きさは物体と同じです。</p>';
 
 var SBODY='<p>物体を、凸レンズの焦点距離の2倍の位置に置くと、スクリーンに、物体と同じ大きさの実像がうつった。このとき、凸レンズからスクリーンまでの距離は40cmであった。</p>'+figBench()+
