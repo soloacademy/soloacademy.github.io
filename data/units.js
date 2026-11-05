@@ -7,5 +7,6 @@ window.UNITS=[
   {id:"plant",no:"1-6",title:"植物の分類"},
   {id:"animal",no:"1-7",title:"動物の分類"},
   {id:"reflection",no:"1-8",title:"光の反射"},
-  {id:"refraction",no:"1-9",title:"光の屈折"}
+  {id:"refraction",no:"1-9",title:"光の屈折"},
+  {id:"lens-real",no:"1-10",title:"凸レンズ(実像)"}
 ];
