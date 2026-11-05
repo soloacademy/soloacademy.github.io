@@ -15,6 +15,8 @@ function chev(x,y,a,k){var L=7,s=.5;
 /* 点pから点qへの線の上、qから back だけ手前に矢じるし。back が null なら真ん中 */
 function chevOn(p,q,back){var dx=q[0]-p[0],dy=q[1]-p[1],len=Math.hypot(dx,dy),a=Math.atan2(dy,dx),b=back==null?len/2:back;
  return chev(q[0]-b*Math.cos(a),q[1]-b*Math.sin(a),a)}
+/* 点qから先へ、pからqの向きに、少し延長した点 */
+function ext(p,q,L){var dx=q[0]-p[0],dy=q[1]-p[1],l=Math.hypot(dx,dy);return [q[0]+L*dx/l,q[1]+L*dy/l]}
 function dot(x,y){return '<circle cx="'+n(x)+'" cy="'+n(y)+'" r="3.5" fill="'+INK+'"/>'}
 function entry(x,y){return '<circle cx="'+n(x)+'" cy="'+n(y)+'" r="3.5" fill="#fff" stroke="'+LIGHT+'" stroke-width="1.2"/>'}
 /* 物体・実像の矢印。tip＝先の高さ(上向きなら小さい値、下向きなら大きい値) */
@@ -72,7 +74,7 @@ function figCmp(){
 /* ---------- 厳選ポイントの図(光線なし) ---------- */
 function figStd(){
  var s=axis()+lens()+T(LX,32,13,"凸レンズ","b","middle")+
-  pline([[80,AX-HO],[LX,AX-HO],[260,AX+HO]],LIGHT,1.5)+pline([[80,AX-HO],[260,AX+HO]],LIGHT,1.5)+
+  pline([[80,AX-HO],[LX,AX-HO],[260,AX+HO],ext([LX,AX-HO],[260,AX+HO],14)],LIGHT,1.5)+pline([[80,AX-HO],[260,AX+HO],ext([80,AX-HO],[260,AX+HO],14)],LIGHT,1.5)+
   chevOn([80,AX-HO],[LX,AX-HO])+chevOn([LX,AX-HO],[260,AX+HO],20)+chevOn([80,AX-HO],[LX,AX])+chevOn([LX,AX],[260,AX+HO],55)+
   entry(LX,AX-HO)+entry(LX,AX)+
   dot(80,AX)+dot(260,AX)+focal()+
@@ -108,7 +110,7 @@ function rule(kind){
 function draw(mult,c1,c2,label){
  var d=mult*F,ox=LX-d,di=d*F/(d-F),ix=LX+di,hi=HO*di/d,ty=AX-HO,iy=AX+hi;
  var r1=[[ox,ty],[LX,ty],[ix,iy]],r2=[[ox,ty],[ix,iy]];
- var s=axis()+lens()+focal()+pline(r1,LIGHT,1.5)+pline(r2,LIGHT,1.5)+
+ var s=axis()+lens()+focal()+pline(r1.concat([ext(r1[1],r1[2],14)]),LIGHT,1.5)+pline(r2.concat([ext(r2[0],r2[1],14)]),LIGHT,1.5)+
   chevOn(r1[0],r1[1])+chevOn(r1[1],r1[2],c1)+chevOn(r2[0],[LX,AX])+chevOn([LX,AX],r2[1],c2)+
   entry(LX,ty)+entry(LX,AX)+
   arrowV(ox,ty,RED)+T(ox,72,13,"物体","m b","middle")+
@@ -151,8 +153,7 @@ var ANS='<p>光は、次のルールで進みます。</p>'+
  '<p>この2つのルールで、実像を作図できます。</p>'+DRAW0+
  '<p>① '+M+'の先端から、凸レンズに垂直な線(横にまっすぐな線)を引く。レンズを通ったあと、焦点を通る。<br>'+
  '② 物体の先端から、レンズの中心へ線を引く。そのまま直進する。<br>'+
- '③ 2本が交わる点が、'+V+'の先端。そこから、中央の横線まで、矢印を引く。</p>'+
- '<p>物体が焦点距離の2倍の位置にあるとき、実像も反対側の2倍の位置にでき、大きさは物体と同じです。</p>';
+ '③ 2本が交わる点が、'+V+'の先端。そこから、中央の横線まで、矢印を引く。</p>';
 
 var SBODY='<p>物体を、凸レンズの焦点距離の2倍の位置に置くと、スクリーンに、物体と同じ大きさの実像がうつった。このとき、凸レンズからスクリーンまでの距離は40cmであった。</p>'+figBench()+
  '<p>(1) この凸レンズの焦点距離は何cmか。</p>'+
