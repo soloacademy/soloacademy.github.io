@@ -6,13 +6,13 @@ function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+
 /* ビーカーとはかりの図：はかりの数字＝溶液(青)、液の中の赤い粒＝溶質(赤)。座標は元の絵のまま、viewBoxで切り出す */
 function beaker(whole,part,n){
  var dots=[[86,140],[112,162],[140,134],[100,188],[158,174],[130,198],[78,170],[170,152]],s='',w=String(parseFloat(whole))+".0 g";
- s+='<rect x="36" y="224" width="188" height="42" rx="8" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.5"/>'+
-  '<ellipse cx="130" cy="222" rx="92" ry="12" fill="#c9cfd6" stroke="#8a949f" stroke-width="1.5"/>'+
-  '<ellipse cx="130" cy="222" rx="80" ry="8" fill="#b4bbc3" opacity=".45"/>'+
-  '<ellipse cx="136" cy="220" rx="76" ry="9" fill="#000" opacity=".16"/>'+
-  '<rect x="88" y="238" width="84" height="20" rx="3" fill="#cfdccb" stroke="#5d6874" stroke-width="1"/>'+
-  '<text x="164" y="253" font-size="15" text-anchor="end" style="stroke:none;fill:#26303b;font-family:monospace">'+w+'</text>'+
-  '<circle cx="198" cy="248" r="5" fill="#b4bbc3" stroke="#8a949f"/><circle cx="64" cy="248" r="5" fill="#b4bbc3" stroke="#8a949f"/>'+
+ s+='<g transform="translate(130,220)">'+
+  '<polygon points="-94,18 94,18 78,-9 -78,-9" fill="#d5dae0" stroke="#8a949f" stroke-width="1.5" stroke-linejoin="round"/>'+
+  '<rect x="-94" y="18" width="188" height="28" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.5"/>'+
+  '<ellipse cx="0" cy="5" rx="66" ry="9" fill="#9aa3ad"/>'+
+  '<ellipse cx="0" cy="2" rx="66" ry="9" fill="#b4bbc3" stroke="#8a949f" stroke-width="1.2"/>'+
+  '<rect x="14" y="24" width="68" height="16" rx="3" fill="#cfdccb" stroke="#5d6874" stroke-width="1"/>'+
+  '<text x="75" y="36" font-size="13" text-anchor="end" style="stroke:none;fill:#26303b;font-family:monospace">'+w+'</text></g>'+
   '<path d="M62,64 V212 A68,8 0 0 0 198,212 V64" fill="#eef4fa" fill-opacity=".5" stroke="#5d6874" stroke-width="2"/>'+
   '<path d="M63,116 V212 A67,8 0 0 0 197,212 V116 Z" fill="#cfe0f3"/>'+
   '<ellipse cx="130" cy="212" rx="68" ry="8" fill="#fff" fill-opacity=".25" stroke="#5d6874" stroke-opacity=".4"/>'+
