@@ -148,7 +148,7 @@ sections:[
   {label:"(3) "+g("胚珠","m"),type:"choice",choices:C2,accept:["種子"]}
  ]},
 {type:"answer",html:
- '<p>(1) <b>めしべ → おしべ → 花弁 → がく</b><br>中心にめしべがあり、外へ向かっておしべ、花弁、がくの順です。がくは、つぼみのときに花を守っています。</p>'+
+ '<p>(1) <b>めしべ → おしべ → 花弁 → がく</b><br>がくは、つぼみのときに花を守っています。</p>'+
  '<p>(2) '+g("子房","v")+'→<b class="v">果実</b></p>'+
  '<p>(3) '+g("胚珠","m")+'→<b class="m">種子</b></p>'+
  '<div style="border-top:1px solid var(--rule);margin-top:1.2rem;padding-top:.6rem"><p><b>被子植物と裸子植物の花</b>(補充問題で使います)</p>'+PART+'</div>'},

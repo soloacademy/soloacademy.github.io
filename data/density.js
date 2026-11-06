@@ -56,8 +56,7 @@ function fr(k,eq){var d=D[k];return '<span class="frac"><span class="m'+(eq==="m
 function it(k,eq){return '<span class="item"><span class="lab">'+k+'</span>'+fr(k,eq)+'</span>'}
 function cmp(a,b,eq,why){return '<div class="cmp">'+it(a,eq)+'<span class="lt">＜</span>'+it(b,eq)+'<p>'+why+'</p></div>'}
 var M='<span class="m">質量</span>',V='<span class="v">体積</span>';
-var SOL='<p>密度は 質量÷体積 です。まず、4つを分数にします。</p><div class="fr4">'+it("A")+it("B")+it("C")+it("D")+'</div>'+
- '<p>次に、色のついた「そろっているところ」に目をつけて、2つずつ比べます。</p>'+
+var SOL='<p>4つを分数にして、色のついた「そろっているところ」に目をつけ、2つずつ比べます。</p><div class="fr4">'+it("A")+it("B")+it("C")+it("D")+'</div>'+
  cmp("B","A","m",M+'がそろっている(23g)。'+V+'が大きいBのほうが、密度は小さい。')+
  cmp("A","D","v",V+'がそろっている(31cm³)。'+M+'が大きいDのほうが、密度は大きい。')+
  cmp("D","C","m",M+'がそろっている(29g)。'+V+'が小さいCのほうが、密度は大きい。')+
@@ -81,10 +80,9 @@ sections:[
   {label:"(2)",unit:"g",type:"number",accept:[790],tol:0.5}
  ]},
 {type:"answer",html:
- '<p>メスシリンダーの目もりは、水面のへこみの一番低いところを、真横から読みます。</p>'+
- '<p>水の増加量が、沈めた金属の体積です。</p>'+fig3(true)+
- '<p>(1) 金属の体積は 70cm³ − 60cm³ ＝ <span class="v">10cm³</span>。<br>密度は <span class="m">79g</span> ÷ <span class="v">10cm³</span> ＝ <b>7.9g/cm³</b></p>'+
- '<p>(2) 7.9g/cm³ × 100cm³ ＝ <b>790g</b><br><span class="note">g/cm³ × cm³ で、cm³ が約分されて g になります。</span></p>'},
+ '<p>水面が上がった分が、金属の体積です。</p>'+fig3(true)+
+ '<p>(1) 体積は 70 − 60 ＝ <span class="v">10cm³</span><br>密度は <span class="m">79g</span> ÷ <span class="v">10cm³</span> ＝ <b>7.9g/cm³</b></p>'+
+ '<p>(2) 7.9g/cm³ × 100cm³ ＝ <b>790g</b></p>'},
 {type:"problem",title:"補充問題",
  body:'<p>次の物体A、B、C、Dを、密度の小さい順に並べなさい。</p>'+
  '<table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>'+
