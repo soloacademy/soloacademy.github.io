@@ -10,7 +10,7 @@ function T(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size=
 function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function line(x1,y1,x2,y2,k,w,dash){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+k+'" stroke-width="'+(w||1)+'"'+(dash?' stroke-dasharray="4 3"':'')+'/>'}
 
-/* 図4：2cm³・20gを半分に分けると、1cm³あたり10g */
+/* 図4：2cm³・10gを半分に分けると、1cm³あたり5g */
 var MET="#b4bbc3";
 function fig4(){
  var px=14,py=14,pw=80,ph=40,d=12,b=py+d,t="";
@@ -18,12 +18,12 @@ function fig4(){
   poly([[px,b],[px+d,py],[px+pw+d,py],[px+pw,b]],MET,INK,["#fff",.5])+
   poly([[px+pw,b],[px+pw+d,py],[px+pw+d,py+ph],[px+pw,b+ph]],MET,INK,["#000",.12])+
   line(px+40,b,px+40,b+ph,INK,1,true)+line(px+40,b,px+40+d,py,INK,1,true)+
-  T(px+40,b+ph/2+5,13,"2cm³","v b","middle")+T(px+(pw+d)/2,96,19,"20g","m b","middle");
+  T(px+40,b+ph/2+5,13,"2cm³","v b","middle")+T(px+(pw+d)/2,96,19,"10g","m b","middle");
  t+=line(120,46,164,46,INK,1.5)+'<path d="M158,40 L164,46 L158,52" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+T(142,36,16,"÷2","b","middle");
  [176,240].forEach(function(x){
-  t+=cube(x,14,40,MET)+T(x+20,51,13,"1cm³","v b","middle")+T(x+26,96,19,"10g","m b","middle")});
- t+=T(160,126,14,"1cm³あたり 10g ＝ 密度 10g/cm³","b","middle");
- return svg(320,136,"2cm³で20gのかたまりを2つに分けると、1cm³あたり10gになります。つまり密度は10g/cm³です",t)}
+  t+=cube(x,14,40,MET)+T(x+20,51,13,"1cm³","v b","middle")+T(x+26,96,19,"5g","m b","middle")});
+ t+=T(160,126,14,"1cm³あたり 5g ＝ 密度 5g/cm³","b","middle");
+ return svg(320,136,"2cm³で10gのかたまりを2つに分けると、1cm³あたり5gになります。つまり密度は5g/cm³です",t)}
 var fig4s=fig4();
 
 /* 図3：メスシリンダーの拡大図（太め・上下はフェードアウト・金属の球を糸でつるす。1cm³=4） */
