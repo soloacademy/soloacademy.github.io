@@ -9,5 +9,6 @@ window.UNITS=[
   {id:"reflection",no:"1-8",title:"光の反射"},
   {id:"refraction",no:"1-9",title:"光の屈折"},
   {id:"lens-real",no:"1-10",title:"凸レンズ(実像)"},
-  {id:"lens-virtual",no:"1-11",title:"凸レンズ(虚像)"}
+  {id:"lens-virtual",no:"1-11",title:"凸レンズ(虚像)"},
+  {id:"sound-speed",no:"1-12",title:"音の速さ"}
 ];
