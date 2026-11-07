@@ -18,29 +18,29 @@ function L2(x,y,a,b,e){var an=e?"end":null;return T(x,y,14,a,null,an)+T(x,y+16,1
    ひもとおもりは左に寄せ、力の文字は、右に1行で書く */
 function hang(ar,nm,label){
  function N(c){return nm?c+" ":""}
- var X=60,s='<rect x="10" y="40" width="320" height="18" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(322,54,13,"天井","g","end")+
-  line(X,58,X,220,"#b4bbc3",1.5)+
-  '<rect x="30" y="220" width="60" height="90" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+
-  T(52,142,13,"ひも","g","end")+T(X,332,13,"おもり","g","middle");
+ var X=60,s='<rect x="10" y="40" width="120" height="18" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(124,54,13,"天井","g","end")+
+  line(X,58,X,150,"#b4bbc3",1.5)+
+  '<rect x="30" y="150" width="60" height="90" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+
+  T(52,108,13,"ひも","g","end")+T(X,262,13,"おもり","g","middle");
  if(ar){
-  s+=arrow(X,58,X,26,RED)+arrow(X,58,X,90,MUTED)+arrow(X,220,X,252,RED)+arrow(X,220,X,180,BLUE)+arrow(X,265,X,305,BLUE)+
+  s+=arrow(X,58,X,26,RED)+arrow(X,58,X,90,MUTED)+arrow(X,150,X,182,RED)+arrow(X,150,X,110,BLUE)+arrow(X,195,X,235,BLUE)+
    T(72,32,14,N("①")+"天井が"+sp("m","ひもを")+"引く力")+
    T(72,86,14,N("②")+"ひもが"+sp("g","天井を")+"引く力")+
-   T(72,202,14,N("③")+"ひもが"+sp("v","おもりを")+"引く力")+
-   T(106,240,14,N("④")+"おもりが"+sp("m","ひもを")+"引く力")+
-   T(106,288,14,N("⑤")+"地球が"+sp("v","おもりを")+"引く力(重力)")}
- return svg(340,344,label,s)}
+   T(72,134,14,N("③")+"ひもが"+sp("v","おもりを")+"引く力")+
+   T(106,170,14,N("④")+"おもりが"+sp("m","ひもを")+"引く力")+
+   T(106,218,14,N("⑤")+"地球が"+sp("v","おもりを")+"引く力(重力)")}
+ return svg(340,276,label,s)}
 
 /* 机の上の物体。机を＝赤、物体を＝青。③は物体の下面、①は机の上面、②(重力)は物体の中心から。力の文字は1行 */
 function desk(ar,label){
- var s='<rect x="10" y="200" width="320" height="50" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(322,222,13,"机","g","end")+
+ var s='<rect x="10" y="200" width="140" height="40" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(142,222,13,"机","g","end")+
   '<rect x="30" y="140" width="80" height="60" fill="#cfd5db" stroke="'+GRAY+'" stroke-width="1"/>'+TN(104,158,13,"物体","g","end");
  if(ar){
-  s+=arrow(50,200,50,160,BLUE)+arrow(70,170,70,210,BLUE)+arrow(90,200,90,240,RED)+
+  s+=arrow(50,200,50,160,BLUE)+arrow(70,170,70,210,BLUE)+arrow(90,200,90,236,RED)+
    T(20,130,14,"③ 机が"+sp("v","物体を")+"押す力")+
    T(124,172,14,"② 地球が"+sp("v","物体を")+"引く力(重力)")+
-   T(124,232,14,"① 物体が"+sp("m","机を")+"押す力")}
- return svg(340,262,label,s)}
+   T(20,262,14,"① 物体が"+sp("m","机を")+"押す力")}
+ return svg(340,276,label,s)}
 
 var LBL1="天井からひもでおもりがつるされている図。ひもは天井とおもりをつないでいる";
 var LBL2="天井からつるされたおもりにはたらく5つの力の図。ひもを引く2つの力は赤、おもりを引く2つの力は青、天井を引く力は灰色。同じ色の2本が、つり合う2力";
@@ -56,9 +56,8 @@ window.UNIT={
 no:"1-15",title:"力のつり合い",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
- '<p>力は、「〜が 〜を 引く(押す)力」と言いかえられます。「〜を」にあたるのが、力を受ける物体です。</p>'+FIGPOINT+
- '<p>つり合っている2力は、<b>「〜を」が同じ</b>です。</p>'+
- '<p class="note">同じ色の2本が、つり合う2力です。</p>'},
+ '<p>つり合っている2力は、<b>「〜を」が同じ</b>です。</p>'+FIGPOINT+
+ '<p class="note">つり合う2力<br>・天井が<span class="m">ひもを</span>引く力 と おもりが<span class="m">ひもを</span>引く力<br>・ひもが<span class="v">おもりを</span>引く力 と 地球が<span class="v">おもりを</span>引く力(重力)</p>'},
 {type:"problem",title:"問題",
  body:'<p>図のように、おもりがひもでつるされて、静止している。</p>'+FIGP+
  '<p>① 天井がひもを引く力<br>② ひもが天井を引く力<br>③ ひもがおもりを引く力<br>④ おもりがひもを引く力<br>⑤ 地球がおもりを引く力(重力)</p>'+
