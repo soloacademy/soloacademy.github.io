@@ -11,44 +11,58 @@ function arrow(x1,y1,x2,y2,k){
  var a=Math.atan2(y2-y1,x2-x1),L=11,H=6,bx=x2-L*Math.cos(a),by=y2-L*Math.sin(a),sn=Math.sin(a),cs=Math.cos(a);
  return line(x1,y1,bx,by,k,3)+'<polygon points="'+n(x2)+','+n(y2)+' '+n(bx-H*sn)+','+n(by+H*cs)+' '+n(bx+H*sn)+','+n(by-H*cs)+'" fill="'+k+'"/>'}
 function sp(c,t){return '<tspan class="'+c+' b">'+t+'</tspan>'}
-function L2(x,y,a,b,e){var an=e?"end":null;return T(x,y,14,a,null,an)+T(x,y+16,14,b,null,an)}
+function num(x,y,c){return T(x,y,14,c,null,"middle")}
 
-/* つるしたおもり。ar＝力の矢印と文字を描く、nm＝①〜⑤の番号を付ける。ひもを＝赤、おもりを＝青、天井を＝灰色
-   矢印は、力がはたらく点から出す：接している力は、接している点(ひもの両端)から。重力は、おもりの中心から
-   ひもとおもりは左に寄せ、力の文字は、右に1行で書く */
-function hang(ar,nm,label){
+/* つるしたおもり。矢印は、力がはたらく点から出す：接している力は接点(ひもの両端)から、重力はおもりの中心から
+   kind：plain＝矢印なし、num＝矢印(色なし)と番号だけ(問題用)、point＝色つきの矢印と文字(番号なし)、ans＝色つきの矢印と番号つきの文字
+   色：ひもを＝赤、おもりを＝青、天井を＝灰色 */
+function hang(kind,label){
+ var ar=kind!=="plain",col=kind==="point"||kind==="ans",nm=kind==="ans",pn=kind==="num",
+  cR=col?RED:INK,cB=col?BLUE:INK,cG=col?MUTED:INK,X=60;
  function N(c){return nm?c+" ":""}
- var X=60,s='<rect x="10" y="40" width="120" height="18" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(124,54,13,"天井","g","end")+
+ var s='<rect x="10" y="40" width="120" height="18" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(16,54,13,"天井","g")+
   line(X,58,X,150,"#b4bbc3",1.5)+
   '<rect x="30" y="150" width="60" height="90" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+
   T(52,108,13,"ひも","g","end")+T(X,262,13,"おもり","g","middle");
- if(ar){
-  s+=arrow(X,58,X,26,RED)+arrow(X,58,X,90,MUTED)+arrow(X,150,X,182,RED)+arrow(X,150,X,110,BLUE)+arrow(X,195,X,235,BLUE)+
+ if(ar)s+=arrow(X,58,X,26,cR)+arrow(X,58,X,90,cG)+arrow(X,150,X,182,cR)+arrow(X,150,X,110,cB)+arrow(X,195,X,235,cB);
+ if(pn)s+=num(78,34,"①")+num(78,86,"②")+num(78,136,"③")+num(78,176,"④")+num(78,226,"⑤");
+ if(col)s+=
    T(72,32,14,N("①")+"天井が"+sp("m","ひもを")+"引く力")+
    T(72,86,14,N("②")+"ひもが"+sp("g","天井を")+"引く力")+
    T(72,134,14,N("③")+"ひもが"+sp("v","おもりを")+"引く力")+
    T(106,170,14,N("④")+"おもりが"+sp("m","ひもを")+"引く力")+
-   T(106,218,14,N("⑤")+"地球が"+sp("v","おもりを")+"引く力(重力)")}
+   T(106,218,14,N("⑤")+"地球が"+sp("v","おもりを")+"引く力(重力)");
  return svg(340,276,label,s)}
 
-/* 机の上の物体。机を＝赤、物体を＝青。③は物体の下面、①は机の上面、②(重力)は物体の中心から。力の文字は1行 */
-function desk(ar,label){
- var s='<rect x="10" y="200" width="140" height="40" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(142,222,13,"机","g","end")+
-  '<rect x="30" y="140" width="80" height="60" fill="#cfd5db" stroke="'+GRAY+'" stroke-width="1"/>'+TN(104,158,13,"物体","g","end");
- if(ar){
-  s+=arrow(50,200,50,160,BLUE)+arrow(70,170,70,210,BLUE)+arrow(90,200,90,236,RED)+
-   T(20,130,14,"③ 机が"+sp("v","物体を")+"押す力")+
+/* 机の上の物体。③(垂直抗力)は物体の下面から、②(重力)は物体の中心から、①は机の上面から。3本は、重ならないぎりぎりまで寄せる(10ずつ)
+   kind：num＝矢印(色なし)と番号だけ、ans＝色つきの矢印と番号つきの文字。机を＝赤、物体を＝青 */
+function desk(kind,label){
+ var col=kind==="ans",pn=kind==="num",cR=col?RED:INK,cB=col?BLUE:INK,
+  s='<rect x="10" y="200" width="140" height="40" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(142,222,13,"机","g","end")+
+  '<rect x="30" y="140" width="80" height="60" fill="#cfd5db" stroke="'+GRAY+'" stroke-width="1"/>'+TN(104,158,13,"物体","g","end")+
+  arrow(60,200,60,160,cB)+arrow(70,170,70,210,cB)+arrow(80,200,80,236,cR);
+ if(pn)s+=num(44,184,"③")+num(92,178,"②")+num(92,224,"①");
+ if(col)s+=T(20,130,14,"③ 机が"+sp("v","物体を")+"押す力")+
    T(124,172,14,"② 地球が"+sp("v","物体を")+"引く力(重力)")+
-   T(20,262,14,"① 物体が"+sp("m","机を")+"押す力")}
+   T(20,262,14,"① 物体が"+sp("m","机を")+"押す力");
  return svg(340,276,label,s)}
 
-var LBL1="天井からひもでおもりがつるされている図。ひもは天井とおもりをつないでいる";
+/* つり合う2力：縦に2行並べ、「〜を」をそろえて線でつなぎ、右の括弧で「つり合う」とまとめる。rows＝[[番号,だれが,〜を,動き],…]、k＝m(赤)かv(青) */
+function pair(rows,k,label){
+ var y=[22,58],c=k==="m"?RED:BLUE,s='',cx=86+rows[0][2].length*7;
+ rows.forEach(function(r,i){s+=T(4,y[i],14,r[0])+T(24,y[i],14,r[1])+T(86,y[i],14,sp(k,r[2]))+T(146,y[i],14,r[3])});
+ s+=line(cx,29,cx,43,c,2)+
+  '<path d="M248,17 H256 V53 H248" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+line(256,35,266,35,INK,1.5)+T(270,40,14,"つり合う","b");
+ return svg(340,72,label,s)}
+
+var LBL1="天井からひもでおもりがつるされている図。ひもの上端と下端、おもりの中心から、5本の力の矢印が出ていて、それぞれに番号①〜⑤が付いている";
 var LBL2="天井からつるされたおもりにはたらく5つの力の図。ひもを引く2つの力は赤、おもりを引く2つの力は青、天井を引く力は灰色。同じ色の2本が、つり合う2力";
-var FIGP=hang(false,false,LBL1);
-var FIGPOINT=hang(true,false,LBL2);
-var FIGANS=hang(true,true,"(1)(2)の答えの図。①と④は、ひもを引く力で赤。③と⑤は、おもりを引く力で青。②は、天井を引く力で灰色。同じ色の2本がつり合う");
-var FIGD=desk(false,"机の上に、物体が静止している図");
-var FIGDA=desk(true,"(1)の答えの図。②と③は、物体を引く、押す力で青。①は、机を押す力で赤");
+var FIGP=hang("num",LBL1);
+var FIGPOINT=hang("point",LBL2);
+var PAIR1=pair([["①","天井が","ひもを","引く力"],["④","おもりが","ひもを","引く力"]],"m","①と④は、どちらもひもを引く力で、つり合う");
+var PAIR2=pair([["③","ひもが","おもりを","引く力"],["⑤","地球が","おもりを","引く力(重力)"]],"v","③と⑤は、どちらもおもりを引く力で、つり合う");
+var FIGD=desk("num","机の上に物体が静止している図。物体の下面から上向きの矢印③、物体の中心から下向きの矢印②、机の上面から下向きの矢印①が出ていて、それぞれに番号が付いている");
+var PAIRD=pair([["②","地球が","物体を","引く力(重力)"],["③","机が","物体を","押す力"]],"v","②と③は、どちらも物体を引く・押す力で、つり合う");
 
 var CH5=["②","③","④","⑤"],CH3=["①","②","③"];
 
@@ -56,7 +70,7 @@ window.UNIT={
 no:"1-15",title:"力のつり合い",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
- '<p>つり合っている2力は、<b>「〜を」が同じ</b>です。</p>'+FIGPOINT+
+ '<p><b>「〜を」が同じ</b>2力が、つり合います。<br>引く力か押す力かは、関係ありません。</p>'+FIGPOINT+
  '<p class="note">つり合う2力<br>・天井が<span class="m">ひもを</span>引く力 と おもりが<span class="m">ひもを</span>引く力<br>・ひもが<span class="v">おもりを</span>引く力 と 地球が<span class="v">おもりを</span>引く力(重力)</p>'},
 {type:"problem",title:"問題",
  body:'<p>図のように、おもりがひもでつるされて、静止している。</p>'+FIGP+
@@ -66,17 +80,17 @@ sections:[
   {label:"(1) ①とつり合う力",type:"choice",choices:CH5,accept:["④"]},
   {label:"(2) ③とつり合う力",type:"choice",choices:CH5,accept:["⑤"]}
  ]},
-{type:"answer",html:FIGANS+
- '<p>(1) <b>④</b>　①と④は、どちらも<b class="m">ひもを</b>引く力です。</p>'+
- '<p>(2) <b>⑤</b>　③と⑤は、どちらも<b class="v">おもりを</b>引く力です。</p>'+
+{type:"answer",html:
+ '<p>(1) <b>④</b></p>'+PAIR1+
+ '<p>(2) <b>⑤</b></p>'+PAIR2+
  '<p class="note">②は「天井を」引く力です。同じ「〜を」の力がないので、つり合う相手はありません。</p>'},
 {type:"problem",title:"補充問題",
  body:'<p>机の上に、物体が静止している。</p>'+FIGD+
  '<p>① 物体が机を押す力<br>② 地球が物体を引く力(重力)<br>③ 机が物体を押す力(垂直抗力)</p>'+
  '<p>②とつり合う力を、①〜③から選びなさい。</p>',
  parts:[{label:"(1) ②とつり合う力",type:"choice",choices:CH3,accept:["③"]}],
- solution:FIGDA+
- '<p>(1) <b>③</b>　②と③は、どちらも<b class="v">物体を</b>引く・押す力です。</p>'+
+ solution:
+ '<p>(1) <b>③</b></p>'+PAIRD+
  '<p class="note">①と③は、大きさが等しく向きが反対ですが、「〜を」が違うので、つり合いではありません。</p>'}
 ]};
 })();
