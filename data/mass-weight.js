@@ -28,9 +28,8 @@ function panel(cx,name,N,ground){
   T(cx,256,14,"質量　600g","m b","middle")+T(cx,278,14,"重さ　"+N+"N","v b","middle");
  return s}
 function fig1(){
- var s=panel(85,"地球",6,"#cfe0f3")+panel(255,"月",1,"#e6e9ed")+
-  T(170,130,12,"月へ","g","middle")+line(130,140,210,140,INK,1.5)+'<path d="M204,135 L210,140 L204,145" fill="none" stroke="'+INK+'" stroke-width="1.5"/>';
- return svg(340,292,"600gの物体をばねにつるした図。地球では、ばねが長くのびて、質量は600g、重さは6N。重力の矢印は太い。月に運ぶと、ばねののびは短くなって、重さは1N。重力の矢印は細い。質量は600gのまま変わらない",s)}
+ var s=panel(85,"地球",6,"#cfe0f3")+panel(255,"月",1,"#e6e9ed");
+ return svg(340,292,"600gの物体をばねにつるした図。地球では、ばねが長くのびて、質量は600g、重さは6N。重力の矢印は太い。月では、ばねののびは短くなって、重さは1N。重力の矢印は細い。質量は600gのまま変わらない",s)}
 
 /* 解答の図：左＝地球、右＝月。1行目＝質量、2行目＝重さ。o.e＝地球の値、o.m＝月の値、o.op＝重さの変わり方、o.rev＝true なら右から左へ */
 function box(cx,cy,txt,cls,f,k){
@@ -70,7 +69,9 @@ sections:[
  ]},
 {type:"answer",html:
  '<p>(1) '+Mq+'は、場所が変わっても変わりません。<b>60kg</b></p>'+
- '<p>(2) 地球上での'+Wt+'：60kg ＝ 60000g<br>100gで1Nなので、60000 ÷ 100 ＝ <b class="v">600N</b></p>'+FIGA+
+ '<p>(2) 地球上での'+Wt+'：60kg ＝ 60000g<br>100gで1Nなので、比で求めます。<br>'+
+ '<span class="m">100g</span> : <span class="v">1N</span> ＝ <span class="m">60000g</span> : <span class="v">□N</span><br>'+
+ '100 × □ ＝ 1 × 60000<br>□ ＝ 60000 ÷ 100 ＝ <b class="v">600N</b></p>'+FIGA+
  '<p>月の重力は6分の1なので、600N ÷ 6 ＝ <b>100N</b></p>'},
 {type:"problem",title:"補充問題",
  body:'<p>月面上で、重さが5Nの物体がある。この物体の'+Mq+'は何kgか。</p>'+
