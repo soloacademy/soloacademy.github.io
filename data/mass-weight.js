@@ -20,10 +20,10 @@ function panel(cx,name,N,ground){
   T(cx+50,(nat+ye)/2+5,14,"のび","v b")+
   '<rect x="'+(cx-28)+'" y="'+ye+'" width="56" height="38" rx="4" fill="#e6e9ed" stroke="'+INK+'" stroke-width="1.2"/>'+
   TN(cx,ye+24,14,"600g","m b","middle");
- /* 重力の矢印：地球は太く、月は細く。星の地面は、物体の下 */
- var a0=ye+42,big=N>2,a1=big?a0+18:a0+16,tip=big?a0+32:a0+28,hw=big?10:4;
- s+=line(cx,a0,cx,a1,BLUE,big?5:1)+'<polygon points="'+(cx-hw)+','+a1+' '+(cx+hw)+','+a1+' '+cx+','+tip+'" fill="'+BLUE+'"/>'+
-  T(cx+14,(a0+a1)/2+4,12,"重力","v");
+ /* 重力の矢印：物体の左横。始まりは物体の中心の高さ。地球は太く、月は細く */
+ var ax=cx-40,a0=ye+19,big=N>2,a1=big?a0+18:a0+16,tip=big?a0+32:a0+28,hw=big?10:4;
+ s+=line(ax,a0,ax,a1,BLUE,big?5:1)+'<polygon points="'+(ax-hw)+','+a1+' '+(ax+hw)+','+a1+' '+ax+','+tip+'" fill="'+BLUE+'"/>'+
+  T(ax-12,(a0+a1)/2+4,12,"重力","v","end");
  s+='<path d="M'+(cx-70)+',214 Q'+cx+',198 '+(cx+70)+',214 V230 H'+(cx-70)+' Z" fill="'+ground+'" stroke="#8a949f" stroke-width="1"/>'+
   T(cx,256,14,"質量　600g","m b","middle")+T(cx,278,14,"重さ　"+N+"N","v b","middle");
  return s}
