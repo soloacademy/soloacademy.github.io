@@ -63,22 +63,31 @@ var IC={
 };
 function ic(k,x,y,sx,sy,f){return '<path transform="translate('+x+','+y+') scale('+sx+','+sy+')" fill="'+f+'" fill-rule="evenodd" d="'+IC[k]+'"/>'}
 
-/* 厳選ポイントの図：横から見た図。縦の鏡の左に人と物体(イヌ)、右に虚像。1マス＝20
-   物体(120,70)・虚像(240,70)は鏡(x=180)を軸に線対称。目(64,150)と虚像を結ぶ線が鏡と交わる点(180,97.3)で、光が反射する */
+/* 厳選ポイントの図：横から見た図。縦の鏡の左に人と物体(イヌ)、右に虚像。1マス＝20。鏡で光が反射する点を原点(180,90)とする
+   物体(120,50)＝座標(-3,2)、虚像(240,50)＝座標(3,2)、目(60,170)＝座標(-6,-4)。3点とも格子の交点にある
+   目と虚像を結ぶ線が、原点を通る(傾きがそろう)ので、原点で光が反射する。法線(鏡に垂直な線)は、原点を通る横線。入射角・反射角は、どちらも約33.7° */
 function figLight(){
- var d='',i,s,my=150+(70-150)*(180-64)/(240-64);
- for(i=20;i<=320;i+=20)d+='M'+i+' 10V210';
- for(i=10;i<=210;i+=20)d+='M20 '+i+'H320';
+ var d='',i,s,OX=180,OY=90,DX=120,DY=50,VX=240,EX=60,EY=170,r=34,
+  th=Math.atan2(OY-DY,OX-DX),c=Math.cos(th),sn=Math.sin(th),c2=Math.cos(th/2),s2=Math.sin(th/2);
+ function f(v){return v.toFixed(1)}
+ function arc(g){return '<path d="M'+(OX-r)+','+OY+' A'+r+','+r+' 0 0 '+(g<0?1:0)+' '+f(OX-r*c)+','+f(OY+g*r*sn)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
+ function tick(g){return line(OX-(r-4)*c2,OY+g*(r-4)*s2,OX-(r+4)*c2,OY+g*(r+4)*s2,INK,1.5)}
+ for(i=20;i<=320;i+=20)d+='M'+i+' 10V230';
+ for(i=10;i<=230;i+=20)d+='M20 '+i+'H320';
  s='<path d="'+d+'" fill="none" stroke="'+GRID+'" stroke-width="1"/>'+
-  line(120,70,240,70,GRAY,1,true)+
-  line(180,my,240,70,BLUE,1.5,true)+
-  line(120,70,180,my,INK,1.5)+arw(120,70,180,my)+
-  line(180,my,64,150,INK,1.5)+arw(180,my,64,150)+
-  line(180,50,180,170,INK,4)+
-  '<circle cx="180" cy="'+my.toFixed(1)+'" r="3" fill="'+INK+'"/>'+
-  ic("man",48,145,.6,.6,INK)+ic("dog",140,52.4,-.4,.4,RED)+ic("dog",220,52.4,.4,.4,BLUE)+
-  T(120,108,13,"物体","m b","middle")+T(240,108,13,"虚像","v b","middle")+T(180,230,13,"鏡","b","middle");
- return svg(240,"横から見た図。縦の鏡の左に、人と、鏡に向かうイヌ(物体)がいる。鏡の右の、鏡を軸にした線対称の位置に、イヌの虚像がある。イヌから出た光は、鏡で反射して人の目に届く。目には、光が鏡の向こうの虚像から来たように見える",s)}
+  line(DX,DY,VX,DY,GRAY,1,true)+
+  line(20,OY,OX,OY,GRAY,1.2)+
+  line(OX,OY,VX,DY,BLUE,1.5,true)+
+  line(DX,DY,OX,OY,INK,1.5)+arw(DX,DY,OX,OY)+
+  line(OX,OY,EX,EY,INK,1.5)+arw(OX,OY,EX,EY)+
+  arc(-1)+arc(1)+tick(-1)+tick(1)+
+  line(OX,30,OX,150,INK,4)+
+  '<circle cx="'+OX+'" cy="'+OY+'" r="3" fill="'+INK+'"/>'+
+  ic("man",48,EY-5,.6,.6,INK)+ic("dog",DX+20,DY-17.6,-.4,.4,RED)+ic("dog",VX-20,DY-17.6,.4,.4,BLUE)+
+  T(OX-42,84,13,"入射角",null,"end")+T(OX-42,106,13,"反射角",null,"end")+
+  T(DX,26,13,"物体","m b","middle")+T(VX,26,13,"虚像","v b","middle")+T(OX,172,13,"鏡","b","middle")+
+  T(312,216,12,"入射角＝反射角","b","end");
+ return svg(240,"横から見た図。縦の鏡の左に、人と、鏡に向かうイヌ(物体)がいる。鏡の右の、鏡を軸にした線対称の位置に、イヌの虚像がある。イヌから出た光は、鏡で反射して人の目に届く。光が鏡に当たる点で、鏡に垂直な線(横線)から測った入射角と反射角が等しい。目には、光が鏡の向こうの虚像から来たように見える",s)}
 
 /* 補充問題の図：横から見た図。1cm＝1.6 */
 var FY=270;
