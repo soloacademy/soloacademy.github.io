@@ -11,5 +11,6 @@ window.UNITS=[
   {id:"lens-real",no:"1-10",title:"凸レンズ(実像)"},
   {id:"lens-virtual",no:"1-11",title:"凸レンズ(虚像)"},
   {id:"sound-speed",no:"1-12",title:"音の速さ"},
-  {id:"sound-pitch",no:"1-13",title:"音の大きさと高さ"}
+  {id:"sound-pitch",no:"1-13",title:"音の大きさと高さ"},
+  {id:"mass-weight",no:"1-14",title:"質量と重さ"}
 ];
