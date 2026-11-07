@@ -1,5 +1,5 @@
 (function(){
-var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",GRAY="#8a949f",FILL="#e6e9ed";
+var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",GRAY="#8a949f",MUTED="#5d6874",FILL="#e6e9ed";
 function n(v){return Math.round(v*10)/10}
 function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 /* 色つきの面の上の文字：まわりの白いふちを消す */
@@ -11,33 +11,34 @@ function arrow(x1,y1,x2,y2,k){
  var a=Math.atan2(y2-y1,x2-x1),L=11,H=6,bx=x2-L*Math.cos(a),by=y2-L*Math.sin(a),sn=Math.sin(a),cs=Math.cos(a);
  return line(x1,y1,bx,by,k,3)+'<polygon points="'+n(x2)+','+n(y2)+' '+n(bx-H*sn)+','+n(by+H*cs)+' '+n(bx+H*sn)+','+n(by-H*cs)+'" fill="'+k+'"/>'}
 function sp(c,t){return '<tspan class="'+c+' b">'+t+'</tspan>'}
-function L2(x,y,a,b){return T(x,y,14,a)+T(x,y+16,14,b)}
+function L2(x,y,a,b,e){var an=e?"end":null;return T(x,y,14,a,null,an)+T(x,y+16,14,b,null,an)}
 
-/* つるしたおもり。ar＝力の矢印と文字を描く、nm＝①〜⑤の番号を付ける。ひもを＝赤、おもりを＝青、天井を＝灰色 */
+/* つるしたおもり。ar＝力の矢印と文字を描く、nm＝①〜⑤の番号を付ける。ひもを＝赤、おもりを＝青、天井を＝灰色
+   矢印は、力がはたらく点から出す：接している力は、接している点(ひもの両端)から。重力は、おもりの中心から */
 function hang(ar,nm,label){
  function N(c){return nm?c+" ":""}
- var s='<rect x="20" y="10" width="300" height="18" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(312,24,13,"天井","g","end")+
-  line(140,28,140,180,GRAY,1.5)+
-  '<rect x="112" y="180" width="56" height="40" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+
-  T(132,120,13,"ひも","g","end")+T(104,205,13,"おもり","g","end");
+ var s='<rect x="20" y="40" width="300" height="18" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(312,54,13,"天井","g","end")+
+  line(140,58,140,220,"#b4bbc3",1.5)+
+  '<rect x="105" y="220" width="70" height="90" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+
+  T(132,142,13,"ひも","g","end")+T(97,270,13,"おもり","g","end");
  if(ar){
-  s+=arrow(30,28,30,62,GRAY)+arrow(140,104,140,68,RED)+arrow(140,104,140,140,RED)+arrow(140,200,140,164,BLUE)+arrow(140,200,140,236,BLUE)+
-   L2(40,80,N("②")+"ひもが",sp("g","天井を")+"引く力")+
-   L2(152,76,N("①")+"天井が",sp("m","ひもを")+"引く力")+
-   L2(152,124,N("④")+"おもりが",sp("m","ひもを")+"引く力")+
-   L2(180,176,N("③")+"ひもが",sp("v","おもりを")+"引く力")+
-   L2(180,216,N("⑤")+"地球が",sp("v","おもりを")+"引く力(重力)")}
- return svg(340,252,label,s)}
+  s+=arrow(140,58,140,26,RED)+arrow(140,58,140,90,MUTED)+arrow(140,220,140,252,RED)+arrow(140,220,140,180,BLUE)+arrow(140,265,140,305,BLUE)+
+   L2(152,18,N("①")+"天井が",sp("m","ひもを")+"引く力")+
+   L2(152,82,N("②")+"ひもが",sp("g","天井を")+"引く力")+
+   L2(152,194,N("③")+"ひもが",sp("v","おもりを")+"引く力")+
+   L2(188,236,N("④")+"おもりが",sp("m","ひもを")+"引く力")+
+   L2(188,272,N("⑤")+"地球が",sp("v","おもりを")+"引く力(重力)")}
+ return svg(340,330,label,s)}
 
-/* 机の上の物体。机を＝赤、物体を＝青 */
+/* 机の上の物体。机を＝赤、物体を＝青。③は物体の下面、①は机の上面、②(重力)は物体の中心から */
 function desk(ar,label){
  var s='<rect x="20" y="200" width="300" height="50" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(28,222,13,"机","g")+
-  '<rect x="130" y="140" width="80" height="60" fill="#cfd5db" stroke="'+GRAY+'" stroke-width="1"/>'+TN(136,194,13,"物体","g");
+  '<rect x="130" y="140" width="80" height="60" fill="#cfd5db" stroke="'+GRAY+'" stroke-width="1"/>'+TN(204,158,13,"物体","g","end");
  if(ar){
-  s+=arrow(170,170,170,128,BLUE)+arrow(170,170,170,212,BLUE)+arrow(200,200,200,238,RED)+
-   L2(120,112,"③ 机が",sp("v","物体を")+"押す力").replace(/text-anchor="[^"]*"/g,"").replace(/<text /g,'<text text-anchor="end" ')+
+  s+=arrow(150,200,150,160,BLUE)+arrow(170,170,170,210,BLUE)+arrow(190,200,190,240,RED)+
+   L2(120,168,"③ 机が",sp("v","物体を")+"押す力",1)+
    T(222,164,14,"② 地球が")+T(222,180,14,sp("v","物体を")+"引く力")+T(222,196,14,"(重力)")+
-   T(212,218,14,"① 物体が")+T(212,234,14,sp("m","机を")+"押す力")}
+   T(202,222,14,"① 物体が")+T(202,238,14,sp("m","机を")+"押す力")}
  return svg(340,262,label,s)}
 
 var LBL1="天井からひもでおもりがつるされている図。ひもは天井とおもりをつないでいる";
