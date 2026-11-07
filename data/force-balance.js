@@ -6,10 +6,11 @@ function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font
 function TN(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'" style="stroke:none"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"/>'}
+function svgY(y0,y1,label,body){return '<div class="fig"><svg viewBox="0 '+y0+' 340 '+(y1-y0)+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 /* 力の矢印：(x1,y1)から(x2,y2)へ。先は(x2,y2) */
 function arrow(x1,y1,x2,y2,k){
  var a=Math.atan2(y2-y1,x2-x1),L=11,H=6,bx=x2-L*Math.cos(a),by=y2-L*Math.sin(a),sn=Math.sin(a),cs=Math.cos(a);
- return line(x1,y1,bx,by,k,3)+'<polygon points="'+n(x2)+','+n(y2)+' '+n(bx-H*sn)+','+n(by+H*cs)+' '+n(bx+H*sn)+','+n(by-H*cs)+'" fill="'+k+'"/>'}
+ return line(x1,y1,bx,by,k,3)+'<circle cx="'+n(x1)+'" cy="'+n(y1)+'" r="3.5" fill="'+k+'"/>'+'<polygon points="'+n(x2)+','+n(y2)+' '+n(bx-H*sn)+','+n(by+H*cs)+' '+n(bx+H*sn)+','+n(by-H*cs)+'" fill="'+k+'"/>'}
 function sp(c,t){return '<tspan class="'+c+' b">'+t+'</tspan>'}
 function num(x,y,c){return T(x,y,14,c,null,"middle")}
 
@@ -45,15 +46,14 @@ function desk(kind,label){
  if(col)s+=T(20,130,14,"③ 机が"+sp("v","物体を")+"押す力")+
    T(124,172,14,"② 地球が"+sp("v","物体を")+"引く力(重力)")+
    T(20,262,14,"① 物体が"+sp("m","机を")+"押す力");
- return svg(340,276,label,s)}
+ return svgY(col?110:125,col?270:252,label,s)}
 
-/* つり合う2力：縦に2行並べ、「〜を」をそろえて線でつなぎ、右の括弧で「つり合う」とまとめる。rows＝[[番号,だれが,〜を,動き],…]、k＝m(赤)かv(青) */
+/* つり合う2力：縦に2行並べ、「〜を」をそろえ、右の括弧で「つり合う」とまとめる。rows＝[[番号,だれが,〜を,動き],…]、k＝m(赤)かv(青) */
 function pair(rows,k,label){
- var y=[22,58],c=k==="m"?RED:BLUE,s='',cx=86+rows[0][2].length*7;
+ var y=[20,42],s='';
  rows.forEach(function(r,i){s+=T(4,y[i],14,r[0])+T(24,y[i],14,r[1])+T(86,y[i],14,sp(k,r[2]))+T(146,y[i],14,r[3])});
- s+=line(cx,29,cx,43,c,2)+
-  '<path d="M248,17 H256 V53 H248" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+line(256,35,266,35,INK,1.5)+T(270,40,14,"つり合う","b");
- return svg(340,72,label,s)}
+ s+='<path d="M248,15 H256 V47 H248" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+line(256,31,266,31,INK,1.5)+T(270,36,14,"つり合う","b");
+ return svg(340,56,label,s)}
 
 var LBL1="天井からひもでおもりがつるされている図。ひもの上端と下端、おもりの中心から、5本の力の矢印が出ていて、それぞれに番号①〜⑤が付いている";
 var LBL2="天井からつるされたおもりにはたらく5つの力の図。ひもを引く2つの力は赤、おもりを引く2つの力は青、天井を引く力は灰色。同じ色の2本が、つり合う2力";
