@@ -6,26 +6,26 @@ function TN(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size
 function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function line(x1,y1,x2,y2,k,w,dash){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+k+'" stroke-width="'+(w||1)+'"'+(dash?' stroke-dasharray="4 3"':'')+'/>'}
 
-/* 厳選ポイントの図：600gの物体を、地球と月でばねばかりにつるす。重力の矢印は、地球は太く、月は細く */
-function panel(cx,name,wt,gw,ground){
- var s=T(cx,18,14,name,"b","middle")+
-  '<circle cx="'+cx+'" cy="34" r="4" fill="none" stroke="'+MUTED+'" stroke-width="1.2"/>'+
-  line(cx,38,cx,42,MUTED,1.2)+
-  '<rect x="'+(cx-18)+'" y="42" width="36" height="56" rx="4" fill="#fff" stroke="'+MUTED+'" stroke-width="1.2"/>'+
-  TN(cx,75,14,wt,"v b","middle")+
-  line(cx,98,cx,110,MUTED,1.2)+
-  '<rect x="'+(cx-28)+'" y="110" width="56" height="38" rx="4" fill="#e6e9ed" stroke="'+INK+'" stroke-width="1.2"/>'+
-  TN(cx,134,14,"600g","m b","middle");
- var hw=gw>2?10:4,tip=gw>2?192:188,y0=gw>2?178:180;
- s+=line(cx,154,cx,y0,BLUE,gw)+'<polygon points="'+(cx-hw)+','+y0+' '+(cx+hw)+','+y0+' '+cx+','+tip+'" fill="'+BLUE+'"/>'+
-  T(cx+14,172,12,"重力","v");
- s+='<path d="M'+(cx-70)+',206 Q'+cx+',190 '+(cx+70)+',206 V222 H'+(cx-70)+' Z" fill="'+ground+'" stroke="#8a949f" stroke-width="1"/>'+
-  T(cx,248,14,"質量　600g","m b","middle")+T(cx,270,14,"重さ　"+wt,"v b","middle");
+/* 厳選ポイントの図：600gの物体をばねにつるす。ばねののびは、重さに比例(1N＝11px)。地球は長く、月は短い */
+function spring(cx,y1,y2){
+ var n=Math.max(2,Math.round((y2-y1-8)/5)),st=(y2-y1-8)/n,p=[[cx,y1],[cx,y1+4]],i;
+ for(i=0;i<n;i++)p.push([cx+(i%2?8:-8),+(y1+4+st*(i+.5)).toFixed(1)]);
+ p.push([cx,y2-4],[cx,y2]);
+ return '<polyline points="'+p.map(function(q){return q[0]+','+q[1]}).join(' ')+'" fill="none" stroke="'+INK+'" stroke-width="1.5" stroke-linejoin="round"/>'}
+function panel(cx,name,N,ground){
+ var y0=34,nat=50,ye=nat+11*N,s=T(cx,18,14,name,"b","middle")+
+  line(cx-35,y0,cx+35,y0,INK,4)+spring(cx,y0,ye)+
+  line(cx-50,nat,cx+34,nat,BLUE,1,true)+
+  '<path d="M'+(cx+42)+','+nat+' V'+ye+' M'+(cx+38)+','+nat+' H'+(cx+46)+' M'+(cx+38)+','+ye+' H'+(cx+46)+'" fill="none" stroke="'+BLUE+'" stroke-width="1.5"/>'+
+  T(cx+50,(nat+ye)/2+5,14,"のび","v b")+
+  '<rect x="'+(cx-28)+'" y="'+ye+'" width="56" height="38" rx="4" fill="#e6e9ed" stroke="'+INK+'" stroke-width="1.2"/>'+
+  TN(cx,ye+24,14,"600g","m b","middle")+
+  T(cx,196,14,"質量　600g","m b","middle")+T(cx,218,14,"重さ　"+N+"N","v b","middle");
  return s}
 function fig1(){
- var s=panel(85,"地球","6N",5,"#cfe0f3")+panel(255,"月","1N",1,"#e6e9ed")+
-  T(170,119,12,"月へ","g","middle")+line(125,129,215,129,INK,1.5)+'<path d="M209,124 L215,129 L209,134" fill="none" stroke="'+INK+'" stroke-width="1.5"/>';
- return svg(340,282,"600gの物体をばねばかりにつるした図。地球では、質量は600g、重さは6N。月に運ぶと、質量は600gのまま変わらず、重さは1Nになる。重力の矢印は、地球では太く、月では細い",s)}
+ var s=panel(85,"地球",6)+panel(255,"月",1)+
+  T(170,130,12,"月へ","g","middle")+line(130,140,210,140,INK,1.5)+'<path d="M204,135 L210,140 L204,145" fill="none" stroke="'+INK+'" stroke-width="1.5"/>';
+ return svg(340,232,"600gの物体をばねにつるした図。地球では、ばねが長くのびて、質量は600g、重さは6N。月に運ぶと、ばねののびは短くなって、重さは1N。質量は600gのまま変わらない",s)}
 
 /* 解答の図：左＝地球、右＝月。1行目＝質量、2行目＝重さ。o.e＝地球の値、o.m＝月の値、o.op＝重さの変わり方、o.rev＝true なら右から左へ */
 function box(cx,cy,txt,cls,f,k){
