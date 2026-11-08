@@ -19,21 +19,22 @@ function zz(x1,x2,yc,A,st){var k=Math.max(2,Math.round((x2-x1)/st)),d='M'+x1+','
  for(i=1;i<=k;i++)d+=' L'+n(x1+(x2-x1)*i/k)+','+(i===k?yc:n(yc+(i%2?-A:A)));return d}
 function wv(d,k){return '<path d="'+d+'" fill="none" stroke="'+k+'" stroke-width="1.5" stroke-linejoin="round"/>'}
 function figPS(){
- var x0=70,u=16,yN=58,yF=158,nP=x0+3*u,nS=x0+6*u,fP=x0+6*u,fS=x0+12*u,E=334,s='';
- s+='<rect x="'+nP+'" y="'+(yN-16)+'" width="'+(nS-nP)+'" height="32" fill="'+FILL+'"/>'+
-  '<rect x="'+fP+'" y="'+(yF-16)+'" width="'+(fS-fP)+'" height="32" fill="'+FILL+'"/>'+
-  line(x0,22,x0,190,GRAY,1,true)+T(x0,14,14,"地震発生","b","middle")+
-  T(2,yN+5,14,"近い地点","b")+T(2,yF+5,14,"遠い地点","b")+
-  line(x0,yN,nP,yN,GRAY,1.5)+wv(zz(nP,nS,yN,3,6),RED)+wv(zz(nS,E,yN,10,12),BLUE)+
-  line(x0,yF,fP,yF,GRAY,1.5)+wv(zz(fP,fS,yF,3,6),RED)+wv(zz(fS,E,yF,10,12),BLUE)+
-  '<circle cx="'+nP+'" cy="'+yN+'" r="3.5" fill="'+RED+'"/><circle cx="'+nS+'" cy="'+yN+'" r="3.5" fill="'+BLUE+'"/>'+
-  '<circle cx="'+fP+'" cy="'+yF+'" r="3.5" fill="'+RED+'"/><circle cx="'+fS+'" cy="'+yF+'" r="3.5" fill="'+BLUE+'"/>'+
-  T(nP,34,14,"P波","m b","middle")+T(nS,34,14,"S波","v b","middle")+
-  T(fP,134,14,"P波","m b","middle")+T(fS,134,14,"S波","v b","middle")+
-  '<path d="M'+nP+',80 V86 H'+nS+' V80" fill="none" stroke="'+MUTED+'" stroke-width="1.5"/>'+T((nP+nS)/2,104,14,"初期微動継続時間","g b","middle")+
-  '<path d="M'+fP+',180 V186 H'+fS+' V180" fill="none" stroke="'+MUTED+'" stroke-width="1.5"/>'+T((fP+fS)/2,204,14,"初期微動継続時間","g b","middle")+
-  line(x0,222,330,222,INK,1.5)+'<path d="M324,217 L330,222 L324,227" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+T(336,212,14,"時間","g","end");
- return svg(340,232,"震源に近い地点と遠い地点で、ゆれが始まる時刻を比べた図。どちらの地点でも、P波による小さなゆれが先に始まり、S波による大きなゆれがあとに始まる。P波が着いてからS波が着くまでの時間が、初期微動継続時間。近い地点より、遠い地点のほうが、初期微動継続時間は長い",s)}
+ var X0=72,Y0=250,yN=165,yF=80,E=330,
+  pN=X0+(Y0-yN)/2,sN=X0+(Y0-yN),pF=X0+(Y0-yF)/2,sF=X0+(Y0-yF),s='';
+ function br(a,b,y){return '<path d="M'+a+','+y+' V'+(y+6)+' H'+b+' V'+y+'" fill="none" stroke="'+MUTED+'" stroke-width="1.5"/>'}
+ s+=line(X0,Y0,X0,22,INK,1.5)+'<path d="M'+(X0-5)+',28 L'+X0+',21 L'+(X0+5)+',28" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+
+  line(X0,Y0,336,Y0,INK,1.5)+'<path d="M329,245 L336,250 L329,255" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+
+  line(X0,Y0,X0+(Y0-50)/2,50,RED,2)+line(X0,Y0,X0+(Y0-50),50,BLUE,2)+
+  line(X0,yN,pN,yN,GRAY,1.5)+wv(zz(pN,sN,yN,3,6),RED)+wv(zz(sN,E,yN,10,12),BLUE)+
+  line(X0,yF,pF,yF,GRAY,1.5)+wv(zz(pF,sF,yF,3,6),RED)+wv(zz(sF,E,yF,10,12),BLUE)+
+  '<circle cx="'+pN+'" cy="'+yN+'" r="3.5" fill="'+RED+'"/><circle cx="'+sN+'" cy="'+yN+'" r="3.5" fill="'+BLUE+'"/>'+
+  '<circle cx="'+pF+'" cy="'+yF+'" r="3.5" fill="'+RED+'"/><circle cx="'+sF+'" cy="'+yF+'" r="3.5" fill="'+BLUE+'"/>'+
+  br(pN,sN,yN+8)+br(pF,sF,yF+8)+
+  T((pN+sN)/2,yN+32,14,"初期微動継続時間","g","middle")+
+  T(X0-8,34,14,"距離",null,"end")+T(336,272,14,"時間",null,"end")+T(X0,272,13,"地震発生","g","middle")+
+  T(X0+(Y0-50)/2+6,50,14,"P波","m b")+T(X0+(Y0-50)+6,50,14,"S波","v b")+
+  T(X0-8,yN+5,14,"近い地点",null,"end")+T(X0-8,yF+5,14,"遠い地点",null,"end");
+ return svg(340,284,"縦軸が距離、横軸が時間のグラフ。原点から、P波は急な直線、S波はゆるい直線。近い地点と遠い地点の横の線の上に、P波が着くまでは平ら、P波からS波の間は小さなゆれ、S波のあとは大きなゆれを描いた図。P波からS波の間の下に括弧を付け、近い地点には「初期微動継続時間」と書いた。遠い地点のほうが、括弧が長い",s)}
 
 /* ---------- 表の図(厳選ポイント・問題・解答で共通) ----------
    列：左＝地点と距離、中＝P波(赤)、右＝S波(青)。o.fs＝文字の大きさ、o.pitch＝行の間隔、o.rows＝行、
