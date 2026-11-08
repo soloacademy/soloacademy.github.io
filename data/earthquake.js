@@ -52,7 +52,7 @@ function tbl(o,label){
   g=o.gaps&&o.gaps[i];
   if(g){yn=Y(i+1);ym=(y+yn)/2;
    s+=arr(XL,y+bb,yn-tt,INK)+arr(XP,y+tb,yn-tb,RED)+arr(XS,y+tb,yn-tb,BLUE);
-   if(g.b)s+=blank(XL,ym,64,g.b.d)+blank(XP,ym,64,g.b.p)+blank(XS,ym,64,g.b.s);
+   if(g.b)s+=blank(XL+8+29,ym,58,g.b.d)+blank(XP+8+23,ym,46,g.b.p)+blank(XS+8+23,ym,46,g.b.s);
    else s+=TC(XL+12,ym,fs,g.d,"b")+TC(XP+12,ym,fs,g.p,"m b")+TC(XS+12,ym,fs,g.s,"v b")}}
  last=Y(R.length-1);
  if(o.speed){last+=(o.sp||P);
@@ -91,14 +91,14 @@ var Pw='<span class="m">P波</span>',Sw='<span class="v">S波</span>',GY='<span 
 
 var POINT=
  '<p>'+Pw+'が先に着いて、小さなゆれ(初期微動)が始まります。<br>'+Sw+'があとに着いて、大きなゆれ(主要動)が始まります。</p>'+figPS()+
- '<p>P波が着いてから、S波が着くまでの時間を、<b style="color:var(--muted)">初期微動継続時間</b>といいます。<br>震源から遠いほど、長くなります。</p>'+
+ '<p>P波が着いてから、S波が着くまでの時間を、<b style="color:var(--muted)">初期微動継続時間</b>といいます。</p>'+
  '<div class="formula">速さ(km/s) ＝ 距離(km) ÷ 時間(秒)</div>';
 
 var QBODY='<p>表は、ある地震で、震源からの距離がちがう2つの地点に、P波とS波が着いた時刻を表している。(1)〜(6)を求めなさい。</p>'+FIGQ;
 
 var ANS=
  '<p>(1) 距離：88 − 40 ＝ <b>48km</b><br>(2) '+Pw+'の時間：25秒 − 19秒 ＝ <b>6秒</b><br>(3) '+Sw+'の時間：36秒 − 24秒 ＝ <b>12秒</b></p>'+FIGA1+
- '<p class="note">時間は、着いた時刻の差です。</p>'+
+ '<p class="note" style="margin-top:-.5rem">時間は、着いた時刻の差です。</p>'+
  '<p>(4) '+Pw+'：48km ÷ 6秒 ＝ <b>8km/s</b><br>(5) '+Sw+'：48km ÷ 12秒 ＝ <b>4km/s</b></p>'+
  '<p>(6) 震源とA地点の間を、書き込みます。</p>'+FIGA2+
  '<p>'+Pw+'が40kmを進む時間：40km ÷ 8km/s ＝ 5秒<br>12時30分19秒 − 5秒 ＝ 12時30分<b>14秒</b></p>'+
