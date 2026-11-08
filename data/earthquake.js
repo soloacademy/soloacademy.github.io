@@ -1,0 +1,135 @@
+(function(){
+var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",GRAY="#8a949f",MUTED="#5d6874",FILL="#e6e9ed";
+function n(v){return Math.round(v*10)/10}
+function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
+/* 色つきの面の上の文字：まわりの白いふちを消す */
+function TN(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'" style="stroke:none"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
+/* 文字の縦の中心を cy に合わせる */
+function TC(x,cy,size,txt,cls,anchor){return T(x,cy+size*.36,size,txt,cls,anchor)}
+function line(x1,y1,x2,y2,k,w,dash){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"'+(dash?' stroke-dasharray="4 3"':'')+'/>'}
+function svg(w,h,label,body){return '<div class="fig"><svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
+/* 下向きの矢印：先は(x,y2)。頭は「く」の字 */
+function arr(x,y1,y2,k){return line(x,y1,x,y2,k,1.5)+'<path d="M'+n(x-5)+','+n(y2-7)+' L'+n(x)+','+n(y2)+' L'+n(x+5)+','+n(y2-7)+'" fill="none" stroke="'+k+'" stroke-width="1.5"/>'}
+/* 空欄(点線の枠)：中心(cx,y)、幅w */
+function blank(cx,y,w,txt){return '<rect x="'+n(cx-w/2)+'" y="'+n(y-13)+'" width="'+w+'" height="26" rx="4" fill="#fff" stroke="'+GRAY+'" stroke-width="1.2" stroke-dasharray="4 3"/>'+TN(cx,y+5,14,txt,"g b","middle")}
+function skm(cx,y,txt){return '<rect x="'+n(cx-48)+'" y="'+n(y-13)+'" width="46" height="26" rx="4" fill="#fff" stroke="'+GRAY+'" stroke-width="1.2" stroke-dasharray="4 3"/>'+TN(cx-25,y+5,14,txt,"g b","middle")+TN(cx+4,y+5,14,"km/s",null)}
+
+/* ---------- 厳選ポイントの図1：P波とS波の着き方(近い地点と遠い地点)。時間の長さだけで比べる ---------- */
+function zz(x1,x2,yc,A,st){var k=Math.max(2,Math.round((x2-x1)/st)),d='M'+x1+','+yc,i;
+ for(i=1;i<=k;i++)d+=' L'+n(x1+(x2-x1)*i/k)+','+(i===k?yc:n(yc+(i%2?-A:A)));return d}
+function wv(d,k){return '<path d="'+d+'" fill="none" stroke="'+k+'" stroke-width="1.5" stroke-linejoin="round"/>'}
+function figPS(){
+ var x0=70,u=16,yN=58,yF=158,nP=x0+3*u,nS=x0+6*u,fP=x0+6*u,fS=x0+12*u,E=334,s='';
+ s+='<rect x="'+nP+'" y="'+(yN-16)+'" width="'+(nS-nP)+'" height="32" fill="'+FILL+'"/>'+
+  '<rect x="'+fP+'" y="'+(yF-16)+'" width="'+(fS-fP)+'" height="32" fill="'+FILL+'"/>'+
+  line(x0,22,x0,190,GRAY,1,true)+T(x0,14,14,"地震発生","b","middle")+
+  T(2,yN+5,14,"近い地点","b")+T(2,yF+5,14,"遠い地点","b")+
+  line(x0,yN,nP,yN,GRAY,1.5)+wv(zz(nP,nS,yN,3,6),RED)+wv(zz(nS,E,yN,10,12),BLUE)+
+  line(x0,yF,fP,yF,GRAY,1.5)+wv(zz(fP,fS,yF,3,6),RED)+wv(zz(fS,E,yF,10,12),BLUE)+
+  '<circle cx="'+nP+'" cy="'+yN+'" r="3.5" fill="'+RED+'"/><circle cx="'+nS+'" cy="'+yN+'" r="3.5" fill="'+BLUE+'"/>'+
+  '<circle cx="'+fP+'" cy="'+yF+'" r="3.5" fill="'+RED+'"/><circle cx="'+fS+'" cy="'+yF+'" r="3.5" fill="'+BLUE+'"/>'+
+  T(nP,34,14,"P波","m b","middle")+T(nS,34,14,"S波","v b","middle")+
+  T(fP,134,14,"P波","m b","middle")+T(fS,134,14,"S波","v b","middle")+
+  '<path d="M'+nP+',80 V86 H'+nS+' V80" fill="none" stroke="'+MUTED+'" stroke-width="1.5"/>'+T((nP+nS)/2,104,14,"初期微動継続時間","g b","middle")+
+  '<path d="M'+fP+',180 V186 H'+fS+' V180" fill="none" stroke="'+MUTED+'" stroke-width="1.5"/>'+T((fP+fS)/2,204,14,"初期微動継続時間","g b","middle")+
+  line(x0,222,330,222,INK,1.5)+'<path d="M324,217 L330,222 L324,227" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+T(336,212,14,"時間","g","end");
+ return svg(340,232,"震源に近い地点と遠い地点で、ゆれが始まる時刻を比べた図。どちらの地点でも、P波による小さなゆれが先に始まり、S波による大きなゆれがあとに始まる。P波が着いてからS波が着くまでの時間が、初期微動継続時間。近い地点より、遠い地点のほうが、初期微動継続時間は長い",s)}
+
+/* ---------- 表の図(厳選ポイント・問題・解答で共通) ----------
+   列：左＝地点と距離、中＝P波(赤)、右＝S波(青)。o.fs＝文字の大きさ、o.pitch＝行の間隔、o.rows＝行、
+   o.gaps[i]＝行iと次の行の間に書き込む矢印と文字(d＝距離、p＝P波の時間、s＝S波の時間)
+   行：{n:地点名, d:距離, p:P波の時刻, s:S波の時刻, merge:空欄(P波・S波に共通), bd:時刻を太字に}。o.speed＝最後に速さの空欄の行 */
+var XL=36,XP=160,XS=280;
+function tbl(o,label){
+ var fs=o.fs,lg=fs+6,P=o.pitch,y0=56,s='',R=o.rows,i,y,r,g,yn,ym,bb=lg/2+fs*.6+3,tt=lg/2+fs*.9+3,tb=fs*.7+3,last;
+ s+=TC(XP,14,fs,"P波","m b","middle")+TC(XS,14,fs,"S波","v b","middle")+line(4,30,336,30,"#c9d0d7",1);
+ for(i=0;i<R.length;i++){r=R[i];y=y0+i*P;
+  s+=TC(XL,y-lg/2,fs,r.n,"b","middle")+TC(XL,y+lg/2,fs,r.d,null,"middle");
+  if(r.merge)s+=blank((XP+XS)/2,y,150,r.merge);
+  else s+=TC(XP,y,fs,r.p,r.bd?"b":null,"middle")+TC(XS,y,fs,r.s,r.bd?"b":null,"middle");
+  g=o.gaps&&o.gaps[i];
+  if(g){yn=y+P;ym=y+P/2;
+   s+=arr(XL,y+bb,yn-tt,INK)+TC(XL+12,ym,fs,g.d,"b")+
+    arr(XP,y+tb,yn-tb,RED)+TC(XP+12,ym,fs,g.p,"m b")+
+    arr(XS,y+tb,yn-tb,BLUE)+TC(XS+12,ym,fs,g.s,"v b")}}
+ last=y0+(R.length-1)*P;
+ if(o.speed){last=y0+R.length*P;
+  s+=TC(XL,last,fs,"速さ","b","middle")+skm(XP,last,"(1)")+skm(XS,last,"(2)")}
+ return svg(340,last+34,label,s)}
+
+var FIGTBL=tbl({fs:14,pitch:88,rows:[
+  {n:"C地点",d:"60km",p:"9時5分10秒",s:"9時5分20秒"},
+  {n:"D地点",d:"150km",p:"9時5分25秒",s:"9時5分50秒"}],
+ gaps:[{d:"90km",p:"15秒",s:"30秒"}]},
+ "C地点とD地点の、震源からの距離と、P波・S波が着いた時刻の表。2つの行の間に、地点の間の距離90km、P波の時間15秒、S波の時間30秒を、下向きの矢印で書き込んでいる");
+
+var FIGQ=tbl({fs:14,pitch:52,rows:[
+  {n:"震源",d:"0km",merge:"(3)"},
+  {n:"A地点",d:"40km",p:"12時30分19秒",s:"12時30分24秒"},
+  {n:"B地点",d:"88km",p:"12時30分25秒",s:"12時30分36秒"}],speed:true},
+ "震源からの距離と、P波・S波が着いた時刻の表。震源は0kmで、地震が起きた時刻が(3)の空欄。A地点は40kmで、P波は12時30分19秒、S波は12時30分24秒。B地点は88kmで、P波は12時30分25秒、S波は12時30分36秒。いちばん下の行に、P波の速さ(1)とS波の速さ(2)の空欄がある");
+
+var FIGA1=tbl({fs:16,pitch:100,rows:[
+  {n:"A地点",d:"40km",p:"12時30分19秒",s:"12時30分24秒"},
+  {n:"B地点",d:"88km",p:"12時30分25秒",s:"12時30分36秒"}],
+ gaps:[{d:"48km",p:"6秒",s:"12秒"}]},
+ "A地点とB地点の間に書き込んだ表。距離は48km、P波の時間は6秒、S波の時間は12秒");
+
+var FIGA2=tbl({fs:16,pitch:100,rows:[
+  {n:"震源",d:"0km",p:"12時30分14秒",s:"12時30分14秒",bd:true},
+  {n:"A地点",d:"40km",p:"12時30分19秒",s:"12時30分24秒"}],
+ gaps:[{d:"40km",p:"5秒",s:"10秒"}]},
+ "震源とA地点の間に書き込んだ表。距離は40km、P波の時間は5秒、S波の時間は10秒。震源で地震が起きた時刻は、12時30分14秒");
+
+/* ---------- 補充問題の解説の図：距離と初期微動継続時間の比べ(1秒＝12) ---------- */
+function figS2(){
+ var s=T(72,16,14,"初期微動継続時間","g b")+T(232,16,14,"震源からの距離","b"),Y=[58,106],L=["Y地点","X地点"],W=[120,84],TM=["10秒","7秒"],D=["80km","56km"],i;
+ for(i=0;i<2;i++)s+=T(4,Y[i]+6,16,L[i],"b")+
+  '<rect x="72" y="'+(Y[i]-15)+'" width="'+W[i]+'" height="30" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+
+  TN(80,Y[i]+6,16,TM[i],"g b")+T(232,Y[i]+6,16,D[i],"b");
+ return svg(340,140,"Y地点とX地点の、初期微動継続時間と震源からの距離を比べた図。灰色の棒の長さが初期微動継続時間。Y地点は10秒で80km、X地点は7秒で56km。時間が短いX地点のほうが、距離も短い",s)}
+
+/* ---------- 文章 ---------- */
+var Pw='<span class="m">P波</span>',Sw='<span class="v">S波</span>',GY='<span style="color:var(--muted)">',E='</span>';
+
+var POINT=
+ '<p>'+Pw+'が先に着いて、小さなゆれ(初期微動)が始まります。<br>'+Sw+'があとに着いて、大きなゆれ(主要動)が始まります。</p>'+figPS()+
+ '<p>P波が着いてから、S波が着くまでの時間を、<b style="color:var(--muted)">初期微動継続時間</b>といいます。<br>震源から遠いほど、長くなります。</p>'+
+ '<div class="formula">速さ(km/s) ＝ 距離(km) ÷ 時間(秒)</div>'+
+ '<p>地点の間の「距離」と「時間」を、表に書き込んで求めます。</p>'+FIGTBL+
+ '<p>'+Pw+'：90km ÷ 15秒 ＝ 6km/s<br>'+Sw+'：90km ÷ 30秒 ＝ 3km/s</p>';
+
+var QBODY='<p>表は、ある地震で、震源からの距離がちがう2つの地点に、P波とS波が着いた時刻を表している。(1)〜(3)を求めなさい。</p>'+FIGQ+
+ '<p class="note">表に、地点の間の「距離」と「時間」を書き込んで考えてみましょう。</p>';
+
+var ANS=
+ '<p>A地点とB地点の間の距離は、88 − 40 ＝ 48km です。時間は、着いた時刻の差です。</p>'+FIGA1+
+ '<p>(1) '+Pw+'：48km ÷ 6秒 ＝ <b>8km/s</b><br>(2) '+Sw+'：48km ÷ 12秒 ＝ <b>4km/s</b></p>'+
+ '<p>(3) 震源とA地点の間を、書き込みます。</p>'+FIGA2+
+ '<p>'+Pw+'が40kmを進む時間：40km ÷ 8km/s ＝ 5秒<br>12時30分19秒 − 5秒 ＝ 12時30分<b>14秒</b></p>'+
+ '<p class="note">S波で考えても、40km ÷ 4km/s ＝ 10秒、24秒 − 10秒 ＝ 14秒で、同じになります。</p>';
+
+var SOL2='<p>震源から遠いほど、'+GY+'初期微動継続時間'+E+'は長くなります。距離と時間は、同じ割合で変わります。</p>'+figS2()+
+ '<p>80km : '+GY+'10秒'+E+' ＝ □km : '+GY+'7秒'+E+'<br>10 × □ ＝ 80 × 7<br>□ ＝ 560 ÷ 10 ＝ <b>56km</b></p>';
+
+window.UNIT={
+no:"1-16",title:"地震",
+sections:[
+{type:"text",point:true,title:"厳選ポイント",html:POINT},
+{type:"problem",title:"問題",body:QBODY,
+ parts:[
+  {label:'(1) '+Pw+'の速さ',unit:"km/s",type:"number",accept:[8],tol:0.01},
+  {label:'(2) '+Sw+'の速さ',unit:"km/s",type:"number",accept:[4],tol:0.01},
+  {label:'(3) 地震が起きた時刻　12時30分',unit:"秒",type:"number",accept:[14],tol:0.01}
+ ]},
+{type:"answer",html:ANS},
+{type:"problem",title:"補充問題",
+ body:'<p>ある地震で、震源からの距離が80kmのY地点の'+GY+'初期微動継続時間'+E+'は、10秒だった。同じ地震で、'+GY+'初期微動継続時間'+E+'が7秒だったX地点は、震源から何kmか。</p>',
+ parts:[{label:"答え",unit:"km",type:"number",accept:[56],tol:0.5}],
+ solution:SOL2},
+{type:"text",title:"ノートに書いてみよう",html:
+ '<p>何も見ずに、ノートに表を書いてみましょう。</p>'+
+ '<p>① 地点ごとに、距離と、P波・S波が着いた時刻を書く<br>② 行と行の間に、距離と時間を書き込む</p>'+
+ '<p class="note">地点の間の「距離」と「時間」がそろえば、速さが求められます。</p>'}
+]};
+})();

@@ -13,5 +13,6 @@ window.UNITS=[
   {id:"sound-speed",no:"1-12",title:"音の速さ"},
   {id:"sound-pitch",no:"1-13",title:"音の大きさと高さ"},
   {id:"mass-weight",no:"1-14",title:"質量と重さ"},
-  {id:"force-balance",no:"1-15",title:"力のつり合い"}
+  {id:"force-balance",no:"1-15",title:"力のつり合い"},
+  {id:"earthquake",no:"1-16",title:"地震"}
 ];
