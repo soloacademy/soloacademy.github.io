@@ -42,33 +42,29 @@ function figPS(){
    行：{n:地点名, d:距離, p:P波の時刻, s:S波の時刻, merge:空欄(P波・S波に共通), bd:時刻を太字に}。o.speed＝最後に速さの空欄の行 */
 var XL=36,XP=160,XS=280;
 function tbl(o,label){
- var fs=o.fs,lg=fs+6,P=o.pitch,y0=56,s='',R=o.rows,i,y,r,g,yn,ym,bb=lg/2+fs*.6+3,tt=lg/2+fs*.9+3,tb=fs*.7+3,last;
+ var fs=o.fs,lg=fs+6,P=o.pitch,y0=56,s='',R=o.rows,i,y,yn,ym,r,g,bb=lg/2+fs*.6+3,tt=lg/2+fs*.9+3,tb=fs*.7+3,last;
+ function Y(k){return o.ys?o.ys[k]:y0+k*P}
  s+=TC(XP,14,fs,"P波","m b","middle")+TC(XS,14,fs,"S波","v b","middle")+line(4,30,336,30,"#c9d0d7",1);
- for(i=0;i<R.length;i++){r=R[i];y=y0+i*P;
+ for(i=0;i<R.length;i++){r=R[i];y=Y(i);
   s+=TC(XL,y-lg/2,fs,r.n,"b","middle")+TC(XL,y+lg/2,fs,r.d,null,"middle");
   if(r.merge)s+=blank((XP+XS)/2,y,150,r.merge);
   else s+=TC(XP,y,fs,r.p,r.bd?"b":null,"middle")+TC(XS,y,fs,r.s,r.bd?"b":null,"middle");
   g=o.gaps&&o.gaps[i];
-  if(g){yn=y+P;ym=y+P/2;
-   s+=arr(XL,y+bb,yn-tt,INK)+TC(XL+12,ym,fs,g.d,"b")+
-    arr(XP,y+tb,yn-tb,RED)+TC(XP+12,ym,fs,g.p,"m b")+
-    arr(XS,y+tb,yn-tb,BLUE)+TC(XS+12,ym,fs,g.s,"v b")}}
- last=y0+(R.length-1)*P;
- if(o.speed){last=y0+R.length*P;
-  s+=TC(XL,last,fs,"速さ","b","middle")+skm(XP,last,"(1)")+skm(XS,last,"(2)")}
+  if(g){yn=Y(i+1);ym=(y+yn)/2;
+   s+=arr(XL,y+bb,yn-tt,INK)+arr(XP,y+tb,yn-tb,RED)+arr(XS,y+tb,yn-tb,BLUE);
+   if(g.b)s+=blank(XL,ym,64,g.b.d)+blank(XP,ym,64,g.b.p)+blank(XS,ym,64,g.b.s);
+   else s+=TC(XL+12,ym,fs,g.d,"b")+TC(XP+12,ym,fs,g.p,"m b")+TC(XS+12,ym,fs,g.s,"v b")}}
+ last=Y(R.length-1);
+ if(o.speed){last+=(o.sp||P);
+  s+=TC(XL,last,fs,"速さ","b","middle")+skm(XP,last,"(4)")+skm(XS,last,"(5)")}
  return svg(340,last+34,label,s)}
 
-var FIGTBL=tbl({fs:14,pitch:88,rows:[
-  {n:"C地点",d:"60km",p:"9時5分10秒",s:"9時5分20秒"},
-  {n:"D地点",d:"150km",p:"9時5分25秒",s:"9時5分50秒"}],
- gaps:[{d:"90km",p:"15秒",s:"30秒"}]},
- "C地点とD地点の、震源からの距離と、P波・S波が着いた時刻の表。2つの行の間に、地点の間の距離90km、P波の時間15秒、S波の時間30秒を、下向きの矢印で書き込んでいる");
-
-var FIGQ=tbl({fs:14,pitch:52,rows:[
-  {n:"震源",d:"0km",merge:"(3)"},
+var FIGQ=tbl({fs:14,ys:[56,108,208],sp:48,rows:[
+  {n:"震源",d:"0km",merge:"(6)"},
   {n:"A地点",d:"40km",p:"12時30分19秒",s:"12時30分24秒"},
-  {n:"B地点",d:"88km",p:"12時30分25秒",s:"12時30分36秒"}],speed:true},
- "震源からの距離と、P波・S波が着いた時刻の表。震源は0kmで、地震が起きた時刻が(3)の空欄。A地点は40kmで、P波は12時30分19秒、S波は12時30分24秒。B地点は88kmで、P波は12時30分25秒、S波は12時30分36秒。いちばん下の行に、P波の速さ(1)とS波の速さ(2)の空欄がある");
+  {n:"B地点",d:"88km",p:"12時30分25秒",s:"12時30分36秒"}],
+ gaps:[null,{b:{d:"(1) km",p:"(2) 秒",s:"(3) 秒"}}],speed:true},
+ "震源からの距離と、P波・S波が着いた時刻の表。震源は0kmで、地震が起きた時刻が(6)の空欄。A地点は40kmで、P波は12時30分19秒、S波は12時30分24秒。B地点は88kmで、P波は12時30分25秒、S波は12時30分36秒。A地点とB地点の間に、地点の間の距離(1)、P波の時間(2)、S波の時間(3)の空欄がある。いちばん下の行に、P波の速さ(4)とS波の速さ(5)の空欄がある");
 
 var FIGA1=tbl({fs:16,pitch:100,rows:[
   {n:"A地点",d:"40km",p:"12時30分19秒",s:"12時30分24秒"},
@@ -96,22 +92,20 @@ var Pw='<span class="m">P波</span>',Sw='<span class="v">S波</span>',GY='<span 
 var POINT=
  '<p>'+Pw+'が先に着いて、小さなゆれ(初期微動)が始まります。<br>'+Sw+'があとに着いて、大きなゆれ(主要動)が始まります。</p>'+figPS()+
  '<p>P波が着いてから、S波が着くまでの時間を、<b style="color:var(--muted)">初期微動継続時間</b>といいます。<br>震源から遠いほど、長くなります。</p>'+
- '<div class="formula">速さ(km/s) ＝ 距離(km) ÷ 時間(秒)</div>'+
- '<p>地点の間の「距離」と「時間」を、表に書き込んで求めます。</p>'+FIGTBL+
- '<p>'+Pw+'：90km ÷ 15秒 ＝ 6km/s<br>'+Sw+'：90km ÷ 30秒 ＝ 3km/s</p>';
+ '<div class="formula">速さ(km/s) ＝ 距離(km) ÷ 時間(秒)</div>';
 
-var QBODY='<p>表は、ある地震で、震源からの距離がちがう2つの地点に、P波とS波が着いた時刻を表している。(1)〜(3)を求めなさい。</p>'+FIGQ+
- '<p class="note">表に、地点の間の「距離」と「時間」を書き込んで考えてみましょう。</p>';
+var QBODY='<p>表は、ある地震で、震源からの距離がちがう2つの地点に、P波とS波が着いた時刻を表している。(1)〜(6)を求めなさい。</p>'+FIGQ;
 
 var ANS=
- '<p>A地点とB地点の間の距離は、88 − 40 ＝ 48km です。時間は、着いた時刻の差です。</p>'+FIGA1+
- '<p>(1) '+Pw+'：48km ÷ 6秒 ＝ <b>8km/s</b><br>(2) '+Sw+'：48km ÷ 12秒 ＝ <b>4km/s</b></p>'+
- '<p>(3) 震源とA地点の間を、書き込みます。</p>'+FIGA2+
+ '<p>(1) 距離：88 − 40 ＝ <b>48km</b><br>(2) '+Pw+'の時間：25秒 − 19秒 ＝ <b>6秒</b><br>(3) '+Sw+'の時間：36秒 − 24秒 ＝ <b>12秒</b></p>'+FIGA1+
+ '<p class="note">時間は、着いた時刻の差です。</p>'+
+ '<p>(4) '+Pw+'：48km ÷ 6秒 ＝ <b>8km/s</b><br>(5) '+Sw+'：48km ÷ 12秒 ＝ <b>4km/s</b></p>'+
+ '<p>(6) 震源とA地点の間を、書き込みます。</p>'+FIGA2+
  '<p>'+Pw+'が40kmを進む時間：40km ÷ 8km/s ＝ 5秒<br>12時30分19秒 − 5秒 ＝ 12時30分<b>14秒</b></p>'+
  '<p class="note">S波で考えても、40km ÷ 4km/s ＝ 10秒、24秒 − 10秒 ＝ 14秒で、同じになります。</p>';
 
 var SOL2='<p>震源から遠いほど、'+GY+'初期微動継続時間'+E+'は長くなります。距離と時間は、同じ割合で変わります。</p>'+figS2()+
- '<p>80km : '+GY+'10秒'+E+' ＝ □km : '+GY+'7秒'+E+'<br>10 × □ ＝ 80 × 7<br>□ ＝ 560 ÷ 10 ＝ <b>56km</b></p>';
+ '<p>'+GY+'10秒'+E+' : 80km ＝ '+GY+'7秒'+E+' : □km<br>10 × □ ＝ 80 × 7<br>□ ＝ 560 ÷ 10 ＝ <b>56km</b></p>';
 
 window.UNIT={
 no:"1-16",title:"地震",
@@ -119,18 +113,17 @@ sections:[
 {type:"text",point:true,title:"厳選ポイント",html:POINT},
 {type:"problem",title:"問題",body:QBODY,
  parts:[
-  {label:'(1) '+Pw+'の速さ',unit:"km/s",type:"number",accept:[8],tol:0.01},
-  {label:'(2) '+Sw+'の速さ',unit:"km/s",type:"number",accept:[4],tol:0.01},
-  {label:'(3) 地震が起きた時刻　12時30分',unit:"秒",type:"number",accept:[14],tol:0.01}
+  {label:'(1) A地点とB地点の間の距離',unit:"km",type:"number",accept:[48],tol:0.01},
+  {label:'(2) '+Pw+'が進む時間',unit:"秒",type:"number",accept:[6],tol:0.01},
+  {label:'(3) '+Sw+'が進む時間',unit:"秒",type:"number",accept:[12],tol:0.01},
+  {label:'(4) '+Pw+'の速さ',unit:"km/s",type:"number",accept:[8],tol:0.01},
+  {label:'(5) '+Sw+'の速さ',unit:"km/s",type:"number",accept:[4],tol:0.01},
+  {label:'(6) 地震が起きた時刻　12時30分',unit:"秒",type:"number",accept:[14],tol:0.01}
  ]},
 {type:"answer",html:ANS},
 {type:"problem",title:"補充問題",
  body:'<p>ある地震で、震源からの距離が80kmのY地点の'+GY+'初期微動継続時間'+E+'は、10秒だった。同じ地震で、'+GY+'初期微動継続時間'+E+'が7秒だったX地点は、震源から何kmか。</p>',
  parts:[{label:"答え",unit:"km",type:"number",accept:[56],tol:0.5}],
- solution:SOL2},
-{type:"text",title:"ノートに書いてみよう",html:
- '<p>何も見ずに、ノートに表を書いてみましょう。</p>'+
- '<p>① 地点ごとに、距離と、P波・S波が着いた時刻を書く<br>② 行と行の間に、距離と時間を書き込む</p>'+
- '<p class="note">地点の間の「距離」と「時間」がそろえば、速さが求められます。</p>'}
+ solution:SOL2}
 ]};
 })();
