@@ -14,6 +14,15 @@ function arrow(x1,y1,x2,y2,k){
 function sp(c,t){return '<tspan class="'+c+' b">'+t+'</tspan>'}
 function num(x,y,c){return T(x,y,14,c,null,"middle")}
 
+/* 厳選ポイントの図：物体を、左右のひもで同じ大きさで引き合う。矢印は、ひもが物体に接する点(左右の面)から出す。どちらも「物体を」引く力なので青 */
+function pull(label){
+ var s='<line x1="14" y1="90" x2="120" y2="90" stroke="#b4bbc3" stroke-width="1.5"/><line x1="220" y1="90" x2="326" y2="90" stroke="#b4bbc3" stroke-width="1.5"/>'+
+  '<rect x="120" y="60" width="100" height="60" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(170,96,14,"物体","g","middle")+
+  arrow(120,90,60,90,BLUE)+arrow(220,90,280,90,BLUE)+
+  T(90,36,14,sp("v","物体を"),null,"middle")+T(90,54,14,"左に引く力",null,"middle")+
+  T(250,36,14,sp("v","物体を"),null,"middle")+T(250,54,14,"右に引く力",null,"middle");
+ return svg(340,130,label,s)}
+
 /* つるしたおもり。矢印は、力がはたらく点から出す：接している力は接点(ひもの両端)から、重力はおもりの中心から
    kind：plain＝矢印なし、num＝矢印(色なし)と番号だけ(問題用)、point＝色つきの矢印と文字(番号なし)、ans＝色つきの矢印と番号つきの文字
    色：ひもを＝赤、おもりを＝青、天井を＝灰色 */
@@ -57,6 +66,7 @@ function pair(rows,k,q,label){
 
 var LBL1="天井からひもでおもりがつるされている図。ひもの上端と下端、おもりの中心から、5本の力の矢印が出ていて、それぞれに番号①〜⑤が付いている";
 var LBL2="天井からつるされたおもりにはたらく5つの力の図。ひもを引く2つの力は赤、おもりを引く2つの力は青、天井を引く力は灰色。同じ色の2本が、つり合う2力";
+var FIGPULL=pull("物体が、左右のひもで、同じ大きさの力で引かれている図。左のひもは物体を左に、右のひもは物体を右に引いている。2本の矢印は、同じ直線上にあり、向きが逆で、長さが等しい");
 var FIGP=hang("num",LBL1);
 var FIGPOINT=hang("point",LBL2);
 var PAIR1=pair([["①","天井が","ひもを","引く力"],["④","おもりが","ひもを","引く力"]],"m","(1)","天井がひもを引く力と、おもりがひもを引く力の2つ。どちらもひもを引く力");
@@ -70,8 +80,9 @@ window.UNIT={
 no:"1-15",title:"力のつり合い",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
- '<p><b>「〜を」が同じ</b>2力が、つり合います。<br>引く力か押す力かは、関係ありません。</p>'+FIGPOINT+
- '<p class="note">つり合う2力<br>・天井が<span class="m">ひもを</span>引く力 と おもりが<span class="m">ひもを</span>引く力<br>・ひもが<span class="v">おもりを</span>引く力 と 地球が<span class="v">おもりを</span>引く力(重力)</p>'},
+ '<p>1つの物体にはたらく2力が、つり合う条件は3つです。</p>'+FIGPULL+
+ '<p>① <b>同じ直線上</b>にある<br>② 向きが<b>逆</b><br>③ 大きさが<b>等しい</b></p>'+
+ '<p class="note">どちらの力も、同じ物体にはたらく力です(「〜を」が同じ)。引く力か押す力かは、関係ありません。</p>'},
 {type:"problem",title:"問題",
  body:'<p>図のように、おもりがひもでつるされて、静止している。</p>'+FIGP+
  '<p>① 天井がひもを引く力<br>② ひもが天井を引く力<br>③ ひもがおもりを引く力<br>④ おもりがひもを引く力<br>⑤ 地球がおもりを引く力(重力)</p>'+
