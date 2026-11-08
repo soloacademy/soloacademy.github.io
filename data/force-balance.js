@@ -50,9 +50,9 @@ function hang(kind,label){
 function desk(kind,label){
  var col=kind==="ans",pn=kind==="num",cB=col?BLUE:INK,cR=col?RED:INK,
   s='<rect x="14" y="200" width="120" height="56" fill="'+FILL+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(20,224,13,"机","g")+
-  '<rect x="34" y="140" width="80" height="60" fill="#cfd5db" stroke="'+GRAY+'" stroke-width="1"/>'+TN(40,175,13,"物体","g")+
+  '<rect x="34" y="140" width="80" height="60" fill="#cfd5db" stroke="'+GRAY+'" stroke-width="1"/>'+TN(40,158,13,"物体","g")+
   arrow(74,170,74,220,cB)+arrow(83,200,83,150,cB)+arrow(83,200,83,250,cR);
- if(pn)s+=num(60,196,"①")+num(97,176,"②")+num(97,236,"③");
+ if(pn)s+=num(60,200,"①")+num(97,180,"②")+num(97,230,"③");
  if(col)s+=T(140,172,13,"① 地球が"+sp("v","物体を")+"引く力(重力)")+
    T(140,138,13,"② 机が"+sp("v","物体を")+"押す力")+
    T(140,244,13,"③ 物体が"+sp("m","机を")+"押す力");
