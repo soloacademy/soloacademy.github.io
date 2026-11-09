@@ -67,7 +67,7 @@ function bars(cs,h){
 
 /* ---------- 厳選ポイントの図 ---------- */
 function figPoint(){
- var s='',i,R=["流紋岩","安山岩","玄武岩"],G=["花こう岩","せん緑岩","斑れい岩"],GR1=["(流産","安産","元気な子)"],GR2=["(囲んで","先生","半殺し)"],cs=[304,322,364,382,400,418];
+ var s='',i,R=["流紋岩","安山岩","玄武岩"],G=["花こう岩","せん緑岩","斑れい岩"],GR1=["流産","安産","元気な子"],GR2=["囲んで","先生","半殺し"],cs=[304,322,364,382,400,418],MG=[null,null,"黒う◯こ","隠せ","奇跡の","観覧車"];
  s+=T(6,24,14,'<tspan class="m">火</tspan>山岩',"b")+patPor(6,32)+patLab(6,32)+T(6,78,12,"斑状組織","b")+T(118,20,12,"地表または地表付近で、急に冷える");
  for(i=0;i<3;i++)s+=rect(CX[i],32,70,46,"#fff",RULE,1)+TC(CX[i]+35,47,15,R[i],"m b","middle")+TC(CX[i]+35,65,11,GR1[i],"g","middle");
  s+=T(6,116,14,'深<tspan class="v">成</tspan>岩',"b")+patEq(6,124)+T(6,170,12,"等粒状組織","b")+T(118,112,12,"地下深くで、ゆっくり冷える");
@@ -75,7 +75,8 @@ function figPoint(){
  s+=colHead(190)+sticky(238)+line(4,250,336,250,RULE,1)+T(6,270,14,"鉱物","b");
  [118,190,262,334].forEach(function(x){s+=line(x,280,x,424,"#e6e9ed",1)});
  s+=T(6,290,12,"無色/白色","b")+T(6,350,12,"有色","b");
- MIN.forEach(function(m,r){s+=T(14,cs[r]+4,12,m.n,"b")});
+ MIN.forEach(function(m,r){s+=T(14,cs[r]+4,12,m.n,"b");if(MG[r])s+=TN(77,cs[r]+3.5,10,MG[r],"g")});
+ s+=T(206,cs[0]+4,12,"ねばりけの原因","g b");
  s+=bars(cs,12)+T(6,446,12,"棒の長さは、含まれる量のめやす","g");
  return fig(452,"火成岩の分類表。火山岩は、斑状組織で、地表または地表付近で急に冷える。流紋岩、安山岩、玄武岩。深成岩は、等粒状組織で、地下深くでゆっくり冷える。花こう岩、せん緑岩、斑れい岩。その下に、色は白っぽい、中間、黒っぽい。ねばりけは、白っぽい方が強く、黒っぽい方が弱い。鉱物は、含まれる量を棒の長さで表す。白っぽい岩石は、石英が多く、長石が多く、クロウンモが少し入っている。中間の岩石は、長石が多く、カクセン石が多く、キ石と石英が少し入っている。黒っぽい岩石は、石英がなく、長石が多く、キ石とカンラン石が多く入っている。有色鉱物は、黒から黄緑の順に、クロウンモ、カクセン石、キ石、カンラン石。",s)}
 
@@ -94,14 +95,14 @@ function figQ(){
 function figA1(){
  var s='';
  s+=T(4,24,13,"地表または")+T(4,40,13,"地表付近で")+T(4,56,13,"急に冷える")+arrowR(100,128,36)+
-  patPor(136,20)+T(136,68,12,"斑状組織","b")+arrowR(206,240,36)+T(250,42,16,'<tspan class="m">火</tspan>山岩',"b");
+  patPor(136,20)+T(136,68,12,"斑状組織","b")+arrowR(206,240,36)+T(250,42,16,"火山岩","m b");
  s+=T(4,124,13,"地下深くで")+T(4,140,13,"ゆっくり")+T(4,156,13,"冷える")+arrowR(100,128,136)+
-  patEq(136,120)+T(136,168,12,"等粒状組織","b")+arrowR(206,240,136)+T(250,142,16,'深<tspan class="v">成</tspan>岩',"b");
+  patEq(136,120)+T(136,168,12,"等粒状組織","b")+arrowR(206,240,136)+T(250,142,16,"深成岩","v b");
  return fig(192,"冷え方から組織と分類が決まる図。地表または地表付近で急に冷えると、斑状組織になり、火山岩。地下深くでゆっくり冷えると、等粒状組織になり、深成岩。",s)}
 
 /* ---------- 問題の解答の図2：色が同じ岩石の対応 ---------- */
 function figA2(){
- var s=T(136,18,14,'<tspan class="m">火</tspan>山岩',"b","middle")+T(266,18,14,'深<tspan class="v">成</tspan>岩',"b","middle"),
+ var s=T(136,18,14,"火山岩","m b","middle")+T(266,18,14,"深成岩","v b","middle"),
   Y=[52,90,128],R=["流紋岩","安山岩","玄武岩"],G=["花こう岩","せん緑岩","斑れい岩"],i;
  for(i=0;i<3;i++){
   s+=rect(4,Y[i]-15,80,30,CF[i],i?"none":RULE,1)+TC(44,Y[i],13,CN[i],null,"middle")+
@@ -121,26 +122,25 @@ function figMin(){
 
 /* ---------- 補充問題の解答の図：鉱物の表の完成形(名前は黒の太字、有色は棒の色を小さく添える) ---------- */
 function figMinA(){
- var cs=[75,111,173,209,245,281],nm=["石英","長石","クロウンモ","カクセン石","キ石","カンラン石"],sb=[null,null,"黒",null,null,"黄緑"],s=colHead(4);
+ var cs=[75,111,173,209,245,281],nm=["石英","長石","クロウンモ","カクセン石","キ石","カンラン石"],s=colHead(4);
  s+='<defs><linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b2f33"/><stop offset=".33" stop-color="#3e5030"/><stop offset=".66" stop-color="#6a7d2c"/><stop offset="1" stop-color="#b8c23f"/></linearGradient></defs><rect x="103" y="164" width="8" height="128" fill="url(#mg)"/>';
  [118,190,262,334].forEach(function(x){s+=line(x,36,x,300,"#e6e9ed",1)});
  s+=T(6,52,12,"無色/白色","b")+T(6,150,12,"有色","b");
  nm.forEach(function(t,r){
-  s+=T(14,sb[r]?cs[r]-1:cs[r]+5,15,t,"b");
-  if(sb[r])s+=T(14,cs[r]+14,11,sb[r],"g")});
+  s+=T(14,cs[r]+5,15,t,"b")});
  s+=bars(cs,14);
  return fig(304,"鉱物の表の答え。無色/白色は、石英と長石。有色は、上から、クロウンモ、カクセン石、キ石、カンラン石。棒の色は、黒から黄緑へ、だんだん変わっていく。石英は白っぽい岩石だけに含まれる。長石は、どの色の岩石にも含まれる。クロウンモは白っぽいと中間、カクセン石は中間、キ石は中間と黒っぽい、カンラン石は黒っぽい岩石に含まれる",s)}
 
 /* ---------- 文章 ---------- */
 function nw(t,c){return '<span'+(c?' class="'+c+'"':'')+' style="white-space:nowrap">'+t+'</span>'}
 /* 名前の下に、小さく語呂合わせを書く(語呂がないときは名前だけ) */
-var SM='font-size:.72rem;line-height:1.5;color:var(--muted)';
+var SM='font-size:.72rem;line-height:1.5;color:var(--muted)',SB='font-size:.72rem;line-height:1.5;font-weight:700';
 function col(g,t,c){return '<span style="display:inline-flex;flex-direction:column;align-items:center;white-space:nowrap"><span'+(c?' class="'+c+'"':'')+'>'+t+'</span>'+(g?'<span style="'+SM+'">'+g+'</span>':'')+'</span>'}
 function ann(g,name,c,t){return '<span style="white-space:nowrap;margin-right:.3rem;display:inline-flex;align-items:flex-start">'+col(g,name,c)+(t?'<span>'+t+'</span>':'')+'</span>'}
 var KA='<span class="m">火</span><span class="v">成</span>岩';
 var QNOTE='<p class="note">太い青の枠の空欄に入ります。別の空欄を押すと、そこに移ります。';
 
-var POINT='<p>'+KA+'は、マグマが冷え固まってできた岩石です。</p>'+figPoint();
+var POINT='<p>'+KA+'は、マグマが冷え固まってできた岩石です。</p>'+'<p class="note">表の中の小さな灰色の字は、覚えるための語呂合わせです。</p>'+figPoint();
 
 var ANS='<p>冷え方で、組織と分類が決まります。</p>'+figA1()+
  '<p class="note">急に冷えると、結晶が大きく育つ時間がなく、細かい粒(石基)ができます。ゆっくり冷えると、結晶が大きく育ちます。</p>'+
@@ -155,7 +155,7 @@ var SOL3='<p>棒の位置(どの色の岩石に含まれるか)で、名前が�
  '棒の色は、黒から黄緑へ、だんだん変わっていきます。</p>'+
  '<p class="note">語呂合わせ「黒うん◯、隠せ、奇跡の、観覧車」の順番と同じです。</p>';
 /* ノート用：名前の下に、語呂(小)か組織(小)。1行ごとに、上をそろえて並べる */
-function lab(main,sub){return '<span style="display:inline-flex;flex-direction:column;align-items:center;white-space:nowrap">'+main+(sub?'<span style="display:block;width:0;margin:0 auto;white-space:nowrap;'+SM+'"><span style="display:inline-block;transform:translateX(-50%)">'+sub+'</span></span>':'')+'</span>'}
+function lab(main,sub){return '<span style="display:inline-flex;flex-direction:column;align-items:center;white-space:nowrap">'+main+(sub?'<span style="display:block;width:0;margin:0 auto;white-space:nowrap;'+SB+'"><span style="display:inline-block;transform:translateX(-50%)">'+sub+'</span></span>':'')+'</span>'}
 function lbl(name,cls,sub,bold){var m=(cls||bold)?'<span'+(cls?' class="'+cls+'"':'')+'>'+(bold?'<b>'+name+'</b>':name)+'</span>':name;
  return '<span style="display:flex;align-items:flex-start;white-space:nowrap;margin-right:.3rem">'+lab(m,sub)+lab('：','')+'</span>'}
 function row(html){return '<div style="display:flex;flex-wrap:wrap;align-items:flex-start;margin:.6rem 0 .9rem 1.2em">'+html+'</div>'}
@@ -175,13 +175,13 @@ sections:[
  solution:SOL3},
 {type:"text",title:"ノートに書いてみよう",html:
  '<p>次の内容を、何も見ずに、そのままノートに書いてみましょう。</p>'+
- '<p class="note">書くのは太字の部分です。( )の中の小さな字は、語呂合わせです。</p>'+
+ '<p class="note">書くのは太字の部分です。灰色の小さな字は、語呂合わせです。</p>'+
  '<p><b>'+KA+'</b></p>'+
- row(lbl(KAN,"","斑状組織",true)+ann("(流産","<b>流紋岩</b>","m","・")+ann("安産","<b>安山岩</b>","m","・")+ann("元気な子)","<b>玄武岩</b>","m"))+
- row(lbl(SEI,"","等粒状組織",true)+ann("(囲んで","<b>花こう岩</b>","v","・")+ann("先生","<b>せん緑岩</b>","v","・")+ann("半殺し)","<b>斑れい岩</b>","v"))+
+ row(lbl(KAN,"","斑状組織",true)+ann("流産","<b>流紋岩</b>","m","・")+ann("安産","<b>安山岩</b>","m","・")+ann("元気な子","<b>玄武岩</b>","m"))+
+ row(lbl(SEI,"","等粒状組織",true)+ann("囲んで","<b>花こう岩</b>","v","・")+ann("先生","<b>せん緑岩</b>","v","・")+ann("半殺し","<b>斑れい岩</b>","v"))+
  '<p><b>鉱物</b></p>'+
  row(lbl("無色/白色","","",false)+ann(null,"<b>石英</b>","","、")+ann(null,"<b>長石</b>",""))+
- row(lbl("有色","","",false)+ann("(黒う○こ","<b>クロウンモ</b>","","、")+ann("隠せ","<b>カクセン石</b>","","、")+ann("奇跡の","<b>キ石</b>","","、")+ann("観覧車)","<b>カンラン石</b>",""))+
+ row(lbl("有色","","",false)+ann("黒◯んこ","<b>クロウンモ</b>","","、")+ann("隠せ","<b>カクセン石</b>","","、")+ann("奇跡の","<b>キ石</b>","","、")+ann("観覧車","<b>カンラン石</b>",""))+
  '<p class="note">書けたら、厳選ポイントと見比べましょう。</p>'}
 ]};
 })();
