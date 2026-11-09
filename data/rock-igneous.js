@@ -108,18 +108,6 @@ function figA2(){
    line(172,Y[i],230,Y[i],GRAY,1.5)+TC(136,Y[i],15,R[i],"m b","middle")+TC(266,Y[i],15,G[i],"v b","middle")}
  return fig(150,"色が同じ岩石の対応の図。白っぽい岩石は、火山岩が流紋岩、深成岩が花こう岩。中間の岩石は、火山岩が安山岩、深成岩がせん緑岩。黒っぽい岩石は、火山岩が玄武岩、深成岩が斑れい岩。",s)}
 
-/* ---------- 補充問題の解答の図：行＝組織、列＝色。答えは(1)〜(4) ---------- */
-function figS(){
- var s='',i,j,nm=[["流紋岩","安山岩","玄武岩"],["花こう岩","せん緑岩","斑れい岩"]],
-  ans={"0,0":1,"1,2":2,"0,2":3,"1,1":4};
- s+=T(6,29+5,14,"斑状組織","b")+T(6,85+5,14,"等粒状組織","b");
- for(j=0;j<2;j++)for(i=0;i<3;i++){
-  var x=112+72*i,y=4+56*j,a=ans[j+","+i];
-  s+=rect(x,y,70,50,"#fff",RULE,1)+TC(x+35,y+31,a?15:14,nm[j][i],a?(j?"v b":"m b"):"g","middle");
-  if(a)s+='<circle cx="'+(x+11)+'" cy="'+(y+11)+'" r="8" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+TC(x+11,y+11,12,a,"b","middle")}
- s+=colHead(118);
- return fig(150,"組織と色から岩石名を選ぶ表。行は斑状組織と等粒状組織、列は表の下に書かれた、白っぽい、中間、黒っぽい。斑状組織の行は、流紋岩、安山岩、玄武岩。等粒状組織の行は、花こう岩、せん緑岩、斑れい岩。答えは、(1)が斑状組織で白っぽい流紋岩、(2)が等粒状組織で黒っぽい斑れい岩、(3)が斑状組織で黒っぽい玄武岩、(4)が等粒状組織で中間のせん緑岩。",s)}
-
 /* ---------- 最終練習の図：鉱物の表(6か所が空欄) ---------- */
 var A3={qz:"石英",fs:"長石",bi:"クロウンモ",hb:"カクセン石",px:"キ石",ol:"カンラン石"};
 var C3=["キ石","石英","カンラン石","長石","クロウンモ","カクセン石"];
@@ -131,6 +119,17 @@ function figMin(){
  s+=bars(cs,14);
  return fig(304,"鉱物の表。色は、白っぽい、中間、黒っぽい。無色/白色の2つと、有色の4つの名称が空欄になっている。棒の長さは、含まれる量を表す。有色は、上から黒、暗い緑、オリーブ色、黄緑の順。",s,true)}
 
+/* ---------- 補充問題の解答の図：鉱物の表の完成形(名前は黒の太字、有色は棒の色を小さく添える) ---------- */
+function figMinA(){
+ var cs=[75,111,173,209,245,281],nm=["石英","長石","クロウンモ","カクセン石","キ石","カンラン石"],sb=[null,null,"黒","暗い緑","オリーブ","黄緑"],s=colHead(4);
+ [118,190,262,334].forEach(function(x){s+=line(x,36,x,300,"#e6e9ed",1)});
+ s+=T(6,52,12,"無色/白色","b")+T(6,150,12,"有色","b");
+ nm.forEach(function(t,r){
+  s+=T(14,sb[r]?cs[r]-1:cs[r]+5,15,t,"b");
+  if(sb[r])s+=T(14,cs[r]+14,11,sb[r],"g")});
+ s+=bars(cs,14);
+ return fig(304,"鉱物の表の答え。無色/白色は、石英と長石。有色は、上から、黒のクロウンモ、暗い緑のカクセン石、オリーブ色のキ石、黄緑のカンラン石。石英は白っぽい岩石だけに含まれる。長石は、どの色の岩石にも含まれる。クロウンモは白っぽいと中間、カクセン石は中間、キ石は中間と黒っぽい、カンラン石は黒っぽい岩石に含まれる",s)}
+
 /* ---------- 文章 ---------- */
 function nw(t,c){return '<span'+(c?' class="'+c+'"':'')+' style="white-space:nowrap">'+t+'</span>'}
 /* 名前の上に、小さく語呂合わせを書く(語呂がないときは、同じ高さの空白) */
@@ -138,7 +137,6 @@ function col(g,t,c){return '<span style="display:inline-flex;flex-direction:colu
 function ann(g,name,c,t){return '<span style="white-space:nowrap;margin-right:.3rem">'+col(g,name,c)+(t?col(g===null?null:"",t,""):"")+'</span>'}
 var KA='<span class="m">火</span><span class="v">成</span>岩';
 var QNOTE='<p class="note">太い青の枠の空欄に入ります。別の空欄を押すと、そこに移ります。';
-var CH6=["流紋岩","安山岩","玄武岩","花こう岩","せん緑岩","斑れい岩"];
 
 var POINT='<p>'+KA+'は、マグマが冷え固まってできた岩石です。</p>'+figPoint()+
  '<div style="border-top:1px solid var(--rule);margin-top:1.2rem;padding-top:.6rem"><p><b>覚え方</b></p>'+
@@ -151,9 +149,13 @@ var ANS='<p>冷え方で、組織と分類が決まります。</p>'+figA1()+
  '<p>色で、岩石の名前が決まります。</p>'+figA2()+
  '<p class="note">同じ色の岩石は、成分が同じで、冷え方だけがちがいます。</p>';
 
-var SOL2='<p>組織で行を、色で列を選びます。</p>'+figS()+
- '<p>'+nw('(1) <b class="m">流紋岩</b>')+'　'+nw('(2) <b class="v">斑れい岩</b>')+'　'+nw('(3) <b class="m">玄武岩</b>')+'　'+nw('(4) <b class="v">せん緑岩</b>')+'</p>';
-
+var SOL3='<p>棒の位置(どの色の岩石に含まれるか)で、名前が決まります。</p>'+figMinA()+
+ '<p>無色/白色の鉱物は、<b>石英</b>と<b>長石</b>です。<br>'+
+ '石英は、白っぽい岩石に多く、黒っぽい岩石にはありません。<br>'+
+ '長石は、どの色の岩石にも含まれ、棒がいちばん長い鉱物です。</p>'+
+ '<p>有色の鉱物は、白っぽい側から順に、<b>クロウンモ → カクセン石 → キ石 → カンラン石</b>です。<br>'+
+ '棒の色は、黒 → 暗い緑 → オリーブ → 黄緑の順になります。</p>'+
+ '<p class="note">語呂合わせ「黒う○こ、隠せ、奇跡の、観覧車」の順番と同じです。</p>';
 window.UNIT={
 no:"1-17",title:"火成岩と鉱物",
 sections:[
@@ -163,18 +165,9 @@ sections:[
  parts:[{type:"tree",svg:figQ(),answers:A1,choices:C1}]},
 {type:"answer",html:ANS},
 {type:"problem",title:"補充問題",
- body:'<p>次の(1)〜(4)の特徴をもつ火成岩の名前を、選びなさい。</p>'+
-  '<p>(1) 斑状組織で、白っぽい</p><p>(2) 等粒状組織で、黒っぽい</p><p>(3) 斑状組織で、黒っぽい</p><p>(4) 等粒状組織で、中間の色</p>',
- parts:[
-  {label:"(1)",type:"choice",choices:CH6,accept:["流紋岩"]},
-  {label:"(2)",type:"choice",choices:CH6,accept:["斑れい岩"]},
-  {label:"(3)",type:"choice",choices:CH6,accept:["玄武岩"]},
-  {label:"(4)",type:"choice",choices:CH6,accept:["せん緑岩"]}
- ],
- solution:SOL2},
-{type:"problem",title:"最終練習",
  body:'<p>表の空欄に入る名称を、下のボタンを押して入れなさい。</p>'+QNOTE+'棒の長さは、含まれる量のめやすです。</p>',
- parts:[{type:"tree",svg:figMin(),answers:A3,choices:C3}]},
+ parts:[{type:"tree",svg:figMin(),answers:A3,choices:C3}],
+ solution:SOL3},
 {type:"text",title:"ノートに書いてみよう",html:
  '<p>次の内容を、何も見ずに、そのままノートに書いてみましょう。</p>'+
  '<p>'+KA+'</p>'+
