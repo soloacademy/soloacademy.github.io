@@ -74,8 +74,8 @@ function figPoint(){
  for(i=0;i<3;i++)s+=rect(CX[i],124,70,46,"#fff",RULE,1)+TC(CX[i]+35,147,15,G[i],"v b","middle");
  s+=colHead(190)+sticky(238)+line(4,250,336,250,RULE,1)+T(6,270,14,"鉱物","b");
  [118,190,262,334].forEach(function(x){s+=line(x,280,x,424,"#e6e9ed",1)});
- s+=T(6,290,12,"無色鉱物","b")+T(6,350,12,"有色鉱物(黒 → 黄緑)","b");
- MIN.forEach(function(m,r){s+=T(14,cs[r]+4,12,m.n,"m b")});
+ s+=T(6,290,12,"無色・白色","b")+T(6,350,12,"有色","b");
+ MIN.forEach(function(m,r){s+=T(14,cs[r]+4,12,m.n,"b")});
  s+=bars(cs,12)+T(6,446,12,"棒の長さは、含まれる量のめやす","g");
  return fig(452,"火成岩の分類表。火山岩は、斑状組織で、地表または地表付近で急に冷える。流紋岩、安山岩、玄武岩。深成岩は、等粒状組織で、地下深くでゆっくり冷える。花こう岩、せん緑岩、斑れい岩。その下に、色は白っぽい、中間、黒っぽい。ねばりけは、白っぽい方が強く、黒っぽい方が弱い。鉱物は、含まれる量を棒の長さで表す。白っぽい岩石は、石英が多く、長石が多く、クロウンモが少し入っている。中間の岩石は、長石が多く、カクセン石が多く、キ石と石英が少し入っている。黒っぽい岩石は、石英がなく、長石が多く、キ石とカンラン石が多く入っている。有色鉱物は、黒から黄緑の順に、クロウンモ、カクセン石、キ石、カンラン石。",s)}
 
@@ -126,15 +126,16 @@ var C3=["キ石","石英","カンラン石","長石","クロウンモ","カク�
 function figMin(){
  var cs=[75,111,173,209,245,281],ids=["qz","fs","bi","hb","px","ol"],s=colHead(4);
  [118,190,262,334].forEach(function(x){s+=line(x,36,x,300,"#e6e9ed",1)});
- s+=T(6,52,12,"無色鉱物","b")+T(6,150,12,"有色鉱物(黒 → 黄緑)","b");
+ s+=T(6,52,12,"無色・白色","b")+T(6,150,12,"有色","b");
  ids.forEach(function(id,r){s+=bl(id,14,cs[r]-15,90,30)});
  s+=bars(cs,14);
- return fig(304,"鉱物の表。色は、白っぽい、中間、黒っぽい。無色鉱物の2つと、有色鉱物の4つの名称が空欄になっている。棒の長さは、含まれる量を表す。有色鉱物は、上から黒、暗い緑、オリーブ色、黄緑の順。",s,true)}
+ return fig(304,"鉱物の表。色は、白っぽい、中間、黒っぽい。無色・白色の2つと、有色の4つの名称が空欄になっている。棒の長さは、含まれる量を表す。有色は、上から黒、暗い緑、オリーブ色、黄緑の順。",s,true)}
 
 /* ---------- 文章 ---------- */
 function nw(t,c){return '<span'+(c?' class="'+c+'"':'')+' style="white-space:nowrap">'+t+'</span>'}
 /* 名前の上に、小さく語呂合わせを書く(語呂がないときは、同じ高さの空白) */
-function ann(g,name,c,t){return '<span style="display:inline-flex;flex-direction:column;align-items:flex-start;vertical-align:bottom;margin-right:.3rem;white-space:nowrap"><span style="font-size:.72rem;line-height:1.5;color:var(--muted)">'+(g||'&nbsp;')+'</span><span><span class="'+c+'">'+name+'</span>'+(t||'')+'</span></span>'}
+function col(g,t,c){return '<span style="display:inline-flex;flex-direction:column;align-items:center;vertical-align:bottom">'+(g===null?'':'<span style="font-size:.72rem;line-height:1.5;color:var(--muted);white-space:nowrap">'+(g||'&nbsp;')+'</span>')+'<span'+(c?' class="'+c+'"':'')+'>'+t+'</span></span>'}
+function ann(g,name,c,t){return '<span style="white-space:nowrap;margin-right:.3rem">'+col(g,name,c)+(t?col(g===null?null:"",t,""):"")+'</span>'}
 var KA='<span class="m">火</span><span class="v">成</span>岩';
 var QNOTE='<p class="note">太い青の枠の空欄に入ります。別の空欄を押すと、そこに移ります。';
 var CH6=["流紋岩","安山岩","玄武岩","花こう岩","せん緑岩","斑れい岩"];
@@ -175,12 +176,13 @@ sections:[
  body:'<p>表の空欄に入る名称を、下のボタンを押して入れなさい。</p>'+QNOTE+'棒の長さは、含まれる量のめやすです。</p>',
  parts:[{type:"tree",svg:figMin(),answers:A3,choices:C3}]},
 {type:"text",title:"ノートに書いてみよう",html:
- '<p>次の内容を、何も見ずに、そのままノートに書いてみましょう。語呂合わせは、名前の上に小さく書きます。</p>'+
+ '<p>次の内容を、何も見ずに、そのままノートに書いてみましょう。</p>'+
  '<p>'+KA+'</p>'+
- '<p>'+nw("火山岩","m")+'(斑状組織):'+ann("流産","流紋岩","m","・")+ann("安産","安山岩","m","・")+ann("元気な子","玄武岩","m")+'</p>'+
- '<p>'+nw("深成岩","v")+'(等粒状組織):'+ann("囲んで","花こう岩","v","・")+ann("先生","せん緑岩","v","・")+ann("半殺し","斑れい岩","v")+'</p>'+
- '<p>無色鉱物:'+ann("","石英","m","、")+ann("","長石","m")+'</p>'+
- '<p>有色鉱物:'+ann("黒う○こ","クロウンモ","m","、")+ann("隠せ","カクセン石","m","、")+ann("奇跡の","キ石","m","、")+ann("観覧車","カンラン石","m")+'</p>'+
+ '<p style="margin-left:1.2em">'+nw("火山岩","m")+'(斑状組織):'+ann("流産","流紋岩","m","・")+ann("安産","安山岩","m","・")+ann("元気な子","玄武岩","m")+'</p>'+
+ '<p style="margin-left:1.2em">'+nw("深成岩","v")+'(等粒状組織):'+ann("囲んで","花こう岩","v","・")+ann("先生","せん緑岩","v","・")+ann("半殺し","斑れい岩","v")+'</p>'+
+ '<p>鉱物</p>'+
+ '<p style="margin-left:1.2em">無色・白色:'+ann(null,"石英","","、")+ann(null,"長石","")+'</p>'+
+ '<p style="margin-left:1.2em">有色:'+ann("黒う○こ","クロウンモ","","、")+ann("隠せ","カクセン石","","、")+ann("奇跡の","キ石","","、")+ann("観覧車","カンラン石","")+'</p>'+
  '<p class="note">書けたら、厳選ポイントと見比べましょう。</p>'}
 ]};
 })();
