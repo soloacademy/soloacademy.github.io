@@ -157,6 +157,14 @@ var SOL3='<p>棒の位置(どの色の岩石に含まれるか)で、名前が�
  '<p>有色の鉱物は、白っぽい側から順に、<b>クロウンモ → カクセン石 → キ石 → カンラン石</b>です。<br>'+
  '棒の色は、黒から黄緑へ、だんだん変わっていきます。</p>'+
  '<p class="note">語呂合わせ「黒うん◯、隠せ、奇跡の、観覧車」の順番と同じです。</p>';
+/* ノート用：名前の上に語呂(小)、下に組織(小)。1行ごとに、上をそろえて並べる */
+var SM='font-size:.72rem;line-height:1.5;color:var(--muted)';
+function lab(main,sub,sp){return '<span style="display:inline-flex;flex-direction:column;align-items:center;white-space:nowrap">'+(sp?'<span style="'+SM+'">&nbsp;</span>':'')+main+(sub?'<span style="display:block;width:0;margin:0 auto;white-space:nowrap;'+SM+'"><span style="display:inline-block;transform:translateX(-50%)">'+sub+'</span></span>':'')+'</span>'}
+function lbl(name,cls,sub,sp,bold){var m=(cls||bold)?'<span'+(cls?' class="'+cls+'"':'')+'>'+(bold?'<b>'+name+'</b>':name)+'</span>':name;
+ return '<span style="display:flex;align-items:flex-start;white-space:nowrap;margin-right:.3rem">'+lab(m,sub,sp)+lab('：','',sp)+'</span>'}
+function row(html,mt){return '<div style="display:flex;flex-wrap:wrap;align-items:flex-start;margin:'+(mt||'.6rem')+' 0 .6rem 1.2em">'+html+'</div>'}
+var NEG='-1.08rem';
+
 window.UNIT={
 no:"1-17",title:"火成岩と鉱物",
 sections:[
@@ -171,12 +179,13 @@ sections:[
  solution:SOL3},
 {type:"text",title:"ノートに書いてみよう",html:
  '<p>次の内容を、何も見ずに、そのままノートに書いてみましょう。</p>'+
+ '<p class="note">書くのは太字の部分です。( )の中の小さな字は、語呂合わせです。</p>'+
  '<p><b>'+KA+'</b></p>'+
- '<p style="margin-left:1.2em">'+nw("<b>火山岩</b>","m")+'(斑状組織)：'+ann("流産","<b>流紋岩</b>","m","・")+ann("安産","<b>安山岩</b>","m","・")+ann("元気な子","<b>玄武岩</b>","m")+'</p>'+
- '<p style="margin-left:1.2em">'+nw("<b>深成岩</b>","v")+'(等粒状組織)：'+ann("囲んで","<b>花こう岩</b>","v","・")+ann("先生","<b>せん緑岩</b>","v","・")+ann("半殺し","<b>斑れい岩</b>","v")+'</p>'+
+ row(lbl("火山岩","m","斑状組織",true,true)+ann("(流産","<b>流紋岩</b>","m","・")+ann("安産","<b>安山岩</b>","m","・")+ann("元気な子)","<b>玄武岩</b>","m"),NEG)+
+ row(lbl("深成岩","v","等粒状組織",true,true)+ann("(囲んで","<b>花こう岩</b>","v","・")+ann("先生","<b>せん緑岩</b>","v","・")+ann("半殺し)","<b>斑れい岩</b>","v"))+
  '<p><b>鉱物</b></p>'+
- '<p style="margin-left:1.2em">無色/白色：'+ann(null,"<b>石英</b>","","、")+ann(null,"<b>長石</b>","")+'</p>'+
- '<p style="margin-left:1.2em">有色：'+ann("黒◯んこ","<b>クロウンモ</b>","","、")+ann("隠せ","<b>カクセン石</b>","","、")+ann("奇跡の","<b>キ石</b>","","、")+ann("観覧車","<b>カンラン石</b>","")+'</p>'+
+ row(lbl("無色/白色","","",false,false)+ann(null,"<b>石英</b>","","、")+ann(null,"<b>長石</b>",""))+
+ row(lbl("有色","","",true,false)+ann("(黒◯んこ","<b>クロウンモ</b>","","、")+ann("隠せ","<b>カクセン石</b>","","、")+ann("奇跡の","<b>キ石</b>","","、")+ann("観覧車)","<b>カンラン石</b>",""))+
  '<p class="note">書けたら、厳選ポイントと見比べましょう。</p>'}
 ]};
 })();
