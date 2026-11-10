@@ -15,5 +15,6 @@ window.UNITS=[
   {id:"mass-weight",no:"1-14",title:"質量と重さ"},
   {id:"force-balance",no:"1-15",title:"力のつり合い"},
   {id:"earthquake",no:"1-16",title:"地震"},
-  {id:"rock-igneous",no:"1-17",title:"火成岩と鉱物"}
+  {id:"rock-igneous",no:"1-17",title:"火成岩と鉱物"},
+  {id:"rock-sedimentary",no:"1-18",title:"堆積岩と化石"}
 ];
