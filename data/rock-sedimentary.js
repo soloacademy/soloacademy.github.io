@@ -52,15 +52,15 @@ function trilobite(cx,top,gap){
 function fusulina(cx,top,gap){
  return '<g transform="translate('+(cx-24)+','+top+')"><path d="M3,20 Q24,2 45,20 Q24,38 3,20Z"/><g fill="none" stroke="'+gap+'" stroke-width="1.2"><path d="M10,20 Q24,9 38,20 Q24,31 10,20Z M17,20 Q24,15 31,20 Q24,25 17,20Z"/></g></g>'}
 function fig2(){
- var H=330,CX=[31,88,144],R1=118,R2=196,Y1=128,Y2=246,s='',i;
+ var H=330,CX=[31,88,144],R1=170,R2=240,Y1=128,Y2=246,s='',i;
  s+='<rect x="6" y="6" width="163" height="318" fill="'+TR+'"/><rect x="173" y="6" width="161" height="318" fill="'+TB+'"/>';
  s+=TN(14,28,15,"示準化石","m b")+TN(14,52,12,'地層ができた<tspan class="m b">時代</tspan>がわかる')+TN(14,76,13,'範囲：<tspan class="m b">広い</tspan>')+TN(14,100,13,'期間：<tspan class="m b">短い</tspan>');
  s+=TN(181,28,15,"示相化石","v b")+TN(181,52,12,'地層ができた<tspan class="v b">環境</tspan>がわかる')+TN(181,76,13,'範囲：<tspan class="v b">狭い</tspan>')+TN(181,100,13,'期間：<tspan class="v b">長い</tspan>');
  /* 左：例(上＝三葉虫・恐竜・マンモス、下＝フズリナ・アンモナイト・ビカリア)、地質年代、古い→新しい */
  var TP=["三葉虫","恐竜","マンモス"],BT=["フズリナ","アンモナイト","ビカリア"],EN=["古生代","中生代","新生代"];
- for(i=0;i<3;i++)s+=TN(CX[i],R1+53,10,TP[i],"m b","middle")+TN(CX[i],R2+53,10,BT[i],"m b","middle")+TN(CX[i],284,13,EN[i],"b","middle");
- s+=TN(14,312,11,"古い","g")+TN(161,312,11,"新しい","g","end")+
-  '<g stroke="'+MUTED+'" stroke-width="1.2" fill="none"><line x1="43" y1="308" x2="121" y2="308"/><polyline points="115,303 121,308 115,313"/></g>';
+ for(i=0;i<3;i++)s+=TN(CX[i],R1+53,10,TP[i],"m b","middle")+TN(CX[i],R2+53,10,BT[i],"m b","middle")+TN(CX[i],130,13,EN[i],"b","middle");
+ s+=TN(14,152,11,"古い","g")+TN(161,152,11,"新しい","g","end")+
+  '<g stroke="'+MUTED+'" stroke-width="1.2" fill="none"><line x1="43" y1="148" x2="121" y2="148"/><polyline points="115,143 121,148 115,153"/></g>';
  s+='<g fill="'+RED+'" fill-rule="evenodd">'+trilobite(CX[0],R1,TR)+ic(CX[1],R1,PT.trex)+ic(CX[2],R1,PT.mammoth)+fusulina(CX[0],R2,TR)+ic(CX[1],R2,PT.ammonite)+ic(CX[2],R2,PT.bicaria)+'</g>';
  /* 右：サンゴ(浜辺)とシジミ */
  s+=TN(181,Y1-8,12,'<tspan class="v b">サンゴ</tspan>：あたたかく浅い海')+TN(181,Y2-6,12,'<tspan class="v b">シジミ</tspan>：湖や河口');
@@ -77,7 +77,7 @@ function fig2(){
  s+='<g fill="'+BLUE+'"><path transform="translate(179.5,'+(Y2+12)+') scale(.58,.3)" d="'+PT.wave+'"/></g>'+
   line(181,Y2+74,326,Y2+74,BLUE,1.2)+shijimi(190,Y2+46,-8)+shijimi(236,Y2+48,6)+shijimi(282,Y2+45,-4)+
   bubble(196,Y2+38,2)+bubble(200,Y2+30,1.4)+bubble(243,Y2+40,2.2)+bubble(289,Y2+36,1.8)+bubble(292,Y2+29,1.3);
- return fig(H,"化石の表。左は示準化石。地層ができた時代がわかる、範囲は広い、期間は短い。その下に、古生代の三葉虫とフズリナ、中生代の恐竜とアンモナイト、新生代のマンモスとビカリアを縦に並べ、その下に古生代、中生代、新生代、さらに古い方から新しい方への矢印がある。右は示相化石。地層ができた環境がわかる、範囲は狭い、期間は長い。その下に、あたたかく浅い海の浜辺とサンゴ、湖や河口のシジミの、生活環境の絵がある。",s)}
+ return fig(H,"化石の表。左は示準化石。地層ができた時代がわかる、範囲は広い、期間は短い。その下に、古生代、中生代、新生代の名前、その下に古い方から新しい方への矢印、その下に動物の例として三葉虫、恐竜、マンモス、さらにその下に貝などの例としてフズリナ、アンモナイト、ビカリアを並べてある。右は示相化石。地層ができた環境がわかる、範囲は狭い、期間は長い。その下に、あたたかく浅い海の浜辺とサンゴ、湖や河口のシジミの、生活環境の絵がある。",s)}
 
 /* ---------- 問題の解答：見分け方の分かれ道 ---------- */
 function flowFig(){
@@ -110,17 +110,17 @@ function boxFig(){
 /* ---------- 最終練習：地質年代(空欄3か所) ---------- */
 function eraFig(){
  var CX=[57,170,283],TP=["三葉虫","恐竜","マンモス"],BT=["フズリナ","アンモナイト","ビカリア"],s='',i;
- for(i=0;i<3;i++)s+=TN(CX[i],69,12,TP[i],"m b","middle")+TN(CX[i],139,12,BT[i],"m b","middle")+bl("e"+(i+1),CX[i]-40,158,80,30);
- s+=TN(20,222,11,"古い","g")+TN(320,222,11,"新しい","g","end")+'<g stroke="'+MUTED+'" stroke-width="1.2" fill="none"><line x1="49" y1="218" x2="280" y2="218"/><polyline points="274,213 280,218 274,223"/></g>';
- s+='<g fill="'+RED+'" fill-rule="evenodd">'+trilobite(CX[0],14,"#fff")+ic(CX[1],14,PT.trex)+ic(CX[2],14,PT.mammoth)+fusulina(CX[0],84,"#fff")+ic(CX[1],84,PT.ammonite)+ic(CX[2],84,PT.bicaria)+'</g>';
- return fig(234,"地質年代の表。古い方から新しい方への矢印の上に、3つの空欄がある。それぞれの空欄の上に、三葉虫とフズリナ、恐竜とアンモナイト、マンモスとビカリアの絵と名前が並んでいる",s,true)}
+ for(i=0;i<3;i++)s+=bl("e"+(i+1),CX[i]-40,10,80,30)+TN(CX[i],139,12,TP[i],"m b","middle")+TN(CX[i],209,12,BT[i],"m b","middle");
+ s+=TN(20,64,11,"古い","g")+TN(320,64,11,"新しい","g","end")+'<g stroke="'+MUTED+'" stroke-width="1.2" fill="none"><line x1="49" y1="60" x2="280" y2="60"/><polyline points="274,55 280,60 274,65"/></g>';
+ s+='<g fill="'+RED+'" fill-rule="evenodd">'+trilobite(CX[0],84,"#fff")+ic(CX[1],84,PT.trex)+ic(CX[2],84,PT.mammoth)+fusulina(CX[0],154,"#fff")+ic(CX[1],154,PT.ammonite)+ic(CX[2],154,PT.bicaria)+'</g>';
+ return fig(226,"地質年代の表。いちばん上に、3つの空欄がある。その下に、古い方から新しい方への矢印。その下に、動物の例として、三葉虫、恐竜、マンモスの絵と名前。さらにその下に、貝などの例として、フズリナ、アンモナイト、ビカリアの絵と名前が並んでいる",s,true)}
 
 /* ---------- 文章 ---------- */
 var QB='<p class="note">太い青の枠の空欄に入ります。別の空欄を押すと、そこに移ります。</p>';
 var A1={flow:"流水のはたらき",r1:"れき岩",r2:"砂岩",r3:"泥岩",bio:"生物由来",r4:"チャート",r5:"石灰岩",vol:"噴火の跡",r6:"凝灰岩"};
 var C1=["石灰岩","噴火の跡","砂岩","チャート","流水のはたらき","凝灰岩","泥岩","生物由来","れき岩"];
 var A3={e1:"古生代",e2:"中生代",e3:"新生代"},C3=["新生代","古生代","中生代"];
-var CH4=["広い","狭い","短い","長い"];
+var CH2=["広い・短い","狭い・長い"];
 var M='<span class="m">示準化石</span>',V='<span class="v">示相化石</span>';
 function row(t){return '<p style="margin:.2rem 0 .2rem 1.2em">'+t+'</p>'}
 
@@ -129,7 +129,7 @@ var POINT='<p>堆積岩は、土砂や生物の死がい、火山灰などが積
 
 var ANS='<p>手がかりを、上から順に調べます。</p>'+flowFig();
 
-var SOL2='<p>(1) <b>広い</b>　(2) <b>短い</b>　(3) <b>狭い</b>　(4) <b>長い</b></p>'+boxFig()+
+var SOL2='<p>(1) <b>広い・短い</b>　(2) <b>狭い・長い</b></p>'+boxFig()+
  '<p>'+M+'は、短い期間に、広い範囲で栄えたので、地層ができた<b>時代</b>がわかります。</p>'+
  '<p>'+V+'は、長い期間、限られた場所で生きたので、地層ができた<b>環境</b>がわかります。</p>';
 
@@ -142,13 +142,11 @@ sections:[
  parts:[{type:"tree",svg:tableFig("pb",true),answers:A1,choices:C1}]},
 {type:"answer",html:ANS},
 {type:"problem",title:"補充問題",
- body:'<p>示準化石と示相化石について、次の(1)〜(4)を選びなさい。</p>'+
-  '<p>(1) '+M+'の範囲<br>(2) '+M+'の期間<br>(3) '+V+'の範囲<br>(4) '+V+'の期間</p>',
+ body:'<p>示準化石と示相化石は、それぞれ、どちらの特徴にあてはまるか。選びなさい。</p>'+
+  '<p class="note">「範囲・期間」の組み合わせを選びます。</p>',
  parts:[
-  {label:'(1)',type:"choice",choices:CH4,accept:["広い"]},
-  {label:'(2)',type:"choice",choices:CH4,accept:["短い"]},
-  {label:'(3)',type:"choice",choices:CH4,accept:["狭い"]},
-  {label:'(4)',type:"choice",choices:CH4,accept:["長い"]}
+  {label:'(1) '+M,type:"choice",choices:CH2,accept:["広い・短い"]},
+  {label:'(2) '+V,type:"choice",choices:CH2,accept:["狭い・長い"]}
  ],
  solution:SOL2},
 {type:"problem",title:"最終練習",
