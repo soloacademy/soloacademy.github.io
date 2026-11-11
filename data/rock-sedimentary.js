@@ -56,7 +56,7 @@ function trilobite(cx,top,gap){
 function fusulina(cx,top,gap){
  return '<g transform="translate('+(cx-24)+','+top+')"><path d="M3,20 Q24,2 45,20 Q24,38 3,20Z"/><g fill="none" stroke="'+gap+'" stroke-width="1.2"><path d="M10,20 Q24,9 38,20 Q24,31 10,20Z M17,20 Q24,15 31,20 Q24,25 17,20Z"/></g></g>'}
 function fig2(){
- var H=330,CX=[31,88,144],R1=170,R2=240,Y1=128,Y2=246,s='',i;
+ var H=330,CX=[31,88,144],R1=170,R2=240,Y1=128,Y2=242,s='',i;
  s+='<rect x="6" y="6" width="163" height="318" fill="'+TR+'"/><rect x="173" y="6" width="161" height="318" fill="'+TB+'"/>';
  s+=TN(14,28,15,"示準化石","m b")+TN(14,52,12,'地層ができた<tspan class="m b">時代</tspan>がわかる')+TN(14,76,13,'範囲：<tspan class="m b">広い</tspan>')+TN(14,100,13,'期間：<tspan class="m b">短い</tspan>');
  s+=TN(181,28,15,"示相化石","v b")+TN(181,52,12,'地層ができた<tspan class="v b">環境</tspan>がわかる')+TN(181,76,13,'範囲：<tspan class="v b">狭い</tspan>')+TN(181,100,13,'期間：<tspan class="v b">長い</tspan>');
@@ -68,17 +68,17 @@ function fig2(){
  s+='<g fill="'+RED+'" fill-rule="evenodd">'+trilobite(CX[0],R1,TR)+ic(CX[1],R1,PT.trex)+ic(CX[2],R1,PT.mammoth)+fusulina(CX[0],R2,TR)+ic(CX[1],R2,PT.ammonite)+ic(CX[2],R2,PT.bicaria)+'</g>';
  /* 右：サンゴ(浜辺)とシジミ */
  s+=TN(181,Y1-8,12,'<tspan class="v b">サンゴ</tspan>：あたたかく浅い海')+TN(181,Y2-6,12,'<tspan class="v b">シジミ</tspan>：湖や河口');
- var GL=Y1+36,WS=Y1+46,XS=212,XE=332,YE=Y1+94,BB=Y1+96,sl=(YE-GL)/(XE-XS),xw=XS+(WS-GL)/sl,i2,ds='',sd=7,rp='';
+ var GL=Y1+34,WS=Y1+44,XS=222,XE=332,YE=Y1+86,BB=Y1+90,sl=(YE-GL)/(XE-XS),xw=XS+(WS-GL)/sl,i2,ds='',sd=7,rp='',PS=.155;
  function fl(x){return x<XS?GL:GL+(x-XS)*sl}
- for(i2=0;i2<26;i2++){sd=(sd*37+11)%101;var dx=178+sd/101*150;sd=(sd*37+11)%101;var dy=fl(dx)+8+sd/101*(BB-fl(dx)-14);
-  if(dy<BB-3&&!(dx>xw-4&&dy<WS+4)&&!(dx>XE-3))ds+='<circle cx="'+n(dx)+'" cy="'+n(dy)+'" r="1" fill="#b4bbc3"/>'}
- for(i2=0;i2<8;i2++)rp+=' t12,0';
+ for(i2=0;i2<24;i2++){sd=(sd*37+11)%101;var dx=179+sd/101*148;sd=(sd*37+11)%101;var dy=fl(dx)+8+sd/101*(BB-fl(dx)-14);
+  if(dy<BB-3&&!(dx>xw-4&&dy<WS+4))ds+='<circle cx="'+n(dx)+'" cy="'+n(dy)+'" r="1" fill="#b4bbc3"/>'}
+ for(i2=0;i2<6;i2++)rp+=' t12,0';
  var WP='<polygon points="'+n(xw)+','+WS+' '+XE+','+WS+' '+XE+','+YE+'"';
- s+='<rect x="175" y="'+Y1+'" width="157" height="96" fill="#fff"/>'+
+ s+='<defs><clipPath id="pcl"><rect x="-120" y="-262" width="260" height="197"/></clipPath></defs>'+
   WP+' fill="'+WATER+'"/>'+
   '<polygon points="175,'+GL+' '+XS+','+GL+' '+XE+','+YE+' '+XE+','+BB+' 175,'+BB+'" fill="'+EARTH+'"/>'+ds+
-  '<path fill="'+BLUE+'" fill-rule="evenodd" transform="translate(204,'+GL+') scale('+n(34/PT.palmH*1000)/1000+')" d="'+PT.palm+'"/>';
- [[268,.7,"dome"],[296,.78,"branch"],[318,.9,"table"]].forEach(function(c){s+=coral(c[0],fl(c[0])+1.5,c[1],c[2])});
+  '<path fill="'+BLUE+'" fill-rule="evenodd" clip-path="url(#pcl)" transform="translate(199,'+n(GL+2+62*PS)+') scale('+PS+')" d="'+PT.palm+'"/>';
+ [[276,.75,"dome"],[302,.72,"branch"],[318,.72,"table"]].forEach(function(c){s+=coral(c[0],fl(c[0])+1.5,c[1],c[2])});
  s+=WP+' fill="'+WATER+'" fill-opacity=".4"/>'+
   '<path d="M'+n(xw)+','+WS+' q6,-3 12,0'+rp+' L'+XE+','+WS+'" fill="none" stroke="'+BLUE+'" stroke-width="1.5"/>';
  s+='<g fill="'+BLUE+'"><path transform="translate(179.5,'+(Y2+12)+') scale(.58,.3)" d="'+PT.wave+'"/></g>'+
@@ -127,7 +127,7 @@ var QB='<p class="note">太い青の枠の空欄に入ります。別の空欄�
 var A1={flow:"流水のはたらき",r1:"れき岩",r2:"砂岩",r3:"泥岩",bio:"生物由来",r4:"チャート",r5:"石灰岩",vol:"噴火の跡",r6:"凝灰岩"};
 var C1=["石灰岩","噴火の跡","砂岩","チャート","流水のはたらき","凝灰岩","泥岩","生物由来","れき岩"];
 var A3={e1:"古生代",e2:"中生代",e3:"新生代"},C3=["新生代","古生代","中生代"];
-var CH2=["広い・長い","狭い・短い"];
+var CH4=["広い","狭い","短い","長い"];
 var M='<span class="m">示準化石</span>',V='<span class="v">示相化石</span>';
 function row(t){return '<p style="margin:.2rem 0 .2rem 1.2em">'+t+'</p>'}
 
@@ -150,13 +150,12 @@ sections:[
 {type:"answer",html:ANS},
 {type:"problem",title:"補充問題",
  body:'<p>示準化石と示相化石について、次の(1)〜(4)を選びなさい。</p>'+
-  '<p>(1) '+M+'の範囲<br>(2) '+M+'の期間<br>(3) '+V+'の範囲<br>(4) '+V+'の期間</p>'+
-  '<p class="note">範囲は「広い・狭い」、期間は「長い・短い」から選びます。</p>',
+  '<p>(1) '+M+'の範囲<br>(2) '+M+'の期間<br>(3) '+V+'の範囲<br>(4) '+V+'の期間</p>',
  parts:[
-  {label:'(1)',type:"choice",choices:CH2,accept:["広い・長い"]},
-  {label:'(2)',type:"choice",choices:CH2,accept:["狭い・短い"]},
-  {label:'(3)',type:"choice",choices:CH2,accept:["狭い・短い"]},
-  {label:'(4)',type:"choice",choices:CH2,accept:["広い・長い"]}
+  {label:'(1)',type:"choice",choices:CH4,accept:["広い"]},
+  {label:'(2)',type:"choice",choices:CH4,accept:["短い"]},
+  {label:'(3)',type:"choice",choices:CH4,accept:["狭い"]},
+  {label:'(4)',type:"choice",choices:CH4,accept:["長い"]}
  ],
  solution:SOL2},
 {type:"problem",title:"最終練習",
