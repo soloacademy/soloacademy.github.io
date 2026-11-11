@@ -77,7 +77,7 @@ function fig2(){
  s+='<defs><clipPath id="pcl"><rect x="-120" y="-262" width="260" height="197"/></clipPath></defs>'+
   WP+' fill="'+WATER+'"/>'+
   '<polygon points="175,'+GL+' '+XS+','+GL+' '+XE+','+YE+' '+XE+','+BB+' 175,'+BB+'" fill="'+EARTH+'"/>'+ds+
-  '<path fill="'+BLUE+'" fill-rule="evenodd" clip-path="url(#pcl)" transform="translate(199,'+n(GL+2+62*PS)+') scale('+PS+')" d="'+PT.palm+'"/>';
+  '<path fill="'+BLUE+'" fill-rule="evenodd" clip-path="url(#pcl)" transform="translate(199,'+n(GL+22+62*PS)+') scale('+PS+')" d="'+PT.palm+'"/>';
  [[276,.75,"dome"],[302,.72,"branch"],[318,.72,"table"]].forEach(function(c){s+=coral(c[0],fl(c[0])+1.5,c[1],c[2])});
  s+=WP+' fill="'+WATER+'" fill-opacity=".4"/>'+
   '<path d="M'+n(xw)+','+WS+' q6,-3 12,0'+rp+' L'+XE+','+WS+'" fill="none" stroke="'+BLUE+'" stroke-width="1.5"/>';
@@ -164,10 +164,10 @@ sections:[
 {type:"text",title:"ノートに書いてみよう",html:
  '<p>次の内容を、何も見ずに、そのままノートに書いてみましょう。</p>'+
  '<p><b>堆積岩</b></p>'+
- row('<b>流水のはたらき</b>：<b>れき岩</b>、<b>砂岩</b>、<b>泥岩</b>')+
- row('<b>生物由来</b>：<b>チャート</b>、<b>石灰岩</b>')+
- row('<b>噴火の跡</b>：<b>凝灰岩</b>')+
- '<p><b>地質年代と化石</b>(古い→新しい)</p>'+
+ row('流水のはたらき：<b>れき岩</b>、<b>砂岩</b>、<b>泥岩</b>')+
+ row('生物由来：<b>チャート</b>、<b>石灰岩</b>')+
+ row('噴火の跡：<b>凝灰岩</b>')+
+ '<p>地質年代と化石(古い→新しい)</p>'+
  row('<b>古生代</b>：<b>三葉虫</b>、<b>フズリナ</b>')+
  row('<b>中生代</b>：<b>恐竜</b>、<b>アンモナイト</b>')+
  row('<b>新生代</b>：<b>マンモス</b>、<b>ビカリア</b>')+
