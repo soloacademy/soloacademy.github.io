@@ -16,7 +16,7 @@ function legend(y){return rect(14,y,16,12,TUFF,GRAY,1.2)+T(36,y+11,14,"凝灰岩
 function ruler(xl,y0,k,mx){
  var s=line(xl,y0,xl,y0+k*mx,GRAY,1),d;
  for(d=0;d<=mx;d+=5){
-  if(d%10===0)s+=line(xl-5,y0+k*d,xl,y0+k*d,GRAY,1)+T(xl-7,y0+k*d+4,12,d+"m","g","end");
+  if(d%10===0)s+=line(xl-5,y0+k*d,xl,y0+k*d,GRAY,1)+T(xl-7,y0+k*d+4,12,(d===0?"(地表)":"")+d+"m","g","end");
   else s+=line(xl-3,y0+k*d,xl,y0+k*d,GRAY,1)}
  return s}
 /* 滑らかな曲線(通る点のリスト) */
@@ -28,22 +28,22 @@ function smooth(P){var d='M'+P[0][0]+','+P[0][1],i,p0,p1,p2,p3;
 /* ---------- 厳選ポイントの図1：地表をそろえた柱状図(縮尺 1m＝3px)。標高は、地表のすぐ上に書く ---------- */
 function figPointA(){
  var g=32,s='';
- [{x:42,gv:55,dp:25},{x:212,gv:45,dp:15}].forEach(function(u){
+ [{x:66,gv:55,dp:25},{x:232,gv:45,dp:15}].forEach(function(u){
   s+=ruler(u.x-4,g,3,30)+rect(u.x,g,40,105,"#fff",GRAY,1.2)+rect(u.x,g+3*u.dp,40,18,TUFF,GRAY,1.2)+line(u.x,g,u.x+40,g,INK,3)+
-   T(u.x+20,g-8,16,"標高"+R(u.gv+"m"),"b","middle")});
+   T(u.x+20,g-6,13,"標高"+R(u.gv+"m"),"b","middle")});
  s+=legend(148);
  return svg(168,"柱状図を2本並べた図。地表の高さをそろえてある。左は地表の標高が55m、右は45m。それぞれの柱の左に、地表からの深さの目盛りがある。凝灰岩の上面までの深さは、左が25m、右が15m",s)}
 
-/* ---------- 厳選ポイントの図2：標高をそろえた柱状図(縮尺 1m＝3px)。上面の標高がそろう(点線) ---------- */
+/* ---------- 厳選ポイントの図2：標高をそろえた柱状図(縮尺 1m＝3px)。地表の標高(赤)は、目盛りから点線で柱につなぐ。上面の標高(30m)は、点線でそろう ---------- */
 function figPointB(){
  var Y=function(e){return 32+3*(55-e)},s=T(4,22,12,"標高","g");
  s+=line(38,Y(55),38,Y(10),GRAY,1);
- [10,20,30,40,50].forEach(function(e){s+=line(35,Y(e),38,Y(e),GRAY,1)+T(33,Y(e)+4,12,e+"m",e===30?"m b":"g","end")});
- [{x:42,gv:55,bt:20},{x:212,gv:45,bt:10}].forEach(function(u){
-  s+=rect(u.x,Y(u.gv),40,Y(u.bt)-Y(u.gv),"#fff",GRAY,1.2)+rect(u.x,Y(30),40,18,TUFF,GRAY,1.2)+line(u.x,Y(u.gv),u.x+40,Y(u.gv),INK,3)+
-   T(u.x+20,Y(u.gv)-8,16,"標高"+R(u.gv+"m"),"b","middle")});
- s+=line(42,Y(30),252,Y(30),RED,1.5,"6 4")+legend(180);
- return svg(198,"柱状図を2本並べた図。標高をそろえてある。左の目盛りは標高。左は地表の標高が55m、右は45m。凝灰岩の上面は、どちらも標高30mで、同じ高さにそろっている",s)}
+ s+=line(38,Y(55),66,Y(55),RED,1,"2 3")+line(38,Y(45),232,Y(45),RED,1,"2 3");
+ [{x:66,gv:55,bt:20},{x:232,gv:45,bt:10}].forEach(function(u){
+  s+=rect(u.x,Y(u.gv),40,Y(u.bt)-Y(u.gv),"#fff",GRAY,1.2)+rect(u.x,Y(30),40,18,TUFF,GRAY,1.2)+line(u.x,Y(u.gv),u.x+40,Y(u.gv),INK,3)});
+ [[10,"g"],[20,"g"],[30,"m b"],[45,"m b"],[55,"m b"]].forEach(function(t){s+=line(35,Y(t[0]),38,Y(t[0]),GRAY,1)+T(33,Y(t[0])+4,12,t[0]+"m",t[1],"end")});
+ s+=line(38,Y(30),272,Y(30),RED,1.5,"6 4")+legend(180);
+ return svg(198,"柱状図を2本並べた図。標高をそろえてある。左の目盛りは標高。左の柱は地表の標高が55m、右の柱は45mで、目盛りから点線でつないである。凝灰岩の上面は、どちらも標高30mで、同じ高さにそろっている",s)}
 
 /* ---------- 図1：等高線(上から見た図。北が上)。すべて曲線。A(120,60) B(220,60) C(220,160) D(120,160)
    上辺から90・80・70m、左辺から90・80・70・60m、右辺から60・50m、下辺から50mが出る。90・80・70は上辺と左辺を、60は左辺と右辺を、50は右辺と下辺を結ぶ ---------- */
@@ -64,7 +64,7 @@ function figContour(){
 
 /* ---------- 図2：柱状図(地表をそろえる。深さは左の目盛りから読む。縮尺 1m＝6px) ---------- */
 function figCol(){
- var us=[6,116,226],dp=[15,5,10],L="ABC",s='',Y=function(m){return 50+6*m};
+ var us=[34,130,226],dp=[15,5,10],L="ABC",s='',Y=function(m){return 50+6*m};
  us.forEach(function(u,i){
   var x=u+30;
   s+=ruler(u+26,50,6,20)+rect(x,50,32,132,"#fff",GRAY,1.2)+rect(x,Y(dp[i]),32,18,TUFF,GRAY,1.2)+line(x,50,x+32,50,INK,3)+
