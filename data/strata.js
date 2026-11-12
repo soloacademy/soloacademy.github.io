@@ -58,11 +58,13 @@ function figContour(){
  function ell(a){var P=[],t0=a>340?Math.acos(340/a):0,t1=K*a>240?Math.asin(240/(K*a)):Math.PI/2,N=40,i,t;
   for(i=0;i<=N;i++){t=t0+(t1-t0)*i/N;P.push([n(a*Math.cos(t)),n(K*a*Math.sin(t))])}
   return P}
+ var a90=2*ea(120,60)-ea(220,60),a80=ea(120,60),a70=ea(220,60),a60=ea(220,160);
+ /* 数値は、線の端のそば：90mは上の端の右、80m・70m・60mは左の端の上、50mは右の端の上 */
  var C=[
-  {v:"90m",lx:6,ly:58,P:ell(2*ea(120,60)-ea(220,60))},
-  {v:"80m",lx:6,ly:100,P:ell(ea(120,60))},
-  {v:"70m",lx:6,ly:176,P:ell(ea(220,60))},
-  {v:"60m",lx:6,ly:230,P:ell(ea(220,160))},
+  {v:"90m",lx:a90+6,ly:14,P:ell(a90)},
+  {v:"80m",lx:6,ly:K*a80-9,P:ell(a80)},
+  {v:"70m",lx:6,ly:K*a70-9,P:ell(a70)},
+  {v:"60m",lx:6,ly:K*a60-9,P:ell(a60)},
   {v:"50m",lx:334,ly:70,an:"end",P:ell(355)}],s='';
  C.forEach(function(c){
   s+='<path d="'+smooth(c.P)+'" fill="none" stroke="'+GRAY+'" stroke-width="1.2"/>'+T(c.lx,c.ly,16,c.v,"m b",c.an)});
