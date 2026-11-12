@@ -41,11 +41,11 @@ function figSub(B,ia,e){return fig(e?282:264,"植物の分類表の下の部分�
 function figAll(B,ia,e){return fig(e?555:496,"植物の分類表。"+LT+LS,topBody(B,e)+subBody(184,e?363:322,B,e),ia)}
 
 /* ノート用：名称だけの分類表(特徴・例なし) */
-function subNames(S,Ym){var Yd=Ym+44,Yl=Yd+44,Yg=Yd+88,Yb=Ym+22,Yb2=Yd+66,B={};
- return ln(16,S,16,Yb)+ln(16,Yb,26,Yb)+ln(26,Ym,26,Yd)+ln(26,Ym,36,Ym)+ln(26,Yd,36,Yd)+
-  ln(71,Yd+17,71,Yb2)+ln(71,Yb2,86,Yb2)+ln(86,Yl,86,Yg)+ln(86,Yl,98,Yl)+ln(86,Yg,98,Yg)+
-  nd(71,Ym-17,70,"単子葉類","mono",B)+nd(71,Yd-17,70,"双子葉類","di",B)+nd(133,Yl-17,70,"離弁花類","li",B)+nd(133,Yg-17,70,"合弁花類","go",B)}
-function figNames(){return fig(372,"植物の分類表(名称だけ)。"+LT+LS,topBody({},false,true)+subNames(184,214),false)}
+function subNames(S,Ym){var Yd=Ym+44,Yb=Ym+22,B={};
+ return ln(52,S,52,Yb)+ln(52,Yb,62,Yb)+ln(62,Ym,62,Yd)+ln(62,Ym,72,Ym)+ln(62,Yd,72,Yd)+
+  ln(142,Yd,156,Yd)+ln(156,Ym,156,Yd)+ln(156,Ym,168,Ym)+ln(156,Yd,168,Yd)+
+  nd(107,Ym-17,70,"単子葉類","mono",B)+nd(107,Yd-17,70,"双子葉類","di",B)+nd(203,Ym-17,70,"離弁花類","li",B)+nd(203,Yd-17,70,"合弁花類","go",B)}
+function figNames(){return fig(290,"植物の分類表(名称だけ)。"+LT+LS,topBody({},false,true)+subNames(184,214),false)}
 
 var A1={s:"種子植物",sp:"胞子で増える植物",ang:"被子植物",gym:"裸子植物",fern:"シダ植物",moss:"コケ植物"};
 var A2={mono:"単子葉類",di:"双子葉類",li:"離弁花類",go:"合弁花類"};
