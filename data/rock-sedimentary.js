@@ -56,8 +56,8 @@ function trilobite(cx,top,gap){
 function fusulina(cx,top,gap){
  return '<g transform="translate('+(cx-24)+','+top+')"><path d="M3,20 Q24,2 45,20 Q24,38 3,20Z"/><g fill="none" stroke="'+gap+'" stroke-width="1.2"><path d="M10,20 Q24,9 38,20 Q24,31 10,20Z M17,20 Q24,15 31,20 Q24,25 17,20Z"/></g></g>'}
 function fig2(){
- var H=330,CX=[31,88,144],R1=170,R2=240,Y1=128,Y2=242,s='',i;
- s+='<rect x="6" y="6" width="163" height="318" fill="'+TR+'"/><rect x="173" y="6" width="161" height="318" fill="'+TB+'"/>';
+ var H=310,CX=[31,88,144],R1=170,R2=240,Y1=140,Y2=231,Q2=Y2-10,s='',i;
+ s+='<rect x="6" y="6" width="163" height="298" fill="'+TR+'"/><rect x="173" y="6" width="161" height="298" fill="'+TB+'"/>';
  s+=TN(14,28,15,"示準化石","m b")+TN(14,52,12,'地層ができた<tspan class="m b">時代</tspan>がわかる')+TN(14,76,13,'範囲：<tspan class="m b">広い</tspan>')+TN(14,100,13,'期間：<tspan class="m b">短い</tspan>');
  s+=TN(181,28,15,"示相化石","v b")+TN(181,52,12,'地層ができた<tspan class="v b">環境</tspan>がわかる')+TN(181,76,13,'範囲：<tspan class="v b">狭い</tspan>')+TN(181,100,13,'期間：<tspan class="v b">長い</tspan>');
  /* 左：例(上＝三葉虫・恐竜・マンモス、下＝フズリナ・アンモナイト・ビカリア)、地質年代、古い→新しい */
@@ -68,7 +68,7 @@ function fig2(){
  s+='<g fill="'+RED+'" fill-rule="evenodd">'+trilobite(CX[0],R1,TR)+ic(CX[1],R1,PT.trex)+ic(CX[2],R1,PT.mammoth)+fusulina(CX[0],R2,TR)+ic(CX[1],R2,PT.ammonite)+ic(CX[2],R2,PT.bicaria)+'</g>';
  /* 右：サンゴ(浜辺)とシジミ */
  s+=TN(181,Y1-8,12,'<tspan class="v b">サンゴ</tspan>：あたたかく浅い海')+TN(181,Y2-6,12,'<tspan class="v b">シジミ</tspan>：湖や河口');
- var GL=Y1+34,WS=Y1+44,XS=222,XE=332,YE=Y1+86,BB=Y1+90,sl=(YE-GL)/(XE-XS),xw=XS+(WS-GL)/sl,i2,ds='',sd=7,rp='',PS=.155;
+ var GL=Y1+12,WS=GL+10,XS=222,XE=332,YE=GL+40,BB=GL+44,sl=(YE-GL)/(XE-XS),xw=XS+(WS-GL)/sl,i2,ds='',sd=7,rp='',PS=.155;
  function fl(x){return x<XS?GL:GL+(x-XS)*sl}
  for(i2=0;i2<24;i2++){sd=(sd*37+11)%101;var dx=179+sd/101*148;sd=(sd*37+11)%101;var dy=fl(dx)+8+sd/101*(BB-fl(dx)-14);
   if(dy<BB-3&&!(dx>xw-4&&dy<WS+4))ds+='<circle cx="'+n(dx)+'" cy="'+n(dy)+'" r="1" fill="#b4bbc3"/>'}
@@ -81,9 +81,9 @@ function fig2(){
  [[276,.75,"dome"],[302,.72,"branch"],[318,.72,"table"]].forEach(function(c){s+=coral(c[0],fl(c[0])+1.5,c[1],c[2])});
  s+=WP+' fill="'+WATER+'" fill-opacity=".4"/>'+
   '<path d="M'+n(xw)+','+WS+' q6,-3 12,0'+rp+' L'+XE+','+WS+'" fill="none" stroke="'+BLUE+'" stroke-width="1.5"/>';
- s+='<g fill="'+BLUE+'"><path transform="translate(179.5,'+(Y2+12)+') scale(.58,.3)" d="'+PT.wave+'"/></g>'+
-  line(181,Y2+74,326,Y2+74,BLUE,1.2)+shijimi(190,Y2+46,-8)+shijimi(236,Y2+48,6)+shijimi(282,Y2+45,-4)+
-  bubble(196,Y2+38,2)+bubble(200,Y2+30,1.4)+bubble(243,Y2+40,2.2)+bubble(289,Y2+36,1.8)+bubble(292,Y2+29,1.3);
+ s+='<g fill="'+BLUE+'"><path transform="translate(179.5,'+(Q2+12)+') scale(.58,.3)" d="'+PT.wave+'"/></g>'+
+  line(181,Q2+74,326,Q2+74,BLUE,1.2)+shijimi(190,Q2+46,-8)+shijimi(236,Q2+48,6)+shijimi(282,Q2+45,-4)+
+  bubble(196,Q2+38,2)+bubble(200,Q2+30,1.4)+bubble(243,Q2+40,2.2)+bubble(289,Q2+36,1.8)+bubble(292,Q2+29,1.3);
  return fig(H,"化石の表。左は示準化石。地層ができた時代がわかる、範囲は広い、期間は短い。その下に、古生代、中生代、新生代の名前、その下に古い方から新しい方への矢印、その下に動物の例として三葉虫、恐竜、マンモス、さらにその下に貝などの例としてフズリナ、アンモナイト、ビカリアを並べてある。右は示相化石。地層ができた環境がわかる、範囲は狭い、期間は長い。その下に、あたたかく浅い海の浜辺とサンゴ、湖や河口のシジミの、生活環境の絵がある。",s)}
 
 /* ---------- 問題の解答：見分け方の分かれ道 ---------- */
@@ -129,7 +129,8 @@ var C1=["石灰岩","噴火の跡","砂岩","チャート","流水のはたら�
 var A3={e1:"古生代",e2:"中生代",e3:"新生代"},C3=["新生代","古生代","中生代"];
 var CH4=["広い","狭い","短い","長い"];
 var M='<span class="m">示準化石</span>',V='<span class="v">示相化石</span>';
-function row(t){return '<p style="margin:.2rem 0 .2rem 1.2em">'+t+'</p>'}
+function col(a){return '<div>'+a.map(function(t){return '<div><b>'+t+'</b></div>'}).join('')+'</div>'}
+function cols(a){return '<div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:0 1.6rem;margin:.2rem 0 1rem 1.2em">'+a.map(col).join('')+'</div>'}
 
 var POINT='<p>堆積岩は、土砂や生物の死がい、火山灰などが積もって、固まってできた岩石です。</p>'+tableFig("pa",false)+
  '<p>地層にふくまれる化石から、その地層ができた時代や環境がわかります。</p>'+fig2();
@@ -162,15 +163,10 @@ sections:[
  body:'<p>表の空欄に入る名称を、下のボタンを押して入れなさい。</p>'+QB,
  parts:[{type:"tree",svg:eraFig(),answers:A3,choices:C3}]},
 {type:"text",title:"ノートに書いてみよう",html:
- '<p>次の内容を、何も見ずに、そのままノートに書いてみましょう。</p>'+
+ '<p>何も見ずに、ノートに書いてみましょう。</p>'+
  '<p><b>堆積岩</b></p>'+
- row('流水のはたらき：<b>れき岩</b>、<b>砂岩</b>、<b>泥岩</b>')+
- row('生物由来：<b>チャート</b>、<b>石灰岩</b>')+
- row('噴火の跡：<b>凝灰岩</b>')+
- '<p>地質年代と化石(古い→新しい)</p>'+
- row('<b>古生代</b>：<b>三葉虫</b>、<b>フズリナ</b>')+
- row('<b>中生代</b>：<b>恐竜</b>、<b>アンモナイト</b>')+
- row('<b>新生代</b>：<b>マンモス</b>、<b>ビカリア</b>')+
- '<p class="note">書けたら、厳選ポイントと見比べましょう。</p>'}
+ cols([["れき岩","砂岩","泥岩"],["チャート","石灰岩"],["凝灰岩"]])+
+ '<p><b>地質年代</b></p>'+
+ cols([["古生代","三葉虫","フズリナ"],["中生代","恐竜","アンモナイト"],["新生代","マンモス","ビカリア"]])}
 ]};
 })();
