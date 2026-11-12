@@ -74,7 +74,7 @@ window.UNIT={
 no:"1-4",title:"溶解度",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
- '<p>溶解度は、<span class="v" style="white-space:nowrap">水100g</span>に溶ける物質の限度の<span class="m" style="white-space:nowrap">質量</span>です。</p>'+BEAKER+'<p class="note">赤い点は、物質Aの粒のイメージです。水の中の粒は、溶けています。</p>'+GRAPH_POINT},
+ '<p>溶解度は、<span class="v" style="white-space:nowrap">水100g</span>に溶ける物質の限度の<span class="m" style="white-space:nowrap">質量</span>です。</p>'+BEAKER+'<p class="note">赤い点は、物質Aの粒のイメージです。水の中の粒は、溶けています。</p>'+GRAPH_POINT+'<p>40℃における物質Aの溶解度は60gです。</p>'},
 {type:"problem",title:"問題",
  body:'<p>50℃の水100gに、物質Aを限界まで溶かした。これを20℃まで冷やすと、結晶は何g出てくるか。グラフを使って求めなさい。</p>'+GRAPH_PLAIN,
  parts:[{label:"答え",unit:"g",type:"number",accept:[80],tol:0.5}]},

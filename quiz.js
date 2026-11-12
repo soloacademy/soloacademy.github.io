@@ -59,7 +59,7 @@ function problem(sec){
     }
     if(p.type==="pick"){
       var pr=h("div","part pick"),pv={value:""},pm=h("span","mark"),pbs=[],pb=h("div","pk-bt");
-      pm.setAttribute("aria-live","polite");pr.setAttribute("role","radiogroup");pr.setAttribute("aria-label",(p.label+" "+(p.text||"")).replace(/<[^>]*>/g,""));
+      pm.setAttribute("aria-live","polite");pr.setAttribute("role","radiogroup");pr.setAttribute("aria-label",(p.label+" "+(p.text||"")).replace(/<svg[\s\S]*?<\/svg>/g,"").replace(/<[^>]*>/g,""));
       pr.appendChild(h("span","pk-no",p.label));pr.appendChild(h("span","pk-tx",p.text||""));
       p.choices.forEach(function(c){
         var x=h("button","choice",c);x.type="button";x.setAttribute("role","radio");x.setAttribute("aria-checked","false");

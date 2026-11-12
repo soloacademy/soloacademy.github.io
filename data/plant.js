@@ -38,7 +38,7 @@ var LT="植物は、種子植物と胞子で増える植物に分かれる。種
  LS="被子植物は、子葉が1枚で平行脈、ひげ根の単子葉類と、子葉が2枚で網状脈、主根と側根の双子葉類に分かれる。双子葉類は、花弁が分かれている離弁花類と、花弁がくっついている合弁花類に分かれる。";
 function figTop(B,ia,e){return fig(e?327:300,"植物の分類表の上の部分。"+LT,topBody(B,e),ia)}
 function figSub(B,ia,e){return fig(e?282:264,"植物の分類表の下の部分。"+LS,nd(52,16,76,"被子植物","ang",{})+subBody(50,90,B,e),ia)}
-function figAll(B,ia,e){return fig(e?555:496,"植物の分類表。"+LT+LS,topBody(B,e)+subBody(184,e?363:322,B,e),ia)}
+function figAll(B,ia,e){return fig(e?540:496,"植物の分類表。"+LT+LS,topBody(B,e)+subBody(184,e?348:322,B,e),ia)}
 
 /* ノート用：名称だけの分類表(特徴・例なし) */
 function subNames(S,Ym){var Yd=Ym+44,Yb=Ym+22,B={};
@@ -49,11 +49,9 @@ function figNames(){return fig(290,"植物の分類表(名称だけ)。"+LT+LS,t
 
 var A1={s:"種子植物",sp:"胞子で増える植物",ang:"被子植物",gym:"裸子植物",fern:"シダ植物",moss:"コケ植物"};
 var A2={mono:"単子葉類",di:"双子葉類",li:"離弁花類",go:"合弁花類"};
-var A3={};Object.keys(A1).forEach(function(k){A3[k]=A1[k]});Object.keys(A2).forEach(function(k){A3[k]=A2[k]});
 function names(A){return Object.keys(A).map(function(k){return A[k]})}
 var C1=["シダ植物","被子植物","胞子で増える植物","コケ植物","種子植物","裸子植物"];
 var C2=["合弁花類","単子葉類","離弁花類","双子葉類"];
-var C3=["離弁花類","コケ植物","被子植物","双子葉類","胞子で増える植物","裸子植物","合弁花類","種子植物","単子葉類","シダ植物"];
 
 var ANS1='<p>種子をつくる植物が<b>種子植物</b>、胞子で増える植物が<b>胞子で増える植物</b>です。</p>'+
  '<p>種子植物は、胚珠が子房に包まれていれば<b>被子植物</b>、むき出しなら<b>裸子植物</b>です。</p>'+
@@ -75,9 +73,6 @@ sections:[
  body:'<p>被子植物から下の表の、空欄に入る名称を入れなさい。</p>',
  parts:[{type:"tree",svg:figSub({mono:1,di:1,li:1,go:1},true),answers:A2,choices:C2}],
  solution:SOL2},
-{type:"problem",title:"最終練習",
- body:'<p>表全体の、10個の空欄に入る名称を入れなさい。</p>',
- parts:[{type:"tree",svg:figAll({s:1,sp:1,ang:1,gym:1,fern:1,moss:1,mono:1,di:1,li:1,go:1},true),answers:A3,choices:C3}]},
 {type:"text",title:"ノートに書いてみよう",html:
  '<p>何も見ずに、ノートに植物の分類表を書いてみましょう。</p>'+
  '<p class="note">書けたら、下の表(名称だけ)と見比べましょう。</p>'+figNames()}

@@ -25,15 +25,16 @@ function hit(p,d,poly){var best=null,i;
 function bend(d,N,m,entering){
  var ci=-(N[0]*d[0]+N[1]*d[1]),th=Math.acos(ci),tg=nrm([d[0]+ci*N[0],d[1]+ci*N[1]]),o;
  if(entering){var rc=Math.asin(Math.sin(th)/NG);o=m==="c"?rc:th+(th-rc)}
- else{if(m==="c"){var s=NG*Math.sin(th);if(s>=1)throw new Error("全反射");o=Math.asin(s)}else o=Math.asin(Math.sin(th)/NG)}
+ else{if(m==="c"){var s=Math.min(NG*Math.sin(th),.975);o=Math.asin(s)}else o=Math.asin(Math.sin(th)/NG)}
  return [-Math.cos(o)*N[0]+Math.sin(o)*tg[0],-Math.cos(o)*N[1]+Math.sin(o)*tg[1]]}
 function clip(p,d,b){var t=1e9;
  if(d[0]>1e-9)t=Math.min(t,(b[2]-p[0])/d[0]);if(d[0]<-1e-9)t=Math.min(t,(b[0]-p[0])/d[0]);
  if(d[1]>1e-9)t=Math.min(t,(b[3]-p[1])/d[1]);if(d[1]<-1e-9)t=Math.min(t,(b[1]-p[1])/d[1]);
  return [p[0]+t*d[0],p[1]+t*d[1]]}
 function trace(poly,p0,d,m,box){
- var h1=hit(p0,d,poly),q1=h1.pt,d1=m==="s"?d:bend(d,h1.N,m,true),
-  h2=hit(q1,d1,poly),q2=h2.pt,d2=m==="s"?d1:bend(d1,h2.N,m,false);
+ var m1=m.charAt(0),m2=m.charAt(m.length-1),
+  h1=hit(p0,d,poly),q1=h1.pt,d1=m1==="s"?d:bend(d,h1.N,m1,true),
+  h2=hit(q1,d1,poly),q2=h2.pt,d2=m2==="s"?d1:bend(d1,h2.N,m2,false);
  return {p0:p0,q1:q1,q2:q2,end:clip(q2,d2,box),d:d2,d0:d,d1:d1,N1:h1.N,N2:h2.N}}
 
 
@@ -63,29 +64,42 @@ function band(P0,d0,bn,E,W){
 function bandOf(t,W){return band(t.p0,t.d0,[{K:t.q1,din:t.d0,dout:t.d1,N:t.N1,first:"in"},{K:t.q2,din:t.d1,dout:t.d,N:t.N2,first:"out"}],t.end,W)}
 
 /* ---------- 特訓問題の図 ---------- */
-function opt(poly,p0,d,box,key,w,h,label){
- var tr=["s","c","w"].map(function(m){return {m:m,t:trace(poly,p0,d,m,box)}}),L=["A","B","C"],ans="",q1,s="";
+/* 入るとき・出るときの2か所で、それぞれ「まっすぐ(s)・正しく曲がる(c)・逆に曲がる(w)」の3通り。3×3＝9通りをA〜Iにする */
+function opt(poly,p0,d,box,key,w,h,label,vb){
+ var M=["s","c","w"],tr=[],L="ABCDEFGHI",ans="",q1,s="",placed=[],R=12;
+ M.forEach(function(a){M.forEach(function(b){tr.push({m:a+b,t:trace(poly,p0,d,a+b,box)})})});
  tr.sort(function(a,b){return key(a.t.end)-key(b.t.end)});q1=tr[0].t.q1;
  s=pgon(poly,PALE,PALE,4)+line(p0[0],p0[1],q1[0],q1[1],LIGHT,1.5)+arw(p0[0],p0[1],q1[0],q1[1]);
  tr.forEach(function(o){s+=pline([o.t.q1,o.t.q2,o.t.end],LIGHT,1.5,"round")});
  s+='<circle cx="'+q1[0].toFixed(1)+'" cy="'+q1[1].toFixed(1)+'" r="3.5" fill="#fff" stroke="'+LIGHT+'" stroke-width="1.2"/>';
- tr.forEach(function(o,i){var t=o.t,c=[t.end[0]+13*t.d[0],t.end[1]+13*t.d[1]];
-  if(o.m==="c")ans=L[i];
-  s+='<circle cx="'+c[0].toFixed(1)+'" cy="'+c[1].toFixed(1)+'" r="11" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+TN(c[0],c[1]+5,14,L[i],"b","middle")});
- return {html:svg(w,h,label,s),ans:ans,tr:tr}}
+ tr.forEach(function(o,i){var t=o.t,ex=0,c,ok;
+  if(o.m==="cc")ans=L[i];
+  do{c=[t.end[0]+(R+1+ex)*t.d[0],t.end[1]+(R+1+ex)*t.d[1]];
+   ok=placed.every(function(q){return Math.hypot(q[0]-c[0],q[1]-c[1])>=2*R+2});
+   if(!ok)ex+=6}while(!ok&&ex<150);
+  placed.push(c);
+  if(ex)s+=line(t.end[0],t.end[1],t.end[0]+ex*t.d[0],t.end[1]+ex*t.d[1],LIGHT,1.5);
+  s+='<circle cx="'+c[0].toFixed(1)+'" cy="'+c[1].toFixed(1)+'" r="'+R+'" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+TN(c[0],c[1]+5.5,16,L[i],"b","middle")});
+ var xs=[p0[0]].concat(poly.map(function(q){return q[0]})),ys=[p0[1]].concat(poly.map(function(q){return q[1]}));
+ placed.forEach(function(c){xs.push(c[0]-R,c[0]+R);ys.push(c[1]-R,c[1]+R)});
+ var x0=Math.floor(Math.min.apply(null,xs))-4,y0=Math.floor(Math.min.apply(null,ys))-4,x1=Math.ceil(Math.max.apply(null,xs))+4,y1=Math.ceil(Math.max.apply(null,ys))+4;
+ var f=svg(w,h,label,s).replace('viewBox="0 0 '+w+' '+h+'"','viewBox="'+x0+' '+y0+' '+(x1-x0)+' '+(y1-y0)+'"');
+ return {html:f.replace('<svg ','<svg style="max-width:'+Math.min(336,Math.round((x1-x0)*.85))+'px" '),ans:ans,tr:tr}}
 function ansFig(poly,p0,d,box,w,h,label){
  var t=trace(poly,p0,d,"c",box);
  return svg(w,h,label,pgon(poly,GLASS,MUTED,1.5)+bandOf(t,9).svg+leg(8,14))}
 
-var RECT=[[40,120],[300,120],[300,190],[40,190]],RB=[0,0,330,260.7];
-var TRI=[[170,60],[249.3,230],[90.7,230]],TRI2=[[90.7,60],[249.3,60],[170,230]],TB=[0,0,316,300];
-var s2=Math.SQRT1_2;
-var Q1=opt(RECT,[29.3,49.3],[s2,s2],RB,function(e){return e[0]},340,290,"直方体のガラスに、左上から光が当たる図。光の道すじの候補が、A、B、Cの3つある");
-var Q2=opt(RECT,[310.7,49.3],[-s2,s2],RB,function(e){return e[0]},340,290,"直方体のガラスに、右上から光が当たる図。光の道すじの候補が、A、B、Cの3つある");
-var Q3=opt(TRI,[20,150],[1,0],TB,function(e){return e[1]},340,260,"三角柱のガラスに、左から水平に光が当たる図。頂点が上。光の道すじの候補が、A、B、Cの3つある");
-var Q4=opt(TRI2,[20,140],[1,0],TB,function(e){return e[1]},340,260,"三角柱のガラスに、左から水平に光が当たる図。頂点が下。光の道すじの候補が、A、B、Cの3つある");
-var A1=ansFig(RECT,[29.3,49.3],[s2,s2],RB,340,290,"(1)の正しい道すじ。光の帯の線を、速い側は赤、遅い側は青で表す。光は、遅い側(青)に曲がる");
-var A2=ansFig(RECT,[310.7,49.3],[-s2,s2],RB,340,290,"(2)の正しい道すじ。光の帯の線を、速い側は赤、遅い側は青で表す。光は、遅い側(青)に曲がる");
+var RECT=[[40,120],[300,120],[300,190],[40,190]],RB=[26,0,314,262];
+var TRI=[[170,60],[249.3,230],[90.7,230]],TRI2=[[90.7,60],[249.3,60],[170,230]],TB=[0,0,312,300];
+var s30=.5,c30=Math.sqrt(3)/2;
+var P1=[59.2,49.3],P2=[280.8,49.3];
+var NINE="入るときと出るときに、それぞれ「まっすぐ・正しく曲がる・逆に曲がる」の3通りを組み合わせた9つの道すじの候補が、A〜Iである";
+var Q1=opt(RECT,P1,[s30,c30],RB,function(e){return e[0]},340,290,"直方体のガラスに、左上から光が当たる図。"+NINE,"0 36 340 250");
+var Q2=opt(RECT,P2,[-s30,c30],RB,function(e){return e[0]},340,290,"直方体のガラスに、右上から光が当たる図。"+NINE,"0 36 340 250");
+var Q3=opt(TRI,[20,150],[1,0],TB,function(e){return e[1]},340,260,"三角柱のガラスに、左から水平に光が当たる図。頂点が上。"+NINE,"0 36 340 220");
+var Q4=opt(TRI2,[20,140],[1,0],TB,function(e){return e[1]},340,260,"三角柱のガラスに、左から水平に光が当たる図。頂点が下。"+NINE,"0 36 340 220");
+var A1=ansFig(RECT,P1,[s30,c30],RB,340,290,"(1)の正しい道すじ。光の帯の線を、速い側は赤、遅い側は青で表す。光は、遅い側(青)に曲がる");
+var A2=ansFig(RECT,P2,[-s30,c30],RB,340,290,"(2)の正しい道すじ。光の帯の線を、速い側は赤、遅い側は青で表す。光は、遅い側(青)に曲がる");
 var A3=ansFig(TRI,[20,150],[1,0],TB,340,260,"(3)の正しい道すじ。どちらの面でも、遅い側(青)の下に曲がる");
 var A4=ansFig(TRI2,[20,140],[1,0],TB,340,260,"(4)の正しい道すじ。どちらの面でも、遅い側(青)の上に曲がる");
 
@@ -128,7 +142,7 @@ function figBend(){
   T(X(310.4),Y(136.6)-8,14,"入射角","b","middle")+T(X(358.1),Y(267.6)+17,14,"屈折角","b","middle")+
   line(84,130,X(306.7),Y(211.9),GRAY,1)+TN(54,134,14,"遅い","v b")+
   line(229,90,X(361.2)+2,Y(181.8),GRAY,1)+TN(232,94,14,"速い","m b")+
-  T(6,26,14,"空気","g")+T(6,208,14,"ガラス","g")+T(52,36,14,"光","b");
+  T(6,26,14,"空気","g")+T(6,208,14,"ガラス","g")+T(86,36,14,"光","b");
  return svg(340,215,"光が空気からガラスに入って曲がる図。光は帯で表し、幅は一定。進行方向の右側が先にガラスに入って遅くなり(青)、左側はまだ空気中で速い(赤)。そのため光は右(遅い方)に曲がり、境界面に垂直な線に近づく",s)}
 
 /* 参考：全反射。入射角を大きくしていく3つの場合を、横に並べる。
@@ -186,11 +200,11 @@ var POINT='<div><p>光は、同じ物質の中では<b>直進</b>します。</p
  '<p class="note">先にガラスに入った側(青)が遅くなるので、光は、そちら(遅い方)に曲がります。</p>'+
  '<p class="note">境界面に垂直に入った光は、両側が同時に遅くなります。どちらかに曲がることがないので、直進します。</p></div>';
 
-var TOTAL='<p>ガラスから空気に出るとき、光は、遅い方に曲がり、屈折角は入射角より大きくなります。入射角を大きくすると、屈折角が先に90°になり、それをこえると光は出られず、すべて反射します。これを<b>全反射</b>といいます。</p>'+figTotal("A")+
- '<p>空気からガラスに入るときも、光は、遅い方に曲がり、屈折角は入射角より小さくなります。入射角が90°に近くても、屈折角は約42°までなので、光はいつもガラスに入ります。全反射は起こりません。</p>'+figTotal("B");
+var TOTAL='<p>ガラスから空気に出るとき、入射角を大きくすると、屈折角が先に90°になり、それをこえると光は出られず、すべて反射します。これを<b>全反射</b>といいます。</p>'+figTotal("A")+
+ '<p>空気からガラスに入るときは、入射角が90°に近くても、屈折角は約42°までなので、光はいつもガラスに入ります。全反射は起こりません。</p>'+figTotal("B");
 
-var QBODY='<p>光がガラスに当たったとき、光の進み方として正しいものを、A〜Cから選びなさい。</p>'+
- '<p>(1)</p>'+Q1.html+'<p>(2)</p>'+Q2.html+'<p>(3)</p>'+Q3.html+'<p>(4)</p>'+Q4.html;
+var QBODY='<p>光がガラスに当たったとき、光の進み方として正しいものを、A〜Iから選びなさい。</p>';
+var L9=["A","B","C","D","E","F","G","H","I"];
 var SOL='<p>光は、<b>遅い方に曲がります</b>。</p>'+
  '<p class="note">光の帯の線は、赤が速い側、青が遅い側です。空気中は速く、ガラスの中は遅くなります。</p>'+
  '<p>(1) <b>'+Q1.ans+'</b><br>入るとき：先にガラスに入った側が遅い → 青い方に曲がる。<br>出るとき：先に空気に出た側が速い → 青い方に曲がる。</p>'+A1+
@@ -206,10 +220,10 @@ sections:[
 {type:"text",point:true,title:"厳選ポイント",html:POINT},
 {type:"problem",title:"問題",body:QBODY,
  parts:[
-  {label:"(1)",type:"choice",choices:["A","B","C"],accept:[Q1.ans]},
-  {label:"(2)",type:"choice",choices:["A","B","C"],accept:[Q2.ans]},
-  {label:"(3)",type:"choice",choices:["A","B","C"],accept:[Q3.ans]},
-  {label:"(4)",type:"choice",choices:["A","B","C"],accept:[Q4.ans]}
+  {label:"(1)",text:Q1.html,type:"pick",choices:L9,accept:[Q1.ans]},
+  {label:"(2)",text:Q2.html,type:"pick",choices:L9,accept:[Q2.ans]},
+  {label:"(3)",text:Q3.html,type:"pick",choices:L9,accept:[Q3.ans]},
+  {label:"(4)",text:Q4.html,type:"pick",choices:L9,accept:[Q4.ans]}
  ]},
 {type:"answer",html:SOL},
 {type:"problem",title:"補充問題",

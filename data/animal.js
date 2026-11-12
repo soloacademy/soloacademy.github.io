@@ -86,11 +86,9 @@ function figNames(){var r=build({v:1,i:1,e:0,nm:1});return fig(r.h,"動物の分
 
 var A1={vert:"セキツイ動物",fish:"魚類",amp:"両生類",rep:"ハ虫類",bird:"鳥類",mam:"ホ乳類"};
 var A2={inv:"無セキツイ動物",art:"節足動物",ins:"昆虫類",cru:"甲殻類",oart:"その他の節足動物",mol:"軟体動物",oinv:"その他の無セキツイ動物"};
-var A3={};Object.keys(A1).forEach(function(k){A3[k]=A1[k]});Object.keys(A2).forEach(function(k){A3[k]=A2[k]});
 function on(A){var B={};Object.keys(A).forEach(function(k){B[k]=1});return B}
 var C1=["ホ乳類","魚類","セキツイ動物","鳥類","ハ虫類","両生類"];
 var C2=["軟体動物","昆虫類","無セキツイ動物","その他の節足動物","節足動物","甲殻類","その他の無セキツイ動物"];
-var C3=["甲殻類","ハ虫類","無セキツイ動物","魚類","その他の節足動物","セキツイ動物","軟体動物","ホ乳類","節足動物","両生類","その他の無セキツイ動物","鳥類","昆虫類"];
 
 var ANS1='<p>背骨がある動物が<b>セキツイ動物</b>です。</p>'+
  '<p>セキツイ動物は、<b>魚類、両生類、ハ虫類、鳥類、ホ乳類</b>の5つに分かれます。</p>'+
@@ -117,9 +115,6 @@ sections:[
  body:'<p>無セキツイ動物から下の表の、空欄に入る名称を入れなさい。</p>',
  parts:[{type:"tree",svg:figI(on(A2),true,false),answers:A2,choices:C2}],
  solution:SOL2},
-{type:"problem",title:"最終練習",
- body:'<p>表全体の、13個の空欄に入る名称を入れなさい。</p>',
- parts:[{type:"tree",svg:figAll(on(A3),true,false),answers:A3,choices:C3}]},
 {type:"text",title:"ノートに書いてみよう",html:
  '<p>何も見ずに、ノートに動物の分類表を書いてみましょう。</p>'+
  '<p class="note">書けたら、下の表(名称だけ)と見比べましょう。</p>'+figNames()}

@@ -90,8 +90,8 @@ function fig2b(){
   a=p[1]*R;cx=(130+11*Math.sin(a)).toFixed(1);cy=(p[0]-11*Math.cos(a)).toFixed(1);
   ml+='<g transform="translate('+cx+' '+cy+') rotate('+p[1]+')"><ellipse cx="0" cy="0" rx="5.5" ry="11"/>'+arcs(0,5.5,11,1.4,3.6,"#a68a2a",.7)+'</g>'});
  ml+='</g>';
- var ar='<g fill="none" stroke-linecap="round"><g stroke="#fff" stroke-width="6"><line x1="158" y1="86" x2="300" y2="86"/><line x1="158" y1="212" x2="322" y2="205"/></g>'+
-  '<g stroke="'+INK+'" stroke-width="1.5"><line x1="156" y1="86" x2="302" y2="86"/><path d="M294,80 L302,86 L294,92"/><line x1="156" y1="212" x2="324" y2="205"/><path d="M316,199 L324,205 L315,211"/></g></g>';
+ var ar='<g fill="none" stroke-linecap="round"><g stroke="#fff" stroke-width="6"><line x1="158" y1="86" x2="300" y2="86"/><line x1="158" y1="212" x2="322" y2="212"/></g>'+
+  '<g stroke="'+INK+'" stroke-width="1.5"><line x1="156" y1="86" x2="302" y2="86"/><path d="M294,80 L302,86 L294,92"/><line x1="156" y1="212" x2="324" y2="212"/><path d="M316,206 L324,212 L316,218"/></g></g>';
  var s=L(4,20,"裸子植物(マツ)","b")+
  '<path d="M130,376 C126,340 134,290 130,222" fill="none" stroke="#8a6a4a" stroke-width="7" stroke-linecap="round"/>'+
  '<path d="M130,226 C129,190 131,140 130,94" fill="none" stroke="#7fa06a" stroke-width="6" stroke-linecap="round"/>'+
@@ -107,7 +107,7 @@ function fig2b(){
  ln(80,276,88,276)+L(76,281,"昨年の雌花",null,"end")+
  ln(100,84,113,84)+L(96,89,"雌花",null,"end")+ln(168,147,139,160)+L(172,152,"雄花")+
  ln(195,349,211,359)+L(214,364,"マツカサ")+L(214,384,"(一昨年の雌花)")+
- ar+T(229,77,13,"拡大","b","middle")+T(240,197,13,"拡大","b","middle")+
+ ar+T(229,78,11,"雌花のりん片の拡大",null,"middle")+T(240,203,11,"雄花のりん片の拡大",null,"middle")+
  '<g transform="translate(40,13)"><path d="M292,126 C290,108 270,96 268,64 C266,36 286,20 305,20 C324,20 344,36 342,64 C340,96 320,108 318,126 Z" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.5"/>'+
  '<ellipse cx="293" cy="100" rx="7" ry="10" fill="#c2410c" transform="rotate(15 293 100)"/><ellipse cx="317" cy="100" rx="7" ry="10" fill="#c2410c" transform="rotate(-15 317 100)"/>'+
  ln(360,102,322,102)+mk(370,102,"A")+L(305,151,"雌花のりん片",null,"middle")+'</g>'+
@@ -139,14 +139,11 @@ sections:[
  fig1()+
  '<p>花粉がめしべの柱頭につくことを、受粉といいます。<br>受粉すると、'+g("子房","v")+'は果実に、'+g("胚珠","m")+'は種子になります。</p>'},
 {type:"problem",title:"問題",
- body:'<p>(1) 次の花のつくりを、花の中心から外側へ向かって並べなさい。</p>'+
- '<p>(2) 受粉後、被子植物の子房は何になるか。</p>'+
- '<p>(3) 受粉後、被子植物の胚珠は何になるか。</p>'+
- '<p class="note">(1)は、中心に近い順に、下のボタンを押して並べます。</p>',
+ body:'<p class="note">(1)は、中心に近い順に、下のボタンを押して並べます。</p>',
  parts:[
-  {label:"(1)",type:"order",choices:["がく","おしべ","めしべ","花弁"],accept:["めしべ→おしべ→花弁→がく"]},
-  {label:"(2) "+g("子房","v"),type:"choice",choices:C2,accept:["果実"]},
-  {label:"(3) "+g("胚珠","m"),type:"choice",choices:C2,accept:["種子"]}
+  {label:"(1) 次の花のつくりを、花の中心から外側へ向かって並べなさい。",type:"order",choices:["がく","おしべ","めしべ","花弁"],accept:["めしべ→おしべ→花弁→がく"]},
+  {label:"(2)",text:"受粉後、被子植物の"+g("子房","v")+"は何になるか。",type:"pick",choices:C2,accept:["果実"]},
+  {label:"(3)",text:"受粉後、被子植物の"+g("胚珠","m")+"は何になるか。",type:"pick",choices:C2,accept:["種子"]}
  ]},
 {type:"answer",html:
  '<p>(1) <b>めしべ → おしべ → 花弁 → がく</b><br>がくは、つぼみのときに花を守っています。</p>'+
