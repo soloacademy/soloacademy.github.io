@@ -99,3 +99,6 @@ h2.point-label{margin:.5rem 0 .4rem;padding:0;border:0;font-size:1.1rem}
 .point>.fig:last-child{margin-bottom:0}
 button.choice[aria-checked="true"]{background:var(--accent);color:#fff}
 button.choice[aria-checked="true"]:hover{background:#184c86}
+.part.pick{display:grid;grid-template-columns:auto 1fr;column-gap:.5em;row-gap:.1rem;align-items:start;margin:.9rem 0}
+.pick .pk-bt{grid-column:2;display:flex;align-items:center;gap:.5rem}
+.pick button.choice{line-height:1.4;padding:.1rem .9rem;min-width:3.4rem}

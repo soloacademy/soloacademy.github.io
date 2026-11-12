@@ -58,14 +58,14 @@ function problem(sec){
       return rs;
     }
     if(p.type==="pick"){
-      var pr=h("div","part"),pv={value:""},pm=h("span","mark"),pbs=[];
-      pm.setAttribute("aria-live","polite");pr.setAttribute("role","radiogroup");pr.setAttribute("aria-label",p.label.replace(/<[^>]*>/g,""));
-      pr.appendChild(h("span",null,p.label));
+      var pr=h("div","part pick"),pv={value:""},pm=h("span","mark"),pbs=[],pb=h("div","pk-bt");
+      pm.setAttribute("aria-live","polite");pr.setAttribute("role","radiogroup");pr.setAttribute("aria-label",(p.label+" "+(p.text||"")).replace(/<[^>]*>/g,""));
+      pr.appendChild(h("span","pk-no",p.label));pr.appendChild(h("span","pk-tx",p.text||""));
       p.choices.forEach(function(c){
         var x=h("button","choice",c);x.type="button";x.setAttribute("role","radio");x.setAttribute("aria-checked","false");
         x.onclick=function(){pv.value=c;pbs.forEach(function(y){y.setAttribute("aria-checked",y===x?"true":"false")});pm.textContent="";pm.className="mark"};
-        pbs.push(x);pr.appendChild(x)});
-      pr.appendChild(pm);box.appendChild(pr);
+        pbs.push(x);pb.appendChild(x)});
+      pb.appendChild(pm);pr.appendChild(pb);box.appendChild(pr);
       return {p:p,i:pv,m:pm};
     }
     if(p.type==="choice"){

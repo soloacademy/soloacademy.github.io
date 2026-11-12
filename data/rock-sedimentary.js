@@ -142,12 +142,12 @@ sections:[
 {type:"answer",html:ANS},
 {type:"problem",title:"補充問題",
  body:'<p>示準化石と示相化石について、次の(1)〜(4)を選びなさい。</p>'+
-  '<p>(1) '+M+'の範囲<br>(2) '+M+'の期間<br>(3) '+V+'の範囲<br>(4) '+V+'の期間</p>',
+  '',
  parts:[
-  {label:'(1)',type:"pick",choices:["広い","狭い"],accept:["広い"]},
-  {label:'(2)',type:"pick",choices:["長い","短い"],accept:["短い"]},
-  {label:'(3)',type:"pick",choices:["広い","狭い"],accept:["狭い"]},
-  {label:'(4)',type:"pick",choices:["長い","短い"],accept:["長い"]}
+  {label:'(1)',text:M+'の範囲',type:"pick",choices:["広い","狭い"],accept:["広い"]},
+  {label:'(2)',text:M+'の期間',type:"pick",choices:["長い","短い"],accept:["短い"]},
+  {label:'(3)',text:V+'の範囲',type:"pick",choices:["広い","狭い"],accept:["狭い"]},
+  {label:'(4)',text:V+'の期間',type:"pick",choices:["長い","短い"],accept:["長い"]}
  ],
  solution:SOL2},
 {type:"problem",title:"最終練習",

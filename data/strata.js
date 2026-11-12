@@ -55,25 +55,28 @@ function figContour(){
  /* 左上の角を中心にした、同心の楕円(縦横の比 K は、BとDが同じ70mの線の上にあることから決まる) */
  var K=Math.sqrt(22000/34000);
  function ea(x,y){return Math.sqrt(x*x+y*y/(K*K))}
- function ell(a){var P=[],t0=a>340?Math.acos(340/a):0,t1=K*a>240?Math.asin(240/(K*a)):Math.PI/2,N=40,i,t;
-  for(i=0;i<=N;i++){t=t0+(t1-t0)*i/N;P.push([n(a*Math.cos(t)),n(K*a*Math.sin(t))])}
+ function ell(a,b){b=b||K*a;var P=[],t0=a>340?Math.acos(340/a):0,t1=b>240?Math.asin(240/b):Math.PI/2,N=40,i,t;
+  for(i=0;i<=N;i++){t=t0+(t1-t0)*i/N;P.push([n(a*Math.cos(t)),n(b*Math.sin(t))])}
   return P}
- var a90=2*ea(120,60)-ea(220,60),a80=ea(120,60),a70=ea(220,60),a60=ea(220,160);
- /* 数値は、それぞれの線の上(線にかぶせる。まわりの白いふちで線が切れる)。90m・80m・70m・60mは左辺側の端、50mは下辺側の端。図の下の端(240)から文字がはみ出さないよう、cy は232まで */
- function at(a,cy){cy=Math.min(cy==null?K*Math.sqrt(a*a-324):cy,232);return {lx:Math.sqrt(a*a-cy*cy/(K*K)),ly:cy+4.7,an:"middle"}}
+ var a90=2*ea(120,60)-ea(220,60),a80=ea(120,60),a70=ea(220,60),
+  /* 60mだけ、左辺に出る高さを222にして(ほかの線より少し上)、Cを通る楕円にする */
+  b60=222,a60=220/Math.sqrt(1-160*160/(b60*b60));
+ /* 数値は、それぞれの線の上(線にかぶせる。まわりの白いふちで線が切れる)。90m・80m・70m・60mは左辺から18pxのところ、50mは下辺側の端(図の高さを250にして、はみ出さないようにした) */
+ function at(a,b){return {lx:18,ly:b*Math.sqrt(1-324/(a*a))+4.7,an:"middle"}}
+ var a50=355,b50=K*a50,t50=Math.asin(240/b50);
  var C=[
-  {v:"90m",P:ell(a90),L:at(a90)},
-  {v:"80m",P:ell(a80),L:at(a80)},
-  {v:"70m",P:ell(a70),L:at(a70)},
-  {v:"60m",P:ell(a60),L:at(a60)},
-  {v:"50m",P:ell(355),L:at(355,226)}],s='';
+  {v:"90m",P:ell(a90),L:at(a90,K*a90)},
+  {v:"80m",P:ell(a80),L:at(a80,K*a80)},
+  {v:"70m",P:ell(a70),L:at(a70,K*a70)},
+  {v:"60m",P:ell(a60,b60),L:at(a60,b60)},
+  {v:"50m",P:ell(a50),L:{lx:a50*Math.cos(t50),ly:240+4.7,an:"middle"}}],s='';
  C.forEach(function(c){
   s+='<path d="'+smooth(c.P)+'" fill="none" stroke="'+GRAY+'" stroke-width="1.2"/>'+T(c.L.lx,c.L.ly,13,c.v,"m b",c.L.an)});
  s+='<polygon points="120,60 220,60 220,160 120,160" fill="none" stroke="'+INK+'" stroke-width="1.5" stroke-linejoin="round"/>'+
   dot(120,60)+dot(220,60)+dot(220,160)+dot(120,160)+
   T(108,54,16,"A","b","end")+T(212,54,16,"B","b","end")+T(228,182,16,"C","b")+T(128,182,16,"D","b")+
   T(314,22,16,"北","b","middle")+line(314,52,314,30,INK,1.5)+'<path d="M309,37 L314,30 L319,37" fill="none" stroke="'+INK+'" stroke-width="1.5"/>';
- return svg(240,"上から見た等高線の図。北が上。左上の角を中心にした、同心円状のなめらかな曲線。90m、80m、70m、60mは、左辺と上辺を結び、50mは、右辺と下辺を結ぶ。80mは、上辺の90mと70mの中間から出る。A、B、C、Dを結ぶと正方形になる。Aは80mの等高線の上、BとDは70mの等高線の上、Cは60mの等高線の上にある",s)}
+ return svg(250,"上から見た等高線の図。北が上。左上の角を中心にした、同心円状のなめらかな曲線。90m、80m、70m、60mは、左辺と上辺を結び、50mは、右辺と下辺を結ぶ。80mは、上辺の90mと70mの中間から出る。A、B、C、Dを結ぶと正方形になる。Aは80mの等高線の上、BとDは70mの等高線の上、Cは60mの等高線の上にある",s)}
 
 /* ---------- 図2：柱状図(地表をそろえる。深さは左の目盛りから読む。縮尺 1m＝6px) ---------- */
 function figCol(){
