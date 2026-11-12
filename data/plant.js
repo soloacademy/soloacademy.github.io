@@ -13,16 +13,16 @@ function Ls(x,y,a,cls){return a.map(function(t,i){return '<text x="'+x+'" y="'+(
 function fig(h,label,body,ia){return '<div class="fig"><svg viewBox="0 0 340 '+h+'" style="max-width:22rem" '+(ia?'role="group"':'role="img"')+' aria-label="'+label+'">'+body+'</svg></div>'}
 
 /* 上の部分：植物→種子植物・胞子で増える植物→被子・裸子・シダ・コケ */
-function topBody(B,e){
+function topBody(B,e,nm){
  return ln(175,50,175,65)+ln(93,65,257,65)+ln(93,65,93,80)+ln(257,65,257,80)+
   ln(93,114,93,132)+ln(52,132,134,132)+ln(52,132,52,150)+ln(134,132,134,150)+
   ln(257,114,257,132)+ln(216,132,298,132)+ln(216,132,216,150)+ln(298,132,298,150)+
   nd(175,16,120,"植物","r",B)+nd(93,80,150,"種子植物","s",B)+nd(257,80,150,"胞子で増える植物","sp",B)+
-  nd(52,150,76,"被子植物","ang",B)+nd(134,150,76,"裸子植物","gym",B)+nd(216,150,76,"シダ植物","fern",B)+nd(298,150,76,"コケ植物","moss",B)+
+  nd(52,150,76,"被子植物","ang",B)+nd(134,150,76,"裸子植物","gym",B)+nd(216,150,76,"シダ植物","fern",B)+nd(298,150,76,"コケ植物","moss",B)+(nm?"":
   Ls(22,204,["胚珠が子房に","包まれている"])+
   Ls(104,204,["胚珠が","むき出しに","なっている"])+(e?Ls(104,249,["マツ","イチョウ","スギ"],"m"):"")+
   Ls(186,204,["根茎葉の","区別あり","地下茎"])+(e?Ls(186,249,["ゼンマイ","イヌワラビ","スギナ"],"m"):"")+
-  Ls(268,204,["根茎葉の","区別なし","仮根","体の表面","から吸水","雄株と雌株"])+(e?Ls(268,294,["スギゴケ","ゼニゴケ"],"m"):"")}
+  Ls(268,204,["根茎葉の","区別なし","仮根","体の表面","から吸水","雄株と雌株"])+(e?Ls(268,294,["スギゴケ","ゼニゴケ"],"m"):""))}
 
 /* 下の部分：被子植物の下から線を引き、右に曲がって、単子葉類(上)と双子葉類(下)。双子葉類からも右に曲がって、離弁花類(上)と合弁花類(下)。S＝線の始まり、Ym＝単子葉類の高さ */
 function subBody(S,Ym,B,e){var d1=48,d2=e?114:96,Yd=Ym+d1,Yb=Ym+d1/2,Yl=Yd+48,Yg=Yd+d2,Yb2=Yd+(48+d2)/2;
@@ -39,6 +39,13 @@ var LT="植物は、種子植物と胞子で増える植物に分かれる。種
 function figTop(B,ia,e){return fig(e?327:300,"植物の分類表の上の部分。"+LT,topBody(B,e),ia)}
 function figSub(B,ia,e){return fig(e?282:264,"植物の分類表の下の部分。"+LS,nd(52,16,76,"被子植物","ang",{})+subBody(50,90,B,e),ia)}
 function figAll(B,ia,e){return fig(e?555:496,"植物の分類表。"+LT+LS,topBody(B,e)+subBody(184,e?363:322,B,e),ia)}
+
+/* ノート用：名称だけの分類表(特徴・例なし) */
+function subNames(S,Ym){var Yd=Ym+44,Yl=Yd+44,Yg=Yd+88,Yb=Ym+22,Yb2=Yd+66,B={};
+ return ln(16,S,16,Yb)+ln(16,Yb,26,Yb)+ln(26,Ym,26,Yd)+ln(26,Ym,36,Ym)+ln(26,Yd,36,Yd)+
+  ln(71,Yd+17,71,Yb2)+ln(71,Yb2,86,Yb2)+ln(86,Yl,86,Yg)+ln(86,Yl,98,Yl)+ln(86,Yg,98,Yg)+
+  nd(71,Ym-17,70,"単子葉類","mono",B)+nd(71,Yd-17,70,"双子葉類","di",B)+nd(133,Yl-17,70,"離弁花類","li",B)+nd(133,Yg-17,70,"合弁花類","go",B)}
+function figNames(){return fig(372,"植物の分類表(名称だけ)。"+LT+LS,topBody({},false,true)+subNames(184,214),false)}
 
 var A1={s:"種子植物",sp:"胞子で増える植物",ang:"被子植物",gym:"裸子植物",fern:"シダ植物",moss:"コケ植物"};
 var A2={mono:"単子葉類",di:"双子葉類",li:"離弁花類",go:"合弁花類"};
@@ -72,6 +79,7 @@ sections:[
  body:'<p>表全体の、10個の空欄に入る名称を入れなさい。</p>',
  parts:[{type:"tree",svg:figAll({s:1,sp:1,ang:1,gym:1,fern:1,moss:1,mono:1,di:1,li:1,go:1},true),answers:A3,choices:C3}]},
 {type:"text",title:"ノートに書いてみよう",html:
- '<p>何も見ずに、ノートに植物の分類表を書いてみましょう。</p>'}
+ '<p>何も見ずに、ノートに植物の分類表を書いてみましょう。</p>'+
+ '<p class="note">書けたら、下の表(名称だけ)と見比べましょう。</p>'+figNames()}
 ]};
 })();

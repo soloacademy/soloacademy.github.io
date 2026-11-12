@@ -35,28 +35,30 @@ function build(o){
  var B=o.B,e=o.e,y=10,s="",XB=174,cyv=[],cy2v=0,cy2i=0;
  if(o.v){
   VERT.forEach(function(d){
+   var f=o.nm?[]:d.f;
    cyv.push(y+17);
-   s+=bx(XB,y,62,d.n,d.id,B)+Tx(XB,y+48,d.f)+(e?Tx(XB,y+48+14*d.f.length,d.x,"m"):"");
-   y=after(y,34,d.f.length+(e?d.x.length:0))});
+   s+=bx(XB,y,62,d.n,d.id,B)+Tx(XB,y+48,f)+(e?Tx(XB,y+48+14*f.length,d.x,"m"):"");
+   y=after(y,34,f.length+(e?d.x.length:0))});
   cy2v=(cyv[0]+cyv[cyv.length-1])/2;
   s+=ln(152,cy2v,168,cy2v)+ln(168,cyv[0],168,cyv[cyv.length-1]);
   cyv.forEach(function(c){s+=ln(168,c,XB,c)});
-  s+=bx(48,cy2v-17,104,"セキツイ動物","vert",B)+Tx(48,cy2v+31,["背骨がある"]);
+  s+=bx(48,cy2v-17,104,"セキツイ動物","vert",B)+(o.nm?"":Tx(48,cy2v+31,["背骨がある"]));
   if(o.i)y+=6;
  }
  if(o.i){
   var cyc=[];
   CH.forEach(function(d){
    var h=d.n.indexOf("その他の")===0?42:34;
+   var f=o.nm?[]:d.f;
    cyc.push(y+h/2);
-   s+=bx(246,y,d.w,d.n,d.id,B)+Tx(246,y+h+14,d.f)+(e?Tx(246,y+h+14+14*d.f.length,d.x,"m"):"");
-   y=after(y,h,d.f.length+(e?d.x.length:0))});
+   s+=bx(246,y,d.w,d.n,d.id,B)+Tx(246,y+h+14,f)+(e?Tx(246,y+h+14+14*f.length,d.x,"m"):"");
+   y=after(y,h,f.length+(e?d.x.length:0))});
   var cyA=(cyc[0]+cyc[2])/2;
-  s+=bx(XB,cyA-17,62,"節足動物","art",B)+Tx(XB,cyA+31,["足に節がある","外骨格"]);
+  s+=bx(XB,cyA-17,62,"節足動物","art",B)+(o.nm?"":Tx(XB,cyA+31,["足に節がある","外骨格"]));
   s+=ln(236,cyA,241,cyA)+ln(241,cyc[0],241,cyc[2]);
   cyc.forEach(function(c){s+=ln(241,c,246,c)});
-  y=Math.max(y,cyA+31+14+4+12);
-  var ym=y,fm=["内臓が外とう膜で","おおわれている"],xm=["タコ、イカ、マイマイ"];
+  y=Math.max(y,o.nm?cyA+17+12:cyA+31+14+4+12);
+  var ym=y,fm=o.nm?[]:["内臓が外とう膜で","おおわれている"],xm=["タコ、イカ、マイマイ"];
   s+=bx(XB,ym,72,"軟体動物","mol",B)+Tx(XB,ym+48,fm)+(e?Tx(XB,ym+48+14*fm.length,xm,"m"):"");
   y=after(ym,34,fm.length+(e?1:0));
   var yz=y;
@@ -65,7 +67,7 @@ function build(o){
   var cyM=ym+17,cyZ=yz+21;
   cy2i=(cyA+cyZ)/2;
   s+=ln(164,cy2i,168,cy2i)+ln(168,cyA,168,cyZ)+ln(168,cyA,XB,cyA)+ln(168,cyM,XB,cyM)+ln(168,cyZ,XB,cyZ);
-  s+=bx(48,cy2i-17,116,"無セキツイ動物","inv",B)+Tx(48,cy2i+31,["背骨がない"]);
+  s+=bx(48,cy2i-17,116,"無セキツイ動物","inv",B)+(o.nm?"":Tx(48,cy2i+31,["背骨がない"]));
  }
  var cy=o.v&&o.i?(cy2v+cy2i)/2:(o.v?cy2v:cy2i);
  if(o.v&&o.i)s+=ln(42,cy,45,cy)+ln(45,cy2v,45,cy2i)+ln(45,cy2v,48,cy2v)+ln(45,cy2i,48,cy2i);
@@ -79,6 +81,8 @@ var LV="動物は、背骨があるセキツイ動物と、背骨がない無セ
 function figV(B,ia,e){var r=build({v:1,i:0,e:e,B:B});return fig(r.h,"動物の分類表のセキツイ動物の部分。"+LV+LV2,r.body,ia)}
 function figI(B,ia,e){var r=build({v:0,i:1,e:e,B:B});return fig(r.h,"動物の分類表の無セキツイ動物の部分。"+LI,r.body,ia)}
 function figAll(B,ia,e){var r=build({v:1,i:1,e:e,B:B});return fig(r.h,"動物の分類表。"+LV+LV2+LI,r.body,ia)}
+
+function figNames(){var r=build({v:1,i:1,e:0,nm:1});return fig(r.h,"動物の分類表(名称だけ)。"+LV+LV2+LI,r.body,false)}
 
 var A1={vert:"セキツイ動物",fish:"魚類",amp:"両生類",rep:"ハ虫類",bird:"鳥類",mam:"ホ乳類"};
 var A2={inv:"無セキツイ動物",art:"節足動物",ins:"昆虫類",cru:"甲殻類",oart:"その他の節足動物",mol:"軟体動物",oinv:"その他の無セキツイ動物"};
@@ -117,6 +121,7 @@ sections:[
  body:'<p>表全体の、13個の空欄に入る名称を入れなさい。</p>',
  parts:[{type:"tree",svg:figAll(on(A3),true,false),answers:A3,choices:C3}]},
 {type:"text",title:"ノートに書いてみよう",html:
- '<p>何も見ずに、ノートに動物の分類表を書いてみましょう。</p>'}
+ '<p>何も見ずに、ノートに動物の分類表を書いてみましょう。</p>'+
+ '<p class="note">書けたら、下の表(名称だけ)と見比べましょう。</p>'+figNames()}
 ]};
 })();
