@@ -97,3 +97,5 @@ h2.point-label{margin:.5rem 0 .4rem;padding:0;border:0;font-size:1.1rem}
 .fig .bl.ok text.bm{fill:var(--ok)}.fig .bl.ng text.bm{fill:var(--ng)}
 .bl:focus-visible{outline:3px solid var(--accent)}
 .point>.fig:last-child{margin-bottom:0}
+button.choice[aria-checked="true"]{background:var(--accent);color:#fff}
+button.choice[aria-checked="true"]:hover{background:#184c86}

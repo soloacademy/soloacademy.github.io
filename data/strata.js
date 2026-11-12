@@ -59,15 +59,16 @@ function figContour(){
   for(i=0;i<=N;i++){t=t0+(t1-t0)*i/N;P.push([n(a*Math.cos(t)),n(K*a*Math.sin(t))])}
   return P}
  var a90=2*ea(120,60)-ea(220,60),a80=ea(120,60),a70=ea(220,60),a60=ea(220,160);
- /* 数値は、線の端のそば：90mは上の端の右、80m・70m・60mは左の端の上、50mは右の端の上 */
+ /* 数値は、それぞれの線の上(線にかぶせる。まわりの白いふちで線が切れる)。90m・80m・70m・60mは左辺側の端、50mは下辺側の端。図の下の端(240)から文字がはみ出さないよう、cy は232まで */
+ function at(a,cy){cy=Math.min(cy==null?K*Math.sqrt(a*a-324):cy,232);return {lx:Math.sqrt(a*a-cy*cy/(K*K)),ly:cy+4.7,an:"middle"}}
  var C=[
-  {v:"90m",lx:a90+6,ly:14,P:ell(a90)},
-  {v:"80m",lx:6,ly:K*a80-9,P:ell(a80)},
-  {v:"70m",lx:6,ly:K*a70-9,P:ell(a70)},
-  {v:"60m",lx:6,ly:K*a60-9,P:ell(a60)},
-  {v:"50m",lx:334,ly:70,an:"end",P:ell(355)}],s='';
+  {v:"90m",P:ell(a90),L:at(a90)},
+  {v:"80m",P:ell(a80),L:at(a80)},
+  {v:"70m",P:ell(a70),L:at(a70)},
+  {v:"60m",P:ell(a60),L:at(a60)},
+  {v:"50m",P:ell(355),L:at(355,226)}],s='';
  C.forEach(function(c){
-  s+='<path d="'+smooth(c.P)+'" fill="none" stroke="'+GRAY+'" stroke-width="1.2"/>'+T(c.lx,c.ly,16,c.v,"m b",c.an)});
+  s+='<path d="'+smooth(c.P)+'" fill="none" stroke="'+GRAY+'" stroke-width="1.2"/>'+T(c.L.lx,c.L.ly,13,c.v,"m b",c.L.an)});
  s+='<polygon points="120,60 220,60 220,160 120,160" fill="none" stroke="'+INK+'" stroke-width="1.5" stroke-linejoin="round"/>'+
   dot(120,60)+dot(220,60)+dot(220,160)+dot(120,160)+
   T(108,54,16,"A","b","end")+T(212,54,16,"B","b","end")+T(228,182,16,"C","b")+T(128,182,16,"D","b")+

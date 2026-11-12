@@ -12,7 +12,7 @@ function setBt(e,w){
   }else e.textContent=w;
 }
 function judge(p,v){
-  if(p.type==="text"||p.type==="order"||p.type==="choice")return p.accept.some(function(a){return norm(a)===norm(v)});
+  if(p.type==="text"||p.type==="order"||p.type==="choice"||p.type==="pick")return p.accept.some(function(a){return norm(a)===norm(v)});
   var n=num(v);if(isNaN(n))return false;
   return p.accept.some(function(a){return Math.abs(a-n)<=(p.tol||0)});
 }
@@ -56,6 +56,17 @@ function problem(sec){
       z.onclick=function(){ids.forEach(function(k){if(vals[k]){bs[vals[k]].disabled=false;put(k,"")}});setSel(nextId())};
       cs.appendChild(z);box.appendChild(cs);setSel(nextId());
       return rs;
+    }
+    if(p.type==="pick"){
+      var pr=h("div","part"),pv={value:""},pm=h("span","mark"),pbs=[];
+      pm.setAttribute("aria-live","polite");pr.setAttribute("role","radiogroup");pr.setAttribute("aria-label",p.label.replace(/<[^>]*>/g,""));
+      pr.appendChild(h("span",null,p.label));
+      p.choices.forEach(function(c){
+        var x=h("button","choice",c);x.type="button";x.setAttribute("role","radio");x.setAttribute("aria-checked","false");
+        x.onclick=function(){pv.value=c;pbs.forEach(function(y){y.setAttribute("aria-checked",y===x?"true":"false")});pm.textContent="";pm.className="mark"};
+        pbs.push(x);pr.appendChild(x)});
+      pr.appendChild(pm);box.appendChild(pr);
+      return {p:p,i:pv,m:pm};
     }
     if(p.type==="choice"){
       if(!mx){
