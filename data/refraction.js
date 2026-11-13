@@ -22,10 +22,11 @@ function hit(p,d,poly){var best=null,i;
   if(t>1e-6&&s>=-1e-9&&s<=1+1e-9&&(!best||t<best.t)){var n=nrm([ey,-ex]);if(n[0]*d[0]+n[1]*d[1]>0)n=[-n[0],-n[1]];best={t:t,pt:[p[0]+t*d[0],p[1]+t*d[1]],N:n}}}
  return best}
 /* N＝光が来る側を向く、境界面に垂直な単位ベクトル。m＝c(正しい)・w(逆向き)。入るとき／出るとき */
+var WK=1.5,XF=0.8;
 function bend(d,N,m,entering){
  var ci=-(N[0]*d[0]+N[1]*d[1]),th=Math.acos(ci),tg=nrm([d[0]+ci*N[0],d[1]+ci*N[1]]),o;
- if(entering){var rc=Math.asin(Math.sin(th)/NG);o=m==="c"?rc:th+(th-rc)}
- else{if(m==="c"){var s=Math.min(NG*Math.sin(th),.975);o=Math.asin(s)}else o=Math.asin(Math.sin(th)/NG)}
+ if(entering){var rc=Math.asin(Math.sin(th)/NG);o=m==="c"?rc:Math.min(th+WK*(th-rc),1.4)}
+ else{if(m==="c"){var s=Math.min(NG*Math.sin(th),.975);o=Math.asin(s)}else o=XF?th*XF:Math.asin(Math.sin(th)/NG)}
  return [-Math.cos(o)*N[0]+Math.sin(o)*tg[0],-Math.cos(o)*N[1]+Math.sin(o)*tg[1]]}
 function clip(p,d,b){var t=1e9;
  if(d[0]>1e-9)t=Math.min(t,(b[2]-p[0])/d[0]);if(d[0]<-1e-9)t=Math.min(t,(b[0]-p[0])/d[0]);
@@ -66,20 +67,28 @@ function bandOf(t,W){return band(t.p0,t.d0,[{K:t.q1,din:t.d0,dout:t.d1,N:t.N1,fi
 /* ---------- 特訓問題の図 ---------- */
 /* 入るとき・出るときの2か所で、それぞれ「まっすぐ(s)・正しく曲がる(c)・逆に曲がる(w)」の3通り。3×3＝9通りをA〜Iにする */
 function opt(poly,p0,d,box,key,w,h,label,vb){
- var M=["s","c","w"],tr=[],L="ABCDEFGHI",ans="",q1,s="",placed=[],R=12;
- M.forEach(function(a){M.forEach(function(b){tr.push({m:a+b,t:trace(poly,p0,d,a+b,box)})})});
+ var M5=["ss","cc","cw","wc","ww"],tr=[],L="ABCDE",ans="",q1,s="",placed=[],R=10;
+ M5.forEach(function(m){tr.push({m:m,t:trace(poly,p0,d,m,box)})});
  tr.sort(function(a,b){return key(a.t.end)-key(b.t.end)});q1=tr[0].t.q1;
  s=pgon(poly,PALE,PALE,4)+line(p0[0],p0[1],q1[0],q1[1],LIGHT,1.5)+arw(p0[0],p0[1],q1[0],q1[1]);
  tr.forEach(function(o){s+=pline([o.t.q1,o.t.q2,o.t.end],LIGHT,1.5,"round")});
  s+='<circle cx="'+q1[0].toFixed(1)+'" cy="'+q1[1].toFixed(1)+'" r="3.5" fill="#fff" stroke="'+LIGHT+'" stroke-width="1.2"/>';
- tr.forEach(function(o,i){var t=o.t,ex=0,c,ok;
+ function sd(c,a,b){var dx=b[0]-a[0],dy=b[1]-a[1],l2=dx*dx+dy*dy,u=l2?((c[0]-a[0])*dx+(c[1]-a[1])*dy)/l2:0;u=Math.max(0,Math.min(1,u));return Math.hypot(c[0]-a[0]-u*dx,c[1]-a[1]-u*dy)}
+ function clear(c,i,own){var ok=sd(c,p0,q1)>=R+2;
+  tr.forEach(function(o,j){var t=o.t;
+   if(j!==i||own){ok=ok&&sd(c,t.q1,t.q2)>=R+2&&sd(c,t.q2,t.end)>=R+2}
+   else ok=ok&&sd(c,t.q1,t.q2)>=R+2});
+  return ok&&placed.every(function(q){return Math.hypot(q[0]-c[0],q[1]-c[1])>=2*R+2})}
+ tr.forEach(function(o,i){var t=o.t,ex=0,c=null,k,sg=[0,1,-1],px=-t.d[1],py=t.d[0];
   if(o.m==="cc")ans=L[i];
-  do{c=[t.end[0]+(R+1+ex)*t.d[0],t.end[1]+(R+1+ex)*t.d[1]];
-   ok=placed.every(function(q){return Math.hypot(q[0]-c[0],q[1]-c[1])>=2*R+2});
-   if(!ok)ex+=6}while(!ok&&ex<150);
+  for(ex=0;ex<=150&&!c;ex+=6)for(k=0;k<3&&!c;k++){
+   var cand=[t.end[0]+(R+1+ex)*t.d[0]+sg[k]*(R+3)*px,t.end[1]+(R+1+ex)*t.d[1]+sg[k]*(R+3)*py];
+   if(clear(cand,i,k>0))c=cand}
+  if(!c){ex=0;c=[t.end[0]+(R+1)*t.d[0],t.end[1]+(R+1)*t.d[1]]}
+  ex=Math.max(0,ex-6);
   placed.push(c);
   if(ex)s+=line(t.end[0],t.end[1],t.end[0]+ex*t.d[0],t.end[1]+ex*t.d[1],LIGHT,1.5);
-  s+='<circle cx="'+c[0].toFixed(1)+'" cy="'+c[1].toFixed(1)+'" r="'+R+'" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+TN(c[0],c[1]+5.5,16,L[i],"b","middle")});
+  s+=T(c[0],c[1]+6,18,L[i],"b","middle")});
  var xs=[p0[0]].concat(poly.map(function(q){return q[0]})),ys=[p0[1]].concat(poly.map(function(q){return q[1]}));
  placed.forEach(function(c){xs.push(c[0]-R,c[0]+R);ys.push(c[1]-R,c[1]+R)});
  var x0=Math.floor(Math.min.apply(null,xs))-4,y0=Math.floor(Math.min.apply(null,ys))-4,x1=Math.ceil(Math.max.apply(null,xs))+4,y1=Math.ceil(Math.max.apply(null,ys))+4;
@@ -89,11 +98,11 @@ function ansFig(poly,p0,d,box,w,h,label){
  var t=trace(poly,p0,d,"c",box);
  return svg(w,h,label,pgon(poly,GLASS,MUTED,1.5)+bandOf(t,9).svg+leg(8,14))}
 
-var RECT=[[40,120],[300,120],[300,190],[40,190]],RB=[26,0,314,262];
-var TRI=[[170,60],[249.3,230],[90.7,230]],TRI2=[[90.7,60],[249.3,60],[170,230]],TB=[0,0,312,300];
+var RECT=[[40,120],[300,120],[300,190],[40,190]],RB=[26,0,314,280];
+var TRI=[[170,60],[249.3,230],[90.7,230]],TRI2=[[90.7,60],[249.3,60],[170,230]],TB=[0,0,340,300];
 var s30=.5,c30=Math.sqrt(3)/2;
 var P1=[59.2,49.3],P2=[280.8,49.3];
-var NINE="入るときと出るときに、それぞれ「まっすぐ・正しく曲がる・逆に曲がる」の3通りを組み合わせた9つの道すじの候補が、A〜Iである";
+var NINE="最初の境界面で、光は「まっすぐ・正しく曲がる・逆に曲がる」の3本に分かれる。まっすぐの1本は、そのまま直進する。残りの2本は、もう一方の境界面で、それぞれ「正しく曲がる・逆に曲がる」の2本に分かれる。全部で5つの道すじの候補が、A〜Eである";
 var Q1=opt(RECT,P1,[s30,c30],RB,function(e){return e[0]},340,290,"直方体のガラスに、左上から光が当たる図。"+NINE,"0 36 340 250");
 var Q2=opt(RECT,P2,[-s30,c30],RB,function(e){return e[0]},340,290,"直方体のガラスに、右上から光が当たる図。"+NINE,"0 36 340 250");
 var Q3=opt(TRI,[20,150],[1,0],TB,function(e){return e[1]},340,260,"三角柱のガラスに、左から水平に光が当たる図。頂点が上。"+NINE,"0 36 340 220");
@@ -203,8 +212,8 @@ var POINT='<div><p>光は、同じ物質の中では<b>直進</b>します。</p
 var TOTAL='<p>ガラスから空気に出るとき、入射角を大きくすると、屈折角が先に90°になり、それをこえると光は出られず、すべて反射します。これを<b>全反射</b>といいます。</p>'+figTotal("A")+
  '<p>空気からガラスに入るときは、入射角が90°に近くても、屈折角は約42°までなので、光はいつもガラスに入ります。全反射は起こりません。</p>'+figTotal("B");
 
-var QBODY='<p>光がガラスに当たったとき、光の進み方として正しいものを、A〜Iから選びなさい。</p>';
-var L9=["A","B","C","D","E","F","G","H","I"];
+var QBODY='<p>光がガラスに当たったとき、光の進み方として正しいものを、A〜Eから選びなさい。</p>';
+var L9=["A","B","C","D","E"];
 var SOL='<p>光は、<b>遅い方に曲がります</b>。</p>'+
  '<p class="note">光の帯の線は、赤が速い側、青が遅い側です。空気中は速く、ガラスの中は遅くなります。</p>'+
  '<p>(1) <b>'+Q1.ans+'</b><br>入るとき：先にガラスに入った側が遅い → 青い方に曲がる。<br>出るとき：先に空気に出た側が速い → 青い方に曲がる。</p>'+A1+
