@@ -188,9 +188,9 @@ sections:[
 {type:"problem",title:"補充問題",body:SBODY,
  parts:[
   {label:"(1) この凸レンズの焦点距離は何cmか。",unit:"cm",type:"number",accept:[20],tol:0.5},
-  {label:"(2)",text:"物体を焦点に近づけて、実像がはっきりうつるようにスクリーンを動かした。凸レンズとスクリーンの距離は、動かす前と比べてどうなるか。",type:"pick",choices:C3,accept:["大きくなる"]},
+  {label:"(2)",text:"物体を焦点に近づけて、実像がはっきりうつるようにスクリーンを動かした。凸レンズからスクリーンまでの距離は、動かす前と比べてどうなるか。",type:"pick",choices:C3,accept:["大きくなる"]},
   {label:"(3)",text:"(2)のとき、実像の大きさは、動かす前と比べてどうなるか。",type:"pick",choices:C3,accept:["大きくなる"]},
-  {label:"(4)",text:"物体を焦点から遠ざけて、実像がはっきりうつるようにスクリーンを動かした。凸レンズとスクリーンの距離は、動かす前と比べてどうなるか。",type:"pick",choices:C3,accept:["小さくなる"]},
+  {label:"(4)",text:"物体を焦点から遠ざけて、実像がはっきりうつるようにスクリーンを動かした。凸レンズからスクリーンまでの距離は、動かす前と比べてどうなるか。",type:"pick",choices:C3,accept:["小さくなる"]},
   {label:"(5)",text:"(4)のとき、実像の大きさは、動かす前と比べてどうなるか。",type:"pick",choices:C3,accept:["小さくなる"]}
  ],
  solution:SOL2},
