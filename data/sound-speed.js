@@ -12,14 +12,20 @@ function arw(x1,y1,x2,y2){var mx=(x1+x2)/2,my=(y1+y2)/2,a=Math.atan2(y2-y1,x2-x1
  return line(x1,y1,x2,y2,INK,1.5)+'<path d="M'+p(s)+' L'+mx.toFixed(1)+','+my.toFixed(1)+' L'+p(-s)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 function brace(x1,x2,y){return '<path d="M'+x1+','+y+' V'+(y+5)+' H'+x2+' V'+y+'" fill="none" stroke="'+MUTED+'" stroke-width="1.2"/>'}
 
-/* 厳選ポイントの図：音は、1秒ごとに340mずつ進む */
+/* 厳選ポイントの図：音が出た点から波が広がり、1秒ごとに340mずつ進む */
 function figSpeed(){
- var X=[30,120,210,300],s='',i;
- s+=line(30,56,312,56,INK,1.5)+'<path d="M306,51 L312,56 L306,61" fill="none" stroke="'+INK+'" stroke-width="1.5"/>';
- for(i=0;i<4;i++)s+=line(X[i],48,X[i],64,INK,1.5)+T(X[i],38,14,i+"秒","v b","middle");
- for(i=0;i<3;i++)s+=brace(X[i]+4,X[i+1]-4,70)+T(X[i]+45,92,14,"340m","m b","middle");
- s+=T(30,110,12,"音が出る","g","middle");
- return svg(118,"音が1秒ごとに340mずつ進む図。音が出た時点を0秒として、1秒後、2秒後、3秒後と、1秒ごとに340mずつ進む",s)}
+ var CX=30,CY=100,A=24*Math.PI/180,Rs=[90,180,270],s='',i;
+ function r1(v){return Math.round(v*10)/10}
+ s+=line(CX,CY,322,CY,"#b4bbc3",1);
+ Rs.forEach(function(r){var dx=r*Math.cos(A),dy=r*Math.sin(A);
+  s+='<path d="M'+r1(CX+dx)+','+r1(CY-dy)+' A'+r+','+r+' 0 0 1 '+r1(CX+dx)+','+r1(CY+dy)+'" fill="none" stroke="'+BLUE+'" stroke-width="2.5" stroke-linecap="round"/>'});
+ for(i=0;i<3;i++){var a=CX+(i?Rs[i-1]:0)+(i?6:8),b=CX+Rs[i]-6;
+  s+=line(a,CY,b-5,CY,RED,3)+'<polygon points="'+b+','+CY+' '+(b-10)+','+(CY-5.5)+' '+(b-10)+','+(CY+5.5)+'" fill="'+RED+'"/>'+
+   T((a+b)/2,CY-10,14,"340m","m b","middle")}
+ s+=dot(CX,CY);
+ s+=T(CX+6,CY+26,14,"0秒","v b","middle")+T(CX+6,CY+44,12,"音が出る","g","middle");
+ Rs.forEach(function(r,k){s+=T(CX+r-9,CY+26,14,(k+1)+"秒後","v b","end")});
+ return svg(206,"音が出た点から、波が広がっていく図。音が出た時点が0秒。1秒後、2秒後、3秒後と、波の先が1秒ごとに340mずつ進む",s)}
 
 /* 解答の図(1)：雷の音が、雷から見ている場所まで進む(一方向) */
 function figOne(){
