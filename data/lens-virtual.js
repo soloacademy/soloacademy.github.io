@@ -87,7 +87,7 @@ function figAns(mode){
  else{s+=r1()+r2()+line(LX,TY,ix,iy,LIGHT,1.5,true)+line(OX,TY,ix,iy,LIGHT,1.5,true)+T(FR+4,124,13,"焦点","b")+
   '<circle cx="'+ix+'" cy="'+iy+'" r="8" fill="none" stroke="'+BLUE+'" stroke-width="2"/>'+T(ix,iy-16,13,"虚像の先端","v b","middle");
   lab="2本の点線が交わる点が、虚像の先端になる図"}
- return svg(mode===3?236:224,lab,s)}
+ return svgY(mode===3?24:38,mode===3?198:184,lab,s).replace('<div class="fig">','<div class="fig" style="margin:.4rem 0">')}
 
 function tbl(hd,rows){
  var L2='style="text-align:left"',N='style="white-space:nowrap;text-align:left"';
