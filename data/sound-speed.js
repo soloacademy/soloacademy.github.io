@@ -55,12 +55,28 @@ function figRound(o){
   T(6,150,13,"声を出した場所","g");
  return svg(158,"声が、声を出した場所から"+tg+"まで行って、同じ道を帰ってくる図。片道は"+o.one+"、往復は"+o.tot+"で、かかった時間は"+o.tm,s)}
 
+/* 解答の図(2)：往復を1本の線にのばし、山のところで半分に折る */
+function figFold(){
+ var X1=30,XM=170,X2=310,Y1=70,Y2=156,s='',tri=function(y){return '<polygon points="'+(XM-13)+','+y+' '+XM+','+(y-24)+' '+(XM+13)+','+y+'" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.2" stroke-linejoin="round"/>'+TN(XM,y-3,12,"山","b","middle")};
+ /* 上：往復の1本の線 */
+ s+='<path d="M'+X1+',36 V30 H'+X2+' V36" fill="none" stroke="'+MUTED+'" stroke-width="1.2"/>'+
+  T(170,20,14,'<tspan class="v b">4秒</tspan>で往復 <tspan class="m b">1360m</tspan>',null,"middle")+
+  dot(X1,Y1)+dot(X2,Y1)+arw(X1+6,Y1,XM-16,Y1)+arw(XM+16,Y1,X2-6,Y1)+tri(Y1)+
+  T(100,Y1+22,14,'行き <tspan class="m b">680m</tspan>',null,"middle")+T(240,Y1+22,14,'帰り <tspan class="m b">680m</tspan>',null,"middle");
+ /* 山で折る */
+ s+=line(XM,Y1+30,XM,Y2-30,MUTED,1.2,true)+T(XM+8,(Y1+Y2)/2+4,13,"山で半分に折る","g");
+ /* 下：折ったあと(片道) */
+ s+=dot(X1,Y2)+arw(X1+6,Y2,XM-16,Y2)+tri(Y2)+T(100,Y2-10,14,"680m","m b","middle")+
+  T(XM+22,Y2-8,13,"往復の半分","b")+T(XM+22,Y2+10,13,"＝ 山までの距離","b");
+ s+=T(6,Y2+36,13,"声を出した場所","g");
+ return svg(200,"往復の1360mを1本の線にのばした図。声を出した場所から山まで680m、山から戻る道が680m。山のところで半分に折ると、声を出した場所から山までの680mになる",s)}
+
 var R='<span class="m">',V='<span class="v">',E='</span>';
 var FIG1=figSpeed(),FIGONE=figOne(),
- FIG2=figRound({one:"680m",tot:"1360m",tm:"4秒",wall:false}),
+ FIG2=figFold(),
  FIG3=figRound({one:"170m",tot:"340m",tm:"1秒",wall:true});
 
-var SOL='<p>光は秒速約30万kmで、音よりはるかに速いので、雷が光った瞬間に、ほぼ0秒で目に届きます。音は遅れて届くので、光が見えてから音が聞こえるまでの<b>6秒</b>が、音が進んだ時間です。</p>'+FIGONE+
+var SOL='<p>光はほぼ0秒で届くので、聞こえるまでの<b>6秒</b>は、音が進んだ時間です。</p>'+FIGONE+
  '<p>(1) 距離 ＝ 速さ × 時間<br>340m/s × 6秒 ＝ <b>2040m</b></p>'+
  '<p>(2) 山びこは、山まで行って、帰ってきます。進んだ距離は<b>往復</b>です。<br>往復：340m/s × 4秒 ＝ 1360m<br>片道：1360m ÷ 2 ＝ <b>680m</b></p>'+FIG2+
  '<p class="note">山までの距離は、片道です。往復の1360mを、そのまま答えにしないように注意します。</p>';
