@@ -13,8 +13,8 @@ function chev(x,y,a,k){var L=7,s=.5;
  function p(t){return n(x-L*Math.cos(a+t))+','+n(y-L*Math.sin(a+t))}
  return '<path d="M'+p(s)+' L'+n(x)+','+n(y)+' L'+p(-s)+'" fill="none" stroke="'+(k||LIGHT)+'" stroke-width="1.5"/>'}
 /* 点pから点qへの線の上、qから back だけ手前に矢じるし。back が null なら真ん中 */
-function chevOn(p,q,back){var dx=q[0]-p[0],dy=q[1]-p[1],len=Math.hypot(dx,dy),a=Math.atan2(dy,dx),b=back==null?len/2:back;
- return chev(q[0]-b*Math.cos(a),q[1]-b*Math.sin(a),a)}
+function chevOn(p,q,back,k){var dx=q[0]-p[0],dy=q[1]-p[1],len=Math.hypot(dx,dy),a=Math.atan2(dy,dx),b=back==null?len/2:back;
+ return chev(q[0]-b*Math.cos(a),q[1]-b*Math.sin(a),a,k)}
 /* 点qから先へ、pからqの向きに、少し延長した点 */
 function ext(p,q,L){var dx=q[0]-p[0],dy=q[1]-p[1],l=Math.hypot(dx,dy);return [q[0]+L*dx/l,q[1]+L*dy/l]}
 function dot(x,y){return '<circle cx="'+n(x)+'" cy="'+n(y)+'" r="3.5" fill="'+INK+'"/>'}
@@ -133,17 +133,18 @@ var DRAW0=draw(2,20,55,"作図の図。物体の先端から、光軸に平行�
 var DRAW1=draw(1.5,24,70,"作図の図。物体を焦点に近づけた場合。2本の線が交わる点が、実像の先端。実像は、凸レンズから遠い位置にでき、物体より大きい");
 var DRAW2=draw(3,11,30,"作図の図。物体を焦点から遠ざけた場合。2本の線が交わる点が、実像の先端。実像は、凸レンズに近い位置にでき、物体より小さい");
 
-/* ---------- ノート用の図：①の完成図(うすい)と、②の物体(こい)・近づける矢印 ---------- */
+/* ---------- ノート用の図：実像の作図の完成図(すべて黒) ---------- */
 function figNote(){
- var ox=LX-2*F,ix=LX+2*F,ty=AX-HO,iy=AX+HO,o2=LX-1.5*F,
-  r1=[[ox,ty],[LX,ty],[ix,iy]],r2=[[ox,ty],[ix,iy]],
-  faint=axis()+lens()+focal()+pline(r1.concat([ext(r1[1],r1[2],14)]),LIGHT,1.5)+pline(r2.concat([ext(r2[0],r2[1],14)]),LIGHT,1.5)+
-   chevOn(r1[0],r1[1])+chevOn(r1[1],r1[2],20)+chevOn(r2[0],[LX,AX])+chevOn([LX,AX],r2[1],55)+entry(LX,ty)+entry(LX,AX)+
-   arrowV(ox,ty,INK)+T(ox,152,13,"①","b","middle")+arrowV(ix,iy,INK)+T(ix,iy+24,13,"①","b","middle"),
-  s='<g opacity=".3">'+faint+'</g>'+
-   arrowV(o2,ty,RED)+T(o2,152,14,"②","m b","middle")+
-   line(84,68,98,68,INK,1.5)+'<path d="M92,63 L98,68 L92,73" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+T(91,56,13,"近づける","b","middle");
- return svg(224,"ノート用の図。うすい線は、物体を焦点距離の2倍の位置に置いたときの作図(①)で、凸レンズ、光軸、2つの焦点、物体、2本の光の線、実像がある。①の物体と実像の矢印は、黒。赤い矢印は、物体を焦点に近づけたときの物体(②)。①の位置から②の位置へ、近づける向きの矢印がある。②の光の線と実像は、かいていない",s)}
+ var ox=LX-2*F,ix=LX+2*F,ty=AX-HO,iy=AX+HO,
+  r1=[[ox,ty],[LX,ty],[ix,iy]],r2=[[ox,ty],[ix,iy]];
+ function en(x,y){return '<circle cx="'+n(x)+'" cy="'+n(y)+'" r="3.5" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'}
+ var s=axis()+lens()+focal()+
+  pline(r1.concat([ext(r1[1],r1[2],14)]),INK,1.5)+pline(r2.concat([ext(r2[0],r2[1],14)]),INK,1.5)+
+  chevOn(r1[0],r1[1],null,INK)+chevOn(r1[1],r1[2],20,INK)+chevOn(r2[0],[LX,AX],null,INK)+chevOn([LX,AX],r2[1],55,INK)+
+  en(LX,ty)+en(LX,AX)+
+  arrowV(ox,ty,INK)+T(ox,152,13,"物体","b","middle")+
+  arrowV(ix,iy,INK)+T(ix,iy+24,13,"実像","b","middle");
+ return svg(224,"ノート用の図。実像の作図の完成図。凸レンズ、光軸、2つの焦点がある。物体の先端から、光軸に平行な光と、レンズの中心を通る光の2本が出て、右側で交わる。その点が実像の先端で、物体と同じ大きさの、上下が逆の実像ができている。すべて黒で描いてある",s)}
 
 /* ---------- 補充問題(1)の図：物体、凸レンズ、スクリーン。物体からスクリーンまで80cm ---------- */
 function figBench(){
@@ -207,9 +208,9 @@ sections:[
  ],
  solution:SOL2},
 {type:"text",title:"ノートに書いてみよう",html:
- '<p>①は、物体を焦点距離の2倍の位置に置いたときの作図です。<br>②は、物体を焦点に近づけたときの位置です。</p>'+figNote()+
- '<p>ノートに凸レンズと焦点を書いて、②の'+V+'を作図してみましょう。</p>'+
- '<p class="note">光の線は、2本引きます。①と②を比べて、実像の場所と大きさがどう変わるかを見てください。</p>'},
+ '<p>何も見ずに、ノートに凸レンズと焦点を書いて、物体を焦点距離の2倍の位置に置いたときの実像を作図してみましょう。</p>'+
+ '<p class="note">光の線は、2本引きます。書けたら、下の図と見比べましょう。</p>'+figNote()+
+ '<p>次は、物体の位置を、焦点に近づけたり、遠ざけたりして作図してみましょう。実像の場所と大きさが、どう変わるかを見てください。</p>'},
 {type:"text",title:"参考：実際のレンズでは、光は2回曲がる",html:
  '<p>実際のレンズでは、光は、レンズに入るときと出るときの2回、曲がります。作図では、レンズを薄いものと考えて、レンズの中心の線で、1回だけ曲がることにします。</p>'+figCmp()+
  '<p class="note">※レンズの中心を通る光は、実際のレンズでも、ほとんどまっすぐ進みます。作図では、まっすぐ進むことにします。</p>'},
