@@ -8,6 +8,7 @@ function TN(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" fon
 function line(x1,y1,x2,y2,k,w,dash){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"'+(dash?' stroke-dasharray="4 3"':'')+'/>'}
 function pline(a,k,w){return '<polyline points="'+a.map(function(p){return n(p[0])+','+n(p[1])}).join(' ')+'" fill="none" stroke="'+k+'" stroke-width="'+(w||1)+'" stroke-linecap="round" stroke-linejoin="round"/>'}
 function svg(h,label,body){return '<div class="fig"><svg viewBox="0 0 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
+function svgY(y0,h,label,body){return '<div class="fig"><svg viewBox="0 '+y0+' 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function chev(x,y,a,k){var L=7,s=.5;
  function p(t){return n(x-L*Math.cos(a+t))+','+n(y-L*Math.sin(a+t))}
  return '<path d="M'+p(s)+' L'+n(x)+','+n(y)+' L'+p(-s)+'" fill="none" stroke="'+(k||LIGHT)+'" stroke-width="1.5"/>'}
@@ -48,7 +49,7 @@ function figNote(){
   arrowUp(OX,INK)+T(OX+6,166,13,"物体","b","middle")+
   line(ix,AX,ix,iy+10,INK,3,true)+'<polygon points="'+n(ix)+','+n(iy)+' '+n(ix-5.5)+','+n(iy+12)+' '+n(ix+5.5)+','+n(iy+12)+'" fill="'+INK+'"/>'+
   T(ix,iy-14,13,"虚像","b","middle");
- return svg(236,"ノート用の図。虚像の作図の完成図。凸レンズ、光軸、2つの焦点がある。物体は、焦点の内側にある。物体の先端から、光軸に平行な光と、レンズの中心を通る光の2本が出て、レンズを通ったあとは広がる。この2本を反対向き(左)に点線でのばすと、物体より左の1点で交わる。その点が虚像の先端で、物体と同じ向きの、物体より大きい虚像ができている。すべて黒で描いてある",s)}
+ s+=T(268,148,14,"①","b","middle")+T(252,182,14,"②","b","middle")+T(64,58,14,"③","b","middle")+T(6,242,12,"① 先端から、光軸に平行な線。焦点を通る。")+T(6,260,12,"② 先端から、レンズの中心へ。直進する。")+T(6,278,12,"③ 反対向きに点線。交わる点が虚像の先端。");return svgY(18,268,"ノート用の図。手順の①②③が書き込んである。①は、物体の先端から光軸に平行な線で、焦点を通る。②は、物体の先端からレンズの中心へ向かう線で、直進する。③は、①②を反対向きに点線でのばし、交わる点が虚像の先端。虚像の作図の完成図。凸レンズ、光軸、2つの焦点がある。物体は、焦点の内側にある。物体の先端から、光軸に平行な光と、レンズの中心を通る光の2本が出て、レンズを通ったあとは広がる。この2本を反対向き(左)に点線でのばすと、物体より左の1点で交わる。その点が虚像の先端で、物体と同じ向きの、物体より大きい虚像ができている。すべて黒で描いてある",s)}
 
 /* ---------- 問題の図：レンズのあとの光を、反対向きにのばした点線の候補(A〜Cから選ぶ) ----------
    kind=1：光軸に平行な光(右の焦点を通る向き)。kind=2：中心を通る光(直進) 。候補は上から順にA、B、C */
@@ -146,8 +147,8 @@ sections:[
  ],
  solution:SOL2},
 {type:"text",title:"ノートに書いてみよう",html:
- '<p>何も見ずに、ノートに凸レンズと焦点を書いて、物体を焦点の内側に置いたときの虚像を作図してみましょう。</p>'+
- '<p class="note">光の線は、2本引きます。レンズを通ったあとの光は、反対向きに点線でのばします。書けたら、下の図と見比べましょう。</p>'+figNote()+
- '<p>次は、物体の位置を、焦点の内側で、焦点に近づけたり、遠ざけたりして作図してみましょう。虚像の大きさが、どう変わるかを見てください。</p>'}
+ '<p>ノートに虚像を作図しましょう。</p>'+
+ figNote()+
+ '<p>物体の位置を、焦点の内側で、焦点に近づけたり、遠ざけたりして作図しましょう。虚像の大きさが、どう変わるか見てください。</p>'}
 ]};
 })();
