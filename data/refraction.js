@@ -22,7 +22,7 @@ function hit(p,d,poly){var best=null,i;
   if(t>1e-6&&s>=-1e-9&&s<=1+1e-9&&(!best||t<best.t)){var n=nrm([ey,-ex]);if(n[0]*d[0]+n[1]*d[1]>0)n=[-n[0],-n[1]];best={t:t,pt:[p[0]+t*d[0],p[1]+t*d[1]],N:n}}}
  return best}
 /* N＝光が来る側を向く、境界面に垂直な単位ベクトル。m＝c(正しい)・w(逆向き)。入るとき／出るとき */
-var WK=1.5,XF=0.8;
+var WK=1.3,XF=0.65;
 function bend(d,N,m,entering){
  var ci=-(N[0]*d[0]+N[1]*d[1]),th=Math.acos(ci),tg=nrm([d[0]+ci*N[0],d[1]+ci*N[1]]),o;
  if(entering){var rc=Math.asin(Math.sin(th)/NG);o=m==="c"?rc:Math.min(th+WK*(th-rc),1.4)}
@@ -67,7 +67,7 @@ function bandOf(t,W){return band(t.p0,t.d0,[{K:t.q1,din:t.d0,dout:t.d1,N:t.N1,fi
 /* ---------- 特訓問題の図 ---------- */
 /* 入るとき・出るときの2か所で、それぞれ「まっすぐ(s)・正しく曲がる(c)・逆に曲がる(w)」の3通り。3×3＝9通りをA〜Iにする */
 function opt(poly,p0,d,box,key,w,h,label,vb){
- var M5=["ss","cc","cw","wc","ww"],tr=[],L="ABCDE",ans="",q1,s="",placed=[],R=10;
+ var M5=["cc","cw","wc","ww"],tr=[],L="ABCD",ans="",q1,s="",placed=[],R=10;
  M5.forEach(function(m){tr.push({m:m,t:trace(poly,p0,d,m,box)})});
  tr.sort(function(a,b){return key(a.t.end)-key(b.t.end)});q1=tr[0].t.q1;
  s=pgon(poly,PALE,PALE,4)+line(p0[0],p0[1],q1[0],q1[1],LIGHT,1.5)+arw(p0[0],p0[1],q1[0],q1[1]);
@@ -102,7 +102,7 @@ var RECT=[[40,120],[300,120],[300,190],[40,190]],RB=[26,0,314,280];
 var TRI=[[170,60],[249.3,230],[90.7,230]],TRI2=[[90.7,60],[249.3,60],[170,230]],TB=[0,0,340,300];
 var s30=.5,c30=Math.sqrt(3)/2;
 var P1=[59.2,49.3],P2=[280.8,49.3];
-var NINE="最初の境界面で、光は「まっすぐ・正しく曲がる・逆に曲がる」の3本に分かれる。まっすぐの1本は、そのまま直進する。残りの2本は、もう一方の境界面で、それぞれ「正しく曲がる・逆に曲がる」の2本に分かれる。全部で5つの道すじの候補が、A〜Eである";
+var NINE="最初の境界面で、光は「正しく曲がる・逆に曲がる」の2本に分かれる。それぞれの光は、もう一方の境界面で、さらに「正しく曲がる・逆に曲がる」の2本に分かれる。全部で4つの道すじの候補が、A〜Dである";
 var Q1=opt(RECT,P1,[s30,c30],RB,function(e){return e[0]},340,290,"直方体のガラスに、左上から光が当たる図。"+NINE,"0 36 340 250");
 var Q2=opt(RECT,P2,[-s30,c30],RB,function(e){return e[0]},340,290,"直方体のガラスに、右上から光が当たる図。"+NINE,"0 36 340 250");
 var Q3=opt(TRI,[20,150],[1,0],TB,function(e){return e[1]},340,260,"三角柱のガラスに、左から水平に光が当たる図。頂点が上。"+NINE,"0 36 340 220");
@@ -212,8 +212,8 @@ var POINT='<div><p>光は、同じ物質の中では<b>直進</b>します。</p
 var TOTAL='<p>ガラスから空気に出るとき、入射角を大きくすると、屈折角が先に90°になり、それをこえると光は出られず、すべて反射します。これを<b>全反射</b>といいます。</p>'+figTotal("A")+
  '<p>空気からガラスに入るときは、入射角が90°に近くても、屈折角は約42°までなので、光はいつもガラスに入ります。全反射は起こりません。</p>'+figTotal("B");
 
-var QBODY='<p>光がガラスに当たったとき、光の進み方として正しいものを、A〜Eから選びなさい。</p>';
-var L9=["A","B","C","D","E"];
+var QBODY='<p>光がガラスに当たったとき、光の進み方として正しいものを、A〜Dから選びなさい。</p>';
+var L9=["A","B","C","D"];
 var SOL='<p>光は、<b>遅い方に曲がります</b>。</p>'+
  '<p class="note">光の帯の線は、赤が速い側、青が遅い側です。空気中は速く、ガラスの中は遅くなります。</p>'+
  '<p>(1) <b>'+Q1.ans+'</b><br>入るとき：先にガラスに入った側が遅い → 青い方に曲がる。<br>出るとき：先に空気に出た側が速い → 青い方に曲がる。</p>'+A1+
