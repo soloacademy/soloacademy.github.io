@@ -11,8 +11,8 @@ function svg(h,label,body){return '<div class="fig"><svg viewBox="0 0 340 '+h+'"
 function chev(x,y,a,k){var L=7,s=.5;
  function p(t){return n(x-L*Math.cos(a+t))+','+n(y-L*Math.sin(a+t))}
  return '<path d="M'+p(s)+' L'+n(x)+','+n(y)+' L'+p(-s)+'" fill="none" stroke="'+(k||LIGHT)+'" stroke-width="1.5"/>'}
-function chevOn(p,q,back){var dx=q[0]-p[0],dy=q[1]-p[1],len=Math.hypot(dx,dy),a=Math.atan2(dy,dx),b=back==null?len/2:back;
- return chev(q[0]-b*Math.cos(a),q[1]-b*Math.sin(a),a)}
+function chevOn(p,q,back,k){var dx=q[0]-p[0],dy=q[1]-p[1],len=Math.hypot(dx,dy),a=Math.atan2(dy,dx),b=back==null?len/2:back;
+ return chev(q[0]-b*Math.cos(a),q[1]-b*Math.sin(a),a,k)}
 function dot(x,y){return '<circle cx="'+n(x)+'" cy="'+n(y)+'" r="3.5" fill="'+INK+'"/>'}
 function entry(x,y){return '<circle cx="'+n(x)+'" cy="'+n(y)+'" r="3.5" fill="#fff" stroke="'+LIGHT+'" stroke-width="1.2"/>'}
 function arrowUp(x,col){return line(x,AX,x,TY+10,col,3)+'<polygon points="'+x+','+TY+' '+(x-5.5)+','+(TY+12)+' '+(x+5.5)+','+(TY+12)+'" fill="'+col+'"/>'}
@@ -34,6 +34,21 @@ function figVirtual(){
   T(ix,iy-14,13,"虚像","v b","middle")+
   T(336,190,13,"ここからのぞく","b","end");
  return svg(236,"凸レンズの図。物体は、焦点の内側にある。物体の先端から、光軸に平行な光と、レンズの中心を通る光が出る。レンズを通ったあとの光は、広がって、集まらない。この2本を、反対向き(左)に点線でのばすと、物体より左の1点で交わる。その点が、虚像の先端。虚像は、物体と同じ向きで、物体より大きい。右側からレンズをのぞくと、この虚像が見える",s)}
+
+/* ---------- ノート用の図：虚像の作図の完成図(すべて黒) ---------- */
+function figNote(){
+ var di=OD*F/(F-OD),hi=HO*di/OD,ix=LX-di,iy=AX-hi,XE=270,
+  y1=TY+HO/F*(XE-LX),y2=AX+HO/OD*(XE-LX);
+ function en(x,y){return '<circle cx="'+n(x)+'" cy="'+n(y)+'" r="3.5" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'}
+ var s=axis()+lens()+focal()+T(LX,32,13,"凸レンズ","b","middle")+
+  line(LX,TY,ix,iy,INK,1.5,true)+line(OX,TY,ix,iy,INK,1.5,true)+
+  pline([[OX,TY],[LX,TY],[XE,y1]],INK,1.5)+pline([[OX,TY],[LX,AX],[XE,y2]],INK,1.5)+
+  chevOn([OX,TY],[LX,TY],null,INK)+chevOn([LX,TY],[XE,y1],30,INK)+chevOn([OX,TY],[LX,AX],null,INK)+chevOn([LX,AX],[XE,y2],40,INK)+
+  en(LX,TY)+en(LX,AX)+
+  arrowUp(OX,INK)+T(OX+6,166,13,"物体","b","middle")+
+  line(ix,AX,ix,iy+10,INK,3,true)+'<polygon points="'+n(ix)+','+n(iy)+' '+n(ix-5.5)+','+n(iy+12)+' '+n(ix+5.5)+','+n(iy+12)+'" fill="'+INK+'"/>'+
+  T(ix,iy-14,13,"虚像","b","middle");
+ return svg(236,"ノート用の図。虚像の作図の完成図。凸レンズ、光軸、2つの焦点がある。物体は、焦点の内側にある。物体の先端から、光軸に平行な光と、レンズの中心を通る光の2本が出て、レンズを通ったあとは広がる。この2本を反対向き(左)に点線でのばすと、物体より左の1点で交わる。その点が虚像の先端で、物体と同じ向きの、物体より大きい虚像ができている。すべて黒で描いてある",s)}
 
 /* ---------- 問題の図：レンズのあとの光を、反対向きにのばした点線の候補(A〜Cから選ぶ) ----------
    kind=1：光軸に平行な光(右の焦点を通る向き)。kind=2：中心を通る光(直進) 。候補は上から順にA、B、C */
@@ -132,7 +147,7 @@ sections:[
  solution:SOL2},
 {type:"text",title:"ノートに書いてみよう",html:
  '<p>何も見ずに、ノートに凸レンズと焦点を書いて、物体を焦点の内側に置いたときの虚像を作図してみましょう。</p>'+
- '<p>① 光の線を2本引く(光軸に平行な光と、レンズの中心を通る光)<br>② レンズを通ったあとの光を、反対向きに点線でのばす<br>③ 点線が交わる点を、虚像の先端にする</p>'+
- '<p class="note">物体を焦点に近づけると、虚像の場所と大きさがどう変わるかも、比べてみてください。</p>'}
+ '<p class="note">光の線は、2本引きます。レンズを通ったあとの光は、反対向きに点線でのばします。書けたら、下の図と見比べましょう。</p>'+figNote()+
+ '<p>次は、物体の位置を、焦点の内側で、焦点に近づけたり、遠ざけたりして作図してみましょう。虚像の大きさが、どう変わるかを見てください。</p>'}
 ]};
 })();
