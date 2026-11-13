@@ -55,25 +55,27 @@ function figRound(o){
   T(6,150,13,"声を出した場所","g");
  return svg(158,"声が、声を出した場所から"+tg+"まで行って、同じ道を帰ってくる図。片道は"+o.one+"、往復は"+o.tot+"で、かかった時間は"+o.tm,s)}
 
-/* 解答の図(2)：往復を1本の線にのばし、山のところで半分に折る */
-function figFold(){
- var X1=30,XM=170,X2=310,Y1=70,Y2=156,s='',tri=function(y){return '<polygon points="'+(XM-13)+','+y+' '+XM+','+(y-24)+' '+(XM+13)+','+y+'" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.2" stroke-linejoin="round"/>'+TN(XM,y-3,12,"山","b","middle")};
- /* 上：往復の1本の線 */
- s+='<path d="M'+X1+',36 V30 H'+X2+' V36" fill="none" stroke="'+MUTED+'" stroke-width="1.2"/>'+
-  T(170,20,14,'<tspan class="v b">4秒</tspan>で往復 <tspan class="m b">1360m</tspan>',null,"middle")+
-  dot(X1,Y1)+dot(X2,Y1)+arw(X1+6,Y1,XM-16,Y1)+arw(XM+16,Y1,X2-6,Y1)+tri(Y1)+
-  T(100,Y1+22,14,'行き <tspan class="m b">680m</tspan>',null,"middle")+T(240,Y1+22,14,'帰り <tspan class="m b">680m</tspan>',null,"middle");
- /* 山で折る */
- s+=line(XM,Y1+30,XM,Y2-30,MUTED,1.2,true)+T(XM+8,(Y1+Y2)/2+4,13,"山で半分に折る","g");
- /* 下：折ったあと(片道) */
- s+=dot(X1,Y2)+arw(X1+6,Y2,XM-16,Y2)+tri(Y2)+T(100,Y2-10,14,"680m","m b","middle")+
-  T(XM+22,Y2-8,13,"往復の半分","b")+T(XM+22,Y2+10,13,"＝ 山までの距離","b");
- s+=T(6,Y2+36,13,"声を出した場所","g");
- return svg(200,"往復の1360mを1本の線にのばした図。声を出した場所から山まで680m、山から戻る道が680m。山のところで半分に折ると、声を出した場所から山までの680mになる",s)}
+/* 解答の図(2)：1秒ごとに340mずつ進む。行きは2本、帰りは2本。山で折り返す */
+function figSteps(){
+ var X0=30,XM=250,Y1=64,Y2=166,s='',i;
+ function ar(x1,x2,y){var d=x2>x1?1:-1,tip=x2,b=x2-d*10;
+  return line(x1,y,b,y,RED,3)+'<polygon points="'+tip+','+y+' '+b+','+(y-5.5)+' '+b+','+(y+5.5)+'" fill="'+RED+'"/>'+T((x1+x2)/2,y-10,14,"340m","m b","middle")}
+ function tk(x,y,t){return line(x,y-6,x,y+6,INK,1.2)+T(x,y+24,14,t,"v b","middle")}
+ s+=T(6,34,13,'行き　<tspan class="m b">340m × 2 ＝ 680m</tspan>',"b")+T(6,136,13,'帰り　<tspan class="m b">340m × 2 ＝ 680m</tspan>',"b");
+ /* 山 */
+ s+='<polygon points="257,'+Y1+' 270,'+(Y1-24)+' 283,'+Y1+'" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.2" stroke-linejoin="round"/>'+TN(270,Y1-3,12,"山","b","middle");
+ /* 行き(上)：0秒→1秒後→2秒後 */
+ s+=ar(36,134,Y1)+ar(146,244,Y1)+dot(X0,Y1)+tk(140,Y1,"1秒後")+tk(XM,Y1,"2秒後")+T(X0,Y1+24,14,"0秒","v b","middle");
+ /* 山で反射 */
+ s+=line(XM,Y1+34,XM,Y2-34,MUTED,1.2,true)+T(XM+8,(Y1+Y2)/2+4,13,"山で反射","g");
+ /* 帰り(下)：2秒後→3秒後→4秒後 */
+ s+=ar(244,146,Y2)+ar(134,36,Y2)+dot(X0,Y2)+tk(140,Y2,"3秒後")+tk(XM,Y2,"2秒後")+T(X0,Y2+24,14,"4秒後","v b","middle");
+ s+=T(6,Y2+50,13,"声を出した場所","g");
+ return svg(226,"声が山まで行って、帰ってくる図。1秒ごとに340mずつ進む。行きは、0秒から2秒後までの340mの矢印が2本で、680m。山で反射して、帰りは、2秒後から4秒後までの340mの矢印が2本で、680m。4秒で、340mの矢印が4本、1360mになる",s)}
 
 var R='<span class="m">',V='<span class="v">',E='</span>';
 var FIG1=figSpeed(),FIGONE=figOne(),
- FIG2=figFold(),
+ FIG2=figSteps(),
  FIG3=figRound({one:"170m",tot:"340m",tm:"1秒",wall:true});
 
 var SOL='<p>光はほぼ0秒で届くので、聞こえるまでの<b>6秒</b>は、音が進んだ時間です。</p>'+FIGONE+
