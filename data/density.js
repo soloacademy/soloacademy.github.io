@@ -50,6 +50,29 @@ function fig3(show){
   T(168,128,17,"10cm³","v b","end")+T(168,144,11,"金属の体積","v","end");
  return svg(320,270,show?"メスシリンダーの目もりの拡大図。糸でつるした金属79gを水に入れると、水面が60cm³から70cm³に上がり、増えた10cm³が金属の体積であることを表す図":"メスシリンダーの目もりの拡大図。60cm³の水に、糸でつるした金属79gを入れると、水面が70cm³まで上がる図",b)}
 
+/* 「質量・密度・体積」の図(1-12の「き・は・じ」と同じ形)。o.ki＝質量、o.ha＝密度、o.ji＝体積の具体的な値。o.na＝右横に「なので、」。o.row＝「つまり、」図「となります。」を横一列に */
+function TN(x,y,size,txt,cls,anchor){return '<text x="'+x+'" y="'+y+'" font-size="'+size+'" style="stroke:none"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
+function khj(o){
+ o=o||{};
+ var CX=150,CY=95,R=70,s='',GL="#8a949f",MU="#5d6874",hasV=o.ha||o.ji||o.ki,FS=21.5,
+  w=hasV?"14rem":"15rem",vb=hasV?"-40 18 372 158":"0 18 300 158",lab,f,tx=function(h){return h.replace(/<[^>]*>/g,"")};
+ if(o.row){w="7rem";vb="70 22 160 148"}
+ s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="#fff" stroke="'+GL+'" stroke-width="1.2"/>'+
+  line(CX-R,CY,CX+R,CY,GL,1.2)+line(CX,CY,CX,CY+R,GL,1.2)+
+  T(CX-30,CY+8,20,"÷","b","middle")+T(CX+30,CY+8,20,"÷","b","middle")+T(CX,CY+36,16,"×","b","middle")+
+  TN(CX,CY-34,22,"質量","m b","middle")+TN(CX,CY-14,12,"(g)","g","middle")+
+  TN(CX-30,CY+33,20,"密度","b","middle")+TN(CX-30,CY+49,11,"(g/cm³)","g","middle")+
+  TN(CX+30,CY+33,20,"体積","v b","middle")+TN(CX+30,CY+49,12,"(cm³)","g","middle");
+ if(o.ki)s+=line(201,37,167,52,MU,1)+T(203,43,FS,o.ki,"m b");
+ if(o.ha)s+=line(62,156,107,126,MU,1)+T(58,CY+R,FS,o.ha,"b","end");
+ if(o.ji)s+=line(238,156,193,126,MU,1)+T(242,CY+R,FS,o.ji,"v b");
+ lab="「質量・密度・体積」の図。1つの円に、横の直径と、中心から下への半径がある。上半分に質量(g)、左下に密度(g/cm³)、右下に体積(cm³)。密度と体積の間は×、質量と密度の間と、質量と体積の間は÷。"+
+  (o.ha?"密度は"+tx(o.ha)+"。":"")+(o.ji?"体積は"+tx(o.ji)+"。":"")+(o.ki?"質量は"+tx(o.ki)+"。":"");
+ f='<div class="fig" style="margin:0;width:'+w+';flex:0 0 auto"><svg viewBox="'+vb+'" role="img" aria-label="'+lab+'">'+s+'</svg></div>';
+ if(o.row)return '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .4rem;margin:.6rem 0"><span style="white-space:nowrap">つまり、</span>'+f+'<span style="white-space:nowrap">となります。</span></div>';
+ return '<div style="display:flex;align-items:center;gap:.3rem;margin:.4rem 0">'+f+(o.na?'<span style="white-space:nowrap;margin-left:-2rem">なので、</span>':'')+'</div>'}
+var FIGROW=khj({row:1});
+
 /* 練習問題の解説：分数で比べる */
 var D={A:[23,31],B:[23,37],C:[29,23],D:[29,31]};
 function fr(k,eq){var d=D[k];return '<span class="frac"><span class="m'+(eq==="m"?" eqm":"")+'">'+d[0]+'g</span><span class="v'+(eq==="v"?" eqv":"")+'">'+d[1]+'cm³</span></span>'}
@@ -69,6 +92,7 @@ sections:[
  '<p>密度は「<span class="v">1cm³</span>あたりの<span class="m">質量</span>」です。</p>'+fig4s+
  '<div class="formula">密度(g/cm³) ＝ <span class="frac"><span class="m">質量(g)</span><span class="v">体積(cm³)</span></span></div>'+
  '<div class="formula"><span class="m">g</span>/<span class="v">cm³</span> ＝ <span class="m">g</span> ÷ <span class="v">cm³</span> ＝ <span class="frac"><span class="m">g</span><span class="v">cm³</span></span></div>'+
+ FIGROW+
  '<p class="note">「/」は「÷」の意味です。「/」の左が分数の上(分子)、右が下(分母)になります。</p>'},
 {type:"problem",title:"問題",
  body:'<p>60cm³の水を入れたメスシリンダーに、ある金属79gを沈めたところ、目もりは70cm³になった。</p>'+fig3(false)+
@@ -80,8 +104,12 @@ sections:[
  ]},
 {type:"answer",html:
  '<p>水面が上がった分が、金属の体積です。</p>'+fig3(true)+
- '<p>(1) 体積は 70 − 60 ＝ <span class="v">10cm³</span><br>密度は <span class="m">79g</span> ÷ <span class="v">10cm³</span> ＝ <b>7.9g/cm³</b></p>'+
- '<p>(2) 7.9g/cm³ × 100cm³ ＝ <b>790g</b></p>'},
+ '<p>(1) 体積は 70 − 60 ＝ <span class="v">10cm³</span></p>'+
+ khj({ki:'79g',ji:'10cm³',na:1})+
+ '<p><span class="m">79g</span> ÷ <span class="v">10cm³</span> ＝ <b>7.9g/cm³</b></p>'+
+ '<p>(2) 100cm³の質量を求めます。</p>'+
+ khj({ha:'<tspan class="m">7.9g</tspan>/<tspan class="v">cm³</tspan>',ji:'100cm³',na:1})+
+ '<p>7.9g/cm³ × 100cm³ ＝ <b>790g</b></p>'},
 {type:"problem",title:"補充問題",
  body:'<p>次の物体A、B、C、Dを、密度の小さい順に並べなさい。</p>'+
  '<table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>'+
