@@ -48,20 +48,21 @@ function figOne(){
    o.ha・o.ji・o.ki＝わかっている値(なければ書かない)。o.na＝図の右横に「なので、」を付ける。o.big＝大きく表示 */
 function figKHJ(o){
  o=o||{};
- var CX=150,CY=95,R=70,s='',hasV=o.ha||o.ji||o.ki,H=hasV?200:176,lab,w=o.big?"15rem":"13.5rem",f;
- s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="#fff" stroke="#8a949f" stroke-width="2"/>'+
-  line(CX-R,CY,CX+R,CY,"#8a949f",2)+line(CX,CY,CX,CY+R,"#8a949f",2);
- s+=T(CX-38,CY+9,22,"÷","b","middle")+T(CX+38,CY+9,22,"÷","b","middle")+T(CX,CY+40,22,"×","b","middle");
+ var CX=150,CY=95,R=70,s='',lab,w=o.big?"15rem":"13.5rem",f,GL="#8a949f";
+ s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="#fff" stroke="'+GL+'" stroke-width="2"/>'+
+  line(CX-R,CY,CX+R,CY,GL,2)+line(CX,CY,CX,CY+R,GL,2);
+ s+=T(CX-38,CY+9,22,"÷","b","middle")+T(CX+38,CY+9,22,"÷","b","middle")+T(CX,CY+38,22,"×","b","middle");
  s+=TN(CX,CY-34,26,"き","m b","middle")+TN(CX,CY-14,13,"(距離)","g","middle")+
-  TN(CX-38,CY+30,24,"は","b","middle")+TN(CX-38,CY+49,13,"(速さ)","g","middle")+
-  TN(CX+38,CY+30,24,"じ","v b","middle")+TN(CX+38,CY+49,13,"(時間)","g","middle");
- if(o.ki)s+=T(CX+R+10,CY-44,18,o.ki,"m b");
- if(o.ha)s+=T(CX-38,CY+R+22,18,o.ha,"b","middle");
- if(o.ji)s+=T(CX+38,CY+R+22,18,o.ji,"v b","middle");
+  TN(CX-29,CY+28,24,"は","b","middle")+TN(CX-29,CY+44,12,"(速さ)","g","middle")+
+  TN(CX+29,CY+28,24,"じ","v b","middle")+TN(CX+29,CY+44,12,"(時間)","g","middle");
+ /* わかっている値：指し示す線つき。きは右斜め上、はは左下、じは右下(円の底と下をそろえる) */
+ if(o.ki)s+=line(201,37,167,52,MUTED,1.2)+T(203,43,18,o.ki,"m b");
+ if(o.ha)s+=line(90,152,106,118,MUTED,1.2)+T(100,CY+R,18,o.ha,"b","end");
+ if(o.ji)s+=line(210,152,194,118,MUTED,1.2)+T(200,CY+R,18,o.ji,"v b");
  lab="「き・は・じ」の図。1つの円に、横の直径と、中心から下への半径がある。上半分に「き」(距離)、左下に「は」(速さ)、右下に「じ」(時間)。「は」と「じ」の間は×、「き」と「は」の間と、「き」と「じ」の間は÷。"+
   (o.ha?"速さは"+o.ha.replace(/<[^>]*>/g,"")+"。":"")+(o.ji?"時間は"+o.ji.replace(/<[^>]*>/g,"")+"。":"")+(o.ki?"距離は"+o.ki.replace(/<[^>]*>/g,"")+"。":"");
- f='<div class="fig" style="margin:0;width:'+w+';flex:0 0 auto"><svg viewBox="0 0 300 '+H+'" role="img" aria-label="'+lab+'">'+s+'</svg></div>';
- return '<div style="display:flex;align-items:center;gap:.3rem;margin:.6rem 0">'+f+(o.na?'<span style="white-space:nowrap">なので、</span>':'')+'</div>'}
+ f='<div class="fig" style="margin:0;width:'+w+';flex:0 0 auto"><svg viewBox="0 18 300 158" role="img" aria-label="'+lab+'">'+s+'</svg></div>';
+ return '<div style="display:flex;align-items:center;gap:.3rem;margin:'+(o.big?'-.6rem 0 .6rem':'.6rem 0')+'">'+f+(o.na?'<span style="white-space:nowrap">なので、</span>':'')+'</div>'}
 
 /* 解答の図(2)・補充：行きと帰りの矢印を、近づけてU字につなぐ。o.one＝片道、o.tot＝往復、o.tm＝時間、o.wall＝true なら壁、false なら山。
    o.sp があれば、上の文字を「秒速o.spで往復」にする */
