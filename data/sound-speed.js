@@ -43,14 +43,21 @@ function figOne(){
  s+=T(6,Y2+56,13,"見ている場所","g")+T(310,Y2+56,13,"雷","g","middle");
  return svg(Y2+68,"雷の光と音が、雷から見ている場所まで進む図。光は秒速約30万kmで、ほぼ0秒で届く。音は秒速340mで、6秒かかる。進んだ距離は、どちらも2040m",s)}
 
-/* 厳選ポイントの図：「き・は・じ」。上＝き(距離)、下の左＝は(速さ)、下の右＝じ(時間)。は×じ、き÷は、き÷じ */
-function figKiHaJi(){
- var C=[[170,36,"き","m"],[100,112,"は",""],[240,112,"じ","v"]],s='',r=26;
- s+=line(150,56,118,92,"#b4bbc3",1.5)+line(190,56,222,92,"#b4bbc3",1.5)+line(126,112,214,112,"#b4bbc3",1.5);
- s+=T(124,78,22,"÷","b","middle")+T(216,78,22,"÷","b","middle")+T(170,121,22,"×","b","middle");
- C.forEach(function(c){s+='<circle cx="'+c[0]+'" cy="'+c[1]+'" r="'+r+'" fill="#fff" stroke="#8a949f" stroke-width="1.5"/>'+TN(c[0],c[1]+9,26,c[2],(c[3]?c[3]+" ":"")+"b","middle")});
- s+=T(206,41,14,"距離(m)","m b")+T(100,156,14,'速さ(<tspan class="m">m</tspan>/<tspan class="v">s</tspan>)',"b","middle")+T(240,156,14,"時間(秒)","v b","middle");
- return svg(166,"「き・は・じ」の図。上に「き」(距離)、下の左に「は」(速さ)、下の右に「じ」(時間)。「は」と「じ」の間は×、「き」と「は」の間と、「き」と「じ」の間は÷。距離は、速さ×時間。速さは、距離÷時間。時間は、距離÷速さ",s)}
+/* 「き・は・じ」の図。上＝き(距離)、下の左＝は(速さ)、下の右＝じ(時間)。は×じ、き÷は、き÷じ。
+   o.ha・o.ji・o.ki＝円の外に書く、わかっている値(なければ書かない)。o.small＝小さく表示 */
+function figKHJ(o){
+ o=o||{};
+ var C=[[170,38,"き","(距離)","m"],[98,112,"は","(速さ)",""],[242,112,"じ","(時間)","v"]],s='',r=33,hasV=o.ha||o.ji||o.ki,f;
+ s+=line(148,62,120,90,"#b4bbc3",1.5)+line(192,62,220,90,"#b4bbc3",1.5)+line(131,112,209,112,"#b4bbc3",1.5);
+ s+=T(122,72,22,"÷","b","middle")+T(218,72,22,"÷","b","middle")+T(170,121,22,"×","b","middle");
+ C.forEach(function(c){s+='<circle cx="'+c[0]+'" cy="'+c[1]+'" r="'+r+'" fill="#fff" stroke="#8a949f" stroke-width="1.5"/>'+
+  TN(c[0],c[1]-2,24,c[2],(c[4]?c[4]+" ":"")+"b","middle")+TN(c[0],c[1]+18,13,c[3],"g","middle")});
+ if(o.ki)s+=T(210,45,18,o.ki,"m b");
+ if(o.ha)s+=T(98,170,18,o.ha,"b","middle");
+ if(o.ji)s+=T(242,170,18,o.ji,"v b","middle");
+ f=svg(hasV?180:152,"「き・は・じ」の図。上に「き」(距離)、下の左に「は」(速さ)、下の右に「じ」(時間)。「は」と「じ」の間は×、「き」と「は」の間と、「き」と「じ」の間は÷。"+
+  (o.ha?"速さは"+o.ha.replace(/<[^>]*>/g,"")+"。":"")+(o.ji?"時間は"+o.ji.replace(/<[^>]*>/g,"")+"。":"")+(o.ki?"距離は"+o.ki.replace(/<[^>]*>/g,"")+"。":""),s);
+ return o.small?f.replace('<div class="fig">','<div class="fig" style="margin:.4rem 0 .6rem"><div style="max-width:15rem">').replace('</svg></div>','</svg></div></div>'):f}
 
 /* 解答の図(2)・補充：行きと帰りの矢印を、近づけてU字につなぐ。o.one＝片道、o.tot＝往復、o.tm＝時間、o.wall＝true なら壁、false なら山。
    o.sp があれば、上の文字を「秒速o.spで往復」にする */
@@ -69,14 +76,17 @@ function figRound(o){
  return f}
 
 var R='<span class="m">',V='<span class="v">',E='</span>';
-var FIG1=figSpeed(),FIGKHJ=figKiHaJi(),FIGONE=figOne(),
+var SPD='<tspan class="m">340m</tspan>/<tspan class="v">s</tspan>',
+ FIG1=figSpeed(),FIGKHJ=figKHJ(),FIGONE=figOne(),
  FIG2=figRound({one:"680m",tot:"1360m",tm:"4秒",wall:false}),
  FIG3=figRound({one:"170m",tot:"340m",sp:"340m",wall:true});
 
-var SOL='<p>(1) 光はほぼ0秒で届くので、聞こえるまでの<b>6秒</b>は、音が進んだ時間です。<br>340m/s × 6秒 ＝ <b>2040m</b></p>'+FIGONE+
- '<p>(2) 山びこは、山まで行って、帰ってきます。進んだ距離は<b>往復</b>です。<br>往復：340m/s × 4秒 ＝ 1360m<br>片道：1360m ÷ 2 ＝ <b>680m</b></p>'+FIG2;
+var SOL='<p>(1) 光はほぼ0秒で届くので、聞こえるまでの<b>6秒</b>は、音が進んだ時間です。<br>340m/s × 6秒 ＝ <b>2040m</b></p>'+figKHJ({ha:SPD,ji:'6秒',small:1})+FIGONE+
+ '<p>(2) 山びこは、山まで行って、帰ってきます。進んだ距離は<b>往復</b>です。</p>'+figKHJ({ha:SPD,ji:'4秒',small:1})+
+ '<p>往復：340m/s × 4秒 ＝ 1360m<br>片道：1360m ÷ 2 ＝ <b>680m</b></p>'+FIG2;
 
-var SOL2='<p>声は、壁まで行って、帰ってきます。進む距離は<b>往復</b>です。<br>往復：170m × 2 ＝ 340m<br>時間 ＝ 距離 ÷ 速さ なので、340m ÷ 340m/s ＝ <b>1秒</b></p>'+FIG3;
+var SOL2='<p>声は、壁まで行って、帰ってきます。進む距離は<b>往復</b>です。<br>往復：170m × 2 ＝ 340m</p>'+figKHJ({ha:SPD,ki:'340m',small:1})+
+ '<p>340m ÷ 340m/s ＝ <b>1秒</b></p>'+FIG3;
 
 window.UNIT={
 no:"1-12",title:"音の速さ",
