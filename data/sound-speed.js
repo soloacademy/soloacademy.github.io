@@ -29,19 +29,28 @@ function figSpeed(){
 
 /* 解答の図(1)：雷の光と音が、雷から見ている場所まで進む(同じ距離。光はほぼ0秒、音は6秒) */
 function figOne(){
- var X1=30,X2=310,Y1=66,Y2=134,LT="#b7791f",s='';
+ var X1=30,X2=310,Y1=39,Y2=107,LT="#b7791f",s='';
  s+=line(X1,Y1,X1,Y2,"#b4bbc3",1,true)+line(X2,Y1,X2,Y2,"#b4bbc3",1,true);
  /* 雷 */
- s+='<polygon points="316,4 302,30 310,30 304,52 320,24 312,24" fill="#fbe7b0" stroke="'+LT+'" stroke-width="1.5" stroke-linejoin="round"/>';
+ s+='<polygon transform="translate(117.2,-1.5) scale(.62)" points="316,4 302,30 310,30 304,52 320,24 312,24" fill="#fbe7b0" stroke="'+LT+'" stroke-width="2.4" stroke-linejoin="round"/>';
  /* 光(上) */
- s+=T(6,44,13,'雷の光　<tspan class="g">秒速約30万km</tspan>',"b")+
+ s+=T(6,Y1-22,13,'雷の光　<tspan class="g">秒速約30万km</tspan>',"b")+
   dot(X1,Y1)+dot(X2,Y1)+arw(304,Y1,36,Y1)+T(170,Y1-8,14,"ほぼ0秒","v b","middle");
  /* 音(下) */
- s+=T(6,112,13,'音　<tspan class="g">秒速340m</tspan>',"b")+
+ s+=T(6,Y2-22,13,'音　<tspan class="g">秒速340m</tspan>',"b")+
   dot(X1,Y2)+dot(X2,Y2)+arw(304,Y2,36,Y2)+T(170,Y2-8,14,"6秒","v b","middle")+
   brace(36,304,Y2+10)+T(170,Y2+36,14,"2040m","m b","middle");
- s+=T(6,190,13,"見ている場所","g")+T(310,190,13,"雷","g","middle");
- return svg(200,"雷の光と音が、雷から見ている場所まで進む図。光は秒速約30万kmで、ほぼ0秒で届く。音は秒速340mで、6秒かかる。進んだ距離は、どちらも2040m",s)}
+ s+=T(6,Y2+56,13,"見ている場所","g")+T(310,Y2+56,13,"雷","g","middle");
+ return svg(Y2+68,"雷の光と音が、雷から見ている場所まで進む図。光は秒速約30万kmで、ほぼ0秒で届く。音は秒速340mで、6秒かかる。進んだ距離は、どちらも2040m",s)}
+
+/* 厳選ポイントの図：「き・は・じ」。上＝き(距離)、下の左＝は(速さ)、下の右＝じ(時間)。は×じ、き÷は、き÷じ */
+function figKiHaJi(){
+ var C=[[170,36,"き","m"],[100,112,"は",""],[240,112,"じ","v"]],s='',r=26;
+ s+=line(150,56,118,92,"#b4bbc3",1.5)+line(190,56,222,92,"#b4bbc3",1.5)+line(126,112,214,112,"#b4bbc3",1.5);
+ s+=T(124,78,22,"÷","b","middle")+T(216,78,22,"÷","b","middle")+T(170,121,22,"×","b","middle");
+ C.forEach(function(c){s+='<circle cx="'+c[0]+'" cy="'+c[1]+'" r="'+r+'" fill="#fff" stroke="#8a949f" stroke-width="1.5"/>'+TN(c[0],c[1]+9,26,c[2],(c[3]?c[3]+" ":"")+"b","middle")});
+ s+=T(206,41,14,"距離(m)","m b")+T(100,156,14,'速さ(<tspan class="m">m</tspan>/<tspan class="v">s</tspan>)',"b","middle")+T(240,156,14,"時間(秒)","v b","middle");
+ return svg(166,"「き・は・じ」の図。上に「き」(距離)、下の左に「は」(速さ)、下の右に「じ」(時間)。「は」と「じ」の間は×、「き」と「は」の間と、「き」と「じ」の間は÷。距離は、速さ×時間。速さは、距離÷時間。時間は、距離÷速さ",s)}
 
 /* 解答の図(2)・補充：行きと帰りの矢印を、近づけてU字につなぐ。o.one＝片道、o.tot＝往復、o.tm＝時間、o.wall＝true なら壁、false なら山。
    o.sp があれば、上の文字を「秒速o.spで往復」にする */
@@ -60,11 +69,11 @@ function figRound(o){
  return f}
 
 var R='<span class="m">',V='<span class="v">',E='</span>';
-var FIG1=figSpeed(),FIGONE=figOne(),
+var FIG1=figSpeed(),FIGKHJ=figKiHaJi(),FIGONE=figOne(),
  FIG2=figRound({one:"680m",tot:"1360m",tm:"4秒",wall:false}),
  FIG3=figRound({one:"170m",tot:"340m",sp:"340m",wall:true});
 
-var SOL='<p>(1) 光はほぼ0秒で届くので、聞こえるまでの<b>6秒</b>は、音が進んだ時間です。<br>距離 ＝ 速さ × 時間<br>340m/s × 6秒 ＝ <b>2040m</b></p>'+FIGONE+
+var SOL='<p>(1) 光はほぼ0秒で届くので、聞こえるまでの<b>6秒</b>は、音が進んだ時間です。<br>340m/s × 6秒 ＝ <b>2040m</b></p>'+FIGONE+
  '<p>(2) 山びこは、山まで行って、帰ってきます。進んだ距離は<b>往復</b>です。<br>往復：340m/s × 4秒 ＝ 1360m<br>片道：1360m ÷ 2 ＝ <b>680m</b></p>'+FIG2;
 
 var SOL2='<p>声は、壁まで行って、帰ってきます。進む距離は<b>往復</b>です。<br>往復：170m × 2 ＝ 340m<br>時間 ＝ 距離 ÷ 速さ なので、340m ÷ 340m/s ＝ <b>1秒</b></p>'+FIG3;
@@ -74,7 +83,7 @@ no:"1-12",title:"音の速さ",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
  '<p>速さは、1秒あたりに進む'+R+'距離'+E+'です。音の速さは、'+R+'340m'+E+'/'+V+'s'+E+'です。</p>'+FIG1+
- '<div class="formula">'+R+'距離(m)'+E+' ＝ 速さ('+R+'m'+E+'/'+V+'s'+E+') × '+V+'時間(秒)'+E+'</div>'+
+ FIGKHJ+
  '<p class="note">m/sは、m÷sの意味です。340m/sは、「秒速340m」ともいいます。</p>'},
 {type:"problem",title:"問題",
  body:'<p>音の速さを秒速340mとして、次の距離を求めなさい。</p>'+
