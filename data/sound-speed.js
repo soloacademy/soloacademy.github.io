@@ -44,33 +44,31 @@ function figOne(){
  return svg(200,"雷の光と音が、雷から見ている場所まで進む図。光は秒速約30万kmで、ほぼ0秒で届く。音は秒速340mで、6秒かかる。進んだ距離は、どちらも2040m",s)}
 
 /* 解答の図(2)・補充：行きと帰りの矢印を、近づけてU字につなぐ。o.one＝片道、o.tot＝往復、o.tm＝時間、o.wall＝true なら壁、false なら山。
-   o.low＝true なら、「秒速o.spで往復」の文字を、図の下(壁の左下すみの左)に置き、図全体を上に詰める */
+   o.sp があれば、上の文字を「秒速o.spで往復」にして、図と上の文の間を詰める */
 function figRound(o){
- var low=!!o.low,d=low?-18:0,s='',tg=o.wall?"壁":"山",Y1=52+d,Y2=74+d,XU=256,r=(Y2-Y1)/2,ym=(Y1+Y2)/2,f;
- if(o.wall)s+='<rect x="'+(XU+r)+'" y="'+(Y1-16)+'" width="26" height="54" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.2"/>'+TN(XU+r+13,ym+5,13,tg,"b","middle");
- else s+='<polygon points="285,'+(26+d)+' 255,'+(88+d)+' 315,'+(88+d)+'" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.2" stroke-linejoin="round"/>'+TN(285,82+d,13,tg,"b","middle");
- if(low)s+=T(XU+r-4,Y2+44,14,'<tspan class="v b">秒速</tspan><tspan class="m b">'+o.sp+'</tspan>で往復 <tspan class="m b">'+o.tot+'</tspan>',null,"end");
- else s+=T(6,18,14,'<tspan class="v b">'+o.tm+'</tspan>で往復 <tspan class="m b">'+o.tot+'</tspan>');
- s+=dot(30,ym)+arw(40,Y1,XU,Y1)+arw(XU,Y2,40,Y2)+
+ var s='',tg=o.wall?"壁":"山",Y1=52,Y2=74,XU=256,r=(Y2-Y1)/2,ym=(Y1+Y2)/2,f,top;
+ if(o.wall)s+='<rect x="'+(XU+r)+'" y="36" width="26" height="54" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.2"/>'+TN(XU+r+13,ym+5,13,tg,"b","middle");
+ else s+='<polygon points="285,26 255,88 315,88" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.2" stroke-linejoin="round"/>'+TN(285,82,13,tg,"b","middle");
+ top=o.sp?'<tspan class="v b">秒速</tspan><tspan class="m b">'+o.sp+'</tspan>':'<tspan class="v b">'+o.tm+'</tspan>';
+ s+=T(6,18,14,top+'で往復 <tspan class="m b">'+o.tot+'</tspan>')+
+  dot(30,ym)+arw(40,Y1,XU,Y1)+arw(XU,Y2,40,Y2)+
   '<path d="M'+XU+','+Y1+' A'+r+','+r+' 0 0 1 '+XU+','+Y2+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+
   T(148,Y1-10,14,'行き <tspan class="m b">'+o.one+'</tspan>',null,"middle")+
   T(148,Y2+20,14,'帰り <tspan class="m b">'+o.one+'</tspan>',null,"middle")+
   T(6,Y2+44,13,"声を出した場所","g");
- f=svg(126+d,"声が、声を出した場所から"+tg+"まで行って、同じ道を帰ってくる図。行きと帰りの矢印を、U字につないで往復を表す。片道は"+o.one+"、往復は"+o.tot+(low?"。声の速さは秒速"+o.sp:"で、かかった時間は"+o.tm),s);
- return low?f.replace('<div class="fig">','<div class="fig" style="margin-top:-.2rem">'):f}
+ f=svg(126,"声が、声を出した場所から"+tg+"まで行って、同じ道を帰ってくる図。行きと帰りの矢印を、U字につないで往復を表す。片道は"+o.one+"、往復は"+o.tot+(o.sp?"。声の速さは秒速"+o.sp:"で、かかった時間は"+o.tm),s);
+ return o.sp?f.replace('<div class="fig">','<div class="fig" style="margin-top:-.2rem">'):f}
 
 var R='<span class="m">',V='<span class="v">',E='</span>';
 var FIG1=figSpeed(),FIGONE=figOne(),
  FIG2=figRound({one:"680m",tot:"1360m",tm:"4秒",wall:false}),
- FIG3=figRound({one:"170m",tot:"340m",sp:"340m",wall:true,low:true});
+ FIG3=figRound({one:"170m",tot:"340m",sp:"340m",wall:true});
 
 var SOL='<p>光はほぼ0秒で届くので、聞こえるまでの<b>6秒</b>は、音が進んだ時間です。</p>'+FIGONE+
  '<p>(1) 距離 ＝ 速さ × 時間<br>340m/s × 6秒 ＝ <b>2040m</b></p>'+
- '<p>(2) 山びこは、山まで行って、帰ってきます。進んだ距離は<b>往復</b>です。<br>往復：340m/s × 4秒 ＝ 1360m<br>片道：1360m ÷ 2 ＝ <b>680m</b></p>'+FIG2+
- '<p class="note">山までの距離は、片道です。往復の1360mを、そのまま答えにしないように注意します。</p>';
+ '<p>(2) 山びこは、山まで行って、帰ってきます。進んだ距離は<b>往復</b>です。<br>往復：340m/s × 4秒 ＝ 1360m<br>片道：1360m ÷ 2 ＝ <b>680m</b></p>'+FIG2;
 
-var SOL2='<p>声は、壁まで行って、帰ってきます。進む距離は<b>往復</b>です。<br>往復：170m × 2 ＝ 340m<br>時間 ＝ 距離 ÷ 速さ なので、340m ÷ 340m/s ＝ <b>1秒</b></p>'+FIG3+
- '<p class="note">往復を忘れて170m ÷ 340m/s ＝ 0.5秒としないように注意します。</p>';
+var SOL2='<p>声は、壁まで行って、帰ってきます。進む距離は<b>往復</b>です。<br>往復：170m × 2 ＝ 340m<br>時間 ＝ 距離 ÷ 速さ なので、340m ÷ 340m/s ＝ <b>1秒</b></p>'+FIG3;
 
 window.UNIT={
 no:"1-12",title:"音の速さ",
