@@ -48,21 +48,24 @@ function figOne(){
    o.ha・o.ji・o.ki＝わかっている値(なければ書かない)。o.na＝図の右横に「なので、」を付ける。o.big＝大きく表示 */
 function figKHJ(o){
  o=o||{};
- var CX=150,CY=95,R=70,s='',lab,w=o.big?"15rem":"13.5rem",f,GL="#8a949f";
- s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="#fff" stroke="'+GL+'" stroke-width="2"/>'+
-  line(CX-R,CY,CX+R,CY,GL,2)+line(CX,CY,CX,CY+R,GL,2);
- s+=T(CX-38,CY+9,22,"÷","b","middle")+T(CX+38,CY+9,22,"÷","b","middle")+T(CX,CY+38,22,"×","b","middle");
- s+=TN(CX,CY-34,26,"き","m b","middle")+TN(CX,CY-14,13,"(距離)","g","middle")+
-  TN(CX-29,CY+28,24,"は","b","middle")+TN(CX-29,CY+44,12,"(速さ)","g","middle")+
-  TN(CX+29,CY+28,24,"じ","v b","middle")+TN(CX+29,CY+44,12,"(時間)","g","middle");
- /* わかっている値：指し示す線つき。きは右斜め上、はは左下、じは右下(円の底と下をそろえる) */
- if(o.ki)s+=line(201,37,167,52,MUTED,1.2)+T(203,43,18,o.ki,"m b");
- if(o.ha)s+=line(90,152,106,118,MUTED,1.2)+T(100,CY+R,18,o.ha,"b","end");
- if(o.ji)s+=line(210,152,194,118,MUTED,1.2)+T(200,CY+R,18,o.ji,"v b");
+ var CX=150,CY=95,R=70,s='',lab,GL="#8a949f",hasV=o.ha||o.ji||o.ki,
+  w=hasV?"12.2rem":"15rem",vb=hasV?"-24 18 324 158":"0 18 300 158",FS=21.5,f;
+ /* 線は、まわりの図と同じ細さ(1.2)の灰色 */
+ s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="#fff" stroke="'+GL+'" stroke-width="1.2"/>'+
+  line(CX-R,CY,CX+R,CY,GL,1.2)+line(CX,CY,CX,CY+R,GL,1.2);
+ /* ÷は「は」「じ」の真上、×は縦の線の上 */
+ s+=T(CX-28,CY+8,20,"÷","b","middle")+T(CX+28,CY+8,20,"÷","b","middle")+T(CX,CY+40,20,"×","b","middle");
+ s+=TN(CX,CY-34,24,"き","m b","middle")+TN(CX,CY-14,13,"(距離)","g","middle")+
+  TN(CX-28,CY+33,24,"は","b","middle")+TN(CX-28,CY+49,12,"(速さ)","g","middle")+
+  TN(CX+28,CY+33,24,"じ","v b","middle")+TN(CX+28,CY+49,12,"(時間)","g","middle");
+ /* わかっている値：指し示す線つき(線の角度は、どれも約30°)。はは左下、じは右下で、円の底と下をそろえる */
+ if(o.ki)s+=line(201,37,167,52,MUTED,1)+T(203,43,FS,o.ki,"m b");
+ if(o.ha)s+=line(62,156,107,126,MUTED,1)+T(58,CY+R,FS,o.ha,"b","end");
+ if(o.ji)s+=line(238,156,193,126,MUTED,1)+T(242,CY+R,FS,o.ji,"v b");
  lab="「き・は・じ」の図。1つの円に、横の直径と、中心から下への半径がある。上半分に「き」(距離)、左下に「は」(速さ)、右下に「じ」(時間)。「は」と「じ」の間は×、「き」と「は」の間と、「き」と「じ」の間は÷。"+
   (o.ha?"速さは"+o.ha.replace(/<[^>]*>/g,"")+"。":"")+(o.ji?"時間は"+o.ji.replace(/<[^>]*>/g,"")+"。":"")+(o.ki?"距離は"+o.ki.replace(/<[^>]*>/g,"")+"。":"");
- f='<div class="fig" style="margin:0;width:'+w+';flex:0 0 auto"><svg viewBox="0 18 300 158" role="img" aria-label="'+lab+'">'+s+'</svg></div>';
- return '<div style="display:flex;align-items:center;gap:.3rem;margin:'+(o.big?'-.6rem 0 .6rem':'.6rem 0')+'">'+f+(o.na?'<span style="white-space:nowrap">なので、</span>':'')+'</div>'}
+ f='<div class="fig" style="margin:0;width:'+w+';flex:0 0 auto"><svg viewBox="'+vb+'" role="img" aria-label="'+lab+'">'+s+'</svg></div>';
+ return '<div style="display:flex;align-items:center;gap:.3rem;margin:'+(hasV?'.4rem 0':'-.6rem 0 .6rem')+'">'+f+(o.na?'<span style="white-space:nowrap;margin-left:-.9rem">なので、</span>':'')+'</div>'}
 
 /* 解答の図(2)・補充：行きと帰りの矢印を、近づけてU字につなぐ。o.one＝片道、o.tot＝往復、o.tm＝時間、o.wall＝true なら壁、false なら山。
    o.sp があれば、上の文字を「秒速o.spで往復」にする */
