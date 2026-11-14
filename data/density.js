@@ -91,7 +91,7 @@ sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
  '<p>密度は「<span class="v">1cm³</span>あたりの<span class="m">質量</span>」です。</p>'+fig4s+
  '<div class="formula">密度(g/cm³) ＝ <span class="frac"><span class="m">質量(g)</span><span class="v">体積(cm³)</span></span></div>'+
- '<div class="formula"><span class="m">g</span>/<span class="v">cm³</span> ＝ <span class="m">g</span> ÷ <span class="v">cm³</span> ＝ <span class="frac"><span class="m">g</span><span class="v">cm³</span></span></div>'+
+ '<div class="formula">g/cm³ ＝ <span class="m">g</span> ÷ <span class="v">cm³</span> ＝ <span class="frac"><span class="m">g</span><span class="v">cm³</span></span></div>'+
  FIGROW+
  '<p class="note">「/」は「÷」の意味です。「/」の左が分数の上(分子)、右が下(分母)になります。</p>'},
 {type:"problem",title:"問題",
@@ -108,7 +108,7 @@ sections:[
  khj({ki:'79g',ji:'10cm³',na:1})+
  '<p><span class="m">79g</span> ÷ <span class="v">10cm³</span> ＝ <b>7.9g/cm³</b></p>'+
  '<p>(2) 100cm³の質量を求めます。</p>'+
- khj({ha:'<tspan class="m">7.9g</tspan>/<tspan class="v">cm³</tspan>',ji:'100cm³',na:1})+
+ khj({ha:'7.9g/cm³',ji:'100cm³',na:1})+
  '<p>7.9g/cm³ × 100cm³ ＝ <b>790g</b></p>'},
 {type:"problem",title:"補充問題",
  body:'<p>次の物体A、B、C、Dを、密度の小さい順に並べなさい。</p>'+

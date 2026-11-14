@@ -34,10 +34,10 @@ function figOne(){
  /* 雷 */
  s+='<polygon transform="translate(117.2,-1.5) scale(.62)" points="316,4 302,30 310,30 304,52 320,24 312,24" fill="#fbe7b0" stroke="'+LT+'" stroke-width="2.4" stroke-linejoin="round"/>';
  /* 光(上) */
- s+=T(6,Y1-22,13,'雷の光　<tspan class="g">秒速約30万km</tspan>',"b")+
+ s+=T(6,Y1-22,13,'雷の光　<tspan style="font-weight:400">秒速約30万km</tspan>',"b")+
   dot(X1,Y1)+dot(X2,Y1)+arw(304,Y1,36,Y1)+T(170,Y1-8,14,"ほぼ0秒","v b","middle");
  /* 音(下) */
- s+=T(6,Y2-22,13,'音　<tspan class="g">秒速340m</tspan>',"b")+
+ s+=T(6,Y2-22,13,'音　<tspan style="font-weight:400">秒速340m</tspan>',"b")+
   dot(X1,Y2)+dot(X2,Y2)+arw(304,Y2,36,Y2)+T(170,Y2-8,14,"6秒","v b","middle")+
   brace(36,304,Y2+10)+T(170,Y2+36,14,"2040m","m b","middle");
  s+=T(6,Y2+56,13,"見ている場所","g")+T(310,Y2+56,13,"雷","g","middle");
@@ -75,7 +75,7 @@ function figRound(o){
  var s='',tg=o.wall?"壁":"山",Y1=52,Y2=74,XU=256,r=(Y2-Y1)/2,ym=(Y1+Y2)/2,f,top;
  if(o.wall)s+='<rect x="'+(XU+r)+'" y="36" width="26" height="54" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.2"/>'+TN(XU+r+13,ym+5,13,tg,"b","middle");
  else s+='<polygon points="285,26 255,88 315,88" fill="#e6e9ed" stroke="#8a949f" stroke-width="1.2" stroke-linejoin="round"/>'+TN(285,82,13,tg,"b","middle");
- top=o.sp?'<tspan class="v b">秒速</tspan><tspan class="m b">'+o.sp+'</tspan>':'<tspan class="v b">'+o.tm+'</tspan>';
+ top=o.sp?'<tspan class="b">秒速'+o.sp+'</tspan>':'<tspan class="v b">'+o.tm+'</tspan>';
  s+=T(6,18,14,top+'で往復 <tspan class="m b">'+o.tot+'</tspan>')+
   dot(30,ym)+arw(40,Y1,XU,Y1)+arw(XU,Y2,40,Y2)+
   '<path d="M'+XU+','+Y1+' A'+r+','+r+' 0 0 1 '+XU+','+Y2+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+
@@ -87,7 +87,7 @@ function figRound(o){
 
 var R='<span class="m">',V='<span class="v">',E='</span>';
 function fr(a,b){return '<span class="frac"><span class="m">'+a+'</span><span class="v">'+b+'</span></span>'}
-var SPD='<tspan class="m">340m</tspan>/<tspan class="v">s</tspan>',
+var SPD='340m/s',
  FIG1=figSpeed(),FIGROW=figKHJ({row:1}),FIGONE=figOne(),
  FIG2=figRound({one:"680m",tot:"1360m",tm:"4秒",wall:false}),
  FIG3=figRound({one:"170m",tot:"340m",sp:"340m",wall:true});
@@ -109,7 +109,7 @@ sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
  '<p>速さは、1秒あたりに進む'+R+'距離'+E+'です。音の速さは、'+R+'340m'+E+'/'+V+'s'+E+'です。</p>'+FIG1+
  '<div class="formula">速さ(m/s) ＝ '+fr("距離(m)","時間(s)")+'</div>'+
- '<div class="formula"><span class="m">m</span>/<span class="v">s</span> ＝ <span class="m">m</span> ÷ <span class="v">s</span> ＝ '+fr("m","s")+'</div>'+
+ '<div class="formula">m/s ＝ <span class="m">m</span> ÷ <span class="v">s</span> ＝ '+fr("m","s")+'</div>'+
  FIGROW+
  '<p class="note">340m/sは、「秒速340m」ともいいます。</p>'},
 {type:"problem",title:"問題",
