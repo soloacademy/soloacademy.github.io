@@ -3,6 +3,7 @@ var RULE="#c9d0d7";
 function n(v){return Math.round(v*10)/10}
 function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"/>'}
+function svgY(y0,h,label,body){return '<div class="fig" style="margin:.4rem 0"><svg viewBox="0 '+y0+' 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function svg(h,label,body){return '<div class="fig"><svg viewBox="0 0 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 /* 色：まえの元素＝赤(m)、うしろの元素＝青(v) */
 function M(t){return '<span class="m">'+t+'</span>'}
@@ -17,7 +18,7 @@ function figOrder(){
   line(4,96,336,96,RULE)+
   T(8,126,15,"② "+sm("酸素")+"を書いて完成")+T(290,132,24,sv("Cu")+sm("O"),"b","middle")+
   line(4,146,336,146,RULE);
- return svg(152,"酸化銅の化学式の書き方。名前は、まえが酸化、うしろが銅。1番目に、うしろの銅を書いて、Cu。2番目に、まえの酸素を書いて完成、CuO",s)}
+ return svgY(8,144,"酸化銅の化学式の書き方。名前は、まえが酸化、うしろが銅。1番目に、うしろの銅を書いて、Cu。2番目に、まえの酸素を書いて完成、CuO",s)}
 
 /* ---------- 解答：完成した化学式と、小さい文 ----------
    行：{k:(1)など, a:まえ(酸化など), b:うしろ(銅など), f1:うしろの記号, f2:まえの記号} */
