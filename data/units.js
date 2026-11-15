@@ -19,5 +19,6 @@ window.UNITS=[
   {id:"rock-sedimentary",grade:1,no:"1-18",title:"堆積岩と化石"},
   {id:"strata",grade:1,no:"1-19",title:"地層"},
   {id:"element-formula",grade:2,no:"2-1",title:"元素記号と化学式(単体)"},
-  {id:"compound-formula-1",grade:2,no:"2-2",title:"化学式(化合物①)"}
+  {id:"compound-formula-1",grade:2,no:"2-2",title:"化学式(化合物①)"},
+  {id:"periodic-table",grade:2,no:"2-3",title:"周期表"}
 ];
