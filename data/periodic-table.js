@@ -32,7 +32,7 @@ function fig(blank){
  return '<div class="fig"><svg viewBox="0 0 340 172" role="img" aria-label="'+lab+'">'+s+'</svg></div>'}
 
 /* 語呂合わせ：ことば(上)と元素記号(下)を、かたまりごとに縦にそろえる */
-var GO=[["水兵","H He"],["リーベ","Li Be"],["ぼくの","B C N"],["お","O"],["船","F"],["七","Ne Na"],["曲り","Mg Al"],["シップス","Si P S"],["クラーク","Cl Ar K"],["か","Ca"]];
+var GO=[["水兵","H He"],["リーベ","Li Be"],["ぼくの","B C N"],["お","O"],["船","F Ne"],["七","Na"],["曲り","Mg Al"],["シップス","Si P S"],["クラーク","Cl Ar K"],["か","Ca"]];
 var GOHTML='<div class="formula" style="white-space:normal"><p class="note" style="font-size:.8rem;margin:0 0 .3rem">覚え方(語呂合わせ)</p><div style="display:flex;flex-wrap:wrap;gap:.3rem .9rem;font-size:.8rem">'+GO.map(function(c){
  return '<span style="display:inline-flex;flex-direction:column;align-items:center;line-height:1.6"><span style="color:var(--muted)">'+c[0]+'</span><b>'+c[1]+'</b></span>'}).join('')+'</div></div>';
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
