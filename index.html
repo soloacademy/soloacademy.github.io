@@ -11,18 +11,24 @@
 <h1>ソロアカデミー 中学理科</h1>
 <p>理科の「ここだけは」を、単元ごとに厳選しました。<br>
 短い問題と解説で、入試でも使える考え方を短時間で学べます。</p>
-<h2>中学1年</h2>
-<ul class="list" id="list"></ul>
+<div id="list"></div>
 <p class="note">単元は順次増やしていきます。</p>
 <footer>ソロアカデミー</footer>
 </div>
 <script src="data/units.js"></script>
 <script>
-var ul=document.getElementById("list");
-(window.UNITS||[]).forEach(function(u){
-  var li=document.createElement("li"),a=document.createElement("a");
-  a.href="unit.html?u="+u.id;a.textContent=u.no+"　"+u.title;
-  li.appendChild(a);ul.appendChild(li);
+var box=document.getElementById("list"),U=window.UNITS||[];
+[1,2,3].forEach(function(g){
+  var a=U.filter(function(u){return (u.grade||parseInt(u.no,10)||1)===g});
+  if(!a.length)return;
+  var h=document.createElement("h2");h.textContent="中学"+g+"年";box.appendChild(h);
+  var ul=document.createElement("ul");ul.className="list";
+  a.forEach(function(u){
+    var li=document.createElement("li"),k=document.createElement("a");
+    k.href="unit.html?u="+u.id;k.textContent=u.no+"　"+u.title;
+    li.appendChild(k);ul.appendChild(li);
+  });
+  box.appendChild(ul);
 });
 </script>
 </body>

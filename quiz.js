@@ -89,7 +89,7 @@ function problem(sec){
     }
     var r=h("div","part");
     r.appendChild(h("span",null,p.label));
-    var i=h("input");i.type="text";i.autocomplete="off";i.setAttribute("aria-label",p.label+"の答え");
+    var i=h("input");i.type="text";i.autocomplete="off";i.setAttribute("autocapitalize","off");i.setAttribute("autocorrect","off");i.spellcheck=false;i.setAttribute("aria-label",p.label+"の答え");
     if(p.type==="order"){i.readOnly=true;i.className="ord"}else if(p.type!=="text")i.inputMode="decimal";
     i.onkeydown=function(e){if(e.key==="Enter"&&!e.isComposing){e.preventDefault();b.click()}};
     var m=h("span","mark");m.setAttribute("aria-live","polite");
@@ -120,9 +120,11 @@ function problem(sec){
   box.appendChild(b);box.appendChild(msg);
   return box;
 }
+function gr(u){return u.grade||parseInt(u.no,10)||1}
 function nav(){
-  var L=window.UNITS||[],i=-1;L.forEach(function(u,k){if(u.id===id)i=k});
-  if(i<0)return null;
+  var A=window.UNITS||[],me=A.filter(function(u){return u.id===id})[0];
+  if(!me)return null;
+  var L=A.filter(function(u){return gr(u)===gr(me)}),i=L.indexOf(me);
   var d=h("nav","pn");d.setAttribute("aria-label","前後の単元");
   function cell(u,cls,lab){
     if(!u)return h("span",cls);
@@ -135,7 +137,7 @@ function nav(){
 }
 function render(u){
   document.title=u.no+" "+u.title+"｜ソロアカデミー";
-  root.appendChild(h("p","crumb",'<a href="index.html">ソロアカデミー</a>　中学1年 理科'));
+  root.appendChild(h("p","crumb",'<a href="index.html">ソロアカデミー</a>　中学'+gr((window.UNITS||[]).filter(function(x){return x.id===id})[0]||u)+'年 理科'));
   root.appendChild(h("h1",null,u.no+"　"+u.title));
   u.sections.forEach(function(s){
     if(s.point){var bx=h("div","point");bx.appendChild(h("h2","point-label",s.title));bx.insertAdjacentHTML("beforeend",s.html);root.appendChild(bx);return}
