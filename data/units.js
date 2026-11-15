@@ -18,5 +18,6 @@ window.UNITS=[
   {id:"rock-igneous",grade:1,no:"1-17",title:"火成岩と鉱物"},
   {id:"rock-sedimentary",grade:1,no:"1-18",title:"堆積岩と化石"},
   {id:"strata",grade:1,no:"1-19",title:"地層"},
-  {id:"element-formula",grade:2,no:"2-1",title:"元素記号と化学式(単体)"}
+  {id:"element-formula",grade:2,no:"2-1",title:"元素記号と化学式(単体)"},
+  {id:"compound-formula-1",grade:2,no:"2-2",title:"化学式(化合物①)"}
 ];
