@@ -56,7 +56,7 @@ function khj(o){
  o=o||{};
  var CX=150,CY=95,R=70,s='',GL="#8a949f",MU="#5d6874",hasV=o.ha||o.ji||o.ki,FS=21.5,
   w=hasV?"14rem":"15rem",vb=hasV?"-40 18 372 158":"0 18 300 158",lab,f,tx=function(h){return h.replace(/<[^>]*>/g,"")};
- if(o.row){w="7rem";vb="70 22 160 148"}
+ if(o.row){w="7.8rem";vb="56 14 174 156"}
  s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="#fff" stroke="'+GL+'" stroke-width="1.2"/>'+
   line(CX-R,CY,CX+R,CY,GL,1.2)+line(CX,CY,CX,CY+R,GL,1.2)+
   T(CX-30,CY+8,20,"÷","b","middle")+T(CX+30,CY+8,20,"÷","b","middle")+T(CX,CY+36,16,"×","b","middle")+
@@ -68,8 +68,9 @@ function khj(o){
  if(o.ji)s+=line(238,156,193,126,MU,1)+T(242,CY+R,FS,o.ji,"v b");
  lab="「質量・密度・体積」の図。1つの円に、横の直径と、中心から下への半径がある。上半分に質量(g)、左下に密度(g/cm³)、右下に体積(cm³)。密度と体積の間は×、質量と密度の間と、質量と体積の間は÷。"+
   (o.ha?"密度は"+tx(o.ha)+"。":"")+(o.ji?"体積は"+tx(o.ji)+"。":"")+(o.ki?"質量は"+tx(o.ki)+"。":"");
+ if(o.row)s+=T(58,30,17,"関係図","g b");
  f='<div class="fig" style="margin:0;width:'+w+';flex:0 0 auto"><svg viewBox="'+vb+'" role="img" aria-label="'+lab+'">'+s+'</svg></div>';
- if(o.row)return '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .4rem;margin:.6rem 0">'+f+'<span style="flex:1;min-width:9rem">密度・体積・質量の<br>関係を、図に<br>まとめました。</span></div>';
+ if(o.row)return '<div style="margin:.6rem 0">'+f+'</div>';
  return '<div style="display:flex;align-items:center;gap:.3rem;margin:.4rem 0">'+f+(o.na?'<span style="white-space:nowrap;margin-left:-2rem">なので、</span>':'')+'</div>'}
 var FIGROW=khj({row:1});
 
@@ -91,8 +92,7 @@ sections:[
 {type:"text",point:true,title:"厳選ポイント",html:
  '<p>密度は「<span class="v">1cm³</span>あたりの<span class="m">質量</span>」です。</p>'+fig4s+
  '<div class="formula">密度(g/cm³) ＝ <span class="frac"><span class="m">質量(g)</span><span class="v">体積(cm³)</span></span></div>'+
- '<div class="formula">g/cm³ ＝ <span class="m">g</span> ÷ <span class="v">cm³</span> ＝ <span class="frac"><span class="m">g</span><span class="v">cm³</span></span></div>'+
- '<p class="note">「/」は「÷」の意味です。「/」の左が分数の上(分子)、右が下(分母)になります。</p>'+
+ '<div class="formula">g/cm³ ＝ <span class="m">g</span> ÷ <span class="v">cm³</span> ＝ <span class="frac"><span class="m">g</span><span class="v">cm³</span></span><p class="note" style="white-space:normal;margin:.6rem 0 0">「/」は「÷」の意味です。「/」の左が分数の上(分子)、右が下(分母)になります。</p></div>'+
  FIGROW},
 {type:"problem",title:"問題",
  body:'<p>60cm³の水を入れたメスシリンダーに、ある金属79gを沈めたところ、目もりは70cm³になった。</p>'+fig3(false)+

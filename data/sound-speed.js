@@ -50,7 +50,7 @@ function figKHJ(o){
  o=o||{};
  var CX=150,CY=95,R=70,s='',lab,GL="#8a949f",hasV=o.ha||o.ji||o.ki,
   w=hasV?"12.2rem":"15rem",vb=hasV?"-24 18 324 158":"0 18 300 158",FS=21.5,f;
- if(o.row){w="7rem";vb="70 22 160 148"}
+ if(o.row){w="7.8rem";vb="56 14 174 156"}
  /* 線は、まわりの図と同じ細さ(1.2)の灰色 */
  s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="#fff" stroke="'+GL+'" stroke-width="1.2"/>'+
   line(CX-R,CY,CX+R,CY,GL,1.2)+line(CX,CY,CX,CY+R,GL,1.2);
@@ -65,8 +65,9 @@ function figKHJ(o){
  if(o.ji)s+=line(238,156,193,126,MUTED,1)+T(242,CY+R,FS,o.ji,"v b");
  lab="「き・は・じ」の図。1つの円に、横の直径と、中心から下への半径がある。上半分に「き」(距離)、左下に「は」(速さ)、右下に「じ」(時間)。「は」と「じ」の間は×、「き」と「は」の間と、「き」と「じ」の間は÷。"+
   (o.ha?"速さは"+o.ha.replace(/<[^>]*>/g,"")+"。":"")+(o.ji?"時間は"+o.ji.replace(/<[^>]*>/g,"")+"。":"")+(o.ki?"距離は"+o.ki.replace(/<[^>]*>/g,"")+"。":"");
+ if(o.row)s+=T(58,30,17,"関係図","g b");
  f='<div class="fig" style="margin:0;width:'+w+';flex:0 0 auto"><svg viewBox="'+vb+'" role="img" aria-label="'+lab+'">'+s+'</svg></div>';
- if(o.row)return '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .4rem;margin:.6rem 0">'+f+'<span style="flex:1;min-width:9rem">速さ・時間・距離の<br>関係を、図に<br>まとめました。</span></div>';
+ if(o.row)return '<div style="margin:.6rem 0">'+f+'</div>';
  return '<div style="display:flex;align-items:center;gap:.3rem;margin:'+(hasV?'.4rem 0':'-.6rem 0 .6rem')+'">'+f+(o.na?'<span style="white-space:nowrap;margin-left:-.9rem">なので、</span>':'')+'</div>'}
 
 /* 解答の図(2)・補充：行きと帰りの矢印を、近づけてU字につなぐ。o.one＝片道、o.tot＝往復、o.tm＝時間、o.wall＝true なら壁、false なら山。
