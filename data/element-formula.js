@@ -9,7 +9,8 @@ function fig(blank){
  var s=line(104,6,104,238,RULE)+line(4,42,336,42,INK)+line(4,238,336,238,RULE)+
   '<text x="54" y="18" font-size="13" class="b" text-anchor="middle">非金属</text>'+
   '<text x="54" y="34" font-size="11" class="g" text-anchor="middle">(分子をつくる)</text>'+
-  '<text x="215" y="28" font-size="13" class="b" text-anchor="middle">金属<tspan class="g" font-size="11" font-weight="400">(分子をつくらない)</tspan></text>';
+  '<text x="215" y="18" font-size="13" class="b" text-anchor="middle">金属</text>'+
+  '<text x="215" y="34" font-size="11" class="g" text-anchor="middle">(分子をつくらない)</text>';
  GX.forEach(function(c,g){LB[g].forEach(function(nm,i){
   var yc=62+32*i,ty=(yc+4.7).toFixed(1),id="k"+(g*6+i),cx=c.bx+c.bw/2;
   s+='<text x="'+c.nx+'" y="'+ty+'" font-size="13">'+nm+'</text>';
@@ -26,7 +27,7 @@ var T1='<div style="overflow-x:auto"><table><tr><th>名前</th><th>元素記号<
  '<tr>'+TD+'亜鉛</td>'+TD+'<b>Zn</b></td>'+TD+'<b>Zn</b></td></tr></table></div>';
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var POINT='<p>単体は、1種類の元素でできている物質です。</p>'+T1+
- '<p>非金属は分子をつくるので、<span class="m">2</span>がつきます。金属は分子をつくらないので、元素記号のままです。</p>'+
+ '<p>単体の化学式では、非金属は分子をつくるので、<span class="m">2</span>がつきます。金属は分子をつくらないので、元素記号のままです。</p>'+
  fig(false)+SM+'※ 炭素(C)と硫黄(S)は非金属ですが、単体で分子をつくりません。</p>'+SM+'金属の性質：金属光沢、電気伝導性、熱伝導性、展性、延性</p>';
 var ANS={};FM.forEach(function(a,g){a.forEach(function(f,i){ANS["k"+(g*6+i)]=f})});
 var CH=["Cu","H₂","Na","Cl₂","Zn","C","Mg","O₂","Ag","Al","N₂","K","Fe","S","Ca","Au","Ba","Hg"];
