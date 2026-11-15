@@ -10,14 +10,14 @@ function V(t){return '<span class="v">'+t+'</span>'}
 function sm(t){return '<tspan class="m">'+t+'</tspan>'}
 function sv(t){return '<tspan class="v">'+t+'</tspan>'}
 
-/* ---------- 厳選ポイントの図：酸化亜鉛を、うしろから書く ---------- */
+/* ---------- 厳選ポイントの図：酸化銅を、うしろから書く ---------- */
 function figOrder(){
- var s=T(8,28,20,sm("酸化")+sv("亜鉛"),"b")+line(4,44,336,44,RULE)+
-  T(8,76,15,"① "+sv("亜鉛")+"を書く")+T(290,82,24,"Zn","v b","middle")+
+ var s=T(8,28,20,sm("酸化")+sv("銅"),"b")+line(4,44,336,44,RULE)+
+  T(8,76,15,"① "+sv("銅")+"を書く")+T(290,82,24,"Cu","v b","middle")+
   line(4,96,336,96,RULE)+
-  T(8,126,15,"② "+sm("酸素")+"を書いて完成")+T(290,132,24,sv("Zn")+sm("O"),"b","middle")+
+  T(8,126,15,"② "+sm("酸素")+"を書いて完成")+T(290,132,24,sv("Cu")+sm("O"),"b","middle")+
   line(4,146,336,146,RULE);
- return svg(152,"酸化亜鉛の化学式の書き方。名前は、まえが酸化、うしろが亜鉛。1番目に、うしろの亜鉛を書いて、Zn。2番目に、まえの酸素を書いて完成、ZnO",s)}
+ return svg(152,"酸化銅の化学式の書き方。名前は、まえが酸化、うしろが銅。1番目に、うしろの銅を書いて、Cu。2番目に、まえの酸素を書いて完成、CuO",s)}
 
 /* ---------- 解答の図：4問を4行にまとめる ----------
    行：{k:(1)など, a:まえ(酸化など), b:うしろ(銅など), f1:1番目に書く記号, f2:まえの記号} */
@@ -31,8 +31,8 @@ function figAns(rows,label){
  return svg(52+34*(rows.length-1)+24,label+txt.join("。")+"。",s)}
 
 var R1=[
- {k:"(1)",a:"酸化",b:"銅",f1:"Cu",f2:"O"},
- {k:"(2)",a:"酸化",b:"マグネシウム",f1:"Mg",f2:"O"},
+ {k:"(1)",a:"酸化",b:"マグネシウム",f1:"Mg",f2:"O"},
+ {k:"(2)",a:"酸化",b:"亜鉛",f1:"Zn",f2:"O"},
  {k:"(3)",a:"塩化",b:"ナトリウム",f1:"Na",f2:"Cl"},
  {k:"(4)",a:"硫化",b:"鉄",f1:"Fe",f2:"S"}];
 var R2=[
@@ -66,10 +66,10 @@ sections:[
 {type:"text",point:true,title:"厳選ポイント",html:POINT},
 {type:"problem",title:"問題",body:TIGHT+QBODY,
  parts:[
-  {label:"(1)",text:"酸化銅",type:"pick",choices:["CuS","OCu","CuO","ZnO"],accept:["CuO"]},
-  {label:"(2)",text:"酸化マグネシウム",type:"pick",choices:["MgO","MgS","BaO","OMg"],accept:["MgO"]},
-  {label:"(3)",text:"塩化ナトリウム",type:"pick",choices:["ClK","NaCl","KCl","ClNa"],accept:["NaCl"]},
-  {label:"(4)",text:"硫化鉄",type:"pick",choices:["SFe","CuS","MgS","FeS"],accept:["FeS"]}
+  {label:"(1)",text:"酸化マグネシウム",type:"pick",choices:["MgS","MgO","BaO","OMg"],accept:["MgO"]},
+  {label:"(2)",text:"酸化亜鉛",type:"pick",choices:["OZn","BaO","ZnS","ZnO"],accept:["ZnO"]},
+  {label:"(3)",text:"塩化ナトリウム",type:"pick",choices:["NaCl","ClK","KCl","ClNa"],accept:["NaCl"]},
+  {label:"(4)",text:"硫化鉄",type:"pick",choices:["SFe","CuS","FeS","MgS"],accept:["FeS"]}
  ]},
 {type:"answer",html:ANS},
 {type:"problem",title:"補充問題",body:QBODY,
