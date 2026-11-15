@@ -23,9 +23,11 @@ function figOrder(){
    行：{k:(1)など, a:まえ(酸化など), b:うしろ(銅など), f1:うしろの記号, f2:まえの記号} */
 var EL={"酸化":"酸素","塩化":"塩素","硫化":"硫黄"};
 function ansRows(rows){
+ var sm='font-size:.8rem;margin:.1rem 0 0;padding-left:2rem;color:var(--muted)';
  return '<div style="margin:.4rem 0 .8rem">'+rows.map(function(r){
-  return '<p style="margin:.9rem 0 0">'+r.k+' '+M(r.a)+V(r.b)+' → <b>'+V(r.f1)+M(r.f2)+'</b></p>'+
-   '<p style="font-size:.8rem;margin:.1rem 0 0;padding-left:2rem;color:var(--muted)">① '+V(r.b)+'を書く　② '+M(EL[r.a])+'を書いて完成</p>'}).join('')+'</div>'}
+  return '<p style="margin:.9rem 0 0">'+r.k+' '+M(r.a)+V(r.b)+'</p>'+
+   '<p style="'+sm+'">① '+V(r.b)+'を書く　'+V(r.f1)+'</p>'+
+   '<p style="'+sm+'">② '+M(EL[r.a])+'を書いて完成　'+V(r.f1)+M(r.f2)+'</p>'}).join('')+'</div>'}
 
 var R1=[
  {k:"(1)",a:"酸化",b:"マグネシウム",f1:"Mg",f2:"O"},
@@ -39,7 +41,7 @@ var R2=[
  {k:"(4)",a:"塩化",b:"水素",f1:"H",f2:"Cl"}];
 
 /* ---------- 厳選ポイント：名前の読み方(罫線なしの3行) ---------- */
-function rd(a,el,b){return '<p style="margin:.9rem 0 0"><b>'+M(a)+V(b)+'</b><br>'+M(el)+'が化合('+M(a)+')した'+V(b)+'</p>'}
+function rd(a,el,b){return '<p style="margin:.7rem 0"><b>'+M(a)+V(b)+'</b><span style="font-size:.7rem;white-space:nowrap;margin-left:.4rem">◀ '+M(el)+'が化合('+M(a)+')した'+V(b)+'</span></p>'}
 var RD='<div style="margin:.6rem 0 1rem">'+rd('酸化','酸素','銅')+rd('塩化','塩素','ナトリウム')+rd('硫化','硫黄','鉄')+'</div>';
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var POINT='<p>化合物は、2種類以上の異なる元素が結びついてできた物質です。</p>'+RD+
