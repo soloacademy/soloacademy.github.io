@@ -154,7 +154,7 @@ function render(u){
     }else{root.appendChild(h("div",null,s.html))}
   });
   var nv=nav();if(nv)root.appendChild(nv);
-  root.appendChild(h("footer",null,"ソロアカデミー"));
+  root.appendChild(h("footer",null,'<a href="index.html" style="color:inherit">ソロアカデミー</a>'));
 }
 if(!/^[a-z0-9-]+$/.test(id)){fail();return}
 var sc=document.createElement("script");
