@@ -56,7 +56,7 @@ function khj(o){
  o=o||{};
  var CX=150,CY=95,R=70,s='',GL="#8a949f",MU="#5d6874",hasV=o.ha||o.ji||o.ki,FS=21.5,
   w=hasV?"14rem":"15rem",vb=hasV?"-40 18 372 158":"0 18 300 158",lab,f,tx=function(h){return h.replace(/<[^>]*>/g,"")};
- if(o.row){w="7.8rem";vb="56 14 174 156"}
+ if(o.row){w="7.8rem";vb="56 4 174 166"}
  s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="#fff" stroke="'+GL+'" stroke-width="1.2"/>'+
   line(CX-R,CY,CX+R,CY,GL,1.2)+line(CX,CY,CX,CY+R,GL,1.2)+
   T(CX-30,CY+8,20,"÷","b","middle")+T(CX+30,CY+8,20,"÷","b","middle")+T(CX,CY+36,16,"×","b","middle")+
@@ -68,7 +68,7 @@ function khj(o){
  if(o.ji)s+=line(238,156,193,126,MU,1)+T(242,CY+R,FS,o.ji,"v b");
  lab="「質量・密度・体積」の図。1つの円に、横の直径と、中心から下への半径がある。上半分に質量(g)、左下に密度(g/cm³)、右下に体積(cm³)。密度と体積の間は×、質量と密度の間と、質量と体積の間は÷。"+
   (o.ha?"密度は"+tx(o.ha)+"。":"")+(o.ji?"体積は"+tx(o.ji)+"。":"")+(o.ki?"質量は"+tx(o.ki)+"。":"");
- if(o.row)s+=T(58,30,17,"関係図","g b");
+ if(o.row)s+=T(58,20,17,"関係図","g b");
  f='<div class="fig" style="margin:0;width:'+w+';flex:0 0 auto"><svg viewBox="'+vb+'" role="img" aria-label="'+lab+'">'+s+'</svg></div>';
  if(o.row)return '<div style="margin:.6rem 0">'+f+'</div>';
  return '<div style="display:flex;align-items:center;gap:.3rem;margin:.4rem 0">'+f+(o.na?'<span style="white-space:nowrap;margin-left:-2rem">なので、</span>':'')+'</div>'}

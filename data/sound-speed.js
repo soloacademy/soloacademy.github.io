@@ -50,7 +50,7 @@ function figKHJ(o){
  o=o||{};
  var CX=150,CY=95,R=70,s='',lab,GL="#8a949f",hasV=o.ha||o.ji||o.ki,
   w=hasV?"12.2rem":"15rem",vb=hasV?"-24 18 324 158":"0 18 300 158",FS=21.5,f;
- if(o.row){w="7.8rem";vb="56 14 174 156"}
+ if(o.row){w="7.8rem";vb="56 4 174 166"}
  /* 線は、まわりの図と同じ細さ(1.2)の灰色 */
  s+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="#fff" stroke="'+GL+'" stroke-width="1.2"/>'+
   line(CX-R,CY,CX+R,CY,GL,1.2)+line(CX,CY,CX,CY+R,GL,1.2);
@@ -65,7 +65,7 @@ function figKHJ(o){
  if(o.ji)s+=line(238,156,193,126,MUTED,1)+T(242,CY+R,FS,o.ji,"v b");
  lab="「き・は・じ」の図。1つの円に、横の直径と、中心から下への半径がある。上半分に「き」(距離)、左下に「は」(速さ)、右下に「じ」(時間)。「は」と「じ」の間は×、「き」と「は」の間と、「き」と「じ」の間は÷。"+
   (o.ha?"速さは"+o.ha.replace(/<[^>]*>/g,"")+"。":"")+(o.ji?"時間は"+o.ji.replace(/<[^>]*>/g,"")+"。":"")+(o.ki?"距離は"+o.ki.replace(/<[^>]*>/g,"")+"。":"");
- if(o.row)s+=T(58,30,17,"関係図","g b");
+ if(o.row)s+=T(58,20,17,"関係図","g b");
  f='<div class="fig" style="margin:0;width:'+w+';flex:0 0 auto"><svg viewBox="'+vb+'" role="img" aria-label="'+lab+'">'+s+'</svg></div>';
  if(o.row)return '<div style="margin:.6rem 0">'+f+'</div>';
  return '<div style="display:flex;align-items:center;gap:.3rem;margin:'+(hasV?'.4rem 0':'-.6rem 0 .6rem')+'">'+f+(o.na?'<span style="white-space:nowrap;margin-left:-.9rem">なので、</span>':'')+'</div>'}
@@ -111,7 +111,7 @@ sections:[
  '<p>速さは、1秒あたりに進む'+R+'距離'+E+'です。音の速さは、'+R+'340m'+E+'/'+V+'s'+E+'です。</p>'+FIG1+
  '<p class="note">340m/sは、「秒速340m」ともいいます。</p>'+
  '<div class="formula">速さ(m/s) ＝ '+fr("距離(m)","時間(s)")+'</div>'+
- '<div class="formula">m/s ＝ <span class="m">m</span> ÷ <span class="v">s</span> ＝ '+fr("m","s")+'</div>'+
+ '<div class="formula">m/s ＝ <span class="m">m</span> ÷ <span class="v">s</span> ＝ '+fr("m","s")+'<p class="note" style="white-space:normal;margin:.6rem 0 0">「/」は「÷」の意味です。「/」の左が分数の上(分子)、右が下(分母)になります。</p></div>'+
  FIGROW},
 {type:"problem",title:"問題",
  body:'<p>音の速さを秒速340mとして、次の距離を求めなさい。</p>'+
