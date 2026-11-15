@@ -22,7 +22,7 @@ function fig(blank){
  })});
  return '<div class="fig"><svg viewBox="0 0 340 244" role="img" aria-label="'+(blank?"単体の表。非金属は、水素、酸素、窒素、塩素、炭素、硫黄。金属は、ナトリウム、カリウム、マグネシウム、カルシウム、アルミニウム、バリウム、銀、銅、亜鉛、鉄、金、水銀。それぞれの化学式が空欄":"単体の表。非金属は、水素H2、酸素O2、窒素N2、塩素Cl2、炭素C、硫黄S。金属は、ナトリウムNa、カリウムK、マグネシウムMg、カルシウムCa、アルミニウムAl、バリウムBa、銀Ag、銅Cu、亜鉛Zn、鉄Fe、金Au、水銀Hg")+'">'+s+'</svg></div>'}
 var TD='<td style="padding:.3rem .5rem;text-align:left">';
-var T1='<div style="overflow-x:auto"><table><tr><th>名前</th><th>元素記号</th><th>化学式</th></tr>'+
+var T1='<div style="overflow-x:auto"><table style="margin:0"><tr><th>名前</th><th>元素記号</th><th>化学式</th></tr>'+
  '<tr>'+TD+'水素</td>'+TD+'<b>H</b></td>'+TD+'<b>H<span class="m">₂</span></b></td></tr>'+
  '<tr>'+TD+'亜鉛</td>'+TD+'<b>Zn</b></td>'+TD+'<b>Zn</b></td></tr></table></div>';
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
