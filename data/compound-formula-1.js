@@ -19,16 +19,13 @@ function figOrder(){
   line(4,146,336,146,RULE);
  return svg(152,"酸化銅の化学式の書き方。名前は、まえが酸化、うしろが銅。1番目に、うしろの銅を書いて、Cu。2番目に、まえの酸素を書いて完成、CuO",s)}
 
-/* ---------- 解答の図：4問を4行にまとめる ----------
-   行：{k:(1)など, a:まえ(酸化など), b:うしろ(銅など), f1:1番目に書く記号, f2:まえの記号} */
-function figAns(rows,label){
- var s=T(215,20,15,"①","b","middle")+T(290,20,15,"②","b","middle")+line(4,30,336,30,RULE),i,r,yc,txt=[];
- for(i=0;i<rows.length;i++){r=rows[i];yc=52+34*i;
-  s+=T(8,yc+5.5,15,r.k)+T(36,yc+5.5,15,sm(r.a)+sv(r.b),"b")+
-   T(215,yc+7,20,r.f1,"v b","middle")+T(290,yc+7,20,sv(r.f1)+sm(r.f2),"b","middle")+
-   line(4,yc+17,336,yc+17,RULE);
-  txt.push(r.k+" "+r.a+r.b+"は、"+r.f1+"を書いて、"+r.f1+r.f2)}
- return svg(52+34*(rows.length-1)+24,label+txt.join("。")+"。",s)}
+/* ---------- 解答：完成した化学式と、小さい文 ----------
+   行：{k:(1)など, a:まえ(酸化など), b:うしろ(銅など), f1:うしろの記号, f2:まえの記号} */
+var EL={"酸化":"酸素","塩化":"塩素","硫化":"硫黄"};
+function ansRows(rows){
+ return '<div style="margin:.4rem 0 .8rem">'+rows.map(function(r){
+  return '<p style="margin:.9rem 0 0">'+r.k+' '+M(r.a)+V(r.b)+' → <b>'+V(r.f1)+M(r.f2)+'</b></p>'+
+   '<p style="font-size:.8rem;margin:.1rem 0 0;padding-left:2rem;color:var(--muted)">① '+V(r.b)+'を書く　② '+M(EL[r.a])+'を書いて完成</p>'}).join('')+'</div>'}
 
 var R1=[
  {k:"(1)",a:"酸化",b:"マグネシウム",f1:"Mg",f2:"O"},
@@ -40,25 +37,19 @@ var R2=[
  {k:"(2)",a:"塩化",b:"銀",f1:"Ag",f2:"Cl"},
  {k:"(3)",a:"硫化",b:"亜鉛",f1:"Zn",f2:"S"},
  {k:"(4)",a:"塩化",b:"水素",f1:"H",f2:"Cl"}];
-var FIG1=figAns(R1,"化学式の書き方の表。1番目に、うしろの元素を書き、2番目に、まえの元素を書き足す。");
-var FIG2=figAns(R2,"化学式の書き方の表。1番目に、うしろの元素を書き、2番目に、まえの元素を書き足す。");
-var STEP='<p>① '+V('うしろ')+'の元素を書く<br>② '+M('まえ')+'の元素を書き足す</p>';
 
-/* ---------- 厳選ポイントの表：名前の読み方 ---------- */
-var TD='<td style="padding:.3rem .5rem;text-align:left">';
-var TB='<div style="overflow-x:auto"><table>'+
- '<tr>'+TD+'<b>'+M('酸化')+V('○○')+'</b></td>'+TD+M('酸素')+'(O)が化合した'+V('○○')+'</td></tr>'+
- '<tr>'+TD+'<b>'+M('塩化')+V('○○')+'</b></td>'+TD+M('塩素')+'(Cl)が化合した'+V('○○')+'</td></tr>'+
- '<tr>'+TD+'<b>'+M('硫化')+V('○○')+'</b></td>'+TD+M('硫黄')+'(S)が化合した'+V('○○')+'</td></tr></table></div>';
+/* ---------- 厳選ポイント：名前の読み方(罫線なしの3行) ---------- */
+function rd(a,el,b){return '<p style="margin:.9rem 0 0"><b>'+M(a)+V(b)+'</b><br>'+M(el)+'が化合('+M(a)+')した'+V(b)+'</p>'}
+var RD='<div style="margin:.6rem 0 1rem">'+rd('酸化','酸素','銅')+rd('塩化','塩素','ナトリウム')+rd('硫化','硫黄','鉄')+'</div>';
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
-var POINT='<p>化合物は、2種類以上の異なる元素が結びついてできた物質です。</p>'+TB+
+var POINT='<p>化合物は、2種類以上の異なる元素が結びついてできた物質です。</p>'+RD+
  '<p>化学式は、<b>うしろ</b>から書きます。</p>'+figOrder()+
  SM+'※ 化学式に「2」がつく化合物は、あとの単元で学びます。</p>';
 
 var QBODY='<p>次の化合物の化学式を、選択肢から選びなさい。</p>';
 var TIGHT='<style>.pick .pk-bt{gap:.4rem}.pick button.choice{padding:.1rem .55rem;min-width:2.6rem}</style>';
-var ANS=FIG1+STEP;
-var SOL2=FIG2+STEP;
+var ANS=ansRows(R1);
+var SOL2=ansRows(R2);
 
 window.UNIT={
 no:"2-2",title:"化学式(化合物①)",
