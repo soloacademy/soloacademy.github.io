@@ -27,10 +27,39 @@ function figCharge(){
   '<text x="98" y="234" font-size="9.5" class="g" style="stroke:none">「2＋」と考えてよい</text>';
  return '<div class="fig"><svg viewBox="0 0 340 240" role="img" aria-label="周期表の図。列の上に、電荷が書いてある。1列目は、H、Li、Na、Kで、電荷は+。2列目は、Be、Mg、Caで、2+。3列目は、B、Alで、3+。4列目は、C、Siで、4+か4−。5列目は、N、Pで、3−。6列目は、O、Sで、2−。7列目は、F、Clで、−。8列目は、He、Ne、Arで、0。各マスの左下に、原子番号が書いてある。Kの下に矢印と銀(Ag)、Caの下に矢印と他の金属が書いてあり、他の金属の右に、中学理科では周期表にない金属の電荷は2+と考えてよい、と小さく書いてある">'+s+'</svg></div>'}
 
+function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"/>'}
 /* ---------- 色：+は赤、−は青。(+)や(2−)の形で書く ---------- */
 /* 元素記号の下に、小さく電荷を付ける */
 function el(e){return '<span style="display:inline-flex;flex-direction:column;align-items:center;line-height:1.25">'+e[0]+'<span style="font-size:.7rem">'+ch(e[1])+'</span></span>'}
 function ch(t){return '<span class="'+(t.indexOf("+")>=0?"m":"v")+'">('+t+')</span>'}
+
+/* ---------- 厳選ポイントの図：名前、①まちがった形、②直した形。下に、小さい文字。間をハの字の線でつなぐ ---------- */
+var MUTED="#5d6874",FW={A:14.5,O:15.5,C:14.5,S:13.5,H:15.5,u:11.5,l:5.5,g:11.5,"₂":10};
+function fw(t){var w=0,i;for(i=0;i<t.length;i++)w+=FW[t.charAt(i)]||12;return w}
+function lw(t){var w=0,i,c,k;for(i=0;i<t.length;i++){c=t.charAt(i);k=c.charCodeAt(0);w+=k>0x2E80?12:(c==="("||c===")")?4.5:(c==="+"||c==="−"||c==="×")?7:6.7}return w}
+function segW(a){return a.reduce(function(t,g){return t+lw(g[0])},0)}
+function segT(a){return a.map(function(g){return g[1]?'<tspan class="'+g[1]+'">'+g[0]+'</tspan>':g[0]}).join('')}
+var EX=[
+ {a:"酸化銀",f:[["Ag","O"],["Ag₂","O"]],
+  l:[[[["銀",""],["(+)","m"]],[["酸素",""],["(2−)","v"]]],[[["銀",""],["(+)","m"],["×2","m"]],[["酸素",""],["(2−)","v"]]]]},
+ {a:"塩化銅",f:[["Cu","Cl"],["Cu","Cl₂"]],
+  l:[[[["銅",""],["(2+)","m"]],[["塩素",""],["(−)","v"]]],[[["銅",""],["(2+)","m"]],[["塩素",""],["(−)","v"],["×2","m"]]]]},
+ {a:"硫化水素",f:[["H","S"],["H₂","S"]],
+  l:[[[["水素",""],["(+)","m"]],[["硫黄",""],["(2−)","v"]]],[[["水素",""],["(+)","m"],["×2","m"]],[["硫黄",""],["(2−)","v"]]]]}];
+function figEx(){
+ var s='',CF=[128,262],G=7,i,k;
+ for(i=0;i<EX.length;i++){
+  var r=EX[i],oy=i*80,base=oy+26;
+  s+='<text x="4" y="'+base+'" font-size="16">'+r.a+'</text>';
+  for(k=0;k<2;k++){
+   var cf=CF[k],a=r.f[k][0],b=r.f[k][1],wa=fw(a),wb=fw(b),x0=cf-(wa+wb)/2,ca=x0+wa/2,cb=x0+wa+wb/2,
+    L=r.l[k][0],R=r.l[k][1],wl=segW(L),wr=segW(R),lc=cf-G-wl/2,rc=cf+G+wr/2;
+   s+='<text x="'+n(x0-3)+'" y="'+base+'" font-size="12" class="g" text-anchor="end" style="stroke:none">'+(k?"②":"①")+'</text>'+
+    '<text x="'+cf+'" y="'+base+'" font-size="20" text-anchor="middle" style="stroke:none'+(k?';font-weight:700':';fill:'+MUTED)+'"><tspan>'+a+'</tspan><tspan>'+b+'</tspan></text>'+
+    line(ca,oy+34,lc,oy+62,MUTED,1)+line(cb,oy+34,rc,oy+62,MUTED,1)+
+    '<text x="'+n(cf-G)+'" y="'+(oy+75)+'" font-size="12" class="g" text-anchor="end" style="stroke:none">'+segT(L)+'</text>'+
+    '<text x="'+n(cf+G)+'" y="'+(oy+75)+'" font-size="12" class="g" style="stroke:none">'+segT(R)+'</text>'}}
+ return '<div class="fig"><svg viewBox="0 0 340 240" role="img" aria-label="化合物の化学式の作り方。酸化銀は、①AgO(銀(+)と酸素(2−))、②Ag₂O(銀(+)×2と酸素(2−))。塩化銅は、①CuCl(銅(2+)と塩素(−))、②CuCl₂(銅(2+)と塩素(−)×2)。硫化水素は、①HS(水素(+)と硫黄(2−))、②H₂S(水素(+)×2と硫黄(2−))。2行目の斜めの線は、化学式の元素記号と、下の小さい文字をつないでいる">'+s+'</svg></div>'}
 
 /* ---------- 「①まちがった形 → ②直した形」の行(厳選ポイントと解答で共通)
    行：{k:(1)など, a:名前, e1:[前の元素の記号,電荷], e2:[後ろの元素の記号,電荷], w:①の式, r:②の式, t:②の説明, x:あれば、②の下にもう1行} ---------- */
@@ -41,11 +70,6 @@ function rows(R){
    '<span style="'+sm+'">①'+r.w+'</span><span style="'+sm+'">◀ '+ch(r.e1[1])+'と'+ch(r.e2[1])+'で、合計が0ではない</span>'+
    '<span style="font-size:.8rem;font-weight:700">②'+r.r+'</span><span style="'+sm+'">◀ '+r.t+'</span>'+
    (r.x?'<span></span><span style="'+sm+'">'+r.x+'</span>':'')}).join('')+'</div>'}
-
-var RP=[
- {a:"酸化銀",e1:["Ag","+"],e2:["O","2−"],w:"AgO",r:"Ag₂O",t:"Ag を2個にして、合計が0"},
- {a:"塩化銅",e1:["Cu","2+"],e2:["Cl","−"],w:"CuCl",r:"CuCl₂",t:"Cl を2個にして、合計が0"},
- {a:"硫化水素",e1:["H","+"],e2:["S","2−"],w:"HS",r:"H₂S",t:"H を2個にして、合計が0"}];
 
 var R1=[
  {k:"(1)",a:"酸化ナトリウム",e1:["Na","+"],e2:["O","2−"],w:"NaO",r:"Na₂O",t:"Na を2個にして、合計が0"},
@@ -62,7 +86,8 @@ var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var ONE=SM+'※ 個数が1のときは、「1」は書きません。</p>';
 
 var POINT='<p>周期表の縦の列ごとに、電荷が決まっています。</p>'+figCharge()+
- '<p>化合物は、電荷の合計が0になるように、元素の個数が決まります。</p>'+rows(RP);
+ '<p>化合物は、電荷の合計が0になるように、元素の個数が決まります。</p>'+figEx()+
+ SM+'①は、合計が0ではありません。②は、<span class="m">×2</span> にして、合計が0になります。</p>';
 
 var QBODY='<p>次の化合物の化学式になるように、元素記号の個数を選びなさい。</p>';
 
