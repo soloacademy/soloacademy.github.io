@@ -48,13 +48,13 @@ var EX=[
  {k:"",a:"硫化水素",f:[["H","S"],["H₂","S"]],
   l:[[[["水素",""],["(+)","m"]],[["硫黄",""],["(2−)","v"]]],[[["水素",""],["(+)","m"],["×2","m"]],[["硫黄",""],["(2−)","v"]]]]}];
 
-/* 解答の例(小さい文字は、元素記号)。s1,c1＝前の元素の記号と電荷、s2,c2＝うしろ、n1,n2＝②での個数 */
-var SUB={2:"₂",3:"₃"};
+/* 解答の例(小さい文字は、元素の名前)。s1,c1＝前の元素の記号と電荷、s2,c2＝うしろ、n1,n2＝②での個数 */
+var SUB={2:"₂",3:"₃"},NM={Na:"ナトリウム",K:"カリウム",Mg:"マグネシウム",Ca:"カルシウム",Al:"アルミニウム",O:"酸素",Cl:"塩素",S:"硫黄"};
 function mk(k,a,s1,c1,s2,c2,n1,n2,x){
- function lab(s,c,n,m){var g=[[s,""],["("+c+")",cls(c)]];if(m>1)g.push(["×"+m,"m"]);return g}
+ function lab(s,c,m){var g=[[NM[s],""],["("+c+")",cls(c)]];if(m>1)g.push(["×"+m,"m"]);return g}
  return {k:k,a:a,x:x,
   f:[[s1,s2],[s1+(n1>1?SUB[n1]:""),s2+(n2>1?SUB[n2]:"")]],
-  l:[[lab(s1,c1,n1,1),lab(s2,c2,n2,1)],[lab(s1,c1,n1,n1),lab(s2,c2,n2,n2)]]}}
+  l:[[lab(s1,c1,1),lab(s2,c2,1)],[lab(s1,c1,n1),lab(s2,c2,n2)]]}}
 var R1=[
  mk("(1)","酸化ナトリウム","Na","+","O","2−",2,1),
  mk("(2)","塩化マグネシウム","Mg","2+","Cl","−",1,2),
@@ -64,24 +64,37 @@ var R2=[
  mk("(2)","硫化カリウム","K","+","S","2−",2,1),
  mk("(3)","塩化アルミニウム","Al","3+","Cl","−",1,3),
  mk("(4)","酸化アルミニウム","Al","3+","O","2−",2,3,
-  [["Al",""],["(3+)","m"],["×2","m"],[" ＝ ",""],["6+","m"],["、O",""],["(2−)","v"],["×3","m"],[" ＝ ",""],["6−","v"]])];
+  [["アルミニウム",""],["(3+)","m"],["×2","m"],[" ＝ ",""],["6+","m"],["、酸素",""],["(2−)","v"],["×3","m"],[" ＝ ",""],["6−","v"]])];
 
-/* L＝例の配列、o.cf＝①と②の式の真ん中のx、o.above＝名前を式の上の行に書く(長い名前用) */
+/* 式1つぶんの形(式の真ん中を0とする)。線の位置は変えない。左右の文字は、間が G より狭いとき、左右に動かして広げる */
+var TY=3,SX=13;
+function geo(r,k,LF,G){
+ var a=r.f[k][0],b=r.f[k][1],wa=fw(a),wb=fw(b),x0=-(wa+wb)/2,
+  ca=x0+fw(a.replace(/[₂₃]/,""))/2,cb=x0+wa+fw(b.replace(/[₂₃]/,""))/2,
+  L=r.l[k][0],R=r.l[k][1],wl=segW(L)*LF/12,wr=segW(R)*LF/12,
+  cl=ca-TY-SX,cr=cb+TY+SX,g0=(cr-wr/2)-(cl+wl/2),d=g0<G?(G-g0)/2:0;
+ cl-=d;cr+=d;
+ return {x0:x0,ca:ca,cb:cb,cl:cl,cr:cr,l:-Math.min(cl-wl/2,x0-15),r:Math.max(cr+wr/2,x0+wa+wb)}}
+
+/* L＝例の配列。o.above＝名前を式の上の行に書く(長い名前用)、o.x0＝図の左はし(名前の右はし)、o.LF＝小さい文字の大きさ、o.G＝左右の文字の最小の間
+   ①の列と②の列の位置(式の真ん中)は、全部の例の中でいちばん広い所に合わせて決め、あまりは間に配る */
 function figEx(L,o){
- var s='',TY=3,SX=13,i,k,oy=0,last=0,al=[];
+ var s='',i,k,oy=0,last=0,al=[],GB=o.G,mx=[[0,0],[0,0]],G=[];
+ for(i=0;i<L.length;i++){G.push([geo(L[i],0,o.LF,o.G),geo(L[i],1,o.LF,o.G)]);for(k=0;k<2;k++){mx[k][0]=Math.max(mx[k][0],G[i][k].l);mx[k][1]=Math.max(mx[k][1],G[i][k].r)}}
+ var slack=Math.max(0,336-o.x0-(mx[0][0]+mx[0][1]+mx[1][0]+mx[1][1]+GB)),
+  cf1=o.x0+slack*.3+mx[0][0],cf2=cf1+mx[0][1]+GB+slack*.4+mx[1][0],CF=[cf1,cf2];
  for(i=0;i<L.length;i++){
-  var r=L[i],base=o.above?oy+44:oy+26;
+  var r=L[i],base=o.above?oy+44:oy+26,ly=base+TY+SX+12;
   last=oy;
   s+=o.above?'<text x="4" y="'+(oy+14)+'" font-size="16">'+r.k+' '+r.a+'</text>':'<text x="4" y="'+base+'" font-size="16">'+r.a+'</text>';
   for(k=0;k<2;k++){
-   var cf=o.cf[k],a=r.f[k][0],b=r.f[k][1],wa=fw(a),wb=fw(b),x0=cf-(wa+wb)/2,
-    ca=x0+fw(a.replace(/[₂₃]/,""))/2,cb=x0+wa+fw(b.replace(/[₂₃]/,""))/2,ly=base+TY+SX+12;
-   s+='<text x="'+n(x0-3)+'" y="'+base+'" font-size="12" class="g" text-anchor="end" style="stroke:none">'+(k?"②":"①")+'</text>'+
-    '<text x="'+cf+'" y="'+base+'" font-size="20" text-anchor="middle" style="stroke:none'+(k?';font-weight:700':';fill:'+MUTED)+'"><tspan>'+a+'</tspan><tspan>'+b+'</tspan></text>'+
-    line(ca-TY,base+TY,ca-TY-SX,base+TY+SX,MUTED,1)+line(cb+TY,base+TY,cb+TY+SX,base+TY+SX,MUTED,1)+
-    '<text x="'+n(ca-TY-SX)+'" y="'+ly+'" font-size="12" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][0])+'</text>'+
-    '<text x="'+n(cb+TY+SX)+'" y="'+ly+'" font-size="12" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][1])+'</text>'}
-  if(r.x)s+='<text x="'+o.cf[1]+'" y="'+(base+46)+'" font-size="12" class="g" text-anchor="middle" style="stroke:none">'+segT(r.x)+'</text>';
+   var g=G[i][k],cf=CF[k],a=r.f[k][0],b=r.f[k][1];
+   s+='<text x="'+n(cf+g.x0-3)+'" y="'+base+'" font-size="12" class="g" text-anchor="end" style="stroke:none">'+(k?"②":"①")+'</text>'+
+    '<text x="'+n(cf)+'" y="'+base+'" font-size="20" text-anchor="middle" style="stroke:none'+(k?';font-weight:700':';fill:'+MUTED)+'"><tspan>'+a+'</tspan><tspan>'+b+'</tspan></text>'+
+    line(cf+g.ca-TY,base+TY,cf+g.ca-TY-SX,base+TY+SX,MUTED,1)+line(cf+g.cb+TY,base+TY,cf+g.cb+TY+SX,base+TY+SX,MUTED,1)+
+    '<text x="'+n(cf+g.cl)+'" y="'+ly+'" font-size="'+o.LF+'" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][0])+'</text>'+
+    '<text x="'+n(cf+g.cr)+'" y="'+ly+'" font-size="'+o.LF+'" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][1])+'</text>'}
+  if(r.x)s+='<text x="'+n(cf2+mx[1][1])+'" y="'+(base+46)+'" font-size="'+o.LF+'" class="g" text-anchor="end" style="stroke:none">'+segT(r.x)+'</text>';
   al.push((r.k?r.k+' ':'')+r.a+'は、①'+r.f[0].join('')+'('+segP(r.l[0][0])+'と'+segP(r.l[0][1])+')、②'+r.f[1].join('')+'('+segP(r.l[1][0])+'と'+segP(r.l[1][1])+')'+(r.x?'。'+segP(r.x):''));
   oy+=(o.above?88:62)+(r.x?18:0)}
  var H=last+(o.above?78:60)+(L[L.length-1].x?18:0);
@@ -91,7 +104,7 @@ var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var ONE=SM+'※ 個数が1のときは、「1」は書きません。</p>';
 
 var POINT='<p>周期表の縦の列ごとに、電荷が決まっています。</p>'+figCharge()+
- '<p>化合物は、電荷の合計が0になるように、元素の個数が決まります。</p>'+figEx(EX,{cf:[132,264]})+
+ '<p>化合物は、電荷の合計が0になるように、元素の個数が決まります。</p>'+figEx(EX,{x0:70,LF:12,G:14})+
  SM+'①は、合計が0ではありません。②は、<span class="m">×2</span> にして、合計が0になります。</p>';
 
 var QBODY='<p>次の化合物の化学式になるように、元素記号の個数を選びなさい。</p>';
@@ -106,7 +119,7 @@ sections:[
   {label:"(2)",text:"塩化マグネシウム",type:"count",els:["Mg","Cl"],accept:["12"]},
   {label:"(3)",text:"硫化ナトリウム",type:"count",els:["Na","S"],accept:["21"]}
  ]},
-{type:"answer",html:figEx(R1,{cf:[100,236],above:true})+ONE},
+{type:"answer",html:figEx(R1,{x0:4,LF:11,G:12,above:true})+ONE},
 {type:"problem",title:"補充問題",body:QBODY,
  parts:[
   {label:"(1)",text:"塩化カルシウム",type:"count",els:["Ca","Cl"],accept:["12"]},
@@ -114,6 +127,6 @@ sections:[
   {label:"(3)",text:"塩化アルミニウム",type:"count",els:["Al","Cl"],accept:["13"]},
   {label:"(4)",text:"酸化アルミニウム",type:"count",els:["Al","O"],accept:["23"]}
  ],
- solution:figEx(R2,{cf:[100,236],above:true})+ONE}
+ solution:figEx(R2,{x0:4,LF:11,G:12,above:true})+ONE}
 ]};
 })();
