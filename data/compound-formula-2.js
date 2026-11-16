@@ -47,20 +47,21 @@ var EX=[
  {a:"硫化水素",f:[["H","S"],["H₂","S"]],
   l:[[[["水素",""],["(+)","m"]],[["硫黄",""],["(2−)","v"]]],[[["水素",""],["(+)","m"],["×2","m"]],[["硫黄",""],["(2−)","v"]]]]}];
 function figEx(){
- var s='',CF=[132,264],RX=22.8,P=64,i,k;
+ var s='',CF=[132,264],TY=33,SX=8,P=62,i,k;
  for(i=0;i<EX.length;i++){
-  var r=EX[i],oy=i*P,base=oy+26;
+  var r=EX[i],oy=i*P,base=oy+26,dx=TY-(base-oy-7.2);
   s+='<text x="4" y="'+base+'" font-size="16">'+r.a+'</text>';
   for(k=0;k<2;k++){
-   /* 式は、cfの真ん中に置く。線の上の端は、それぞれの元素記号(右下の小さい2は数えない)の真ん中。左の線は左へ、右の線は右へ、同じ角度で開く。文字は、線の先に、真ん中をそろえる */
+   /* 式は、cfの真ん中に置く。斜め線は45度。それぞれの線を上へのばすと、元素記号(右下の小さい2は数えない)の中心を通る。
+      左の線の上端は、1つ目の記号の中心の左下、右の線の上端は、2つ目の記号の中心の右下。文字は、線の先に、真ん中をそろえる */
    var cf=CF[k],a=r.f[k][0],b=r.f[k][1],wa=fw(a),wb=fw(b),x0=cf-(wa+wb)/2,
     ca=x0+fw(a.replace("₂",""))/2,cb=x0+wa+fw(b.replace("₂",""))/2;
    s+='<text x="'+n(x0-3)+'" y="'+base+'" font-size="12" class="g" text-anchor="end" style="stroke:none">'+(k?"②":"①")+'</text>'+
     '<text x="'+cf+'" y="'+base+'" font-size="20" text-anchor="middle" style="stroke:none'+(k?';font-weight:700':';fill:'+MUTED)+'"><tspan>'+a+'</tspan><tspan>'+b+'</tspan></text>'+
-    line(ca,oy+31,ca-RX,oy+43,MUTED,1)+line(cb,oy+31,cb+RX,oy+43,MUTED,1)+
-    '<text x="'+n(ca-RX)+'" y="'+(oy+56)+'" font-size="12" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][0])+'</text>'+
-    '<text x="'+n(cb+RX)+'" y="'+(oy+56)+'" font-size="12" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][1])+'</text>'}}
- return '<div class="fig"><svg viewBox="0 0 340 '+(2*P+62)+'" role="img" aria-label="化合物の化学式の作り方。酸化銀は、①AgO(銀(+)と酸素(2−))、②Ag₂O(銀(+)×2と酸素(2−))。塩化銅は、①CuCl(銅(2+)と塩素(−))、②CuCl₂(銅(2+)と塩素(−)×2)。硫化水素は、①HS(水素(+)と硫黄(2−))、②H₂S(水素(+)×2と硫黄(2−))。化学式の各元素記号の下から、左右に開く斜めの線が、下の小さい文字につながっている">'+s+'</svg></div>'}
+    line(ca-dx,oy+TY,ca-dx-SX,oy+TY+SX,MUTED,1)+line(cb+dx,oy+TY,cb+dx+SX,oy+TY+SX,MUTED,1)+
+    '<text x="'+n(ca-dx-SX)+'" y="'+(oy+53)+'" font-size="12" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][0])+'</text>'+
+    '<text x="'+n(cb+dx+SX)+'" y="'+(oy+53)+'" font-size="12" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][1])+'</text>'}}
+ return '<div class="fig"><svg viewBox="0 0 340 '+(2*P+58)+'" role="img" aria-label="化合物の化学式の作り方。酸化銀は、①AgO(銀(+)と酸素(2−))、②Ag₂O(銀(+)×2と酸素(2−))。塩化銅は、①CuCl(銅(2+)と塩素(−))、②CuCl₂(銅(2+)と塩素(−)×2)。硫化水素は、①HS(水素(+)と硫黄(2−))、②H₂S(水素(+)×2と硫黄(2−))。化学式の各元素記号から、左右に開く短い斜めの線が、下の小さい文字につながっている">'+s+'</svg></div>'}
 
 /* ---------- 「①まちがった形 → ②直した形」の行(厳選ポイントと解答で共通)
    行：{k:(1)など, a:名前, e1:[前の元素の記号,電荷], e2:[後ろの元素の記号,電荷], w:①の式, r:②の式, t:②の説明, x:あれば、②の下にもう1行} ---------- */
