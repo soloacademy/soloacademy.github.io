@@ -29,7 +29,7 @@ function fig(blank){
    fs=8.5,k=fs/8,gx=6,sum=function(a){return a.reduce(function(t,c){return t+c[2]*k},0)},
    W=sum(DN)+gx*(DN.length-1),mid=(X0+2*PX+X0+7*PX+CW)/2,sx=mid-W/2,yb=Y0+3*PY;
   function row(a,y,g){var x=sx;a.forEach(function(c){
-   s+='<text x="'+n(x)+'" y="'+y+'" font-size="'+fs+'" class="g" style="stroke:none"><tspan fill="#26303b" font-weight="700">'+c[0]+'</tspan> '+c[1]+'</text>';
+   s+='<text x="'+n(x)+'" y="'+y+'" font-size="'+fs+'" class="g" style="stroke:none"><tspan font-weight="700">'+c[0]+'</tspan> '+c[1]+'</text>';
    x+=c[2]*k+g})}
   s+='<text x="'+n(sx)+'" y="'+(yb+9)+'" font-size="'+fs+'" class="g" style="stroke:none" font-weight="700">参考</text>';
   row(UP,yb+20.5,(W-sum(UP))/(UP.length-1));
