@@ -39,10 +39,14 @@ function fig(blank){
   "周期表の図。1行目は、左から水素H、右のはしにヘリウムHe。2行目は、左からリチウムLi、ベリリウムBe、ホウ素B、炭素C、窒素N、酸素O、フッ素F、ネオンNe。3行目は、左からナトリウムNa、マグネシウムMg、アルミニウムAl、ケイ素Si、リンP、硫黄S、塩素Cl、アルゴンAr。4行目は、左からカリウムK、カルシウムCa。各マスの左下に、原子番号が書いてある。表の右下の空きに、「参考」と書いて、元素名として、He ヘリウム、Li リチウム、Be ベリリウム、B ホウ素、F フッ素、Ne ネオン、Si ケイ素、P リン、Ar アルゴンが、小さく書いてある";
  return '<div class="fig"><svg viewBox="0 0 340 172" role="img" aria-label="'+lab+'">'+s+'</svg></div>'}
 
-/* 語呂合わせ：ことば(上)と元素記号(下)を、かたまりごとに縦にそろえる */
-var GO=[["水兵","H He"],["リーベ","Li Be"],["ぼくの","B C N"],["お","O"],["船","F Ne"],["七","Na"],["曲り","Mg Al"],["シップス","Si P S"],["クラーク","Cl Ar K"],["か","Ca"]];
-var GOHTML='<div class="formula" style="white-space:normal"><p class="note" style="font-size:.8rem;margin:0 0 .3rem">覚え方(語呂合わせ)</p><div style="display:flex;flex-wrap:wrap;gap:.3rem .9rem;font-size:.8rem">'+GO.map(function(c){
- return '<span style="display:inline-flex;flex-direction:column;align-items:center;line-height:1.6"><span style="color:var(--muted)">'+c[0]+'</span><b>'+c[1]+'</b></span>'}).join('')+'</div></div>';
+/* 語呂合わせ：元素記号(青)を等間隔に並べ、その下に、対応する語呂(赤)を入れる。10個ずつ2段(Neまでと、Naから) */
+var GO1=[["水兵",["H","He"]],["リーベ",["Li","Be"]],["ぼくの",["B","C","N"]],["お",["O"]],["船",["F","Ne"]]];
+var GO2=[["七",["Na"]],["曲り",["Mg","Al"]],["シップス",["Si","P","S"]],["クラーク",["Cl","Ar","K"]],["か",["Ca"]]];
+function goLine(a,mt){var c=1,h='<div style="display:grid;grid-template-columns:repeat(10,1fr);row-gap:.1rem;line-height:1.6;margin-top:'+mt+'">';
+ a.forEach(function(g){g[1].forEach(function(e,i){h+='<b class="v" style="grid-row:1;grid-column:'+(c+i)+';text-align:center;font-size:.9rem">'+e+'</b>'});
+  h+='<span class="m" style="grid-row:2;grid-column:'+c+' / span '+g[1].length+';text-align:center;font-size:.8rem">'+g[0]+'</span>';c+=g[1].length});
+ return h+'</div>'}
+var GOHTML='<div class="formula" style="white-space:normal"><p class="note" style="font-size:.8rem;margin:0">覚え方</p>'+goLine(GO1,'.4rem')+goLine(GO2,'.7rem')+'</div>';
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 
 var POINT='<p>周期表は、元素を<b>原子番号</b>の小さい順に並べた表です。マスの左下の小さい数字が、原子番号です。</p>'+fig(false)+
