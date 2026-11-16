@@ -49,11 +49,11 @@ var EX=[
 function figEx(){
  var s='',CF=[132,264],TY=31,SX=13,P=64,i,k;
  for(i=0;i<EX.length;i++){
-  var r=EX[i],oy=i*P,base=oy+26,dx=TY-(base-oy-7.2);
+  var r=EX[i],oy=i*P,base=oy+26,dx=TY-(base-oy);
   s+='<text x="4" y="'+base+'" font-size="16">'+r.a+'</text>';
   for(k=0;k<2;k++){
-   /* 式は、cfの真ん中に置く。斜め線は45度。それぞれの線を上へのばすと、元素記号(右下の小さい2は数えない)の中心を通る。
-      左の線の上端は、1つ目の記号の中心の左下、右の線の上端は、2つ目の記号の中心の右下。文字は、線の先に、真ん中をそろえる */
+   /* 式は、cfの真ん中に置く。斜め線は45度。それぞれの線を上へのばすと、元素記号(右下の小さい2は数えない)の、底の線(ベースライン)の真ん中を通る。
+      左の線の上端は、1つ目の記号の真ん中の左下、右の線の上端は、2つ目の記号の真ん中の右下。文字は、線の先に、真ん中をそろえる */
    var cf=CF[k],a=r.f[k][0],b=r.f[k][1],wa=fw(a),wb=fw(b),x0=cf-(wa+wb)/2,
     ca=x0+fw(a.replace("₂",""))/2,cb=x0+wa+fw(b.replace("₂",""))/2;
    s+='<text x="'+n(x0-3)+'" y="'+base+'" font-size="12" class="g" text-anchor="end" style="stroke:none">'+(k?"②":"①")+'</text>'+
