@@ -12,9 +12,16 @@ function setBt(e,w){
   }else e.textContent=w;
 }
 function judge(p,v){
-  if(p.type==="text"||p.type==="order"||p.type==="choice"||p.type==="pick")return p.accept.some(function(a){return norm(a)===norm(v)});
+  if(p.type==="text"||p.type==="order"||p.type==="choice"||p.type==="pick"||p.type==="count")return p.accept.some(function(a){return norm(a)===norm(v)});
   var n=num(v);if(isNaN(n))return false;
   return p.accept.some(function(a){return Math.abs(a-n)<=(p.tol||0)});
+}
+var cntDone=false;
+function cntCss(){
+  if(cntDone)return;cntDone=true;
+  var st=document.createElement("style");
+  st.textContent=".cnt{row-gap:.3rem;column-gap:.35rem}.cnt .cn-h{flex:0 0 100%;display:flex;align-items:center;gap:.6rem}.cnt .cn-e{font-weight:700;font-size:1.1em}.cnt .cn-g{display:inline-flex;gap:.25rem}.cnt button.choice{min-width:2rem;padding:.1rem .5rem;line-height:1.5}";
+  document.head.appendChild(st);
 }
 function problem(sec){
   var box=h("div","problem",sec.body);
@@ -56,6 +63,23 @@ function problem(sec){
       z.onclick=function(){ids.forEach(function(k){if(vals[k]){bs[vals[k]].disabled=false;put(k,"")}});setSel(nextId())};
       cs.appendChild(z);box.appendChild(cs);setSel(nextId());
       return rs;
+    }
+    if(p.type==="count"){
+      cntCss();
+      var cr=h("div","part cnt"),cv=p.els.map(function(){return ""}),cm=h("span","mark");
+      cm.setAttribute("aria-live","polite");cr.setAttribute("role","group");
+      cr.setAttribute("aria-label",(p.label+" "+(p.text||"")).replace(/<[^>]*>/g,""));
+      var ch=h("span","cn-h",p.label+" "+(p.text||""));ch.appendChild(cm);cr.appendChild(ch);
+      p.els.forEach(function(el,k){
+        cr.appendChild(h("span","cn-e",el));
+        var g=h("span","cn-g"),gb=[];g.setAttribute("role","radiogroup");g.setAttribute("aria-label",el+"の個数");
+        (p.choices||["1","2","3"]).forEach(function(c){
+          var x=h("button","choice",c);x.type="button";x.setAttribute("role","radio");x.setAttribute("aria-checked","false");
+          x.onclick=function(){cv[k]=c;gb.forEach(function(y){y.setAttribute("aria-checked",y===x?"true":"false")});cm.textContent="";cm.className="mark"};
+          gb.push(x);g.appendChild(x)});
+        cr.appendChild(g)});
+      box.appendChild(cr);
+      return {p:p,i:{get value(){return cv.every(Boolean)?cv.join(""):""}},m:cm};
     }
     if(p.type==="pick"){
       var pr=h("div","part pick"),pv={value:""},pm=h("span","mark"),pbs=[],pb=h("div","pk-bt");
