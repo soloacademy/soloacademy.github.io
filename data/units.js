@@ -20,5 +20,6 @@ window.UNITS=[
   {id:"strata",grade:1,no:"1-19",title:"地層"},
   {id:"element-formula",grade:2,no:"2-1",title:"元素記号と化学式(単体)"},
   {id:"compound-formula-1",grade:2,no:"2-2",title:"化学式(化合物①)"},
-  {id:"periodic-table",grade:2,no:"2-3",title:"周期表"}
+  {id:"periodic-table",grade:2,no:"2-3",title:"周期表"},
+  {id:"compound-formula-2",grade:2,no:"2-4",title:"化学式(化合物②)"}
 ];
