@@ -1,5 +1,5 @@
 (function(){
-var BOX="#b4bbc3";
+var BOX="#b4bbc3",INK="#26303b";
 function n(v){return Math.round(v*10)/10}
 var E=["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca"];
 /* マスの位置(行,列)：2-3の周期表と同じ。1行目はH(左)とHe(右はし)、2行目と3行目は8個、4行目はKとCa */
@@ -17,9 +17,19 @@ function figCharge(){
   s+='<rect x="'+n(x)+'" y="'+y+'" width="'+CW+'" height="'+CW+'" rx="4" fill="#fff" stroke="'+BOX+'" stroke-width="1.2"/>'+
    '<text x="'+n(x+4)+'" y="'+(y+34)+'" font-size="10" class="g" style="stroke:none">'+z+'</text>'+
    '<text x="'+n(cx)+'" y="'+(y+23.5)+'" font-size="16" class="b" text-anchor="middle" style="stroke:none">'+E[z-1]+'</text>'}
- return '<div class="fig"><svg viewBox="0 0 340 194" role="img" aria-label="周期表の図。列の上に、電荷が書いてある。1列目は、H、Li、Na、Kで、電荷は+。2列目は、Be、Mg、Caで、2+。3列目は、B、Alで、3+。4列目は、C、Siで、4+か4−。5列目は、N、Pで、3−。6列目は、O、Sで、2−。7列目は、F、Clで、−。8列目は、He、Ne、Arで、0。各マスの左下に、原子番号が書いてある">'+s+'</svg></div>'}
+ /* KとCaの下：矢印と、「Ag」「他の金属」。右に小さい説明 */
+ function up(cx){return '<line x1="'+n(cx)+'" y1="212" x2="'+n(cx)+'" y2="196" stroke="'+INK+'" stroke-width="1.5"/><path d="M'+n(cx-5)+',203 L'+n(cx)+',196 L'+n(cx+5)+',203" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
+ var kx=X0+CW/2,cax=X0+PX+CW/2;
+ s+=up(kx)+up(cax)+
+  '<text x="'+n(kx)+'" y="229" font-size="12" class="m b" text-anchor="middle">Ag</text>'+
+  '<text x="'+n(cax)+'" y="229" font-size="12" class="m b" text-anchor="middle">他の金属</text>'+
+  '<text x="98" y="222" font-size="9.5" class="g" style="stroke:none">中学理科では，周期表にない金属の電荷は</text>'+
+  '<text x="98" y="234" font-size="9.5" class="g" style="stroke:none">「2＋」と考えてよい</text>';
+ return '<div class="fig"><svg viewBox="0 0 340 240" role="img" aria-label="周期表の図。列の上に、電荷が書いてある。1列目は、H、Li、Na、Kで、電荷は+。2列目は、Be、Mg、Caで、2+。3列目は、B、Alで、3+。4列目は、C、Siで、4+か4−。5列目は、N、Pで、3−。6列目は、O、Sで、2−。7列目は、F、Clで、−。8列目は、He、Ne、Arで、0。各マスの左下に、原子番号が書いてある。Kの下に矢印と銀(Ag)、Caの下に矢印と他の金属が書いてあり、他の金属の右に、中学理科では周期表にない金属の電荷は2+と考えてよい、と小さく書いてある">'+s+'</svg></div>'}
 
 /* ---------- 色：+は赤、−は青。(+)や(2−)の形で書く ---------- */
+/* 元素記号の下に、小さく電荷を付ける */
+function el(e){return '<span style="display:inline-flex;flex-direction:column;align-items:center;line-height:1.25">'+e[0]+'<span style="font-size:.7rem">'+ch(e[1])+'</span></span>'}
 function ch(t){return '<span class="'+(t.indexOf("+")>=0?"m":"v")+'">('+t+')</span>'}
 
 /* ---------- 「①まちがった形 → ②直した形」の行(厳選ポイントと解答で共通)
@@ -27,7 +37,7 @@ function ch(t){return '<span class="'+(t.indexOf("+")>=0?"m":"v")+'">('+t+')</sp
 function rows(R){
  var sm='font-size:.8rem;color:var(--muted)';
  return '<div style="display:grid;grid-template-columns:max-content 1fr;column-gap:.6rem;row-gap:.1rem;align-items:baseline;margin:.4rem 0 .8rem">'+R.map(function(r){
-  return '<p style="grid-column:1/-1;margin:.9rem 0 0">'+(r.k?r.k+' ':'')+r.a+'　'+r.e1[0]+ch(r.e1[1])+'　'+r.e2[0]+ch(r.e2[1])+'</p>'+
+  return '<p style="grid-column:1/-1;margin:.9rem 0 0">'+(r.k?r.k+' ':'')+r.a+'　'+el(r.e1)+'　'+el(r.e2)+'</p>'+
    '<span style="'+sm+'">①'+r.w+'</span><span style="'+sm+'">◀ '+ch(r.e1[1])+'と'+ch(r.e2[1])+'で、合計が0ではない</span>'+
    '<span style="font-size:.8rem;font-weight:700">②'+r.r+'</span><span style="'+sm+'">◀ '+r.t+'</span>'+
    (r.x?'<span></span><span style="'+sm+'">'+r.x+'</span>':'')}).join('')+'</div>'}
@@ -52,7 +62,6 @@ var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var ONE=SM+'※ 個数が1のときは、「1」は書きません。</p>';
 
 var POINT='<p>周期表の縦の列ごとに、電荷が決まっています。</p>'+figCharge()+
- SM+'※ 周期表にない金属(Cu、Zn、Fe など)は、<span class="m">2+</span> と考えます。ただし、銀(Ag)は <span class="m">+</span> です。</p>'+
  '<p>化合物は、電荷の合計が0になるように、元素の個数が決まります。</p>'+rows(RP);
 
 var QBODY='<p>次の化合物の化学式になるように、元素記号の個数を選びなさい。</p>';
