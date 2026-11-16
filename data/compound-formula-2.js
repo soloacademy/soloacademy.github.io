@@ -47,52 +47,19 @@ var EX=[
  {a:"硫化水素",f:[["H","S"],["H₂","S"]],
   l:[[[["水素",""],["(+)","m"]],[["硫黄",""],["(2−)","v"]]],[[["水素",""],["(+)","m"],["×2","m"]],[["硫黄",""],["(2−)","v"]]]]}];
 function figEx(){
- var s='',CF=[132,264],D=32,P=70,i,k;
+ var s='',CF=[132,264],D=30,P=66,i,k;
  for(i=0;i<EX.length;i++){
   var r=EX[i],oy=i*P,base=oy+26;
   s+='<text x="4" y="'+base+'" font-size="16">'+r.a+'</text>';
   for(k=0;k<2;k++){
-   /* 2つの元素記号の真ん中が、cf(ハの字の中心)にそろうように、式を置く。線も、ラベルも、cfを中心に左右対称 */
-   var cf=CF[k],a=r.f[k][0],b=r.f[k][1],wa=fw(a),wb=fw(b),d=(wa+wb)/4,x0=cf-(3*wa+wb)/4;
-   s+='<text x="'+n(x0-3)+'" y="'+base+'" font-size="12" class="g" text-anchor="end" style="stroke:none">'+(k?"②":"①")+'</text>'+
-    '<text x="'+n(x0)+'" y="'+base+'" font-size="20" style="stroke:none'+(k?';font-weight:700':';fill:'+MUTED)+'"><tspan>'+a+'</tspan><tspan>'+b+'</tspan></text>'+
-    line(cf-d,oy+33,cf-D,oy+47,MUTED,1)+line(cf+d,oy+33,cf+D,oy+47,MUTED,1)+
-    '<text x="'+(cf-D)+'" y="'+(oy+60)+'" font-size="12" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][0])+'</text>'+
-    '<text x="'+(cf+D)+'" y="'+(oy+60)+'" font-size="12" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][1])+'</text>'}}
- return '<div class="fig"><svg viewBox="0 0 340 '+(2*P+66)+'" role="img" aria-label="化合物の化学式の作り方。酸化銀は、①AgO(銀(+)と酸素(2−))、②Ag₂O(銀(+)×2と酸素(2−))。塩化銅は、①CuCl(銅(2+)と塩素(−))、②CuCl₂(銅(2+)と塩素(−)×2)。硫化水素は、①HS(水素(+)と硫黄(2−))、②H₂S(水素(+)×2と硫黄(2−))。2行目の斜めの線は、化学式の元素記号と、下の小さい文字をつないでいる">'+s+'</svg></div>'}
-
-/* ---------- 色：+は赤、−は青。(+)や(2−)の形で書く ---------- */
-/* 元素記号の下に、小さく電荷を付ける */
-function el(e){return '<span style="display:inline-flex;flex-direction:column;align-items:center;line-height:1.25">'+e[0]+'<span style="font-size:.7rem">'+ch(e[1])+'</span></span>'}
-function ch(t){return '<span class="'+(t.indexOf("+")>=0?"m":"v")+'">('+t+')</span>'}
-
-/* ---------- 厳選ポイントの図：名前、①まちがった形、②直した形。下に、小さい文字。間をハの字の線でつなぐ ---------- */
-var MUTED="#5d6874",FW={A:14.5,O:15.5,C:14.5,S:13.5,H:15.5,u:11.5,l:5.5,g:11.5,"₂":10};
-function fw(t){var w=0,i;for(i=0;i<t.length;i++)w+=FW[t.charAt(i)]||12;return w}
-function lw(t){var w=0,i,c,k;for(i=0;i<t.length;i++){c=t.charAt(i);k=c.charCodeAt(0);w+=k>0x2E80?12:(c==="("||c===")")?4.5:(c==="+"||c==="−"||c==="×")?7:6.7}return w}
-function segW(a){return a.reduce(function(t,g){return t+lw(g[0])},0)}
-function segT(a){return a.map(function(g){return g[1]?'<tspan class="'+g[1]+'">'+g[0]+'</tspan>':g[0]}).join('')}
-var EX=[
- {a:"酸化銀",f:[["Ag","O"],["Ag₂","O"]],
-  l:[[[["銀",""],["(+)","m"]],[["酸素",""],["(2−)","v"]]],[[["銀",""],["(+)","m"],["×2","m"]],[["酸素",""],["(2−)","v"]]]]},
- {a:"塩化銅",f:[["Cu","Cl"],["Cu","Cl₂"]],
-  l:[[[["銅",""],["(2+)","m"]],[["塩素",""],["(−)","v"]]],[[["銅",""],["(2+)","m"]],[["塩素",""],["(−)","v"],["×2","m"]]]]},
- {a:"硫化水素",f:[["H","S"],["H₂","S"]],
-  l:[[[["水素",""],["(+)","m"]],[["硫黄",""],["(2−)","v"]]],[[["水素",""],["(+)","m"],["×2","m"]],[["硫黄",""],["(2−)","v"]]]]}];
-function figEx(){
- var s='',CF=[128,262],G=7,i,k;
- for(i=0;i<EX.length;i++){
-  var r=EX[i],oy=i*80,base=oy+26;
-  s+='<text x="4" y="'+base+'" font-size="16">'+r.a+'</text>';
-  for(k=0;k<2;k++){
-   var cf=CF[k],a=r.f[k][0],b=r.f[k][1],wa=fw(a),wb=fw(b),x0=cf-(wa+wb)/2,ca=x0+wa/2,cb=x0+wa+wb/2,
-    L=r.l[k][0],R=r.l[k][1],wl=segW(L),wr=segW(R),lc=cf-G-wl/2,rc=cf+G+wr/2;
-   s+='<text x="'+n(x0-3)+'" y="'+base+'" font-size="12" class="g" text-anchor="end" style="stroke:none">'+(k?"②":"①")+'</text>'+
+   /* 式の真ん中(cf)が、ハの字の軸。ハの字は、上の1点(軸の上)から、左右に同じ角度で開く。文字は、線の先に、真ん中をそろえる */
+   var cf=CF[k],a=r.f[k][0],b=r.f[k][1],tw=fw(a)+fw(b);
+   s+='<text x="'+n(cf-tw/2-3)+'" y="'+base+'" font-size="12" class="g" text-anchor="end" style="stroke:none">'+(k?"②":"①")+'</text>'+
     '<text x="'+cf+'" y="'+base+'" font-size="20" text-anchor="middle" style="stroke:none'+(k?';font-weight:700':';fill:'+MUTED)+'"><tspan>'+a+'</tspan><tspan>'+b+'</tspan></text>'+
-    line(ca,oy+34,lc,oy+62,MUTED,1)+line(cb,oy+34,rc,oy+62,MUTED,1)+
-    '<text x="'+n(cf-G)+'" y="'+(oy+75)+'" font-size="12" class="g" text-anchor="end" style="stroke:none">'+segT(L)+'</text>'+
-    '<text x="'+n(cf+G)+'" y="'+(oy+75)+'" font-size="12" class="g" style="stroke:none">'+segT(R)+'</text>'}}
- return '<div class="fig"><svg viewBox="0 0 340 240" role="img" aria-label="化合物の化学式の作り方。酸化銀は、①AgO(銀(+)と酸素(2−))、②Ag₂O(銀(+)×2と酸素(2−))。塩化銅は、①CuCl(銅(2+)と塩素(−))、②CuCl₂(銅(2+)と塩素(−)×2)。硫化水素は、①HS(水素(+)と硫黄(2−))、②H₂S(水素(+)×2と硫黄(2−))。2行目の斜めの線は、化学式の元素記号と、下の小さい文字をつないでいる">'+s+'</svg></div>'}
+    line(cf-1.5,oy+31,cf-D,oy+46,MUTED,1)+line(cf+1.5,oy+31,cf+D,oy+46,MUTED,1)+
+    '<text x="'+(cf-D)+'" y="'+(oy+59)+'" font-size="12" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][0])+'</text>'+
+    '<text x="'+(cf+D)+'" y="'+(oy+59)+'" font-size="12" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][1])+'</text>'}}
+ return '<div class="fig"><svg viewBox="0 0 340 '+(2*P+66)+'" role="img" aria-label="化合物の化学式の作り方。酸化銀は、①AgO(銀(+)と酸素(2−))、②Ag₂O(銀(+)×2と酸素(2−))。塩化銅は、①CuCl(銅(2+)と塩素(−))、②CuCl₂(銅(2+)と塩素(−)×2)。硫化水素は、①HS(水素(+)と硫黄(2−))、②H₂S(水素(+)×2と硫黄(2−))。化学式の下から、左右に開く斜めの線が、下の小さい文字につながっている">'+s+'</svg></div>'}
 
 /* ---------- 「①まちがった形 → ②直した形」の行(厳選ポイントと解答で共通)
    行：{k:(1)など, a:名前, e1:[前の元素の記号,電荷], e2:[後ろの元素の記号,電荷], w:①の式, r:②の式, t:②の説明, x:あれば、②の下にもう1行} ---------- */
