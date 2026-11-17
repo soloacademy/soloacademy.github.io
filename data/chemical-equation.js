@@ -40,16 +40,27 @@ function parts(a){return a.map(function(e){
  return {label:e.k,text:'<b>'+e.name+'</b><br>'+e.desc,type:"eq",L:e.L,R:e.R,choices:e.choices}})}
 
 /* ---------- 厳選ポイント：酸化銀の熱分解 ---------- */
+/* 厳選ポイントの図：化学式の下に、原子を小さい文字で並べる。列＝化学式(上)＋原子(下、段ごと) */
+var AT='font-size:.7rem;line-height:1.3;color:var(--muted);white-space:nowrap';
+function col(f,rows){return '<span style="display:inline-flex;flex-direction:column;align-items:center"><span>'+f+'</span>'+rows.map(function(r){return '<span style="'+AT+'">'+r+'</span>'}).join('')+'</span>'}
+function op(t){return '<span style="margin:0 .4rem">'+t+'</span>'}
+function line(cols,note,top){
+ return '<div style="display:flex;flex-wrap:wrap;align-items:flex-start;column-gap:.6rem'+(top?';margin-top:.8rem':'')+'">'+
+  '<div style="display:flex;align-items:flex-start;white-space:nowrap">'+cols+'</div>'+
+  (note?'<div style="flex:1 1 4rem;margin-top:.4rem;'+AT.replace('white-space:nowrap','white-space:normal')+'">'+note+'</div>':'')+'</div>'}
+function nb(t){return '<span style="white-space:nowrap">'+t+'</span>'}
+var C2='<b class="m">2</b>',C4='<b class="m">4</b>';
+var AGAGO='Ag Ag O';
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
-var KS='<div style="'+SMN+';margin-top:.1rem">';
 var POINT='<p>化学変化を、化学式を使って表した式を、<b>化学反応式</b>といいます。</p>'+
  '<p>酸化銀を加熱すると、銀と酸素に分解します。この反応で、書き方を見ます。</p>'+
  '<p>① 反応前の物質を左、反応後の物質を右に、化学式で書き、「→」で結びます。</p>'+
- '<div class="formula">Ag₂O → Ag + O₂</div>'+
+ '<div class="formula" style="white-space:normal">'+
+ line(col('Ag₂O',[AGAGO])+op('→')+col('Ag',['Ag'])+op('+')+col('O₂',['O O'])) +'</div>'+
  '<p>② 左右で、原子の種類と数が等しくなるように、<b>係数</b>をつけます。</p>'+
  '<div class="formula" style="white-space:normal">'+
- '<div style="white-space:nowrap"><b class="m">2</b>Ag₂O → Ag + O₂</div>'+KS+'◀ 左を2倍にして、Oをそろえる</div>'+
- '<div style="white-space:nowrap;margin-top:.7rem"><b class="m">2</b>Ag₂O → <b class="m">4</b>Ag + O₂</div>'+KS+'◀ 右のAgを4倍にして、Agをそろえる</div></div>'+
+ line(col(C2+'Ag₂O',[AGAGO,AGAGO])+op('→')+col('Ag',['Ag'])+op('+')+col('O₂',['O O']),'◀ 左を2倍にして、Oをそろえる')+
+ line(col(C2+'Ag₂O',[AGAGO,AGAGO])+op('→')+col(C4+'Ag',['Ag Ag','Ag Ag'])+op('+')+col('O₂',['O O']),'◀ 右のAgを4倍にして、Agをそろえる',true)+'</div>'+
  SM+'原子の数(左＝右)：Ag 4個＝4個、O 2個＝2個</p>'+
  SM+'※ 係数が1のときは、書きません。化学式の右下の数字は、変えません。</p>';
 
