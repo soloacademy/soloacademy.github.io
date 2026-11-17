@@ -4,7 +4,7 @@ function n(v){return Math.round(v*10)/10}
 var E=["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca"];
 /* マスの位置(行,列)：2-3の周期表と同じ。1行目はH(左)とHe(右はし)、2行目と3行目は8個、4行目はKとCa */
 function pos(z){if(z===1)return[0,0];if(z===2)return[0,7];if(z<=10)return[1,z-3];if(z<=18)return[2,z-11];return[3,z-19]}
-var CW=38,PX=41.5,PY=42,X0=5,Y0=58;
+var CW=38,PX=41.5,PY=42,X0=5,Y0=44;
 /* 列ごとの電荷。+は赤(m)、−は青(v)、0と±は灰色(g) */
 var CC=["+","2+","3+","4±","3−","2−","−","0"],CK=["m","m","m","g","v","v","v","g"];
 /* 別の電荷にもなりうる(灰色の小さい文字)：左の3列は電荷の下、右の3列(3−、2−、−)は電荷の上 */
@@ -13,7 +13,7 @@ var ALT_BELOW=["(7−)","(6−)","(5−)"],ALT_ABOVE={4:"(5+)",5:"(6+)",6:"(7+)"
 /* ---------- 厳選ポイントの図：周期表の列の上に、電荷を書く ---------- */
 function figCharge(){
  var s='',c,z,p,x,y,cx;
- for(c=0;c<8;c++){var hx=n(X0+c*PX+CW/2),my=c<3?13:(c>3&&c<7)?52:32.8,ay=c<3?25:35;
+ for(c=0;c<8;c++){var hx=n(X0+c*PX+CW/2),my=c<3?13:(c>3&&c<7)?28.5:20.8,ay=c<3?25:11;
   s+='<text x="'+hx+'" y="'+my+'" font-size="16" class="'+CK[c]+' b" text-anchor="middle">'+CC[c]+'</text>';
   if(ALT_ABOVE[c])s+='<text x="'+hx+'" y="'+ay+'" font-size="10" class="g" text-anchor="middle" style="stroke:none">'+ALT_ABOVE[c]+'</text>';
   if(ALT_BELOW[c])s+='<text x="'+hx+'" y="'+ay+'" font-size="10" class="g" text-anchor="middle" style="stroke:none">'+ALT_BELOW[c]+'</text>'}
@@ -31,7 +31,7 @@ function figCharge(){
   '<text x="'+n(cax)+'" y="'+(229+DY)+'" font-size="12" class="m b" text-anchor="middle">他の金属</text>'+
   '<text x="98" y="'+(222+DY)+'" font-size="9.5" class="g" style="stroke:none">中学理科では，周期表にない金属の電荷は</text>'+
   '<text x="98" y="'+(234+DY)+'" font-size="9.5" class="g" style="stroke:none">「2＋」と考えてよい</text>';
- return '<div class="fig"><svg viewBox="0 0 340 272" role="img" aria-label="周期表の図。列の上に、電荷が書いてある。電荷の上か下には、別の電荷になる場合の電荷が、小さい灰色の文字で書いてある(左の3列は、電荷の下に(7−)、(6−)、(5−)。3−、2−、−の列は、電荷の上に(5+)、(6+)、(7+))。1列目は、H、Li、Na、Kで、電荷は+。2列目は、Be、Mg、Caで、2+。3列目は、B、Alで、3+。4列目は、C、Siで、4+か4−。5列目は、N、Pで、3−。6列目は、O、Sで、2−。7列目は、F、Clで、−。8列目は、He、Ne、Arで、0。各マスの左下に、原子番号が書いてある。Kの下に矢印と銀(Ag)、Caの下に矢印と他の金属が書いてあり、他の金属の右に、中学理科では周期表にない金属の電荷は2+と考えてよい、と小さく書いてある">'+s+'</svg></div>'}
+ return '<div class="fig"><svg viewBox="0 0 340 258" role="img" aria-label="周期表の図。列の上に、電荷が書いてある。電荷の上か下には、別の電荷になる場合の電荷が、小さい灰色の文字で書いてある(左の3列は、電荷の下に(7−)、(6−)、(5−)。3−、2−、−の列は、電荷の上に(5+)、(6+)、(7+))。1列目は、H、Li、Na、Kで、電荷は+。2列目は、Be、Mg、Caで、2+。3列目は、B、Alで、3+。4列目は、C、Siで、4+か4−。5列目は、N、Pで、3−。6列目は、O、Sで、2−。7列目は、F、Clで、−。8列目は、He、Ne、Arで、0。各マスの左下に、原子番号が書いてある。Kの下に矢印と銀(Ag)、Caの下に矢印と他の金属が書いてあり、他の金属の右に、中学理科では周期表にない金属の電荷は2+と考えてよい、と小さく書いてある">'+s+'</svg></div>'}
 
 function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"/>'}
 /* ---------- 解説の図：名前、①まちがった形、②直した形。式の下に、左右に開く斜めの線と、小さい文字 ----------
