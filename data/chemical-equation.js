@@ -13,7 +13,7 @@ function rowsOf(f,c){var a=atomsOf(f),r=[],i;
  else for(i=0;i<c;i++)r.push(a.join(' '));
  return r}
 
-function bx(r){return '<span style="'+AT+'padding:.1rem .4rem;border:1px solid #c9d0d7">'+r+'</span>'}
+function bx(r){return '<span style="'+AT+'padding:.1rem .4rem;border:1px solid #c9d0d7;border-radius:4px">'+r+'</span>'}
 function col(t){var single=atomsOf(t[0]).length===1;
  return '<span style="display:inline-flex;flex-direction:column;align-items:center"><span>'+co(t[1])+t[0]+'</span>'+
  '<span style="display:flex;flex-direction:column;align-items:center;gap:.2rem;margin-top:.2rem">'+
