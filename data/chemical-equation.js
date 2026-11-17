@@ -72,10 +72,9 @@ var E2=[
 /* ---------- 解答：その問題が終わる段(①か②か③)まで書く ---------- */
 var MK=["①","②","③"];
 function ans(list){
- return '<p class="note" style="font-size:.8rem;margin:.2rem 0">①　化学式で書く　　②　③　係数をつける</p>'+
-  list.map(function(e){
+ return list.map(function(e){
    return '<p style="margin:.9rem 0 .15rem">'+e.k+' '+e.name+'</p>'+
-    e.steps.map(function(s,i){return eqLine(MK[i],s.L,s.R,s.n,i>0)}).join('')}).join('')}
+    e.steps.map(function(s,i){return eqLine("",s.L,s.R,s.n,i>0)}).join('')}).join('')}
 function parts(a){return a.map(function(e){var z=e.steps[e.steps.length-1];
  return {label:e.k,text:'<b>'+e.name+'</b><br>'+e.desc,type:"eq",
   L:z.L.map(function(t){return [t[0],t[1]]}),R:z.R.map(function(t){return [t[0],t[1]]}),choices:e.choices}})}
