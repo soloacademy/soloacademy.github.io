@@ -20,7 +20,7 @@ var cntDone=false;
 function cntCss(){
   if(cntDone)return;cntDone=true;
   var st=document.createElement("style");
-  st.textContent=".cnt{row-gap:.3rem;column-gap:.35rem}.cnt .cn-h{flex:0 0 100%;display:flex;align-items:center;gap:.6rem}.cnt .cn-e{font-weight:700;font-size:1.1em}.cnt .cn-g{display:inline-flex;gap:.25rem}.cnt button.choice{min-width:2rem;padding:.1rem .5rem;line-height:1.5}";
+  st.textContent=".cnt{row-gap:0}.cnt .cn-h{flex:0 0 100%;display:flex;align-items:center;gap:.6rem}.cnt .cn-g{display:flex;flex-wrap:wrap;gap:.3rem}.cnt button.cn-b{display:inline-flex;align-items:baseline;min-height:44px;padding:0 .4rem;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer}.cnt button.cn-b:hover{background:none}.cnt button.cn-b:active{background:var(--tint)}.cn-s{font-size:1.5rem;font-weight:700;line-height:44px}.cn-u{font-size:.95rem;min-width:.7em;margin-left:1px;position:relative;top:.45rem;color:var(--muted);border-bottom:1px dotted #9aa5b1;line-height:1.2}.cn-u.on{color:var(--accent);font-weight:700;border-bottom-color:transparent}";
   document.head.appendChild(st);
 }
 function problem(sec){
@@ -66,19 +66,20 @@ function problem(sec){
     }
     if(p.type==="count"){
       cntCss();
-      var cr=h("div","part cnt"),cv=p.els.map(function(){return ""}),cm=h("span","mark");
+      var cr=h("div","part cnt"),cv=p.els.map(function(){return ""}),cm=h("span","mark"),cc=p.choices||["1","2","3","4"];
       cm.setAttribute("aria-live","polite");cr.setAttribute("role","group");
       cr.setAttribute("aria-label",(p.label+" "+(p.text||"")).replace(/<[^>]*>/g,""));
       var ch=h("span","cn-h",p.label+" "+(p.text||""));ch.appendChild(cm);cr.appendChild(ch);
+      var cg=h("span","cn-g");
       p.els.forEach(function(el,k){
-        cr.appendChild(h("span","cn-e",el));
-        var g=h("span","cn-g"),gb=[];g.setAttribute("role","radiogroup");g.setAttribute("aria-label",el+"の個数");
-        (p.choices||["1","2","3"]).forEach(function(c){
-          var x=h("button","choice",c);x.type="button";x.setAttribute("role","radio");x.setAttribute("aria-checked","false");
-          x.onclick=function(){cv[k]=c;gb.forEach(function(y){y.setAttribute("aria-checked",y===x?"true":"false")});cm.textContent="";cm.className="mark"};
-          gb.push(x);g.appendChild(x)});
-        cr.appendChild(g)});
-      box.appendChild(cr);
+        var x=h("button","cn-b",'<span class="cn-s">'+el+'</span><span class="cn-u">・</span>'),u=x.lastChild;
+        x.type="button";x.setAttribute("aria-label",el+"の個数 未回答");
+        x.onclick=function(){
+          cv[k]=cc[(cc.indexOf(cv[k])+1)%cc.length];
+          u.textContent=cv[k];u.className="cn-u on";x.setAttribute("aria-label",el+"の個数 "+cv[k]);
+          cm.textContent="";cm.className="mark"};
+        cg.appendChild(x)});
+      cr.appendChild(cg);box.appendChild(cr);
       return {p:p,i:{get value(){return cv.every(Boolean)?cv.join(""):""}},m:cm};
     }
     if(p.type==="pick"){
