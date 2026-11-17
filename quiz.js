@@ -20,12 +20,12 @@ var cntDone=false;
 function cntCss(){
   if(cntDone)return;cntDone=true;
   var st=document.createElement("style");
-  st.textContent=".cnt{row-gap:0}.cnt .cn-h{flex:0 0 100%;display:flex;align-items:center;gap:.6rem}.cnt .cn-g{display:flex;flex-wrap:wrap;gap:0}.cnt button.cn-b{display:inline-flex;align-items:baseline;min-height:44px;padding:0 .08rem;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer}.cnt button.cn-b:hover{background:none}.cnt button.cn-b:active{background:var(--tint)}.cn-s{font-size:1.5rem;font-weight:700;line-height:44px}.cn-u{font-size:.95rem;margin-left:1px;position:relative;top:.45rem;color:var(--accent);font-weight:700;line-height:1.2}.cn-u:empty{display:none}";
+  st.textContent=".cnt{row-gap:0}.cnt .cn-h{flex:0 0 100%;display:flex;align-items:center;gap:.6rem}.cnt .cn-g{display:flex;flex-wrap:wrap;gap:0}.cnt button.cn-b{display:inline-flex;align-items:baseline;min-height:44px;padding:0 .08rem;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer}.cnt button.cn-b:hover{background:none}.cnt button.cn-b:active{background:var(--tint)}.cn-s{font-size:1.5rem;font-weight:700;line-height:44px}.cn-u{font-size:.95rem;margin-left:1px;position:relative;top:.45rem;color:var(--accent);font-weight:700;line-height:1.2}.cn-u:empty{display:none}.cgrid{display:grid;column-gap:.5rem;row-gap:.3rem;margin:.6rem 0}.cgrid .part{margin:0;min-width:0}.cgrid .part{flex-direction:column;flex-wrap:nowrap;justify-content:space-between}.cgrid .cn-h{display:block;flex:none;font-size:.8rem;line-height:1.5}.cgrid .part .mark{float:right;display:block;width:1.1rem;height:1.1rem;margin-left:.2rem}.cgrid .part{align-items:stretch}.cgrid .cn-g{align-self:flex-start}.cgrid .cn-b{min-height:40px}.cgrid .cn-s{font-size:1.25rem;line-height:40px}.cgrid .cn-u{font-size:.8rem;top:.4rem}.cgrid .part .mark.ok,.cgrid .part .mark.ng{width:1.1rem;height:1.1rem}";
   document.head.appendChild(st);
 }
 function problem(sec){
   var box=h("div","problem",sec.body);
-  var mx=null;
+  var mx=null,gw=null;
   var rows=sec.parts.map(function(p){
     if(p.type==="tree"){
       var wrap=h("div",null,p.svg),vals={},marks={},sel=null,ids=Object.keys(p.answers),bs={};
@@ -69,7 +69,7 @@ function problem(sec){
       var cc=p.choices||["1","2","3","4"],cr=h("div","part cnt"),cv=p.els.map(function(){return cc[0]}),cm=h("span","mark");
       cm.setAttribute("aria-live","polite");cr.setAttribute("role","group");
       cr.setAttribute("aria-label",(p.label+" "+(p.text||"")).replace(/<[^>]*>/g,""));
-      var ch=h("span","cn-h",p.label+" "+(p.text||""));ch.appendChild(cm);cr.appendChild(ch);
+      var ch=h("span","cn-h",p.label+" "+(p.text||""));if(sec.cols)ch.insertBefore(cm,ch.firstChild);else ch.appendChild(cm);cr.appendChild(ch);
       var cg=h("span","cn-g");
       p.els.forEach(function(el,k){
         var x=h("button","cn-b",'<span class="cn-s">'+el+'</span><span class="cn-u"></span>'),u=x.lastChild;
@@ -79,7 +79,8 @@ function problem(sec){
           u.textContent=cv[k]===cc[0]?"":cv[k];x.setAttribute("aria-label",el+"の個数 "+cv[k]);
           cm.textContent="";cm.className="mark"};
         cg.appendChild(x)});
-      cr.appendChild(cg);box.appendChild(cr);
+      cr.appendChild(cg);
+      if(sec.cols){if(!gw){gw=h("div","cgrid");gw.style.gridTemplateColumns="repeat("+sec.cols+",minmax(0,1fr))";box.appendChild(gw)}gw.appendChild(cr)}else box.appendChild(cr);
       return {p:p,i:{get value(){return cv.join("")}},m:cm};
     }
     if(p.type==="pick"){
