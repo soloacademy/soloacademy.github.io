@@ -29,7 +29,7 @@ var eqDone=false;
 function eqCss(){
   if(eqDone)return;eqDone=true;
   var st=document.createElement("style");
-  st.textContent=".part.eqp{display:block;margin:1.1rem 0}.eqp .eq-h{margin:0 0 .35rem}.eq-r{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .1rem;margin:.15rem 0}.eq-t{display:inline-flex;align-items:center;white-space:nowrap}.eq-s{padding:0 .35rem;font-weight:700}.eqp button.eq-c,.eqp button.eq-f{height:2.4rem;background:#fff;border:1.5px dashed #9aa5b1;border-radius:4px;padding:0}.eqp button.eq-c{min-width:1.8rem;margin-right:.15rem;color:var(--mass);font-weight:700}.eqp button.eq-f{min-width:4.4rem;padding:0 .3rem;color:var(--ink)}.eqp button.eq-c:hover,.eqp button.eq-f:hover{background:var(--tint)}.eqp button.eq-c.on,.eqp button.eq-f.on{border-style:solid}.eqp button.eq-f.sel{border:2px solid var(--accent);background:#cfe0f3}";
+  st.textContent=".part.eqp{display:block;margin:1.1rem 0}.eqp .eq-h{margin:0 0 .35rem}.eq-r{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .1rem;margin:.15rem 0}.eq-t{display:inline-flex;align-items:center;white-space:nowrap}.eq-s{padding:0 .25rem;font-weight:700}.eqp button.eq-c,.eqp button.eq-f{height:2.4rem;background:#fff;border:1.5px dashed #9aa5b1;border-radius:4px;padding:0}.eqp button.eq-c{min-width:1.5rem;margin-right:.1rem;color:var(--mass);font-weight:700}.eqp button.eq-f{min-width:3.6rem;padding:0 .25rem;color:var(--ink)}.eqp button.eq-c:hover,.eqp button.eq-f:hover{background:var(--tint)}.eqp button.eq-c.on,.eqp button.eq-f.on{border-style:solid}.eqp button.eq-f.sel{border:2px solid var(--accent);background:#cfe0f3}";
   document.head.appendChild(st);
 }
 function eqKey(a){return a.map(function(t){return (t[1]>1?t[1]:"")+t[0]}).sort().join(";")}
@@ -106,8 +106,8 @@ function problem(sec){
       var eqSel=function(k){esel=k;slots.forEach(function(s,j){s.f.classList.toggle("sel",j===k)})};
       var eqPut=function(s,w){s.v=w;s.f.textContent=w;s.f.classList.toggle("on",!!w);s.f.setAttribute("aria-label","空欄 "+(w||"未記入"))};
       p.accept=[eqKey(p.L)+"="+eqKey(p.R)];
+      var erow=h("div","eq-r");er.appendChild(erow);
       [p.L,p.R].forEach(function(side,si){
-        var erow=h("div","eq-r");if(si===1)erow.appendChild(h("span","eq-s","→"));er.appendChild(erow);
         side.forEach(function(t,k){
           var g=h("span","eq-t"),s={v:"",c:1,si:si},ix=slots.length;
           var cb=h("button","eq-c","");cb.type="button";cb.setAttribute("aria-label","係数 なし");
@@ -115,7 +115,7 @@ function problem(sec){
           var fb=h("button","eq-f","");fb.type="button";fb.setAttribute("aria-label","空欄 未記入");
           fb.onclick=function(){if(s.v){ebs[s.v].disabled=false;eqPut(s,"")}eqSel(ix);eclr()};
           s.f=fb;slots.push(s);g.appendChild(cb);g.appendChild(fb);
-          if(k<side.length-1)g.appendChild(h("span","eq-s","+"));
+          if(k<side.length-1)g.appendChild(h("span","eq-s","+"));else if(si===0)g.appendChild(h("span","eq-s","→"));
           erow.appendChild(g);
         });
       });
