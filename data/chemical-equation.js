@@ -13,9 +13,11 @@ function rowsOf(f,c){var a=atomsOf(f),r=[],i;
  else for(i=0;i<c;i++)r.push(a.join(' '));
  return r}
 
-function col(t){return '<span style="display:inline-flex;flex-direction:column;align-items:center"><span>'+co(t[1])+t[0]+'</span>'+
- '<span style="display:flex;flex-direction:column;align-items:center;margin-top:.2rem;padding:.1rem .4rem;border:1px solid #c9d0d7">'+
- rowsOf(t[0],t[1]).map(function(r){return '<span style="'+AT+'">'+r+'</span>'}).join('')+'</span></span>'}
+function bx(r){return '<span style="'+AT+'padding:.1rem .4rem;border:1px solid #c9d0d7">'+r+'</span>'}
+function col(t){var single=atomsOf(t[0]).length===1;
+ return '<span style="display:inline-flex;flex-direction:column;align-items:center"><span>'+co(t[1])+t[0]+'</span>'+
+ '<span style="display:flex;flex-direction:column;align-items:center;gap:.2rem;margin-top:.2rem">'+
+ rowsOf(t[0],t[1]).map(function(r){return '<span style="display:flex;gap:.2rem">'+(single?r.split(' ').map(bx).join(''):bx(r))+'</span>'}).join('')+'</span></span>'}
 function op(t){return '<span style="margin:0 .4rem">'+t+'</span>'}
 /* 式1行：mark＝①②③、L・R＝[化学式,係数]の並び、note＝係数を変えた理由(右に小さく)。
    「+」「→」は、すぐ前の化学式にくっつける。幅がたりないときは、化学式の間で折り返す */
