@@ -12,7 +12,7 @@ function setBt(e,w){
   }else e.textContent=w;
 }
 function judge(p,v){
-  if(p.type==="text"||p.type==="order"||p.type==="choice"||p.type==="pick"||p.type==="count")return p.accept.some(function(a){return norm(a)===norm(v)});
+  if(p.type==="text"||p.type==="order"||p.type==="choice"||p.type==="pick"||p.type==="count"||p.type==="eq")return p.accept.some(function(a){return norm(a)===norm(v)});
   var n=num(v);if(isNaN(n))return false;
   return p.accept.some(function(a){return Math.abs(a-n)<=(p.tol||0)});
 }
@@ -25,6 +25,14 @@ function cntCss(){
   st.textContent=".cnt{row-gap:0}.cnt .cn-h{flex:0 0 100%;display:flex;align-items:center;gap:.6rem}.cnt .cn-g{display:flex;flex-wrap:nowrap;flex:none;gap:0}.cnt .cn-r{display:flex;align-items:center;gap:.5rem;flex-wrap:nowrap}.cnt button.cn-b{display:inline-flex;align-items:baseline;min-height:44px;padding:0 .08rem;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer}.cnt button.cn-b:hover{background:none}.cnt button.cn-b:active{background:var(--tint)}.cn-s{font-size:1.5rem;font-weight:700;line-height:44px}.cn-u{font-size:.95rem;margin-left:1px;position:relative;top:.45rem;color:var(--accent);font-weight:700;line-height:1.2}.cn-u:empty{display:none}.cn-s i{font-style:normal}.cn-f{font-size:.95rem;position:relative;top:.45rem;margin-left:1px;line-height:1.2}.cnt button.cn-ion{margin-left:.35rem}.cnt button.cn-ion:first-child,.cnt button.cn-ion.cn-par{margin-left:0}.cgrid .cn-f{font-size:.75rem;top:.38rem}.cgrid{display:grid;column-gap:.5rem;row-gap:.3rem;margin:.6rem 0}.cgrid .part{margin:0;min-width:0}.cgrid .part{flex-direction:column;flex-wrap:nowrap;justify-content:space-between}.cgrid .cn-h{display:block;flex:none;font-size:.8rem;line-height:1.5}.cgrid .part{align-items:stretch}.cgrid .cn-r{flex-wrap:wrap;gap:0 .1rem}.cgrid button.cn-ion{margin-left:.25rem}.cgrid .cn-b{min-height:40px}.cgrid .cn-s{font-size:1.1rem;line-height:40px}.cgrid .cn-u{font-size:.75rem;top:.38rem}.cgrid .part .mark.ok,.cgrid .part .mark.ng{width:1rem;height:1rem}";
   document.head.appendChild(st);
 }
+var eqDone=false;
+function eqCss(){
+  if(eqDone)return;eqDone=true;
+  var st=document.createElement("style");
+  st.textContent=".part.eqp{display:block;margin:1.1rem 0}.eqp .eq-h{margin:0 0 .35rem}.eq-r{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .1rem;margin:.15rem 0}.eq-t{display:inline-flex;align-items:center;white-space:nowrap}.eq-s{padding:0 .35rem;font-weight:700}.eqp button.eq-c,.eqp button.eq-f{height:2.4rem;background:#fff;border:1.5px dashed #9aa5b1;border-radius:4px;padding:0}.eqp button.eq-c{min-width:1.8rem;margin-right:.15rem;color:var(--mass);font-weight:700}.eqp button.eq-f{min-width:4.4rem;padding:0 .3rem;color:var(--ink)}.eqp button.eq-c:hover,.eqp button.eq-f:hover{background:var(--tint)}.eqp button.eq-c.on,.eqp button.eq-f.on{border-style:solid}.eqp button.eq-f.sel{border:2px solid var(--accent);background:#cfe0f3}";
+  document.head.appendChild(st);
+}
+function eqKey(a){return a.map(function(t){return (t[1]>1?t[1]:"")+t[0]}).sort().join(";")}
 function problem(sec){
   var box=h("div","problem",sec.body);
   var mx=null,gw=null;
@@ -86,6 +94,47 @@ function problem(sec){
       var cw=h("span","cn-r");cw.appendChild(cg);cw.appendChild(cm);cr.appendChild(cw);
       if(sec.cols){if(!gw){gw=h("div","cgrid");gw.style.gridTemplateColumns="repeat("+sec.cols+",minmax(0,1fr))";box.appendChild(gw)}gw.appendChild(cr)}else box.appendChild(cr);
       return {p:p,i:{get value(){return cv.join("")}},m:cm};
+    }
+    if(p.type==="eq"){
+      eqCss();
+      var er=h("div","part eqp"),slots=[],ebs={},esel=-1,em=h("span","mark"),CO=[1,2,3,4];
+      em.setAttribute("aria-live","polite");er.setAttribute("role","group");
+      er.setAttribute("aria-label",(p.label+" "+(p.text||"")).replace(/<[^>]*>/g,""));
+      var eh=h("p","eq-h",p.label+" "+(p.text||"")+" ");eh.appendChild(em);er.appendChild(eh);
+      var eclr=function(){em.textContent="";em.className="mark"};
+      var eqNext=function(){for(var j=0;j<slots.length;j++)if(!slots[j].v)return j;return -1};
+      var eqSel=function(k){esel=k;slots.forEach(function(s,j){s.f.classList.toggle("sel",j===k)})};
+      var eqPut=function(s,w){s.v=w;s.f.textContent=w;s.f.classList.toggle("on",!!w);s.f.setAttribute("aria-label","空欄 "+(w||"未記入"))};
+      p.accept=[eqKey(p.L)+"="+eqKey(p.R)];
+      [p.L,p.R].forEach(function(side,si){
+        var erow=h("div","eq-r");if(si===1)erow.appendChild(h("span","eq-s","→"));er.appendChild(erow);
+        side.forEach(function(t,k){
+          var g=h("span","eq-t"),s={v:"",c:1,si:si},ix=slots.length;
+          var cb=h("button","eq-c","");cb.type="button";cb.setAttribute("aria-label","係数 なし");
+          cb.onclick=function(){s.c=CO[(CO.indexOf(s.c)+1)%CO.length];cb.textContent=s.c>1?s.c:"";cb.classList.toggle("on",s.c>1);cb.setAttribute("aria-label","係数 "+(s.c>1?s.c:"なし"));eclr()};
+          var fb=h("button","eq-f","");fb.type="button";fb.setAttribute("aria-label","空欄 未記入");
+          fb.onclick=function(){if(s.v){ebs[s.v].disabled=false;eqPut(s,"")}eqSel(ix);eclr()};
+          s.f=fb;slots.push(s);g.appendChild(cb);g.appendChild(fb);
+          if(k<side.length-1)g.appendChild(h("span","eq-s","+"));
+          erow.appendChild(g);
+        });
+      });
+      var ecs=h("div","choices");ecs.style.marginTop=".6rem";
+      p.choices.forEach(function(c){
+        var x=h("button","choice",c);x.type="button";ebs[c]=x;
+        x.onclick=function(){
+          var j=(esel>=0&&!slots[esel].v)?esel:eqNext();
+          if(j<0)return;
+          eqPut(slots[j],c);x.disabled=true;eqSel(eqNext());eclr();
+        };
+        ecs.appendChild(x);
+      });
+      er.appendChild(ecs);box.appendChild(er);eqSel(eqNext());
+      return {p:p,i:{get value(){
+        if(slots.some(function(s){return !s.v}))return "";
+        var a=[[],[]];slots.forEach(function(s){a[s.si].push([s.v,s.c])});
+        return eqKey(a[0])+"="+eqKey(a[1]);
+      }},m:em};
     }
     if(p.type==="pick"){
       var pr=h("div","part pick"),pv={value:""},pm=h("span","mark"),pbs=[],pb=h("div","pk-bt");
