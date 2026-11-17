@@ -22,5 +22,6 @@ window.UNITS=[
   {id:"compound-formula-1",grade:2,no:"2-2",title:"化学式(化合物①)"},
   {id:"periodic-table",grade:2,no:"2-3",title:"周期表"},
   {id:"compound-formula-2",grade:2,no:"2-4",title:"化学式(化合物②)"},
-  {id:"common-compounds",grade:2,no:"2-5",title:"化学式(よく出てくる化合物)"}
+  {id:"common-compounds",grade:2,no:"2-5",title:"化学式(よく出てくる化合物)"},
+  {id:"chemical-equation",grade:2,no:"2-6",title:"化学反応式"}
 ];
