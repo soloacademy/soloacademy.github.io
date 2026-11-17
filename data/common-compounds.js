@@ -60,7 +60,7 @@ sections:[
 {type:"problem",title:"問題",body:'<p>炭酸の化学式が、変わっていく流れです。空欄に入る化学式を、下の語群から選びなさい。</p>',
  parts:[{type:"tree",svg:flow(true),answers:{c1:FLAT[0],c2:FLAT[1],c3:FLAT[2]},choices:CH3}]},
 {type:"answer",html:ANSW},
-{type:"problem",title:"補充問題",body:'<p>次の化合物の化学式になるように、元素記号の個数を選びなさい。</p>',
+{type:"problem",title:"補充問題",body:'<p>次の化合物の化学式になるように、元素記号をタップして、<span style="white-space:nowrap">個数を選びなさい。</span></p>',
  parts:CPARTS}
 ]};
 })();
