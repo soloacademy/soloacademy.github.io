@@ -23,5 +23,6 @@ window.UNITS=[
   {id:"periodic-table",grade:2,no:"2-3",title:"周期表"},
   {id:"compound-formula-2",grade:2,no:"2-4",title:"化学式(化合物②)"},
   {id:"common-compounds",grade:2,no:"2-5",title:"化学式(よく出てくる化合物)"},
-  {id:"chemical-equation",grade:2,no:"2-6",title:"化学反応式"}
+  {id:"chemical-equation",grade:2,no:"2-6",title:"化学反応式"},
+  {id:"mass-conservation-1",grade:2,no:"2-7",title:"質量保存の法則(気体が発生する反応)"}
 ];
