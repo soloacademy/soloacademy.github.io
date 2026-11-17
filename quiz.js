@@ -20,7 +20,7 @@ var cntDone=false;
 function cntCss(){
   if(cntDone)return;cntDone=true;
   var st=document.createElement("style");
-  st.textContent=".cnt{row-gap:0}.cnt .cn-h{flex:0 0 100%;display:flex;align-items:center;gap:.6rem}.cnt .cn-g{display:flex;flex-wrap:wrap;gap:.3rem}.cnt button.cn-b{display:inline-flex;align-items:baseline;min-height:44px;padding:0 .4rem;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer}.cnt button.cn-b:hover{background:none}.cnt button.cn-b:active{background:var(--tint)}.cn-s{font-size:1.5rem;font-weight:700;line-height:44px}.cn-u{font-size:.95rem;min-width:.7em;margin-left:1px;position:relative;top:.45rem;color:var(--muted);border-bottom:1px dotted #9aa5b1;line-height:1.2}.cn-u.on{color:var(--accent);font-weight:700;border-bottom-color:transparent}";
+  st.textContent=".cnt{row-gap:0}.cnt .cn-h{flex:0 0 100%;display:flex;align-items:center;gap:.6rem}.cnt .cn-g{display:flex;flex-wrap:wrap;gap:0}.cnt button.cn-b{display:inline-flex;align-items:baseline;min-height:44px;padding:0 .08rem;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer}.cnt button.cn-b:hover{background:none}.cnt button.cn-b:active{background:var(--tint)}.cn-s{font-size:1.5rem;font-weight:700;line-height:44px}.cn-u{font-size:.95rem;margin-left:1px;position:relative;top:.45rem;color:var(--accent);font-weight:700;line-height:1.2}.cn-u:empty{display:none}";
   document.head.appendChild(st);
 }
 function problem(sec){
@@ -66,21 +66,21 @@ function problem(sec){
     }
     if(p.type==="count"){
       cntCss();
-      var cr=h("div","part cnt"),cv=p.els.map(function(){return ""}),cm=h("span","mark"),cc=p.choices||["1","2","3","4"];
+      var cc=p.choices||["1","2","3","4"],cr=h("div","part cnt"),cv=p.els.map(function(){return cc[0]}),cm=h("span","mark");
       cm.setAttribute("aria-live","polite");cr.setAttribute("role","group");
       cr.setAttribute("aria-label",(p.label+" "+(p.text||"")).replace(/<[^>]*>/g,""));
       var ch=h("span","cn-h",p.label+" "+(p.text||""));ch.appendChild(cm);cr.appendChild(ch);
       var cg=h("span","cn-g");
       p.els.forEach(function(el,k){
-        var x=h("button","cn-b",'<span class="cn-s">'+el+'</span><span class="cn-u">・</span>'),u=x.lastChild;
-        x.type="button";x.setAttribute("aria-label",el+"の個数 未回答");
+        var x=h("button","cn-b",'<span class="cn-s">'+el+'</span><span class="cn-u"></span>'),u=x.lastChild;
+        x.type="button";x.setAttribute("aria-label",el+"の個数 "+cc[0]);
         x.onclick=function(){
           cv[k]=cc[(cc.indexOf(cv[k])+1)%cc.length];
-          u.textContent=cv[k];u.className="cn-u on";x.setAttribute("aria-label",el+"の個数 "+cv[k]);
+          u.textContent=cv[k]===cc[0]?"":cv[k];x.setAttribute("aria-label",el+"の個数 "+cv[k]);
           cm.textContent="";cm.className="mark"};
         cg.appendChild(x)});
       cr.appendChild(cg);box.appendChild(cr);
-      return {p:p,i:{get value(){return cv.every(Boolean)?cv.join(""):""}},m:cm};
+      return {p:p,i:{get value(){return cv.join("")}},m:cm};
     }
     if(p.type==="pick"){
       var pr=h("div","part pick"),pv={value:""},pm=h("span","mark"),pbs=[],pb=h("div","pk-bt");
