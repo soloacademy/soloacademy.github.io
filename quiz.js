@@ -16,11 +16,13 @@ function judge(p,v){
   var n=num(v);if(isNaN(n))return false;
   return p.accept.some(function(a){return Math.abs(a-n)<=(p.tol||0)});
 }
+var SB={"₀":"0","₁":"1","₂":"2","₃":"3","₄":"4","₅":"5","₆":"6","₇":"7","₈":"8","₉":"9"};
+function ionHtml(t){return t.replace(/[₀-₉]+/g,function(m){return '<span class="cn-f">'+m.split("").map(function(c){return SB[c]}).join("")+"</span>"})}
 var cntDone=false;
 function cntCss(){
   if(cntDone)return;cntDone=true;
   var st=document.createElement("style");
-  st.textContent=".cnt{row-gap:0}.cnt .cn-h{flex:0 0 100%;display:flex;align-items:center;gap:.6rem}.cnt .cn-g{display:flex;flex-wrap:wrap;gap:0}.cnt button.cn-b{display:inline-flex;align-items:baseline;min-height:44px;padding:0 .08rem;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer}.cnt button.cn-b:hover{background:none}.cnt button.cn-b:active{background:var(--tint)}.cn-s{font-size:1.5rem;font-weight:700;line-height:44px}.cn-u{font-size:.95rem;margin-left:1px;position:relative;top:.45rem;color:var(--accent);font-weight:700;line-height:1.2}.cn-u:empty{display:none}.cgrid{display:grid;column-gap:.5rem;row-gap:.3rem;margin:.6rem 0}.cgrid .part{margin:0;min-width:0}.cgrid .part{flex-direction:column;flex-wrap:nowrap;justify-content:space-between}.cgrid .cn-h{display:block;flex:none;font-size:.8rem;line-height:1.5}.cgrid .part .mark{float:right;display:block;width:1.1rem;height:1.1rem;margin-left:.2rem}.cgrid .part{align-items:stretch}.cgrid .cn-g{align-self:flex-start}.cgrid .cn-b{min-height:40px}.cgrid .cn-s{font-size:1.25rem;line-height:40px}.cgrid .cn-u{font-size:.8rem;top:.4rem}.cgrid .part .mark.ok,.cgrid .part .mark.ng{width:1.1rem;height:1.1rem}";
+  st.textContent=".cnt{row-gap:0}.cnt .cn-h{flex:0 0 100%;display:flex;align-items:center;gap:.6rem}.cnt .cn-g{display:flex;flex-wrap:wrap;gap:0}.cnt button.cn-b{display:inline-flex;align-items:baseline;min-height:44px;padding:0 .08rem;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer}.cnt button.cn-b:hover{background:none}.cnt button.cn-b:active{background:var(--tint)}.cn-s{font-size:1.5rem;font-weight:700;line-height:44px}.cn-u{font-size:.95rem;margin-left:1px;position:relative;top:.45rem;color:var(--accent);font-weight:700;line-height:1.2}.cn-u:empty{display:none}.cn-s i{font-style:normal}.cn-f{font-size:.95rem;position:relative;top:.45rem;margin-left:1px;line-height:1.2}.cnt button.cn-ion{margin-left:.35rem}.cnt button.cn-ion:first-child,.cnt button.cn-ion.cn-par{margin-left:0}.cgrid .cn-f{font-size:.8rem;top:.4rem}.cgrid{display:grid;column-gap:.5rem;row-gap:.3rem;margin:.6rem 0}.cgrid .part{margin:0;min-width:0}.cgrid .part{flex-direction:column;flex-wrap:nowrap;justify-content:space-between}.cgrid .cn-h{display:block;flex:none;font-size:.8rem;line-height:1.5}.cgrid .part .mark{float:right;display:block;width:1.1rem;height:1.1rem;margin-left:.2rem}.cgrid .part{align-items:stretch}.cgrid .cn-g{align-self:flex-start}.cgrid .cn-b{min-height:40px}.cgrid .cn-s{font-size:1.25rem;line-height:40px}.cgrid .cn-u{font-size:.8rem;top:.4rem}.cgrid .part .mark.ok,.cgrid .part .mark.ng{width:1.1rem;height:1.1rem}";
   document.head.appendChild(st);
 }
 function problem(sec){
@@ -72,11 +74,13 @@ function problem(sec){
       var ch=h("span","cn-h",p.label+" "+(p.text||""));if(sec.cols)ch.insertBefore(cm,ch.firstChild);else ch.appendChild(cm);cr.appendChild(ch);
       var cg=h("span","cn-g");
       p.els.forEach(function(el,k){
-        var x=h("button","cn-b",'<span class="cn-s">'+el+'</span><span class="cn-u"></span>'),u=x.lastChild;
+        var poly=(el.match(/[A-Z]/g)||[]).length>1,
+          x=h("button","cn-b"+(poly?" cn-ion":""),'<span class="cn-s"><i></i>'+ionHtml(el)+'<i></i></span><span class="cn-u"></span>'),
+          u=x.lastChild,po=x.firstChild.firstChild,pc=x.firstChild.lastChild;
         x.type="button";x.setAttribute("aria-label",el+"の個数 "+cc[0]);
         x.onclick=function(){
           cv[k]=cc[(cc.indexOf(cv[k])+1)%cc.length];
-          u.textContent=cv[k]===cc[0]?"":cv[k];x.setAttribute("aria-label",el+"の個数 "+cv[k]);
+          u.textContent=cv[k]===cc[0]?"":cv[k];var pr=poly&&cv[k]!==cc[0];po.textContent=pr?"(":"";pc.textContent=pr?")":"";x.classList.toggle("cn-par",pr);x.setAttribute("aria-label",el+"の個数 "+cv[k]);
           cm.textContent="";cm.className="mark"};
         cg.appendChild(x)});
       cr.appendChild(cg);
