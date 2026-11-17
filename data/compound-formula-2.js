@@ -101,7 +101,7 @@ function figEx(L,o){
     '<text x="'+n(cf+g.cr)+'" y="'+ly+'" font-size="'+o.LF+'" class="g" text-anchor="middle" style="stroke:none">'+segT(r.l[k][1])+'</text>'}
   if(r.x)s+='<text x="'+n(cf2+mx[1][1])+'" y="'+(base+46)+'" font-size="'+o.LF+'" class="g" text-anchor="end" style="stroke:none">'+segT(r.x)+'</text>';
   al.push((r.k?r.k+' ':'')+r.a+'は、①'+r.f[0].join('')+'('+segP(r.l[0][0])+'と'+segP(r.l[0][1])+')、②'+r.f[1].join('')+'('+segP(r.l[1][0])+'と'+segP(r.l[1][1])+')'+(r.x?'。'+segP(r.x):''));
-  oy+=(o.above?88:62)+(r.x?18:0)}
+  oy+=(o.above?98:62)+(r.x?18:0)}
  var H=last+(o.above?78:60)+(L[L.length-1].x?18:0);
  return '<div class="fig"><svg viewBox="0 0 340 '+H+'" role="img" aria-label="化合物の化学式の作り方。'+al.join('。')+'。化学式の各元素記号から、左右に開く短い斜めの線が、下の小さい文字につながっている">'+s+'</svg></div>'}
 
