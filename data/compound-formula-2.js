@@ -112,7 +112,7 @@ var POINT='<p>周期表の縦の列ごとに、電荷が決まっています。
  '<p>化合物は、電荷の合計が0になるように、元素の個数が決まります。</p>'+figEx(EX,{x0:70,LF:12,G:14})+
  SM+'①は、合計が0ではありません。②は、<span class="m">×2</span> にして、合計が0になります。</p>';
 
-var QBODY='<p>次の化合物の化学式になるように、元素記号をタップして、<span style="white-space:nowrap">個数を選びなさい。</span></p>';
+var QBODY='<p>次の化合物の化学式になるように、<span style="white-space:nowrap">元素記号をタップして、</span><span style="white-space:nowrap">個数を選びなさい。</span></p>';
 
 window.UNIT={
 no:"2-4",title:"化学式(化合物②)",
