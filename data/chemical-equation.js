@@ -28,7 +28,7 @@ function eqLine(mark,L,R,note,top){
   '<div style="display:flex;flex-wrap:wrap;align-items:flex-start;row-gap:.4rem">'+
   (mark?'<span style="flex:none;width:1.4rem;font-size:.8rem;line-height:32px;'+MU+'">'+mark+'</span>':'')+
   items(L,R)+'</div>'+
-  (note?'<div style="flex:1 1 4rem;margin-top:.4rem;'+AT.replace('white-space:nowrap','white-space:normal')+'">◀ '+note+'の数が等しくなるよう係数をつける</div>':'')+'</div>'}
+  '</div>'}
 
 /* ---------- 問題4問(分解)と補充4問(化合) ----------
    steps＝①、②、③の式(L,R＝[化学式,係数]、n＝その段で、そろえる原子)。最後の段が、答え */
@@ -75,8 +75,7 @@ function ans(list){
  return '<p class="note" style="font-size:.8rem;margin:.2rem 0">①　化学式で書く　　②　③　係数をつける</p>'+
   list.map(function(e){
    return '<p style="margin:.9rem 0 .15rem">'+e.k+' '+e.name+'</p>'+
-    e.steps.map(function(s,i){return eqLine(MK[i],s.L,s.R,s.n,i>0)}).join('')+
-    '<p style="font-size:.8rem;margin:.3rem 0 0;'+MU+'">原子の数(左＝右)：'+e.at+'</p>'}).join('')}
+    e.steps.map(function(s,i){return eqLine(MK[i],s.L,s.R,s.n,i>0)}).join('')}).join('')}
 function parts(a){return a.map(function(e){var z=e.steps[e.steps.length-1];
  return {label:e.k,text:'<b>'+e.name+'</b><br>'+e.desc,type:"eq",
   L:z.L.map(function(t){return [t[0],t[1]]}),R:z.R.map(function(t){return [t[0],t[1]]}),choices:e.choices}})}
@@ -90,7 +89,6 @@ var POINT='<p>化学変化を、化学式を使って表した式を、<b>化学
  '<p>① 反応前の物質を左、反応後の物質を右に、化学式で書き、「→」で結びます。</p>'+box(P[0])+
  '<p>② 左右で、<b>酸素</b>原子の数が等しくなるように、係数をつけます。</p>'+box(P[1])+
  '<p>③ 左右で、<b>銀</b>原子の数が等しくなるように、係数をつけます。</p>'+box(P[2])+
- SM+'原子の数(左＝右)：Ag 4個＝4個、O 2個＝2個</p>'+
  SM+'※ 係数が1のときは、書きません。化学式の右下の数字は、変えません。</p>';
 
 var HOW='<p class="note" style="font-size:.8rem;margin:.2rem 0">点線の枠をタップして、語群から化学式を選びます。左の小さい枠は係数で、タップするたびに 2→3→4→空欄(1) と変わります。係数が1のときは、空欄のままにします。</p>';
