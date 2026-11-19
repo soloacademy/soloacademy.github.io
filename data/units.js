@@ -26,5 +26,6 @@ window.UNITS=[
   {id:"chemical-equation",grade:2,no:"2-6",title:"化学反応式"},
   {id:"mass-conservation-1",grade:2,no:"2-7",title:"質量保存の法則(気体が発生する反応)"},
   {id:"mass-conservation-2",grade:2,no:"2-8",title:"質量保存の法則(気体が結びつく反応)"},
-  {id:"cell-structure",grade:2,no:"2-9",title:"細胞のつくり"}
+  {id:"cell-structure",grade:2,no:"2-9",title:"細胞のつくり"},
+  {id:"plant-structure",grade:2,no:"2-10",title:"植物のつくり"}
 ];
