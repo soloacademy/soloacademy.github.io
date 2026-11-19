@@ -26,8 +26,8 @@ function fig(hi,label){
   '<rect x="178" y="44" width="96" height="96" rx="6" fill="none" stroke="'+RED+'" stroke-width="2"/>'+
   cen(124,"細胞膜",96.8,124,178,124,RED,"m"));
  /* 核(共通)：それぞれの細胞の中心 */
- s+=G("nuc",'<circle cx="58" cy="92" r="13" fill="#f7cdb8" stroke="'+RED+'" stroke-width="2"/>'+
-  '<circle cx="226" cy="92" r="13" fill="#f7cdb8" stroke="'+RED+'" stroke-width="2"/>'+
+ s+=G("nuc",'<circle cx="58" cy="92" r="13" fill="'+RED+'" stroke="'+RED+'" stroke-width="2"/>'+
+  '<circle cx="226" cy="92" r="13" fill="'+RED+'" stroke="'+RED+'" stroke-width="2"/>'+
   cen(92,"核",71,92,213,92,RED,"m"));
  /* 細胞質(答えの図だけ) */
  if(gray)s+=G("cyt",cen(62,"細胞質",84,62,186,76,MUTED,"g"));
