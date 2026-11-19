@@ -31,12 +31,15 @@ var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 function rd(f,nm,rule){return '<span><b>'+f+'</b><span style="font-size:.7rem;margin-left:.15rem">('+nm+')</span></span><span style="font-size:.7rem">◀ '+rule+'</span>'}
 var GRID='display:grid;grid-template-columns:max-content 1fr;column-gap:.6rem;row-gap:.5rem;align-items:baseline;';
 var SMS='font-size:.7rem';
-function rf(f,nm,rule){return '<span><b style="display:block;line-height:1.4">'+f+'</b><span style="'+SMS+';display:block;line-height:1.2">('+nm+')</span></span><span style="'+SMS+'">◀ '+rule+'</span>'}
-var AR='<span style="color:var(--muted);line-height:1.2">↓</span><span></span>';
-var CHAIN='<div style="'+GRID+'margin:.8rem 0">'+
- rf('<span class="m">H₂</span>CO₃','炭酸','水(H₂O)に二酸化炭素(CO₂)が<span style="white-space:nowrap">溶けたもの</span>')+AR+
- rf(NA+H+'CO₃','炭酸水素ナトリウム','1個の'+H+'(+1)が、'+NA+'(+1)に<span style="white-space:nowrap">置きかわります</span>')+AR+
- rf('<span class="v">Na₂</span>CO₃','炭酸ナトリウム','さらに残りの'+H+'(+1)が、'+NA+'(+1)に<span style="white-space:nowrap">置きかわります</span>')+'</div>';
+function rf(f,nm,rule){return '<span><b>'+f+'</b><span style="'+SMS+';margin-left:.15rem">('+nm+')</span></span><span style="'+SMS+'">'+(rule?'◀ '+rule:'')+'</span>'}
+function ar(t){return '<span style="color:var(--muted)">↓</span><span style="'+SMS+'">'+t+'</span>'}
+var NW=function(t){return '<span style="white-space:nowrap">'+t+'</span>'};
+var CHAIN='<div style="'+GRID+'row-gap:.1rem;line-height:1.5;margin:.8rem 0">'+
+ rf('<span class="m">H₂</span>CO₃','炭酸','水(H₂O)に二酸化炭素(CO₂)が'+NW('溶けたもの'))+
+ ar('1個の'+H+'(+1)が、'+NA+'(+1)に'+NW('置きかわる'))+
+ rf(NA+H+'CO₃','炭酸水素ナトリウム','')+
+ ar('さらに残りの'+H+'(+1)が、'+NA+'(+1)に'+NW('置きかわる'))+
+ rf('<span class="v">Na₂</span>CO₃','炭酸ナトリウム','')+'</div>';
 var OTHER='<div style="'+GRID+'margin:1rem 0">'+
  rd('H₂SO₄','硫酸','~SO₄(硫酸~)')+rd('NaOH','水酸化ナトリウム','~OH(水酸化~)')+rd('HNO₃','硝酸','~NO₃(硝酸~)')+'</div>';
 
