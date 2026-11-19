@@ -49,7 +49,7 @@ var FIGS=fig({vac:1,mem:1,chl:1,cyt:1},LAB+"。細胞質は、核以外の部分
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 /* 図の下に、小さく：核・細胞壁、そして細胞質の中のつくり(右に、かっこと「細胞質」) */
 var RS='font-size:.8rem;line-height:1.7;color:var(--muted)';
-var ROLE='<div style="margin:.5rem 0 .9rem;'+RS+'">核：酢酸オルセイン液などの染色液に染まる<br>細胞壁：細胞を保護する。体を支える'+
+var ROLE='<div style="margin:.5rem 0 1.7rem;'+RS+'">核：酢酸オルセイン液などの染色液に染まる<br>細胞壁：細胞を保護する。体を支える'+
  '<div style="display:grid;grid-template-columns:max-content .5rem max-content;column-gap:.4rem;justify-content:start">'+
  '<span style="grid-column:1">細胞膜：細胞質の最も外側にある膜<br>葉緑体：光合成を行う<br>液胞：不要な物質を貯める</span>'+
  '<span style="grid-column:2;border:1.5px solid var(--muted);border-left:0"></span>'+
@@ -57,7 +57,7 @@ var ROLE='<div style="margin:.5rem 0 .9rem;'+RS+'">核：酢酸オルセイン�
 
 /* からだのつくり：4列(細胞・組織・器官・個体)。伝えたいのは見出し(大きく太く)。例は小さく。罫線なし */
 function body(){
- var H=["細胞","組織","器官","個体"],R=[["筋細胞","筋組織","心臓・胃","人"],["神経細胞","神経組織","脳・脊髄","人"],["骨細胞","骨組織","骨(骨格)","人"]],h='';
+ var H=["細胞","組織","器官","個体"],R=[["筋細胞","筋組織","胃・心臓","人"],["神経細胞","神経組織","脳・脊髄","人"],["骨細胞","骨組織","骨(骨格)","人"]],h='';
  var HS='font-weight:700;font-size:1.05rem;padding-bottom:.2rem',ES='font-size:.8rem;color:var(--muted)';
  function row(a,hd){var o='';a.forEach(function(t,i){
   o+='<span style="text-align:center;'+(hd?HS:ES)+'">'+t+'</span>';
