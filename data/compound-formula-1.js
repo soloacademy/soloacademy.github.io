@@ -42,8 +42,8 @@ var R2=[
  {k:"(4)",a:"塩化",b:"水素",f1:"H",f2:"Cl"}];
 
 /* ---------- 厳選ポイント：名前の読み方(罫線なしの3行) ---------- */
-function rd(a,el,b){return '<b>'+M(a)+V(b)+'</b><span style="font-size:.7rem">◀ '+M(el)+'が化合('+M(a)+')した'+V(b)+'</span>'}
-var RD='<div class="rd" style="display:grid;grid-template-columns:max-content 1fr;column-gap:.5rem;row-gap:.7rem;align-items:baseline;margin:1rem 0">'+rd('酸化','酸素','銅')+rd('塩化','塩素','ナトリウム')+rd('硫化','硫黄','鉄')+'</div>';
+function rd(a,el,b){return '<b style="font-size:.7rem">'+M(a)+V(b)+'</b><span style="font-size:.7rem">◀ '+M(el)+'が化合('+M(a)+')した'+V(b)+'</span>'}
+var RD='<div class="rd" style="display:grid;grid-template-columns:max-content 1fr;column-gap:.5rem;row-gap:.7rem;align-items:baseline;margin:0 0 1rem">'+rd('酸化','酸素','銅')+rd('塩化','塩素','ナトリウム')+rd('硫化','硫黄','鉄')+'</div>';
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var POINT='<p>化合物は、2種類以上の異なる元素が結びついてできた物質です。</p>'+RD+
  '<p>化学式は、<b>うしろ</b>から書きます。</p>'+figOrder()+
