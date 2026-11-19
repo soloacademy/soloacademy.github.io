@@ -1,13 +1,13 @@
 (function(){
-var INK="#26303b",MUTED="#5d6874",FACE="#eceff2",LBLUE="#e3edf8";
+var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",MUTED="#5d6874",FACE="#eceff2",LBLUE="#e3edf8";
 function n(v){return Math.round(v*10)/10}
 function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"/>'}
 /* 名前の線：(x1,y1)から(x2,y2)まで。先に点 */
-function ld(x1,y1,x2,y2){return line(x1,y1,x2,y2,MUTED,1)+'<circle cx="'+n(x2)+'" cy="'+n(y2)+'" r="2.5" fill="'+MUTED+'"/>'}
+function ld(x1,y1,x2,y2,k){k=k||MUTED;return line(x1,y1,x2,y2,k,1)+'<circle cx="'+n(x2)+'" cy="'+n(y2)+'" r="2.5" fill="'+k+'"/>'}
 /* 2つの細胞の間に置く名前：中心 x=141。左右に線を引いて、動物と植物の両方を指す */
-function cen(cy,txt,ax,ay,px,py){var h=txt.length*6.5+3;
- return ld(141-h,cy,ax,ay)+ld(141+h,cy,px,py)+T(141,cy+4.5,13,txt,"b","middle")}
+function cen(cy,txt,ax,ay,px,py,k,c){var h=txt.length*6.5+3;
+ return ld(141-h,cy,ax,ay,k)+ld(141+h,cy,px,py,k)+T(141,cy+4.5,13,txt,c+" b","middle")}
 
 /* ---------- 細胞の図：動物(左)と植物(右)。共通のつくり(核・細胞膜)の名前は、2つの細胞の間。植物だけのつくり(細胞壁・液胞・葉緑体)の名前は、植物の細胞の右
    hi＝答えのつくり(nuc,mem,wall,vac,chl,cyt)。hi があるとき、それ以外は薄くする。cyt があるときだけ、細胞質を灰色の面で示す ---------- */
@@ -19,25 +19,25 @@ function fig(hi,label){
  s+='<ellipse cx="58" cy="92" rx="52" ry="48" fill="'+fill+'"/>'+
   '<rect x="178" y="44" width="96" height="96" rx="6" fill="'+fill+'"/>';
  /* 細胞壁(植物だけ) */
- s+=G("wall",'<rect x="173" y="39" width="106" height="106" rx="9" fill="none" stroke="'+MUTED+'" stroke-width="5"/>'+
-  ld(291,52,279,52)+T(294,56.5,12.5,"細胞壁","b"));
+ s+=G("wall",'<rect x="173" y="39" width="106" height="106" rx="9" fill="none" stroke="'+BLUE+'" stroke-width="5"/>'+
+  ld(291,52,279,52,BLUE)+T(294,56.5,12.5,"細胞壁","v b"));
  /* 細胞膜(共通) */
- s+=G("mem",'<ellipse cx="58" cy="92" rx="52" ry="48" fill="none" stroke="'+INK+'" stroke-width="2"/>'+
-  '<rect x="178" y="44" width="96" height="96" rx="6" fill="none" stroke="'+INK+'" stroke-width="2"/>'+
-  cen(124,"細胞膜",96.8,124,178,124));
+ s+=G("mem",'<ellipse cx="58" cy="92" rx="52" ry="48" fill="none" stroke="'+RED+'" stroke-width="2.5"/>'+
+  '<rect x="178" y="44" width="96" height="96" rx="6" fill="none" stroke="'+RED+'" stroke-width="2"/>'+
+  cen(124,"細胞膜",96.8,124,178,124,RED,"m"));
  /* 核(共通)：それぞれの細胞の中心 */
- s+=G("nuc",'<circle cx="58" cy="92" r="13" fill="#fff" stroke="'+INK+'" stroke-width="2"/>'+
-  '<circle cx="226" cy="92" r="13" fill="#fff" stroke="'+INK+'" stroke-width="2"/>'+
-  cen(92,"核",71,92,213,92));
+ s+=G("nuc",'<circle cx="58" cy="92" r="13" fill="#fff" stroke="'+RED+'" stroke-width="2"/>'+
+  '<circle cx="226" cy="92" r="13" fill="#fff" stroke="'+RED+'" stroke-width="2"/>'+
+  cen(92,"核",71,92,213,92,RED,"m"));
  /* 細胞質(答えの図だけ) */
- if(gray)s+=G("cyt",cen(62,"細胞質",84,62,186,76));
+ if(gray)s+=G("cyt",cen(62,"細胞質",84,62,186,76,MUTED,"g"));
  /* 液胞(植物だけ)：少しいびつな形。核や葉緑体に触れない */
- s+=G("vac",'<path d="M238,60 C240,52 248,48 256,50 C266,50 270,58 268,68 C268,78 258,82 250,78 C242,78 236,70 238,60 Z" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'+
-  ld(291,84,268,68)+T(294,88.5,12.5,"液胞","b"));
+ s+=G("vac",'<path d="M238,60 C240,52 248,48 256,50 C266,50 270,58 268,68 C268,78 258,82 250,78 C242,78 236,70 238,60 Z" fill="#fff" stroke="'+BLUE+'" stroke-width="2"/>'+
+  ld(291,84,268,68,BLUE)+T(294,88.5,12.5,"液胞","v b"));
  /* 葉緑体(植物だけ)：小さな粒。1つの粒に線を引く */
  var gr=[[200,60],[192,112],[216,126],[246,124],[262,108]],g='';
- gr.forEach(function(p){g+='<ellipse cx="'+p[0]+'" cy="'+p[1]+'" rx="7" ry="4.5" fill="'+LBLUE+'" stroke="'+INK+'" stroke-width="1.5"/>'});
- s+=G("chl",g+ld(291,116,266,109)+T(294,120.5,12.5,"葉緑体","b"));
+ gr.forEach(function(p){g+='<ellipse cx="'+p[0]+'" cy="'+p[1]+'" rx="7" ry="4.5" fill="'+LBLUE+'" stroke="'+BLUE+'" stroke-width="1.5"/>'});
+ s+=G("chl",g+ld(291,116,266,109,BLUE)+T(294,120.5,12.5,"葉緑体","v b"));
  return '<div class="fig"><svg viewBox="0 0 340 156" role="img" aria-label="'+label+'">'+s+'</svg></div>'}
 
 var LAB="動物の細胞と植物の細胞の図。動物の細胞(左)と植物の細胞(右)の間に、共通のつくりである、核と細胞膜の名前があり、線が両方の細胞を指している。核は、それぞれの細胞の中心にある。植物の細胞の右には、植物だけにあるつくりである、細胞壁、液胞、葉緑体の名前が縦に並び、線が指している。葉緑体は、小さな粒";
@@ -47,9 +47,13 @@ var FIGS=fig({vac:1,chl:1,cyt:1},LAB+"。細胞質は、細胞膜の内側で、
 
 /* ---------- 文章 ---------- */
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
-/* 図の下に、小さく */
-var ROLE=SM.replace('margin:.2rem 0','margin:.5rem 0 .9rem;line-height:1.7')+
- '細胞膜：細胞質の外側を包む膜<br>葉緑体：光合成を行う<br>液胞：不要な物質を貯める<br>細胞壁：細胞を保護する。体を支える</p>';
+/* 図の下に、小さく：核・細胞壁、そして細胞質の中のつくり(左に「細胞質」と、かっこ) */
+function rl(t,r){return '<span style="grid-column:'+(r?'3':'1 / -1')+'">'+t+'</span>'}
+var ROLE='<div style="display:grid;grid-template-columns:max-content .5rem 1fr;column-gap:.4rem;margin:.5rem 0 .9rem;font-size:.8rem;line-height:1.7;color:var(--muted)">'+
+ rl('核：酢酸オルセイン液などの染色液に染まる')+rl('細胞壁：細胞を保護する。体を支える')+
+ '<span style="grid-column:1;grid-row:3 / 6;align-self:center">細胞質</span>'+
+ '<span style="grid-column:2;grid-row:3 / 6;border:1.5px solid var(--muted);border-right:0"></span>'+
+ rl('細胞膜：細胞質の外側を包む膜',1)+rl('葉緑体：光合成を行う',1)+rl('液胞：不要な物質を貯める',1)+'</div>';
 
 /* からだのつくり：4列(細胞・組織・器官・個体)。伝えたいのは見出し(大きく太く)。例は小さく。罫線なし */
 function body(){
