@@ -31,13 +31,13 @@ function fig(hi,label){
   cen(92,"核",71,92,213,92,RED,"m"));
  /* 細胞質(答えの図だけ) */
  if(gray)s+=G("cyt",cen(62,"細胞質",84,62,186,76,MUTED,"g"));
- /* 液胞(植物だけ)：少しいびつな形。核や葉緑体に触れない */
- s+=G("vac",'<path d="M238,60 C240,52 248,48 256,50 C266,50 270,58 268,68 C268,78 258,82 250,78 C242,78 236,70 238,60 Z" fill="#fff" stroke="'+BLUE+'" stroke-width="2"/>'+
-  ld(291,84,268,68,BLUE)+T(294,88.5,12.5,"液胞","v b"));
+ /* 液胞(植物だけ)：角のない四角のL字型(PDFに近い形)。核や葉緑体に触れない */
+ s+=G("vac",'<path d="M238,50 H262 Q268,50 268,56 V94 Q268,100 262,100 H258 Q252,100 252,94 V72 Q252,66 246,66 H238 Q232,66 232,58 Q232,50 238,50 Z" fill="#fff" stroke="'+BLUE+'" stroke-width="2"/>'+
+  ld(291,84,268,76,BLUE)+T(294,88.5,12.5,"液胞","v b"));
  /* 葉緑体(植物だけ)：小さな粒。1つの粒に線を引く */
- var gr=[[200,60],[192,112],[216,126],[246,124],[262,108]],g='';
+ var gr=[[200,60],[192,112],[216,128],[240,126],[262,122]],g='';
  gr.forEach(function(p){g+='<ellipse cx="'+p[0]+'" cy="'+p[1]+'" rx="7" ry="4.5" fill="'+LBLUE+'" stroke="'+BLUE+'" stroke-width="1.5"/>'});
- s+=G("chl",g+ld(291,116,266,109,BLUE)+T(294,120.5,12.5,"葉緑体","v b"));
+ s+=G("chl",g+ld(291,116,266,121,BLUE)+T(294,120.5,12.5,"葉緑体","v b"));
  return '<div class="fig"><svg viewBox="0 0 340 156" role="img" aria-label="'+label+'">'+s+'</svg></div>'}
 
 var LAB="動物の細胞と植物の細胞の図。動物の細胞(左)と植物の細胞(右)の間に、共通のつくりである、核と細胞膜の名前があり、線が両方の細胞を指している。核は、それぞれの細胞の中心にある。植物の細胞の右には、植物だけにあるつくりである、細胞壁、液胞、葉緑体の名前が縦に並び、線が指している。葉緑体は、小さな粒";
@@ -51,9 +51,9 @@ var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var RS='font-size:.8rem;line-height:1.7;color:var(--muted)';
 var ROLE='<div style="margin:.5rem 0 .9rem;'+RS+'">核：酢酸オルセイン液などの染色液に染まる<br>細胞壁：細胞を保護する。体を支える'+
  '<div style="display:grid;grid-template-columns:max-content .5rem max-content;column-gap:.4rem;justify-content:start">'+
- '<span style="grid-column:1">細胞膜：細胞質の外側を包む膜<br>葉緑体：光合成を行う<br>液胞：不要な物質を貯める</span>'+
+ '<span style="grid-column:1">細胞膜：細胞質の最も外側にある膜<br>葉緑体：光合成を行う<br>液胞：不要な物質を貯める</span>'+
  '<span style="grid-column:2;border:1.5px solid var(--muted);border-left:0"></span>'+
- '<span style="grid-column:3;align-self:center">細胞質</span></div></div>';
+ '<span style="grid-column:3;align-self:center"><b>細胞質</b></span></div></div>';
 
 /* からだのつくり：4列(細胞・組織・器官・個体)。伝えたいのは見出し(大きく太く)。例は小さく。罫線なし */
 function body(){
