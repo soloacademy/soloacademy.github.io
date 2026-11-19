@@ -1,5 +1,5 @@
 (function(){
-var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",MUTED="#5d6874",GRAY="#8a949f",FACE="#e6e9ed";
+var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",MUTED="#5d6874",GRAY="#8a949f",FACE="#e6e9ed",GREEN="#d9edcf",GVEIN="#78a468",GMID="#5b8a4c",ROOT="#b8892f",RFILL="#f7edc9";
 function n(v){return Math.round(v*10)/10}
 function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function line(x1,y1,x2,y2,k,w,dash,cap){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"'+(dash?' stroke-dasharray="3 3"':'')+(cap?' stroke-linecap="round"':'')+'/>'}
@@ -9,19 +9,19 @@ function ld(x1,y1,x2,y2){return line(x1,y1,x2,y2,INK,1)+'<circle cx="'+n(x2)+'" 
 
 /* ---------- 植物全体(左) ---------- */
 function leaf(d,mx,my,tx,ty){
- var s=path(d,FACE,INK,1.2),i,u,px,py,vx=tx-mx,vy=ty-my,L=Math.hypot(vx,vy),a=Math.atan2(vy,vx),k,b,ex,ey;
+ var s=path(d,GREEN,INK,1.2),i,u,px,py,vx=tx-mx,vy=ty-my,L=Math.hypot(vx,vy),a=Math.atan2(vy,vx),k,b,ex,ey;
  [.22,.42,.62,.82].forEach(function(u){px=mx+vx*u;py=my+vy*u;
-  [-1,1].forEach(function(sg){b=a+sg*0.95;k=15*(1-u*.55);ex=px+k*Math.cos(b);ey=py+k*Math.sin(b);s+=line(px,py,ex,ey,GRAY,1,false,true)})});
- return s+line(mx,my,tx,ty,MUTED,1.6,false,true)}
+  [-1,1].forEach(function(sg){b=a+sg*0.95;k=15*(1-u*.55);ex=px+k*Math.cos(b);ey=py+k*Math.sin(b);s+=line(px,py,ex,ey,GVEIN,1.2,false,true)})});
+ return s+line(mx,my,tx,ty,GMID,1.8,false,true)}
 function plant(){
  var s='';
  s+=line(4,240,140,240,GRAY,1,true)+T(4,234,11,"地面","g");
  /* 根 */
- s+=line(70,240,70,352,MUTED,2.5,false,true)+
-  path("M70,262 Q52,270 34,296",'none',MUTED,2)+path("M70,262 Q92,268 110,300",'none',MUTED,2)+
-  path("M70,292 Q52,302 44,326",'none',MUTED,2)+path("M70,306 Q88,314 98,334",'none',MUTED,2);
+ s+=line(70,240,70,352,ROOT,3,false,true)+
+  path("M70,262 Q52,270 34,296",'none',ROOT,2.2)+path("M70,262 Q92,268 110,300",'none',ROOT,2.2)+
+  path("M70,292 Q52,302 44,326",'none',ROOT,2.2)+path("M70,306 Q88,314 98,334",'none',ROOT,2.2);
  /* 茎 */
- s+='<rect x="66" y="100" width="8" height="140" fill="'+FACE+'" stroke="'+INK+'" stroke-width="1.2"/>';
+ s+='<rect x="66" y="100" width="8" height="140" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>';
  /* 葉(左と右) */
  s+=leaf("M66,122 C52,80 28,66 8,70 C14,100 40,122 66,122 Z",66,122,9,71);
  s+=leaf("M74,108 C72,70 100,40 138,38 C140,70 112,104 74,108 Z",74,108,138,38);
@@ -54,7 +54,7 @@ function inset2(){
 /* 根の先：根毛 */
 function inset3(){
  var cy=315,s=frame(cy),ys=[294,302,310,318,326,334,342],i,len,y;
- s+=path("M195,278 V335 Q195,352 205,352 Q215,352 215,335 V278",FACE,INK,1.2);
+ s+=path("M195,278 V335 Q195,352 205,352 Q215,352 215,335 V278",RFILL,INK,1.2);
  for(i=0;i<ys.length;i++){y=ys[i];len=i===3?18:12+(i%3)*3;
   s+=line(195,y,195-len,y-4,INK,1,false,true)+line(215,y,215+len,y-4,INK,1,false,true)}
  return s}
