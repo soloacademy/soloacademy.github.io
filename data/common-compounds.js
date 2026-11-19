@@ -36,9 +36,9 @@ var AR='<span style="color:var(--muted)">↓</span><span></span>';
 var NW=function(t){return '<span style="white-space:nowrap">'+t+'</span>'};
 var CHAIN='<div style="'+GRID+'row-gap:.1rem;line-height:1.5;margin:.8rem 0">'+
  rf('<span class="m">H₂</span>CO₃','炭酸','◀','水(H₂O)に二酸化炭素(CO₂)が'+NW('溶けたもの'))+AR+
- rf(NA+H+'CO₃','炭酸水素ナトリウム','◀','1個の'+H+'(+1)が、'+NA+'(+1)に'+NW('置きかわる'))+AR+
- rf('<span class="v">Na₂</span>CO₃','炭酸ナトリウム','◀','さらに残りの'+H+'(+1)が、'+NA+'(+1)に'+NW('置きかわる'))+'</div>';
-var OTHER='<div style="'+GRID+'margin:1rem 0">'+
+ rf(NA+H+'CO₃','炭酸水素ナトリウム','◀','1個の'+H+'(+1)が、'+NA+'(+1)に'+NW('置きかわった'))+AR+
+ rf('<span class="v">Na₂</span>CO₃','炭酸ナトリウム','◀','さらに残りの'+H+'(+1)が、'+NA+'(+1)に'+NW('置きかわった'))+'</div>';
+var OTHER='<div style="'+GRID+'margin:.5rem 0">'+
  rd('H₂SO₄','硫酸','~SO₄(硫酸~)')+rd('HNO₃','硝酸','~NO₃(硝酸~)')+rd('NaOH','水酸化ナトリウム','~OH(水酸化~)')+'</div>';
 
 var POINT=CHAIN+
