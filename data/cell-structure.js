@@ -4,7 +4,7 @@ function n(v){return Math.round(v*10)/10}
 function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"/>'}
 /* 名前の線：(x1,y1)から(x2,y2)まで。先に点 */
-function ld(x1,y1,x2,y2,k){k=k||MUTED;return line(x1,y1,x2,y2,k,1)+'<circle cx="'+n(x2)+'" cy="'+n(y2)+'" r="2.5" fill="'+k+'"/>'}
+function ld(x1,y1,x2,y2,k){k=INK;return line(x1,y1,x2,y2,k,1)+'<circle cx="'+n(x2)+'" cy="'+n(y2)+'" r="2.5" fill="'+k+'"/>'}
 /* 2つの細胞の間に置く名前：中心 x=141。左右に線を引いて、動物と植物の両方を指す */
 function cen(cy,txt,ax,ay,px,py,k,c){var h=txt.length*6.5+3;
  return ld(141-h,cy,ax,ay,k)+ld(141+h,cy,px,py,k)+T(141,cy+4.5,13,txt,c+" b","middle")}
