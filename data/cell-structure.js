@@ -43,17 +43,17 @@ function fig(hi,label){
 var LAB="動物の細胞と植物の細胞の図。動物の細胞(左)と植物の細胞(右)の間に、共通のつくりである、核と細胞膜の名前があり、線が両方の細胞を指している。核は、それぞれの細胞の中心にある。植物の細胞の右には、植物だけにあるつくりである、細胞壁、液胞、葉緑体の名前が縦に並び、線が指している。葉緑体は、小さな粒";
 var FIGP=fig(null,LAB);
 var FIGQ=fig({nuc:1,mem:1},LAB+"。共通のつくりである、核と細胞膜を、はっきり示している");
-var FIGS=fig({vac:1,chl:1,cyt:1},LAB+"。細胞質は、細胞膜の内側で、核以外の部分で、灰色の面で示し、名前は2つの細胞の間にある。細胞質にふくまれるつくりである、液胞と葉緑体を、はっきり示している");
+var FIGS=fig({vac:1,mem:1,chl:1,cyt:1},LAB+"。細胞質は、核以外の部分で、灰色の面で示し、名前は2つの細胞の間にある。細胞質にふくまれるつくりである、細胞膜、液胞、葉緑体を、はっきり示している");
 
 /* ---------- 文章 ---------- */
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
-/* 図の下に、小さく：核・細胞壁、そして細胞質の中のつくり(左に「細胞質」と、かっこ) */
-function rl(t,r){return '<span style="grid-column:'+(r?'3':'1 / -1')+'">'+t+'</span>'}
-var ROLE='<div style="display:grid;grid-template-columns:max-content .5rem 1fr;column-gap:.4rem;margin:.5rem 0 .9rem;font-size:.8rem;line-height:1.7;color:var(--muted)">'+
- rl('核：酢酸オルセイン液などの染色液に染まる')+rl('細胞壁：細胞を保護する。体を支える')+
- '<span style="grid-column:1;grid-row:3 / 6;align-self:center">細胞質</span>'+
- '<span style="grid-column:2;grid-row:3 / 6;border:1.5px solid var(--muted);border-right:0"></span>'+
- rl('細胞膜：細胞質の外側を包む膜',1)+rl('葉緑体：光合成を行う',1)+rl('液胞：不要な物質を貯める',1)+'</div>';
+/* 図の下に、小さく：核・細胞壁、そして細胞質の中のつくり(右に、かっこと「細胞質」) */
+var RS='font-size:.8rem;line-height:1.7;color:var(--muted)';
+var ROLE='<div style="margin:.5rem 0 .9rem;'+RS+'">核：酢酸オルセイン液などの染色液に染まる<br>細胞壁：細胞を保護する。体を支える'+
+ '<div style="display:grid;grid-template-columns:max-content .5rem max-content;column-gap:.4rem;justify-content:start">'+
+ '<span style="grid-column:1">細胞膜：細胞質の外側を包む膜<br>葉緑体：光合成を行う<br>液胞：不要な物質を貯める</span>'+
+ '<span style="grid-column:2;border:1.5px solid var(--muted);border-left:0"></span>'+
+ '<span style="grid-column:3;align-self:center">細胞質</span></div></div>';
 
 /* からだのつくり：4列(細胞・組織・器官・個体)。伝えたいのは見出し(大きく太く)。例は小さく。罫線なし */
 function body(){
@@ -66,19 +66,18 @@ function body(){
  return '<div style="display:grid;grid-template-columns:max-content 1.1rem max-content 1.1rem max-content 1.1rem max-content;column-gap:.15rem;row-gap:.45rem;align-items:baseline;margin:.8rem 0">'+h+'</div>'}
 
 var POINT='<p>細胞のつくりを、動物と植物で<span style="white-space:nowrap">比べます。</span></p>'+FIGP+ROLE+
- '<p>細胞膜の内側で、核以外の部分を、<span style="white-space:nowrap"><b>細胞質</b>といいます。</span></p>'+
  '<p>多細胞生物のからだは、次の順に、集まってできています。</p>'+body();
 
 var CH1=["共通","植物だけ"],CH2=["ふくまれる","ふくまれない"];
 var NM=["液胞","核","細胞壁","細胞膜","葉緑体"];
 var A1=["植物だけ","共通","植物だけ","共通","植物だけ"];
-var A2=["ふくまれる","ふくまれない","ふくまれない","ふくまれない","ふくまれる"];
+var A2=["ふくまれる","ふくまれない","ふくまれない","ふくまれる","ふくまれる"];
 function mk(ch,ans){return NM.map(function(t,i){return {label:t,type:"choice",choices:ch,accept:[ans[i]]}})}
 
 var QBODY='<p>次のつくりは、動物と植物の細胞に<b>共通</b>か、植物の細胞<b>だけ</b>にあるか。丸をタップして選びなさい。</p>';
 var ANS=FIGQ+'<p>共通のつくりは、<b>核</b>と<b>細胞膜</b>です。</p>';
 var SBODY='<p>次のつくりは、細胞質に<b>ふくまれる</b>か、<b>ふくまれない</b>か。丸をタップして選びなさい。</p>';
-var SOL2=FIGS+'<p>細胞質は、細胞膜の内側で、核以外の部分です。<b>液胞</b>と<b>葉緑体</b>が、ふくまれます。</p>';
+var SOL2=FIGS+'<p>細胞質は、核以外の部分です(細胞壁は、細胞質にふくみません)。<b>液胞</b>、<b>細胞膜</b>、<b>葉緑体</b>が、ふくまれます。</p>';
 
 window.UNIT={
 no:"2-9",title:"細胞のつくり",
