@@ -1,5 +1,5 @@
 (function(){
-var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",MUTED="#5d6874",GRAY="#8a949f",FACE="#e6e9ed",GREEN="#d9edcf",GVEIN="#78a468",GMID="#5b8a4c",ROOT="#b8892f",RFILL="#f7edc9";
+var INK="#26303b",BLUE="#1f5fa8",RED="#c2410c",MUTED="#5d6874",GRAY="#8a949f",FACE="#e6e9ed",GREEN="#d9edcf",GUARD="#b4d9a0",GVEIN="#78a468",GMID="#5b8a4c",ROOT="#b8892f",RFILL="#f7edc9";
 function n(v){return Math.round(v*10)/10}
 function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function line(x1,y1,x2,y2,k,w,dash,cap){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"'+(dash?' stroke-dasharray="3 3"':'')+(cap?' stroke-linecap="round"':'')+'/>'}
@@ -37,8 +37,8 @@ function frame(cy){return '<circle cx="'+CX+'" cy="'+cy+'" r="'+R+'" fill="#fff"
 /* 葉の裏：気孔と、それを囲む2つの孔辺細胞 */
 function inset1(){
  var cy=70,s=frame(cy);
- s+=path("M205,46 C176,52 176,88 205,94 C195,82 195,58 205,46 Z",FACE,INK,1.5)+
-  path("M205,46 C234,52 234,88 205,94 C215,82 215,58 205,46 Z",FACE,INK,1.5);
+ s+=path("M205,46 C176,52 176,88 205,94 C195,82 195,58 205,46 Z",GUARD,INK,1.5)+
+  path("M205,46 C234,52 234,88 205,94 C215,82 215,58 205,46 Z",GUARD,INK,1.5);
  return s}
 /* 茎の断面：維管束が輪のように並ぶ。外側が師管(赤)、内側が道管(青) */
 function bundle(a){
