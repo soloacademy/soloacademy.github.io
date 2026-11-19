@@ -28,7 +28,7 @@ var T1='<div style="overflow-x:auto"><table style="margin:0"><tr><th>名前</th>
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var POINT='<p>単体は、1種類の元素でできている物質です。</p>'+T1+
  '<p>単体の化学式では、非金属は分子をつくるので、<span class="m">2</span>がつきます。金属は分子をつくらないので、元素記号のままです。</p>'+
- fig(false)+SM+'※ 炭素(C)と硫黄(S)は非金属ですが、中学理科では分子をつくらないと考えてかまいません。</p>'+SM+'金属の性質：金属光沢、電気伝導性、熱伝導性、展性、延性</p>';
+ fig(false)+SM+'※ 炭素(C)と硫黄(S)は非金属ですが、中学理科では単体で分子をつくらないと考えてかまいません。</p>'+SM+'金属の性質：金属光沢、電気伝導性、熱伝導性、展性、延性</p>';
 var ANS={};FM.forEach(function(a,g){a.forEach(function(f,i){ANS["k"+(g*6+i)]=f})});
 var CH=["Cu","H₂","Na","Cl₂","Zn","C","Mg","O₂","Ag","Al","N₂","K","Fe","S","Ca","Au","Ba","Hg"];
 window.UNIT={
