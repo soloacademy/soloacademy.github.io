@@ -90,7 +90,7 @@ var SOL2='<p>気孔の数の比は、蒸散量の比と同じと考えます。<
  '<p>茎：Cは、茎だけが開いている。<b>1mL</b><br>裏：Aは、裏と茎。7 − 1 ＝ <b>6mL</b><br>表：Bは、表と茎。5 − 1 ＝ <b>4mL</b></p>'+
  '<p>表：裏 ＝ 4：6 ＝ <b>2：3</b></p>';
 
-var OP=["表と茎","裏と茎","茎だけ"];
+var OP=["表","裏","茎"];
 
 window.UNIT={
 no:"2-11",title:"蒸散",
@@ -98,9 +98,9 @@ sections:[
 {type:"text",point:true,title:"厳選ポイント",html:POINT},
 {type:"problem",title:"問題",body:QBODY,
  parts:[
-  {head:"(1) 気孔が開いている所は、どこか。",label:"A",type:"choice",choices:OP,accept:["裏と茎"]},
-  {label:"B",type:"choice",choices:OP,accept:["表と茎"]},
-  {label:"C",type:"choice",choices:OP,accept:["茎だけ"]},
+  {head:"(1) 気孔が開いている所を、すべて選びなさい。",label:"A",type:"multi",choices:OP,accept:["裏茎"]},
+  {label:"B",type:"multi",choices:OP,accept:["表茎"]},
+  {label:"C",type:"multi",choices:OP,accept:["茎"]},
   {head:"(2) 4時間で減った水の量は、それぞれ何mLか。",label:"A",grp:1,type:"number",accept:[9],tol:0.05},
   {label:"B",grp:1,type:"number",accept:[4],tol:0.05},
   {label:"C",grp:1,unit:"mL",type:"number",accept:[1],tol:0.05},
