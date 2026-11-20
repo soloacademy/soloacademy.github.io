@@ -75,12 +75,11 @@ function tbl(a,b,c){
   '<tr><td>実験前</td><td>100mL</td><td>100mL</td><td>100mL</td></tr>'+
   '<tr><td>4時間後</td><td>'+a+'</td><td>'+b+'</td><td>'+c+'</td></tr></table>'}
 
-var QBODY='<p>葉のついた同じ植物の枝3本(A〜C)を用意し、それぞれ処理をして、4時間後の水の量を調べた。</p>'+figABC(false)+tbl('91mL','96mL','99mL')+
- '<p>(1)〜(3) 4時間で減った水の量は、それぞれ何mLか。<br>(4)〜(6) 葉の表、葉の裏、茎の蒸散量は、それぞれ何mLか。</p>';
+var QBODY='<p>葉のついた同じ植物の枝3本(A〜C)を用意し、それぞれ処理をして、4時間後の水の量を調べた。</p>'+figABC(false)+tbl('91mL','96mL','99mL');
 
 var ANS='<p>開いている所(青)から、水蒸気が出ます。</p>'+figABC(true,["9mL","4mL","1mL"])+
- '<p>(1) A：100 − 91 ＝ <b>9mL</b><br>(2) B：100 − 96 ＝ <b>4mL</b><br>(3) C：100 − 99 ＝ <b>1mL</b></p>'+
- '<p>(6) 茎：Cは、茎だけが開いている。<b>1mL</b><br>(5) 裏：Aは、裏と茎。9 − 1 ＝ <b>8mL</b><br>(4) 表：Bは、表と茎。4 − 1 ＝ <b>3mL</b></p>';
+ '<p>(1) A：100 − 91 ＝ <b>9mL</b><br>　　B：100 − 96 ＝ <b>4mL</b><br>　　C：100 − 99 ＝ <b>1mL</b></p>'+
+ '<p>(2) 茎：Cは、茎だけが開いている。<b>1mL</b><br>　　裏：Aは、裏と茎。9 − 1 ＝ <b>8mL</b><br>　　表：Bは、表と茎。4 − 1 ＝ <b>3mL</b></p>';
 
 var SBODY='<p>葉のついた同じ植物の枝3本(A〜C)を用意し、それぞれ処理をして、4時間後の水の量を調べた。</p>'+figABC(false)+tbl('93mL','95mL','99mL')+
  '<p>葉の表と裏の気孔の数の比(表：裏)を、最も簡単な整数比で求めなさい。</p>';
@@ -96,12 +95,12 @@ sections:[
 {type:"text",point:true,title:"厳選ポイント",html:POINT},
 {type:"problem",title:"問題",body:QBODY,
  parts:[
-  {label:"(1) A",unit:"mL",type:"number",accept:[9],tol:0.05},
-  {label:"(2) B",unit:"mL",type:"number",accept:[4],tol:0.05},
-  {label:"(3) C",unit:"mL",type:"number",accept:[1],tol:0.05},
-  {label:"(4) 表",unit:"mL",type:"number",accept:[3],tol:0.05},
-  {label:"(5) 裏",unit:"mL",type:"number",accept:[8],tol:0.05},
-  {label:"(6) 茎",unit:"mL",type:"number",accept:[1],tol:0.05}
+  {head:"(1) 4時間で減った水の量は、それぞれ何mLか。",label:"A",unit:"mL",type:"number",accept:[9],tol:0.05},
+  {label:"B",unit:"mL",type:"number",accept:[4],tol:0.05},
+  {label:"C",unit:"mL",type:"number",accept:[1],tol:0.05},
+  {head:"(2) 葉の表、葉の裏、茎の蒸散量は、それぞれ何mLか。",label:"表",unit:"mL",type:"number",accept:[3],tol:0.05},
+  {label:"裏",unit:"mL",type:"number",accept:[8],tol:0.05},
+  {label:"茎",unit:"mL",type:"number",accept:[1],tol:0.05}
  ]},
 {type:"answer",html:ANS},
 {type:"problem",title:"補充問題",body:SBODY,
