@@ -37,16 +37,16 @@ function sprig(ox,c){
 
 /* ---------- 厳選ポイントの図：ふつうの枝と、表にワセリンをぬった枝 ---------- */
 function figPoint(){
- var s=T(80,30,14,"ふつう","b","middle")+T(264,30,14,"表にワセリンをぬる","b","middle")+
-  sprig(24,{top:"open",bot:"open",arrows:true})+sprig(208,{top:"block",bot:"open",arrows:true});
+ var s=T(76,30,14,"ふつう","b","middle")+T(256,30,14,"葉の表にワセリンをぬる","b","middle")+
+  sprig(20,{top:"open",bot:"open",arrows:true})+sprig(200,{top:"block",bot:"open",arrows:true});
  return svgY(14,162,"枝の絵が2つ。左は、ふつうの枝で、葉の表、葉の裏、茎の3か所から、水蒸気が出ていく。右は、葉の表にワセリンをぬった枝で、表は灰色にふさがれて水蒸気が出ず、葉の裏と茎の2か所から出ていく",s)}
 
 /* ---------- 問題・解答の図：A(表にワセリン)、B(裏にワセリン)、C(葉を切る)
    arrows=false：問題の図。arrows=true：解答の図(開いている所を青で、減った量を書く) ---------- */
 var PN=[
- {k:"A",pr:"表にワセリン",c:{top:"block",bot:"open"},op:"裏と茎が開く"},
- {k:"B",pr:"裏にワセリン",c:{top:"open",bot:"block"},op:"表と茎が開く"},
- {k:"C",pr:"葉を切る",c:{cut:true},op:"茎だけが開く"}];
+ {k:"A",pr:"表にワセリン",c:{top:"block",bot:"open"},op:"気孔：裏と茎"},
+ {k:"B",pr:"裏にワセリン",c:{top:"open",bot:"block"},op:"気孔：表と茎"},
+ {k:"C",pr:"葉を切る",c:{cut:true},op:"気孔：茎だけ"}];
 function figABC(A,amts){
  var s='',i,ox,cx,c;
  for(i=0;i<3;i++){ox=4+112*i;cx=ox+56;
@@ -75,7 +75,7 @@ function tbl(a,b,c){
   '<tr><td>実験前</td><td>100mL</td><td>100mL</td><td>100mL</td></tr>'+
   '<tr><td>4時間後</td><td>'+a+'</td><td>'+b+'</td><td>'+c+'</td></tr></table>'}
 
-var QBODY='<p>葉のついた同じ植物の枝3本(A〜C)を用意し、それぞれ処理をして、4時間後の水の量を調べた。</p>'+figABC(false)+tbl('91mL','96mL','99mL');
+var QBODY='<p>葉のついた同じ植物の枝3本(A〜C)を用意し、それぞれ処理をして、4時間後の水の量を調べた。</p>'+figABC(false);
 
 var ANS='<p>開いている所(青)から、水蒸気が出ます。</p>'+figABC(true,["9mL","4mL","1mL"])+
  '<p>(1) A：<b>裏と茎</b><br>　　B：<b>表と茎</b><br>　　C：<b>茎だけ</b></p>'+
@@ -83,9 +83,10 @@ var ANS='<p>開いている所(青)から、水蒸気が出ます。</p>'+figABC
  '<p>(3) 茎：Cは、茎だけが開いている。<b>1mL</b><br>　　裏：Aは、裏と茎。9 − 1 ＝ <b>8mL</b><br>　　表：Bは、表と茎。4 − 1 ＝ <b>3mL</b></p>';
 
 var SBODY='<p>葉のついた同じ植物の枝3本(A〜C)を用意し、それぞれ処理をして、4時間後の水の量を調べた。</p>'+figABC(false)+tbl('93mL','95mL','99mL')+
- '<p>葉の表と裏の気孔の数の比(表：裏)を、最も簡単な整数比で求めなさい。</p>';
+ '<p>葉の表と裏の気孔の数の比(表：裏)を、最も簡単な整数比で求めなさい。</p>'+
+ SMN+'※ 気孔の数の比は、蒸散量の比と同じと考えます。</p>';
 
-var SOL2='<p>気孔の数の比は、蒸散量の比と同じと考えます。</p>'+figABC(true,["7mL","5mL","1mL"])+
+var SOL2='<p>開いている所(青)から、水蒸気が出ます。</p>'+figABC(true,["7mL","5mL","1mL"])+
  '<p>A：100 − 93 ＝ 7mL<br>B：100 − 95 ＝ 5mL<br>C：100 − 99 ＝ 1mL</p>'+
  '<p>茎：Cは、茎だけが開いている。<b>1mL</b><br>裏：Aは、裏と茎。7 − 1 ＝ <b>6mL</b><br>表：Bは、表と茎。5 − 1 ＝ <b>4mL</b></p>'+
  '<p>表：裏 ＝ 4：6 ＝ <b>2：3</b></p>';
@@ -101,7 +102,7 @@ sections:[
   {head:"(1) 気孔が開いている所を、すべて選びなさい。",label:"A",type:"multi",choices:OP,accept:["裏茎"]},
   {label:"B",type:"multi",choices:OP,accept:["表茎"]},
   {label:"C",type:"multi",choices:OP,accept:["茎"]},
-  {head:"(2) 4時間で減った水の量は、それぞれ何mLか。",label:"A",grp:1,type:"number",accept:[9],tol:0.05},
+  {head:tbl('91mL','96mL','99mL')+"(2) 4時間で減った水の量は、それぞれ何mLか。",label:"A",grp:1,type:"number",accept:[9],tol:0.05},
   {label:"B",grp:1,type:"number",accept:[4],tol:0.05},
   {label:"C",grp:1,unit:"mL",type:"number",accept:[1],tol:0.05},
   {head:"(3) 葉の表、葉の裏、茎の蒸散量は、それぞれ何mLか。",label:"表",grp:2,type:"number",accept:[3],tol:0.05},
