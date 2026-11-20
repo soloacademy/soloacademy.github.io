@@ -95,12 +95,12 @@ sections:[
 {type:"text",point:true,title:"厳選ポイント",html:POINT},
 {type:"problem",title:"問題",body:QBODY,
  parts:[
-  {head:"(1) 4時間で減った水の量は、それぞれ何mLか。",label:"A",unit:"mL",type:"number",accept:[9],tol:0.05},
-  {label:"B",unit:"mL",type:"number",accept:[4],tol:0.05},
-  {label:"C",unit:"mL",type:"number",accept:[1],tol:0.05},
-  {head:"(2) 葉の表、葉の裏、茎の蒸散量は、それぞれ何mLか。",label:"表",unit:"mL",type:"number",accept:[3],tol:0.05},
-  {label:"裏",unit:"mL",type:"number",accept:[8],tol:0.05},
-  {label:"茎",unit:"mL",type:"number",accept:[1],tol:0.05}
+  {head:"(1) 4時間で減った水の量は、それぞれ何mLか。",label:"A",grp:1,type:"number",accept:[9],tol:0.05},
+  {label:"B",grp:1,type:"number",accept:[4],tol:0.05},
+  {label:"C",grp:1,unit:"mL",type:"number",accept:[1],tol:0.05},
+  {head:"(2) 葉の表、葉の裏、茎の蒸散量は、それぞれ何mLか。",label:"表",grp:2,type:"number",accept:[3],tol:0.05},
+  {label:"裏",grp:2,type:"number",accept:[8],tol:0.05},
+  {label:"茎",grp:2,unit:"mL",type:"number",accept:[1],tol:0.05}
  ]},
 {type:"answer",html:ANS},
 {type:"problem",title:"補充問題",body:SBODY,
