@@ -68,14 +68,14 @@ var NW='<span style="white-space:nowrap">';
 var POINT='<p>蒸散は、植物の体の水が、水蒸気になって、気孔から出ていくことです。</p>'+figPoint()+
  SMN+'※ 青い矢印は、水蒸気が出ていくようすです。灰色は、ワセリンでふさいだ所です。</p>'+
  '<p style="margin-bottom:0">葉にワセリンをぬる問題では、気孔の開いているところを考えましょう。</p>'+ROWS+
- '<div class="formula" style="white-space:normal">'+NW+'減った水の量 ＝</span> '+NW+V('開いている所')+'の蒸散量の合計</span></div>';
+ '<div class="formula" style="white-space:normal">'+NW+'減った水の量 ＝</span> '+NW+V('開いている気孔')+'からの</span>'+NW+'蒸散量の合計</span></div>';
 
 function tbl(a,b,c){
  return '<table style="margin:.8rem 0"><tr><th></th><th>A</th><th>B</th><th>C</th></tr>'+
   '<tr><td>実験前</td><td>100mL</td><td>100mL</td><td>100mL</td></tr>'+
   '<tr><td>4時間後</td><td>'+a+'</td><td>'+b+'</td><td>'+c+'</td></tr></table>'}
 
-var QBODY='<p>葉のついた同じ植物の枝3本(A〜C)を用意し、それぞれ処理をして、4時間後の水の量を調べた。</p>'+figABC(false);
+var QBODY='<p>葉のついた同じ植物の枝3本(A〜C)を用意し、それぞれ処理をして、4時間後の水の量を調べた。</p>'+figABC(false)+tbl('91mL','96mL','99mL');
 
 var ANS='<p>開いている所(青)から、水蒸気が出ます。</p>'+figABC(true,["9mL","4mL","1mL"])+
  '<p>(1) A：<b>裏と茎</b><br>　　B：<b>表と茎</b><br>　　C：<b>茎だけ</b></p>'+
@@ -102,7 +102,7 @@ sections:[
   {head:"(1) 気孔が開いている所を、すべて選びなさい。",label:"A",type:"multi",choices:OP,accept:["裏茎"]},
   {label:"B",type:"multi",choices:OP,accept:["表茎"]},
   {label:"C",type:"multi",choices:OP,accept:["茎"]},
-  {head:tbl('91mL','96mL','99mL')+"(2) 4時間で減った水の量は、それぞれ何mLか。",label:"A",grp:1,type:"number",accept:[9],tol:0.05},
+  {head:"(2) 4時間で減った水の量は、それぞれ何mLか。",label:"A",grp:1,type:"number",accept:[9],tol:0.05},
   {label:"B",grp:1,type:"number",accept:[4],tol:0.05},
   {label:"C",grp:1,unit:"mL",type:"number",accept:[1],tol:0.05},
   {head:"(3) 葉の表、葉の裏、茎の蒸散量は、それぞれ何mLか。",label:"表",grp:2,type:"number",accept:[3],tol:0.05},
