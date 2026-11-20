@@ -15,7 +15,7 @@ function flask(cx,y0,o){
  if(o.stone)[[-15,-4],[0,-4],[14,-4],[-7,-9]].forEach(function(p){
   s+='<ellipse cx="'+n(cx+p[0])+'" cy="'+(y0+H+p[1])+'" rx="6" ry="3.5" fill="'+STONE+'" stroke="'+INK+'" stroke-width="1"/>'});
  if(o.lid)s+='<rect x="'+n(x-3)+'" y="'+(y0-6)+'" width="'+(W+6)+'" height="6" fill="'+GRAY+'" stroke="'+INK+'" stroke-width="1.2"/>';
- if(o.open)s+='<rect x="'+n(cx+13.5)+'" y="'+(y0-6)+'" width="'+(W+6)+'" height="6" fill="'+GRAY+'" stroke="'+INK+'" stroke-width="1.2"/>';
+ if(o.open)s+='<rect x="'+n(cx+8)+'" y="'+(y0-6)+'" width="'+(W+6)+'" height="6" fill="'+GRAY+'" stroke="'+INK+'" stroke-width="1.2"/>';
  if(o.gas==="in")s+=T(cx,y0+22,12,"CO₂","m b","middle");
  if(o.gas==="out")s+=up(cx-14,y0-4,y0-24)+up(cx-2,y0-4,y0-24)+T(cx-20,y0-10,12,"CO₂","m b","end");
  return s}
@@ -26,7 +26,7 @@ function figPoint(){
   flask(110,y0,{lid:true,stone:true,gas:"in"})+flask(250,y0,{open:true,gas:"out"})+
     line(44,y0+66,97,y0+58,INK,1)+'<circle cx="97" cy="'+(y0+58)+'" r="2.5" fill="'+INK+'"/>'+T(4,y0+71,12,"石灰石","g")+
   T(110,150,14,"質量は変わらない","b","middle")+T(250,150,14,'質量が<tspan class="m">減る</tspan>',"b","middle");
- return svg(162,"容器に、うすい塩酸と石灰石を入れて反応させる図。左は、ふたを閉めた容器で、二酸化炭素が中にとどまり、質量は変わらない。右は、ふたを開けた容器で、ふたは横にずれていて、4分の3が容器の右の外にある、二酸化炭素が外へ逃げ、質量が減る。容器の中は、塩酸と石灰石",s)}
+ return svg(162,"容器に、うすい塩酸と石灰石を入れて反応させる図。左は、ふたを閉めた容器で、二酸化炭素が中にとどまり、質量は変わらない。右は、ふたを開けた容器で、ふたは横にずれていて、3分の2が容器の右の外にある、二酸化炭素が外へ逃げ、質量が減る。容器の中は、塩酸と石灰石",s)}
 
 /* 問題・解答の図：反応前(500g)→反応後(密閉)→ふたを開けた(495g)。show＝答えを入れる */
 function figQ(show){
