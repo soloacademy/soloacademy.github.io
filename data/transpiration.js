@@ -60,9 +60,9 @@ function figABC(A,amts){
 /* ---------- 文章 ---------- */
 var V=function(t){return '<span class="v">'+t+'</span>'};
 var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
-var GRID='display:grid;grid-template-columns:max-content 1fr;column-gap:.6rem;row-gap:.5rem;align-items:baseline;';
-function rd(a,b){return '<b>'+a+'</b><span style="font-size:.75rem">◀ 開いているのは、'+V(b)+'</span>'}
-var ROWS='<div style="'+GRID+'margin:.8rem 0">'+rd('A　表にワセリン','裏と茎')+rd('B　裏にワセリン','表と茎')+rd('C　葉を切る','茎だけ')+'</div>';
+function rd(a,b){return '<div style="margin:.7rem 0 0"><div style="font-size:.8rem;line-height:1.6;color:var(--muted)">'+a+'</div>'+
+ '<div style="font-weight:700;line-height:1.7">→ <span style="white-space:nowrap">気孔が開いているのは、</span><span style="white-space:nowrap">'+V(b)+'</span></div></div>'}
+var ROWS='<div style="margin:.5rem 0 1rem">'+rd('A　表にワセリン','裏と茎')+rd('B　裏にワセリン','表と茎')+rd('C　葉を切る','茎だけ')+'</div>';
 var NW='<span style="white-space:nowrap">';
 
 var POINT='<p>蒸散は、植物の体の水が、水蒸気になって、気孔から出ていくことです。</p>'+figPoint()+
