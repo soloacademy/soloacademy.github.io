@@ -10,22 +10,20 @@ function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'
 function svg(h,label,body){return '<div class="fig"><svg viewBox="0 0 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function arrow(x1,x2,y){return line(x1,y,x2,y,INK,1.5)+'<path d="M'+(x2-6)+','+(y-5)+' L'+x2+','+y+' L'+(x2-6)+','+(y+5)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 
-/* ---------- 厳選ポイントの図1：BTB溶液の色と、二酸化炭素の量 ---------- */
+/* ---------- 厳選ポイントの図1：BTB溶液の色(左から、黄・緑・青)。もともとは青色で、二酸化炭素がとけるほど、左へ変わる ---------- */
+function larrow(x1,x2,y){return line(x1,y,x2,y,INK,1.5)+'<path d="M'+(x2+6)+','+(y-5)+' L'+x2+','+y+' L'+(x2+6)+','+(y+5)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 function figBar(){
- var x=[20,120,220],col=[LB,LG,LY],nm=["青色","緑色","黄色"],s='',i;
+ var x=[20,120,220],col=[LY,LG,LB],nm=["黄色","緑色","青色"],s='',i;
  for(i=0;i<3;i++)s+='<rect x="'+x[i]+'" y="8" width="100" height="36" fill="'+col[i]+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(x[i]+50,32,15,nm[i],"b","middle");
- s+=arrow(20,320,64)+T(20,88,13,"二酸化炭素が少ない")+T(320,88,13,"多い",null,"end");
- return svg(98,"BTB溶液の色の図。左から、青色、緑色、黄色。右へ進むほど、二酸化炭素が多い。青色は二酸化炭素が少なく、黄色は多い",s)}
+ s+=larrow(320,20,64)+T(20,88,13,"二酸化炭素が多い")+T(320,88,13,"少ない",null,"end");
+ return svg(98,"BTB溶液の色の図。左から、黄色、緑色、青色。左へ進むほど、二酸化炭素が多い。黄色は二酸化炭素が多く、青色は少ない。もともとは青色",s)}
 
-/* ---------- 厳選ポイントの図2：光合成と呼吸(二酸化炭素と酸素の出入り) ---------- */
-function row(y0,title,l,r){
- var cy=y0+34;
- return T(4,y0,14,title,"b")+
-  '<rect x="112" y="'+(cy-18)+'" width="116" height="36" rx="6" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>'+TN(170,cy+5.5,15,"植物","b","middle")+
-  T(78,cy+5,14,l,null,"end")+arrow(84,108,cy)+arrow(232,256,cy)+T(262,cy+5,14,r)}
+/* ---------- 厳選ポイントの図2：光合成と呼吸の式(上の矢印が光合成、下の矢印が呼吸) ---------- */
 function figGas(){
- return svg(172,"光合成と呼吸の図。上は、光が当たるときの光合成で、二酸化炭素が植物に入り、酸素が出ていく。下は、いつも行われる呼吸で、酸素が植物に入り、二酸化炭素が出ていく",
-  row(20,"光合成(光が当たるとき)","二酸化炭素","酸素")+line(4,92,336,92,RULE,1)+row(114,"呼吸(いつでも)","酸素","二酸化炭素"))}
+ var cy=50,s=T(20,cy+6,16,"二酸化炭素＋水","b")+T(240,cy+6,16,"栄養＋酸素","b")+
+  T(186,cy-17,14,"光合成",null,"middle")+arrow(142,230,cy-5)+
+  larrow(230,142,cy+5)+T(186,cy+28,14,"呼吸",null,"middle");
+ return svg(96,"光合成と呼吸の式。二酸化炭素と水から、栄養と酸素ができる。右向きの矢印の上に、光合成。左向きの矢印の下に、呼吸",s)}
 
 /* ---------- 問題・解答の図：試験管A〜C ----------
    show=false：問題の図(3本とも緑。Bはアルミホイルで包んである)。show=true：解答の図(色が変わり、二酸化炭素の増減を書く) */
@@ -60,8 +58,9 @@ var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var NW=function(t){return '<span style="white-space:nowrap">'+t+'</span>'};
 var TIGHT='<style>.pick .pk-bt{gap:.4rem}.pick button.choice{padding:.1rem .55rem;min-width:2.6rem}</style>';
 
-var POINT='<p>BTB溶液の色は、二酸化炭素の量で変わります。</p>'+figBar()+
- '<p>植物は、光合成で二酸化炭素を使い、呼吸で二酸化炭素を出します。</p>'+figGas()+
+var POINT='<p>BTB溶液は、もともと青色です。二酸化炭素がとけると、緑色、黄色と変わります。</p>'+figBar()+
+ '<p>この単元では、青色のBTB溶液に息を吹き込んで、緑色にした液を使います。</p>'+
+ '<p>光合成と呼吸は、次の式で表されます。</p>'+figGas()+
  SMN+'※ 呼吸は、光が当たっていても、いつも行われています。</p>';
 
 var QBODY=TIGHT+'<p>青いBTB溶液を入れた水に、息を吹き込んで、緑色にした。この液を3本の試験管A〜Cに入れ、同じ場所に置いた。しばらくして、液の色を調べた。</p>'+figQ(false)+
