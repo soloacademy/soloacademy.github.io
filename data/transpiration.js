@@ -60,14 +60,14 @@ function figABC(A,amts){
 /* ---------- 文章 ---------- */
 var V=function(t){return '<span class="v">'+t+'</span>'};
 var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
-function rd(a,b){return '<div style="margin:.7rem 0 0"><div style="font-size:.8rem;line-height:1.6;color:var(--muted)">'+a+'</div>'+
- '<div style="font-weight:700;line-height:1.7">→ <span style="white-space:nowrap">気孔が開いているのは、</span><span style="white-space:nowrap">'+V(b)+'</span></div></div>'}
-var ROWS='<div style="margin:.5rem 0 1rem">'+rd('A　表にワセリン','裏と茎')+rd('B　裏にワセリン','表と茎')+rd('C　葉を切る','茎だけ')+'</div>';
+function rd(a,b){return '<div style="margin:.45rem 0 0"><div style="font-size:.8rem;line-height:1.5;color:var(--muted)">'+a+'</div>'+
+ '<div style="line-height:1.6">→ 気孔が開いているのは、<span style="white-space:nowrap">'+V(b)+'</span></div></div>'}
+var ROWS='<div style="margin:0 0 .9rem">'+rd('A　葉の表にワセリンをぬった場合','裏と茎')+rd('B　葉の裏にワセリンをぬった場合','表と茎')+rd('C　葉を切った場合','茎だけ')+'</div>';
 var NW='<span style="white-space:nowrap">';
 
 var POINT='<p>蒸散は、植物の体の水が、水蒸気になって、気孔から出ていくことです。</p>'+figPoint()+
  SMN+'※ 青い矢印は、水蒸気が出ていくようすです。灰色は、ワセリンでふさいだ所です。</p>'+
- '<p><b>ワセリンをぬった所ではなく、開いている所を考えます。</b></p>'+ROWS+
+ '<p style="margin-bottom:0">葉にワセリンをぬる問題では、気孔の開いているところを考えましょう。</p>'+ROWS+
  '<div class="formula" style="white-space:normal">'+NW+'減った水の量 ＝</span> '+NW+V('開いている所')+'の蒸散量の合計</span></div>';
 
 function tbl(a,b,c){
