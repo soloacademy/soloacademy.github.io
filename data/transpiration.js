@@ -78,8 +78,9 @@ function tbl(a,b,c){
 var QBODY='<p>葉のついた同じ植物の枝3本(A〜C)を用意し、それぞれ処理をして、4時間後の水の量を調べた。</p>'+figABC(false)+tbl('91mL','96mL','99mL');
 
 var ANS='<p>開いている所(青)から、水蒸気が出ます。</p>'+figABC(true,["9mL","4mL","1mL"])+
- '<p>(1) A：100 − 91 ＝ <b>9mL</b><br>　　B：100 − 96 ＝ <b>4mL</b><br>　　C：100 − 99 ＝ <b>1mL</b></p>'+
- '<p>(2) 茎：Cは、茎だけが開いている。<b>1mL</b><br>　　裏：Aは、裏と茎。9 − 1 ＝ <b>8mL</b><br>　　表：Bは、表と茎。4 − 1 ＝ <b>3mL</b></p>';
+ '<p>(1) A：<b>裏と茎</b><br>　　B：<b>表と茎</b><br>　　C：<b>茎だけ</b></p>'+
+ '<p>(2) A：100 − 91 ＝ <b>9mL</b><br>　　B：100 − 96 ＝ <b>4mL</b><br>　　C：100 − 99 ＝ <b>1mL</b></p>'+
+ '<p>(3) 茎：Cは、茎だけが開いている。<b>1mL</b><br>　　裏：Aは、裏と茎。9 − 1 ＝ <b>8mL</b><br>　　表：Bは、表と茎。4 − 1 ＝ <b>3mL</b></p>';
 
 var SBODY='<p>葉のついた同じ植物の枝3本(A〜C)を用意し、それぞれ処理をして、4時間後の水の量を調べた。</p>'+figABC(false)+tbl('93mL','95mL','99mL')+
  '<p>葉の表と裏の気孔の数の比(表：裏)を、最も簡単な整数比で求めなさい。</p>';
@@ -89,16 +90,21 @@ var SOL2='<p>気孔の数の比は、蒸散量の比と同じと考えます。<
  '<p>茎：Cは、茎だけが開いている。<b>1mL</b><br>裏：Aは、裏と茎。7 − 1 ＝ <b>6mL</b><br>表：Bは、表と茎。5 − 1 ＝ <b>4mL</b></p>'+
  '<p>表：裏 ＝ 4：6 ＝ <b>2：3</b></p>';
 
+var OP=["表と茎","裏と茎","茎だけ"];
+
 window.UNIT={
 no:"2-11",title:"蒸散",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:POINT},
 {type:"problem",title:"問題",body:QBODY,
  parts:[
-  {head:"(1) 4時間で減った水の量は、それぞれ何mLか。",label:"A",grp:1,type:"number",accept:[9],tol:0.05},
+  {head:"(1) 気孔が開いている所は、どこか。",label:"A",type:"choice",choices:OP,accept:["裏と茎"]},
+  {label:"B",type:"choice",choices:OP,accept:["表と茎"]},
+  {label:"C",type:"choice",choices:OP,accept:["茎だけ"]},
+  {head:"(2) 4時間で減った水の量は、それぞれ何mLか。",label:"A",grp:1,type:"number",accept:[9],tol:0.05},
   {label:"B",grp:1,type:"number",accept:[4],tol:0.05},
   {label:"C",grp:1,unit:"mL",type:"number",accept:[1],tol:0.05},
-  {head:"(2) 葉の表、葉の裏、茎の蒸散量は、それぞれ何mLか。",label:"表",grp:2,type:"number",accept:[3],tol:0.05},
+  {head:"(3) 葉の表、葉の裏、茎の蒸散量は、それぞれ何mLか。",label:"表",grp:2,type:"number",accept:[3],tol:0.05},
   {label:"裏",grp:2,type:"number",accept:[8],tol:0.05},
   {label:"茎",grp:2,unit:"mL",type:"number",accept:[1],tol:0.05}
  ]},
