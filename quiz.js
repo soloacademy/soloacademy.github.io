@@ -37,6 +37,7 @@ function problem(sec){
   var box=h("div","problem",sec.body);
   var mx=null,gw=null;
   var rows=sec.parts.map(function(p){
+    if(p.head)box.appendChild(h("p",null,p.head));
     if(p.type==="tree"){
       var wrap=h("div",null,p.svg),vals={},marks={},sel=null,ids=Object.keys(p.answers),bs={};
       box.appendChild(wrap);
