@@ -44,7 +44,7 @@ var mcDone=false;
 function mcCss(){
   if(mcDone)return;mcDone=true;
   var st=document.createElement("style");
-  st.textContent=".mx button.sq::before{border-radius:3px}";
+  st.textContent=".mx button.sq::before{border-radius:3px}.mx.mxm{margin:0 0 .8rem}";
   document.head.appendChild(st);
 }
 function problem(sec){
@@ -166,7 +166,7 @@ function problem(sec){
     if(p.type==="multi"){
       mcCss();
       if(!mxm){
-        mxm=h("table","mx");var hm=h("tr");hm.appendChild(h("th",null,""));
+        mxm=h("table","mx mxm");var hm=h("tr");hm.appendChild(h("th",null,""));
         p.choices.forEach(function(c){var t=h("th",null,c);t.setAttribute("scope","col");hm.appendChild(t)});
         hm.appendChild(h("th",null,""));mxm.appendChild(hm);
         var wm=h("div");wm.style.overflowX="auto";wm.appendChild(mxm);box.appendChild(wm);
