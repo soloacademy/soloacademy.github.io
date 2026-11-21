@@ -84,9 +84,9 @@ var POINT='<p>光合成は、葉緑体で、光を使って、二酸化炭素と
 var QBODY=TIGHT+'<p>青色のBTB溶液を入れた水に息を吹き込んで、緑色にした。この液を3本の試験管A〜Cに入れ、同じ場所に置いた。しばらくして、液の色を調べた。</p>'+figQ(false);
 
 var ANS=figQ(true)+
- '<p>(1) 黄色になるのは、B。Bは、光がなく、呼吸だけをする。二酸化炭素が増えるので、黄色になる。'+NW('<b>呼吸</b>')+'</p>'+
- '<p>(2) 青色になるのは、A。Aは、光合成のほうが、呼吸より多い。二酸化炭素が減るので、青色になる。'+NW('<b>光合成</b>')+'</p>'+
- '<p>(3) A：<b>青色</b>　B：<b>黄色</b>　C：<b>緑色</b></p>';
+ '<p>(1) A：<b>青色</b>　B：<b>黄色</b>　C：<b>緑色</b></p>'+
+ '<p>(2) 黄色になるのは、B。Bは、光がなく、呼吸だけをする。二酸化炭素が増えるので、黄色になる。'+NW('<b>呼吸</b>')+'</p>'+
+ '<p>(3) 青色になるのは、A。Aは、光合成のほうが、呼吸より多い。二酸化炭素が減るので、青色になる。'+NW('<b>光合成</b>')+'</p>';
 
 var SBODY=TIGHT+'<p>問題の実験の結果から、考えなさい。</p>'+
  SMN+NW('A：オオカナダモ + 光')+'　'+NW('B：オオカナダモ + アルミホイル')+'　'+NW('C：オオカナダモなし + 光')+'</p>';
@@ -124,11 +124,11 @@ sections:[
 {type:"text",point:true,title:"厳選ポイント",html:POINT},
 {type:"problem",title:"問題",body:QBODY,
  parts:[
-  {label:"(1)",text:"液が黄色になるのは、オオカナダモが何というはたらきによるか。",type:"pick",choices:["蒸散","光合成","呼吸","消化"],accept:["呼吸"]},
-  {label:"(2)",text:"液が青色になるのは、オオカナダモが何というはたらきによるか。",type:"pick",choices:["光合成","吸収","発芽","蒸散"],accept:["光合成"]},
-  {head:"(3) A〜Cの液の色は、それぞれ何色になったか。丸をタップして選びなさい。",label:"A",type:"choice",choices:["青","緑","黄"],accept:["青"]},
+  {head:"(1) A〜Cの液の色は、それぞれ何色になったか。丸をタップして選びなさい。",label:"A",type:"choice",choices:["青","緑","黄"],accept:["青"]},
   {label:"B",type:"choice",choices:["青","緑","黄"],accept:["黄"]},
-  {label:"C",type:"choice",choices:["青","緑","黄"],accept:["緑"]}
+  {label:"C",type:"choice",choices:["青","緑","黄"],accept:["緑"]},
+  {label:"(2)",text:"液が黄色になるのは、オオカナダモが何というはたらきによるか。",type:"pick",choices:["蒸散","光合成","呼吸","消化"],accept:["呼吸"]},
+  {label:"(3)",text:"液が青色になるのは、オオカナダモが何というはたらきによるか。",type:"pick",choices:["光合成","吸収","発芽","蒸散"],accept:["光合成"]}
  ]},
 {type:"answer",html:ANS},
 {type:"problem",title:"補充問題",body:SBODY,
