@@ -11,6 +11,14 @@ function svg(h,label,body){return '<div class="fig"><svg viewBox="0 0 340 '+h+'"
 function svgY(y0,h,label,body){return '<div class="fig" style="margin:.4rem 0"><svg viewBox="0 '+y0+' 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function arrow(x1,x2,y){return line(x1,y,x2,y,INK,1.5)+'<path d="M'+(x2-6)+','+(y-5)+' L'+x2+','+y+' L'+(x2-6)+','+(y+5)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 
+/* ---------- 厳選ポイントの図0：光合成の式。矢印の上に、光を当てている(短い矢印3本)。矢印の下に、場所(葉緑体) ---------- */
+function ray(x){return line(x,32,x,50,INK,1.5)+'<path d="M'+(x-4)+',44 L'+x+',50 L'+(x+4)+',44" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
+function figEq(){
+ var s=T(182,22,15,"光","b","middle")+ray(164)+ray(182)+ray(200)+
+  T(26,76,15,"二酸化炭素＋水","b")+arrow(142,222,70)+T(234,76,15,"栄養＋酸素","b")+
+  T(182,96,12,"葉緑体で","g","middle")+T(234,96,11,"(デンプンなど)","g");
+ return svg(106,"光合成の式。二酸化炭素と水から、栄養と酸素ができる。矢印の上から、光が当たっている。矢印の下に、葉緑体で、と書いてある。栄養は、デンプンなど",s)}
+
 /* ---------- 厳選ポイントの図1：昼と夜(光が当たる・当たらない)で、植物の中のはたらきを並べる。呼吸は、どちらでも行われる ---------- */
 function dnPanel(x0,title,ps,cap){
  var s=T(x0+80,20,15,title,"b","middle")+
@@ -67,7 +75,7 @@ var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var NW=function(t){return '<span style="white-space:nowrap">'+t+'</span>'};
 var TIGHT='<style>.pick .pk-bt{gap:.4rem}.pick button.choice{padding:.1rem .55rem;min-width:2.6rem}</style>';
 
-var POINT='<p>光合成は、葉緑体で、光を使って、二酸化炭素と水から、デンプンなどの栄養と酸素をつくるはたらきです。</p>'+
+var POINT='<p>光合成は、葉緑体で、光を使って、二酸化炭素と水から、デンプンなどの栄養と酸素をつくるはたらきです。</p>'+figEq()+
  '<p>呼吸は、光が当たっていても、当たっていなくても、いつも行われています。酸素を吸って、二酸化炭素を出します。</p>'+figDN()+
  '<p>ここでは、青色のBTB溶液に息を吹き込んで、緑色にした液を使います。</p>'+figTubes()+
  '<p>液の色を見ると、二酸化炭素が増えたか、減ったかが分かります。</p>';
