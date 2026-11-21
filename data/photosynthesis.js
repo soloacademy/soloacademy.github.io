@@ -89,8 +89,8 @@ sections:[
   {label:"A",type:"choice",choices:["青","緑","黄"],accept:["青"]},
   {label:"B",type:"choice",choices:["青","緑","黄"],accept:["黄"]},
   {label:"C",type:"choice",choices:["青","緑","黄"],accept:["緑"]},
-  {label:"(2)",text:"Bの液が黄色になったのは、オオカナダモが何というはたらきをしたからか。",type:"pick",choices:["蒸散","光合成","呼吸","消化"],accept:["呼吸"]},
-  {label:"(3)",text:"Aの液が青色になったのは、オオカナダモが何というはたらきをしたからか。",type:"pick",choices:["光合成","吸収","発芽","蒸散"],accept:["光合成"]}
+  {label:"(2)",text:"液が黄色になるのは、オオカナダモが何というはたらきによるか。",type:"pick",choices:["蒸散","光合成","呼吸","消化"],accept:["呼吸"]},
+  {label:"(3)",text:"液が青色になるのは、オオカナダモが何というはたらきによるか。",type:"pick",choices:["光合成","吸収","発芽","蒸散"],accept:["光合成"]}
  ]},
 {type:"answer",html:ANS},
 {type:"problem",title:"補充問題",body:SBODY,

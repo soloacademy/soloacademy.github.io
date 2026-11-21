@@ -29,5 +29,6 @@ window.UNITS=[
   {id:"cell-structure",grade:2,no:"2-9",title:"細胞のつくり"},
   {id:"plant-structure",grade:2,no:"2-10",title:"植物のつくり"},
   {id:"transpiration",grade:2,no:"2-11",title:"蒸散"},
-  {id:"photosynthesis",grade:2,no:"2-12",title:"光合成と呼吸"}
+  {id:"photosynthesis",grade:2,no:"2-12",title:"光合成と呼吸"},
+  {id:"respiration",grade:2,no:"2-13",title:"光合成と細胞呼吸"}
 ];
