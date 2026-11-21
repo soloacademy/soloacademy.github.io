@@ -11,18 +11,19 @@ function svg(h,label,body){return '<div class="fig"><svg viewBox="0 0 340 '+h+'"
 function svgY(y0,h,label,body){return '<div class="fig" style="margin:.4rem 0"><svg viewBox="0 '+y0+' 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function arrow(x1,x2,y){return line(x1,y,x2,y,INK,1.5)+'<path d="M'+(x2-6)+','+(y-5)+' L'+x2+','+y+' L'+(x2-6)+','+(y+5)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 
-/* ---------- 厳選ポイントの図0：光合成の式。矢印の上に、光を当てている(短い矢印3本)。矢印の下に、場所(葉緑体) ---------- */
-function ray(x){return line(x,32,x,50,INK,1.5)+'<path d="M'+(x-4)+',44 L'+x+',50 L'+(x+4)+',44" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
+/* ---------- 厳選ポイントの図0：光合成の式。葉緑体(緑の角丸四角)の中を矢印が通り、始点と終点は四角の外。四角の上から、光が当たる(短い矢印3本) ---------- */
+function ray(x){return line(x,26,x,42,INK,1.5)+'<path d="M'+(x-4)+',36 L'+x+',42 L'+(x+4)+',36" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 function figEq(){
- var s=T(182,22,15,"光","b","middle")+ray(164)+ray(182)+ray(200)+
-  T(26,76,15,"二酸化炭素＋水","b")+arrow(142,222,70)+T(234,76,15,"栄養＋酸素","b")+
-  T(182,96,12,"葉緑体で","g","middle")+T(234,96,11,"(デンプンなど)","g");
- return svg(106,"光合成の式。二酸化炭素と水から、栄養と酸素ができる。矢印の上から、光が当たっている。矢印の下に、葉緑体で、と書いてある。栄養は、デンプンなど",s)}
+ var s=T(186,16,15,"光","b","middle")+ray(170)+ray(186)+ray(202)+
+  '<rect x="152" y="44" width="68" height="54" rx="10" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>'+
+  T(16,67,15,"二酸化炭素＋水","b")+arrow(134,238,62)+T(248,67,15,"栄養＋酸素","b")+
+  TN(186,88,13,"葉緑体",null,"middle")+T(248,86,11,"(デンプンなど)","g");
+ return svg(106,"光合成の式。二酸化炭素と水から、栄養と酸素ができる。矢印は、葉緑体を表す、角の丸い四角の中を通り、始まりと終わりは四角の外にある。四角の上から、光が当たっている。栄養は、デンプンなど",s)}
 
 /* ---------- 厳選ポイントの図1：昼と夜(光が当たる・当たらない)で、植物の中のはたらきを並べる。呼吸は、どちらでも行われる ---------- */
 function dnPanel(x0,title,ps,cap){
  var s=T(x0+80,20,15,title,"b","middle")+
-  '<rect x="'+x0+'" y="34" width="160" height="118" rx="8" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>'+
+  '<rect x="'+x0+'" y="34" width="160" height="118" rx="8" fill="'+(ps?"#fff":"#d3d9df")+'" stroke="'+INK+'" stroke-width="1.2"/>'+
   '<rect x="'+(x0+12)+'" y="44" width="136" height="46" rx="6" fill="#fff" stroke="'+(ps?INK:GRAY)+'" stroke-width="'+(ps?1.2:1)+'"'+(ps?'':' stroke-dasharray="4 3"')+'/>'+
   TN(x0+80,61,12,"光合成",ps?"b":"g","middle")+TN(x0+80,81,13,ps?"二酸化炭素 → 酸素":"行われない",ps?null:"g","middle")+
   '<rect x="'+(x0+12)+'" y="98" width="136" height="46" rx="6" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+
