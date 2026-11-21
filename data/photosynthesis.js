@@ -10,20 +10,27 @@ function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'
 function svg(h,label,body){return '<div class="fig"><svg viewBox="0 0 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function arrow(x1,x2,y){return line(x1,y,x2,y,INK,1.5)+'<path d="M'+(x2-6)+','+(y-5)+' L'+x2+','+y+' L'+(x2-6)+','+(y+5)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 
-/* ---------- 厳選ポイントの図1：BTB溶液の色(左から、黄・緑・青)。もともとは青色で、二酸化炭素がとけるほど、左へ変わる ---------- */
-function larrow(x1,x2,y){return line(x1,y,x2,y,INK,1.5)+'<path d="M'+(x2+6)+','+(y-5)+' L'+x2+','+y+' L'+(x2+6)+','+(y+5)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
+/* ---------- 厳選ポイントの図1：BTB溶液の色と、二酸化炭素の量(左から、青・緑・黄) ---------- */
 function figBar(){
- var x=[20,120,220],col=[LY,LG,LB],nm=["黄色","緑色","青色"],s='',i;
+ var x=[20,120,220],col=[LB,LG,LY],nm=["青色","緑色","黄色"],s='',i;
  for(i=0;i<3;i++)s+='<rect x="'+x[i]+'" y="8" width="100" height="36" fill="'+col[i]+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(x[i]+50,32,15,nm[i],"b","middle");
- s+=larrow(320,20,64)+T(20,88,13,"二酸化炭素が多い")+T(320,88,13,"少ない",null,"end");
- return svg(98,"BTB溶液の色の図。左から、黄色、緑色、青色。左へ進むほど、二酸化炭素が多い。黄色は二酸化炭素が多く、青色は少ない。もともとは青色",s)}
+ s+=arrow(20,320,64)+T(20,88,13,"二酸化炭素が少ない")+T(320,88,13,"多い",null,"end");
+ return svg(98,"BTB溶液の色の図。左から、青色、緑色、黄色。右へ進むほど、二酸化炭素が多い。青色は二酸化炭素が少なく、黄色は多い",s)}
 
-/* ---------- 厳選ポイントの図2：光合成と呼吸の式(上の矢印が光合成、下の矢印が呼吸) ---------- */
+/* ---------- 厳選ポイントの図2：光合成の式(葉緑体で、二酸化炭素と水から、栄養と酸素ができる) ---------- */
 function figGas(){
- var cy=50,s=T(20,cy+6,16,"二酸化炭素＋水","b")+T(240,cy+6,16,"栄養＋酸素","b")+
-  T(186,cy-17,14,"光合成",null,"middle")+arrow(142,230,cy-5)+
-  larrow(230,142,cy+5)+T(186,cy+28,14,"呼吸",null,"middle");
- return svg(96,"光合成と呼吸の式。二酸化炭素と水から、栄養と酸素ができる。右向きの矢印の上に、光合成。左向きの矢印の下に、呼吸",s)}
+ var s=T(170,26,16,"二酸化炭素＋水","b","middle")+
+  line(170,40,170,84,INK,1.5)+'<path d="M165,78 L170,84 L175,78" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+
+  T(186,66,14,"葉緑体で光合成")+
+  T(170,114,16,"デンプンなどの栄養＋酸素","b","middle");
+ return svg(128,"光合成の式。葉緑体で光合成が行われ、二酸化炭素と水から、デンプンなどの栄養と酸素ができる",s)}
+
+/* ---------- 厳選ポイントの図3：呼吸(酸素を吸って、二酸化炭素を出す) ---------- */
+function figResp(){
+ var cy=30,s=T(78,cy+5,14,"酸素",null,"end")+arrow(84,108,cy)+
+  '<rect x="112" y="'+(cy-18)+'" width="116" height="36" rx="6" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>'+TN(170,cy+5.5,15,"植物","b","middle")+
+  arrow(232,256,cy)+T(262,cy+5,14,"二酸化炭素");
+ return svg(60,"呼吸の図。酸素が植物に入り、二酸化炭素が植物から出ていく",s)}
 
 /* ---------- 問題・解答の図：試験管A〜C ----------
    show=false：問題の図(3本とも緑。Bはアルミホイルで包んである)。show=true：解答の図(色が変わり、二酸化炭素の増減を書く) */
@@ -58,9 +65,9 @@ var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var NW=function(t){return '<span style="white-space:nowrap">'+t+'</span>'};
 var TIGHT='<style>.pick .pk-bt{gap:.4rem}.pick button.choice{padding:.1rem .55rem;min-width:2.6rem}</style>';
 
-var POINT='<p>BTB溶液は、もともと青色です。二酸化炭素がとけると、緑色、黄色と変わります。</p>'+figBar()+
- '<p>この単元では、青色のBTB溶液に息を吹き込んで、緑色にした液を使います。</p>'+
- '<p>光合成と呼吸は、次の式で表されます。</p>'+figGas()+
+var POINT='<p>ここでは、青色のBTB溶液に息を吹き込んで、緑色にした液を使います。</p>'+figBar()+
+ '<p>光合成では、二酸化炭素を使います。</p>'+figGas()+
+ '<p>呼吸では、酸素を吸って、二酸化炭素を出します。</p>'+figResp()+
  SMN+'※ 呼吸は、光が当たっていても、いつも行われています。</p>';
 
 var QBODY=TIGHT+'<p>青いBTB溶液を入れた水に、息を吹き込んで、緑色にした。この液を3本の試験管A〜Cに入れ、同じ場所に置いた。しばらくして、液の色を調べた。</p>'+figQ(false)+
@@ -71,14 +78,35 @@ var ANS=figQ(true)+
  '<p>(2) Bは、光がなく、呼吸だけをする。二酸化炭素が増えるので、黄色になる。'+NW('<b>呼吸</b>')+'</p>'+
  '<p>(3) Aは、光合成のほうが、呼吸より多い。二酸化炭素が減るので、青色になる。'+NW('<b>光合成</b>')+'</p>';
 
-function rd(a,b){return '<div style="margin:.45rem 0 0"><div style="font-size:.8rem;line-height:1.5;color:var(--muted)">'+a+'</div>'+
- '<div style="line-height:1.6">→ '+b+'</div></div>'}
 var SBODY=TIGHT+'<p>問題の実験の結果から、考えなさい。</p>'+
  SMN+NW('A：オオカナダモ + 光')+'　'+NW('B：オオカナダモ + アルミホイル')+'　'+NW('C：オオカナダモなし + 光')+'</p>';
-var SOL2='<p>ちがう条件を1つだけにして比べると、その条件のはたらきが分かります。</p>'+
- '<div style="margin:0 0 .9rem">'+
- rd('(1) AとBを比べる(ちがいは、光だけ)','光を当てたAだけ、二酸化炭素が減って青色になる。光合成には、'+NW('<b>光</b>が必要')+'')+
- rd('(2) AとCを比べる(ちがいは、オオカナダモだけ)','オオカナダモを入れたAだけ、色が変わる。色の変化は、'+NW('<b>オオカナダモ</b>のはたらき')+'')+'</div>';
+/* ---------- 補充の解答の図：2つの試験管を比べる表。ちがう行だけ、青い枠で「ちがい」。同じ行は灰色で「同じ」 ----------
+   c1,c2＝試験管の記号、rows＝[条件の名前, c1のようす, c2のようす]、diff＝ちがう行の番号、res＝[[色, 文字], [色, 文字]] */
+var BLUE="#1f5fa8";
+function cmpFig(c1,c2,rows,diff,res,label){
+ var xa=160,xb=240,y0=34,rh=34,s='',i,r,cy,d,n=rows.length;
+ s+=T(xa,22,16,c1,"b","middle")+T(xb,22,16,c2,"b","middle");
+ for(i=0;i<=n+1;i++)s+=line(4,y0+rh*i,332,y0+rh*i,RULE,1);
+ for(i=0;i<n;i++){r=rows[i];cy=y0+rh*i+17;d=(i===diff);
+  if(d)s+='<rect x="1" y="'+(y0+rh*i+1)+'" width="334" height="'+(rh-2)+'" rx="6" fill="none" stroke="'+BLUE+'" stroke-width="2"/>';
+  s+=T(8,cy+5,14,r[0],d?"v b":null)+T(xa,cy+5,14,r[1],d?"v b":null,"middle")+T(xb,cy+5,14,r[2],d?"v b":null,"middle")+
+   T(328,cy+5,12,d?"ちがい":"同じ",d?"v b":"g","end")}
+ cy=y0+rh*n+17;
+ s+=T(8,cy+5,14,"液の色")+
+  '<rect x="'+(xa-28)+'" y="'+(cy-13)+'" width="56" height="26" rx="6" fill="'+res[0][0]+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(xa,cy+5,14,res[0][1],"b","middle")+
+  '<rect x="'+(xb-28)+'" y="'+(cy-13)+'" width="56" height="26" rx="6" fill="'+res[1][0]+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(xb,cy+5,14,res[1][1],"b","middle");
+ return svg(y0+rh*(n+1)+8,label,s)}
+
+var F1=cmpFig("A","B",[["オオカナダモ","あり","あり"],["光","あり","なし"]],1,[[LB,"青色"],[LY,"黄色"]],
+ "AとBを比べる表。オオカナダモは、AもBもあり(同じ)。光は、Aはあり、Bはなし(ちがい)。液の色は、Aは青色、Bは黄色");
+var F2=cmpFig("A","C",[["オオカナダモ","あり","なし"],["光","あり","あり"]],0,[[LB,"青色"],[LG,"緑色"]],
+ "AとCを比べる表。オオカナダモは、Aはあり、Cはなし(ちがい)。光は、AもCもあり(同じ)。液の色は、Aは青色、Cは緑色");
+
+var SOL2='<p>調べたい条件<b>だけ</b>をちがえて、ほかの条件は同じにして比べる実験を、<b>対照実験</b>といいます。ちがいが1つだけなので、その条件のはたらきが分かります。</p>'+
+ '<p style="margin-bottom:0">(1) AとBを比べる</p>'+F1+
+ '<p>ちがいは、<b>光</b>だけ。光を当てたAだけ、二酸化炭素が減って青色になる。光合成には、'+NW('<b>光</b>が必要')+'</p>'+
+ '<p style="margin-bottom:0">(2) AとCを比べる</p>'+F2+
+ '<p>ちがいは、<b>オオカナダモ</b>だけ。オオカナダモを入れたAだけ、色が変わる。色の変化は、'+NW('<b>オオカナダモ</b>のはたらき')+'</p>';
 
 window.UNIT={
 no:"2-12",title:"光合成と呼吸",
