@@ -10,27 +10,33 @@ function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'
 function svg(h,label,body){return '<div class="fig"><svg viewBox="0 0 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function arrow(x1,x2,y){return line(x1,y,x2,y,INK,1.5)+'<path d="M'+(x2-6)+','+(y-5)+' L'+x2+','+y+' L'+(x2-6)+','+(y+5)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 
-/* ---------- 厳選ポイントの図1：BTB溶液の色と、二酸化炭素の量(左から、青・緑・黄) ---------- */
-function figBar(){
- var x=[20,120,220],col=[LB,LG,LY],nm=["青色","緑色","黄色"],s='',i;
- for(i=0;i<3;i++)s+='<rect x="'+x[i]+'" y="8" width="100" height="36" fill="'+col[i]+'" stroke="'+GRAY+'" stroke-width="1"/>'+TN(x[i]+50,32,15,nm[i],"b","middle");
- s+=arrow(20,320,64)+T(20,88,13,"二酸化炭素が少ない")+T(320,88,13,"多い",null,"end");
- return svg(98,"BTB溶液の色の図。左から、青色、緑色、黄色。右へ進むほど、二酸化炭素が多い。青色は二酸化炭素が少なく、黄色は多い",s)}
+/* ---------- 厳選ポイントの図1：光合成(葉緑体に、光・二酸化炭素・水が入り、栄養と酸素が出る) ---------- */
+function figPS(){
+ var s=T(156,18,15,"光","b","middle")+line(156,24,156,44,INK,1.5)+'<path d="M151,38 L156,44 L161,38" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+
+  '<rect x="106" y="46" width="100" height="76" rx="8" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>'+
+  TN(156,78,16,"葉緑体","b","middle")+TN(156,102,13,"光合成",null,"middle")+
+  T(72,76,14,"二酸化炭素",null,"end")+arrow(78,102,72)+
+  T(72,110,14,"水",null,"end")+arrow(78,102,106)+
+  arrow(210,238,72)+T(244,70,14,"栄養")+T(244,85,11,"(デンプンなど)","g")+
+  arrow(210,238,106)+T(244,111,14,"酸素");
+ return svg(134,"光合成の図。葉緑体に、光、二酸化炭素、水が入る。葉緑体で光合成が行われ、デンプンなどの栄養と、酸素ができる",s)}
 
-/* ---------- 厳選ポイントの図2：光合成の式(葉緑体で、二酸化炭素と水から、栄養と酸素ができる) ---------- */
-function figGas(){
- var s=T(170,26,16,"二酸化炭素＋水","b","middle")+
-  line(170,40,170,84,INK,1.5)+'<path d="M165,78 L170,84 L175,78" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+
-  T(186,66,14,"葉緑体で光合成")+
-  T(170,114,16,"デンプンなどの栄養＋酸素","b","middle");
- return svg(128,"光合成の式。葉緑体で光合成が行われ、二酸化炭素と水から、デンプンなどの栄養と酸素ができる",s)}
-
-/* ---------- 厳選ポイントの図3：呼吸(酸素を吸って、二酸化炭素を出す) ---------- */
+/* ---------- 厳選ポイントの図2：呼吸(酸素を吸って、二酸化炭素を出す) ---------- */
 function figResp(){
  var cy=30,s=T(78,cy+5,14,"酸素",null,"end")+arrow(84,108,cy)+
   '<rect x="112" y="'+(cy-18)+'" width="116" height="36" rx="6" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>'+TN(170,cy+5.5,15,"植物","b","middle")+
   arrow(232,256,cy)+T(262,cy+5,14,"二酸化炭素");
  return svg(60,"呼吸の図。酸素が植物に入り、二酸化炭素が植物から出ていく",s)}
+
+/* ---------- 厳選ポイントの図3：BTB溶液の3本の試験管。真ん中の緑色(息を吹き込んだ液)から、二酸化炭素が増えると黄色、減ると青色 ---------- */
+function larrow(x1,x2,y){return line(x1,y,x2,y,INK,1.5)+'<path d="M'+(x2+6)+','+(y-5)+' L'+x2+','+y+' L'+(x2+6)+','+(y+5)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
+function figTubes(){
+ var X=[40,170,300],col=[LB,LG,LY],nm=["青色","緑色","黄色"],s='',i;
+ for(i=0;i<3;i++)s+=tube(X[i],col[i],0,false)+T(X[i],154,15,nm[i],"b","middle");
+ s+=T(170,172,12,"息を吹き込んだ液","g","middle")+
+  larrow(138,72,86)+T(105,72,11.5,"二酸化炭素が",null,"middle")+T(105,108,14,"減る","b","middle")+
+  arrow(202,268,86)+T(235,72,11.5,"二酸化炭素が",null,"middle")+T(235,108,14,"増える","b","middle");
+ return svg(180,"BTB溶液の試験管が3本。左から、青色、緑色、黄色。真ん中の緑色は、息を吹き込んだ液。二酸化炭素が増えると、右の黄色になる。二酸化炭素が減ると、左の青色にもどる",s)}
 
 /* ---------- 問題・解答の図：試験管A〜C ----------
    show=false：問題の図(3本とも緑。Bはアルミホイルで包んである)。show=true：解答の図(色が変わり、二酸化炭素の増減を書く) */
@@ -65,10 +71,10 @@ var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var NW=function(t){return '<span style="white-space:nowrap">'+t+'</span>'};
 var TIGHT='<style>.pick .pk-bt{gap:.4rem}.pick button.choice{padding:.1rem .55rem;min-width:2.6rem}</style>';
 
-var POINT='<p>ここでは、青色のBTB溶液に息を吹き込んで、緑色にした液を使います。</p>'+figBar()+
- '<p>光合成では、二酸化炭素を使います。</p>'+figGas()+
- '<p>呼吸では、酸素を吸って、二酸化炭素を出します。</p>'+figResp()+
- SMN+'※ 呼吸は、光が当たっていても、いつも行われています。</p>';
+var POINT='<p>光合成は、葉緑体で行われます。光を使って、二酸化炭素と水から、栄養と酸素をつくります。</p>'+figPS()+
+ '<p>呼吸は、光が当たっていても、当たっていなくても、いつも行われています。呼吸では、酸素を吸って、二酸化炭素を出します。</p>'+figResp()+
+ '<p>ここでは、青色のBTB溶液に息を吹き込んで、緑色にした液を使います。</p>'+figTubes()+
+ '<p>液の色を見ると、二酸化炭素が増えたか、減ったかが分かります。</p>';
 
 var QBODY=TIGHT+'<p>青いBTB溶液を入れた水に、息を吹き込んで、緑色にした。この液を3本の試験管A〜Cに入れ、同じ場所に置いた。しばらくして、液の色を調べた。</p>'+figQ(false)+
  '<p>(1) A〜Cの液の色は、それぞれ何色になったか。丸をタップして選びなさい。</p>';
