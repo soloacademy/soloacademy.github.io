@@ -8,35 +8,31 @@ function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font
 function TN(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'" style="stroke:none"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"/>'}
 function svg(h,label,body){return '<div class="fig"><svg viewBox="0 0 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
+function svgY(y0,h,label,body){return '<div class="fig" style="margin:.4rem 0"><svg viewBox="0 '+y0+' 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
 function arrow(x1,x2,y){return line(x1,y,x2,y,INK,1.5)+'<path d="M'+(x2-6)+','+(y-5)+' L'+x2+','+y+' L'+(x2-6)+','+(y+5)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 
-/* ---------- 厳選ポイントの図1：光合成(葉緑体に、光・二酸化炭素・水が入り、栄養と酸素が出る) ---------- */
-function figPS(){
- var s=T(156,18,15,"光","b","middle")+line(156,24,156,44,INK,1.5)+'<path d="M151,38 L156,44 L161,38" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+
-  '<rect x="106" y="46" width="100" height="76" rx="8" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>'+
-  TN(156,78,16,"葉緑体","b","middle")+TN(156,102,13,"光合成",null,"middle")+
-  T(72,76,14,"二酸化炭素",null,"end")+arrow(78,102,72)+
-  T(72,110,14,"水",null,"end")+arrow(78,102,106)+
-  arrow(210,238,72)+T(244,70,14,"栄養")+T(244,85,11,"(デンプンなど)","g")+
-  arrow(210,238,106)+T(244,111,14,"酸素");
- return svg(134,"光合成の図。葉緑体に、光、二酸化炭素、水が入る。葉緑体で光合成が行われ、デンプンなどの栄養と、酸素ができる",s)}
-
-/* ---------- 厳選ポイントの図2：呼吸(酸素を吸って、二酸化炭素を出す) ---------- */
-function figResp(){
- var cy=30,s=T(78,cy+5,14,"酸素",null,"end")+arrow(84,108,cy)+
-  '<rect x="112" y="'+(cy-18)+'" width="116" height="36" rx="6" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>'+TN(170,cy+5.5,15,"植物","b","middle")+
-  arrow(232,256,cy)+T(262,cy+5,14,"二酸化炭素");
- return svg(60,"呼吸の図。酸素が植物に入り、二酸化炭素が植物から出ていく",s)}
+/* ---------- 厳選ポイントの図1：昼と夜(光が当たる・当たらない)で、植物の中のはたらきを並べる。呼吸は、どちらでも行われる ---------- */
+function dnPanel(x0,title,ps,cap){
+ var s=T(x0+80,20,15,title,"b","middle")+
+  '<rect x="'+x0+'" y="34" width="160" height="118" rx="8" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>'+
+  '<rect x="'+(x0+12)+'" y="44" width="136" height="46" rx="6" fill="#fff" stroke="'+(ps?INK:GRAY)+'" stroke-width="'+(ps?1.2:1)+'"'+(ps?'':' stroke-dasharray="4 3"')+'/>'+
+  TN(x0+80,61,12,"光合成",ps?"b":"g","middle")+TN(x0+80,81,13,ps?"二酸化炭素 → 酸素":"行われない",ps?null:"g","middle")+
+  '<rect x="'+(x0+12)+'" y="98" width="136" height="46" rx="6" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+
+  TN(x0+80,115,12,"呼吸","b","middle")+TN(x0+80,135,13,"酸素 → 二酸化炭素",null,"middle")+
+  T(x0+80,176,14,cap,"b","middle");
+ return s}
+function figDN(){
+ return svg(186,"光が当たるときと、当たらないときの、植物のはたらきの図。左の、光が当たるときは、光合成で二酸化炭素が入って酸素が出て、呼吸で酸素が入って二酸化炭素が出る。光合成と呼吸の、両方が行われる。右の、光が当たらないときは、光合成は行われず、呼吸だけが行われる。呼吸は、どちらのときも行われる",
+  dnPanel(4,"光が当たる",true,"光合成と呼吸")+dnPanel(176,"光が当たらない",false,"呼吸だけ"))}
 
 /* ---------- 厳選ポイントの図3：BTB溶液の3本の試験管。真ん中の緑色(息を吹き込んだ液)から、二酸化炭素が増えると黄色、減ると青色 ---------- */
 function larrow(x1,x2,y){return line(x1,y,x2,y,INK,1.5)+'<path d="M'+(x2+6)+','+(y-5)+' L'+x2+','+y+' L'+(x2+6)+','+(y+5)+'" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 function figTubes(){
  var X=[40,170,300],col=[LB,LG,LY],nm=["青色","緑色","黄色"],s='',i;
  for(i=0;i<3;i++)s+=tube(X[i],col[i],0,false)+T(X[i],154,15,nm[i],"b","middle");
- s+=T(170,172,12,"息を吹き込んだ液","g","middle")+
-  larrow(138,72,86)+T(105,72,11.5,"二酸化炭素が",null,"middle")+T(105,108,14,"減る","b","middle")+
+ s+=larrow(138,72,86)+T(105,72,11.5,"二酸化炭素が",null,"middle")+T(105,108,14,"減る","b","middle")+
   arrow(202,268,86)+T(235,72,11.5,"二酸化炭素が",null,"middle")+T(235,108,14,"増える","b","middle");
- return svg(180,"BTB溶液の試験管が3本。左から、青色、緑色、黄色。真ん中の緑色は、息を吹き込んだ液。二酸化炭素が増えると、右の黄色になる。二酸化炭素が減ると、左の青色にもどる",s)}
+ return svgY(26,140,"BTB溶液の試験管が3本。左から、青色、緑色、黄色。真ん中の緑色は、息を吹き込んだ液。二酸化炭素が増えると、右の黄色になる。二酸化炭素が減ると、左の青色にもどる",s)}
 
 /* ---------- 問題・解答の図：試験管A〜C ----------
    show=false：問題の図(3本とも緑。Bはアルミホイルで包んである)。show=true：解答の図(色が変わり、二酸化炭素の増減を書く) */
@@ -71,8 +67,8 @@ var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var NW=function(t){return '<span style="white-space:nowrap">'+t+'</span>'};
 var TIGHT='<style>.pick .pk-bt{gap:.4rem}.pick button.choice{padding:.1rem .55rem;min-width:2.6rem}</style>';
 
-var POINT='<p>光合成は、葉緑体で行われます。光を使って、二酸化炭素と水から、栄養と酸素をつくります。</p>'+figPS()+
- '<p>呼吸は、光が当たっていても、当たっていなくても、いつも行われています。呼吸では、酸素を吸って、二酸化炭素を出します。</p>'+figResp()+
+var POINT='<p>光合成は、葉緑体で、光を使って、二酸化炭素と水から、デンプンなどの栄養と酸素をつくるはたらきです。</p>'+
+ '<p>呼吸は、光が当たっていても、当たっていなくても、いつも行われています。酸素を吸って、二酸化炭素を出します。</p>'+figDN()+
  '<p>ここでは、青色のBTB溶液に息を吹き込んで、緑色にした液を使います。</p>'+figTubes()+
  '<p>液の色を見ると、二酸化炭素が増えたか、減ったかが分かります。</p>';
 
