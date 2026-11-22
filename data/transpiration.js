@@ -46,7 +46,7 @@ function figTable(){
         {t:["","葉を切る"],c:{cut:true},on:[0,0,1],h:90}],
   CX=[196,252,308],H=["表","裏","茎"],K=.85,FX=108,s='',y=46,cy;
  s+='<circle cx="200" cy="9" r="4.5" fill="'+BLUE+'"/>'+T(209,13,11,"気孔が開いている所","g")+line(176,20,328,20,RULE,1)+
-  arr(7,33,23,33)+T(29,37,11,"蒸散","g")+'<line x1="64" y1="33" x2="78" y2="33" stroke="'+GRAY+'" stroke-width="4.5" stroke-linecap="round"/>'+T(86,37,11,"ワセリン","g");
+  arr(24.5,33,40.5,33)+T(46.5,37,11,"蒸散","g")+'<line x1="81.5" y1="33" x2="95.5" y2="33" stroke="'+GRAY+'" stroke-width="4.5" stroke-linecap="round"/>'+T(103.5,37,11,"ワセリン","g");
  H.forEach(function(h,i){s+=T(CX[i],37,14,h,"b","middle")});
  s+=line(4,y,336,y,RULE,1);
  R.forEach(function(r){cy=y+r.h/2;
