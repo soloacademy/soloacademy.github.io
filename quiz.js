@@ -67,7 +67,17 @@ function problem(sec){
         Object.defineProperty(m,"textContent",{set:function(){}});
         marks[id]=m;
         gs(id).forEach(function(g){g.setAttribute("role","button");g.setAttribute("tabindex","0");g.setAttribute("aria-label","空欄 未記入")});
-        return {p:{type:"choice",accept:[p.answers[id]]},i:{get value(){return vals[id]||""}},m:m};
+        var pp={type:"choice"};
+        Object.defineProperty(pp,"accept",{get:function(){
+          var a=[p.answers[id]];
+          (p.swap||[]).forEach(function(g){
+            var A=g[0],B=g[1],k=A.indexOf(id),Y=B;
+            if(k<0){k=B.indexOf(id);Y=A}
+            if(k<0)return;
+            if(A.every(function(x,j){return vals[x]===p.answers[B[j]]&&vals[B[j]]===p.answers[x]}))a.push(p.answers[Y[k]]);
+          });
+          return a}});
+        return {p:pp,i:{get value(){return vals[id]||""}},m:m};
       });
       wrap.addEventListener("click",function(e){
         var g=e.target.closest?e.target.closest("[data-b]"):null;if(!g)return;
