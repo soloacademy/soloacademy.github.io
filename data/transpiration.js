@@ -35,6 +35,12 @@ function sprig(ox,c){
  s+=lab(ox+34,164,"茎","open");
  return s}
 
+/* ---------- 厳選ポイントの図：ふつうの枝と、表にワセリンをぬった枝 ---------- */
+function figPoint(){
+ var s=line(170,36,170,150,"#c9d0d7",1)+T(76,30,14,"ふつう","b","middle")+T(256,30,14,"葉の表にワセリンをぬる","b","middle")+
+  sprig(20,{top:"open",bot:"open",arrows:true})+sprig(200,{top:"block",bot:"open",arrows:true});
+ return svgY(14,162,"枝の絵が2つ。左は、ふつうの枝で、葉の表、葉の裏、茎の3か所から、水蒸気が出ていく。右は、葉の表にワセリンをぬった枝で、表は灰色にふさがれて水蒸気が出ず、葉の裏と茎の2か所から出ていく",s)}
+
 /* ---------- 問題・解答の図：A(表にワセリン)、B(裏にワセリン)、C(葉を切る)
    arrows=false：問題の図。arrows=true：解答の図(開いている所を青で、減った量を書く) ---------- */
 var PN=[
@@ -46,20 +52,23 @@ function figABC(A,amts){
  for(i=0;i<3;i++){ox=4+112*i;cx=ox+56;
   c={top:PN[i].c.top,bot:PN[i].c.bot,cut:PN[i].c.cut,arrows:A};
   s+=sprig(ox,c)+T(cx,190,14,PN[i].k,"b","middle")+T(cx,208,12,PN[i].pr,null,"middle");
-  if(A){s+=T(cx,226,12,PN[i].op,"v b","middle");if(amts)s+=T(cx,244,12,"減った量 "+amts[i],"b","middle")}}
- var lab=(A&&!amts)?"A、B、Cの3本の枝の絵。Aは、葉の表にワセリンをぬった枝で、裏と茎から、青い矢印で水蒸気が出ている。Bは、葉の裏にワセリンをぬった枝で、表と茎から出ている。Cは、葉を切った枝で、茎だけから出ている":A?"A、B、Cの3本の枝の絵。Aは、葉の表にワセリンをぬった枝で、裏と茎が開いていて、減った量は"+amts[0]+"。Bは、葉の裏にワセリンをぬった枝で、表と茎が開いていて、減った量は"+amts[1]+"。Cは、葉を切った枝で、茎だけが開いていて、減った量は"+amts[2]+"。開いている所から、青い矢印で水蒸気が出ている":
+  if(A)s+=T(cx,226,12,PN[i].op,"v b","middle")+T(cx,244,12,"減った量 "+amts[i],"b","middle")}
+ var lab=A?"A、B、Cの3本の枝の絵。Aは、葉の表にワセリンをぬった枝で、裏と茎が開いていて、減った量は"+amts[0]+"。Bは、葉の裏にワセリンをぬった枝で、表と茎が開いていて、減った量は"+amts[1]+"。Cは、葉を切った枝で、茎だけが開いていて、減った量は"+amts[2]+"。開いている所から、青い矢印で水蒸気が出ている":
   "A、B、Cの3本の枝の絵。Aは、葉の表にワセリンをぬった枝。Bは、葉の裏にワセリンをぬった枝。Cは、葉を切った枝";
- return A?svgY(44,amts?208:190,lab,s):svgY(60,160,lab,s)}
+ return A?svgY(44,208,lab,s):svgY(60,160,lab,s)}
 
 /* ---------- 文章 ---------- */
 var V=function(t){return '<span class="v">'+t+'</span>'};
 var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
+function rd(k,a,b){return '<div style="display:grid;grid-template-columns:1.7rem 1fr;align-items:baseline;margin:.55rem 0 0"><b style="grid-row:1/3;font-size:1.15rem;line-height:1.5">'+k+'</b><div style="font-size:.8rem;line-height:1.5;color:var(--muted)">'+a+'</div>'+
+ '<div style="font-size:.95rem;line-height:1.6">→ 気孔が開いているのは、<span style="white-space:nowrap">'+V(b)+'</span></div></div>'}
+var ROWS='<div style="margin:0 0 .9rem">'+rd('A','葉の表にワセリンをぬった場合','裏と茎')+rd('B','葉の裏にワセリンをぬった場合','表と茎')+rd('C','葉を切った場合','茎だけ')+'</div>';
 var NW='<span style="white-space:nowrap">';
 
 var UP='<svg width="14" height="18" viewBox="0 0 14 18" aria-hidden="true" style="vertical-align:-3px;margin-right:.45rem"><line x1="7" y1="17" x2="7" y2="3" stroke="#1f5fa8" stroke-width="2"/><path d="M2,8 L7,2 L12,8" fill="none" stroke="#1f5fa8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-var POINT='<p>蒸散は、植物の体の水が、水蒸気になって、気孔から出ていくことです。</p>'+
- '<p style="margin-bottom:0">葉にワセリンをぬる問題では、気孔の開いているところを考えましょう。</p>'+figABC(true,null)+
+var POINT='<p>蒸散は、植物の体の水が、水蒸気になって、気孔から出ていくことです。</p>'+figPoint()+
  SMN+'※ 青い矢印は、水蒸気が出ていくようすです。灰色は、ワセリンでふさいだ所です。</p>'+
+ '<p style="margin-bottom:0">葉にワセリンをぬる問題では、気孔の開いているところを考えましょう。</p>'+ROWS+
  '<div class="formula" style="white-space:normal">'+UP+NW+'減った水の量 ＝</span> '+NW+V('開いている気孔')+'からの</span>'+NW+'蒸散量の合計</span></div>';
 
 function tbl(a,b,c){
