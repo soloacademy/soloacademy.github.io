@@ -1,5 +1,5 @@
 (function(){
-var INK="#26303b",BLUE="#1f5fa8",GRAY="#8a949f",GREEN="#d9edcf",GMID="#5b8a4c";
+var INK="#26303b",BLUE="#1f5fa8",GRAY="#8a949f",GREEN="#d9edcf",GMID="#5b8a4c",GVEIN="#78a468";
 function n(v){return Math.round(v*10)/10}
 function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"/>'}
@@ -15,14 +15,17 @@ function arr(x1,y1,x2,y2){var a=Math.atan2(y2-y1,x2-x1);
 function sprig(ox,c){
  var s='',A=!!c.arrows,tY=A?58:76,bY=A?143:126,
   x=function(v){return n(ox+v)},
-  U="M"+x(38)+",96 C"+x(56)+",80 "+x(86)+",80 "+x(102)+",96",
-  L="M"+x(38)+",96 C"+x(56)+",112 "+x(86)+",112 "+x(102)+",96",
-  ALL=U+" C"+x(86)+",112 "+x(56)+",112 "+x(38)+",96 Z";
+  U="M"+x(46)+",96 C"+x(56)+",80 "+x(86)+",78 "+x(104)+",94",
+  L="M"+x(46)+",96 C"+x(60)+",114 "+x(88)+",112 "+x(104)+",94",
+  ALL=U+" C"+x(88)+",112 "+x(60)+",114 "+x(46)+",96 Z";
  function lab(xx,yy,t,st){return T(xx,yy,12,t,A?(st==="open"?"v b":"g"):null,"middle")}
+ s+=line(x(36),98,x(47),96,GMID,2.2);
  if(c.cut){
   s+='<path d="'+ALL+'" fill="none" stroke="'+GRAY+'" stroke-width="1.2" stroke-dasharray="3 3"/>';
  }else{
-  s+=path(ALL,GREEN,INK,1.2)+line(x(38),96,x(102),96,GMID,1.2);
+  s+=path(ALL,GREEN,INK,1.2);
+  [[58,66],[70,79],[82,90]].forEach(function(v){s+=line(x(v[0]),96,x(v[1]),90,GVEIN,1)+line(x(v[0]),96,x(v[1]),102,GVEIN,1)});
+  s+='<path d="M'+x(46)+',96 Q'+x(76)+',98 '+x(104)+',94" fill="none" stroke="'+GMID+'" stroke-width="1.3" stroke-linecap="round"/>';
   if(c.top==="block")s+=path(U,"none",GRAY,4.5);
   if(c.bot==="block")s+=path(L,"none",GRAY,4.5);
   if(A){
@@ -60,9 +63,9 @@ function figABC(A,amts){
 /* ---------- 文章 ---------- */
 var V=function(t){return '<span class="v">'+t+'</span>'};
 var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
-function rd(k,a,b){return '<div style="display:grid;grid-template-columns:1.5rem 1fr;align-items:baseline;margin:.55rem 0 0"><b style="grid-row:1/3;font-size:.9rem;line-height:1.7">'+k+'</b><div style="font-size:.8rem;line-height:1.5;color:var(--muted)">'+a+'</div>'+
+function rd(a,b){return '<div style="margin:.55rem 0 0"><div style="font-size:.8rem;line-height:1.5;color:var(--muted)">'+a+'</div>'+
  '<div style="font-size:.95rem;line-height:1.6">→ 気孔が開いているのは、<span style="white-space:nowrap">'+V(b)+'</span></div></div>'}
-var ROWS='<div style="margin:0 0 .9rem">'+rd('A','葉の表にワセリンをぬった場合','裏と茎')+rd('B','葉の裏にワセリンをぬった場合','表と茎')+rd('C','葉を切った場合','茎だけ')+'</div>';
+var ROWS='<div style="margin:0 0 .9rem">'+rd('葉の表にワセリンをぬった場合','裏と茎')+rd('葉の裏にワセリンをぬった場合','表と茎')+rd('葉を切った場合','茎だけ')+'</div>';
 var NW='<span style="white-space:nowrap">';
 
 var UP='<svg width="14" height="18" viewBox="0 0 14 18" aria-hidden="true" style="vertical-align:-3px;margin-right:.45rem"><line x1="7" y1="17" x2="7" y2="3" stroke="#1f5fa8" stroke-width="2"/><path d="M2,8 L7,2 L12,8" fill="none" stroke="#1f5fa8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
