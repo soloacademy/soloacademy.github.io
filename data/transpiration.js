@@ -63,15 +63,18 @@ function figABC(A,amts){
 /* ---------- 文章 ---------- */
 var V=function(t){return '<span class="v">'+t+'</span>'};
 var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
-function rd(a,b){return '<div style="margin:.55rem 0 0"><div style="font-size:.8rem;line-height:1.5;color:var(--muted)">'+a+'</div>'+
- '<div style="font-size:.95rem;line-height:1.6">→ 気孔が開いているのは、<span style="white-space:nowrap">'+V(b)+'</span></div></div>'}
-var ROWS='<div style="margin:0 0 .9rem">'+rd('葉の表にワセリンをぬった場合','裏と茎')+rd('葉の裏にワセリンをぬった場合','表と茎')+rd('葉を切った場合','茎だけ')+'</div>';
+var ON='<span class="v" style="font-size:1.1rem;line-height:1">●</span>',OFF='<span style="color:#9aa5b1">－</span>';
+function row(a,t,u,k){return '<tr><td style="padding:.4rem .5rem .4rem 0">'+a+'</td>'+[t,u,k].map(function(b){return '<td style="padding:.4rem .5rem;min-width:2.6rem">'+(b?ON:OFF)+'</td>'}).join('')+'</tr>'}
+var TH='font-size:.9rem;color:var(--ink);font-weight:700;padding:.1rem .5rem .3rem;text-align:center';
+var ROWS='<div style="overflow-x:auto"><table class="mx" style="margin:.8rem 0 .9rem;font-size:.9rem"><tr><th scope="col" style="padding:.1rem .5rem .3rem 0;font-size:.8rem">気孔が開いている所</th>'+
+ '<th scope="col" style="'+TH+'">表</th><th scope="col" style="'+TH+'">裏</th><th scope="col" style="'+TH+'">茎</th></tr>'+
+ row('葉の表にワセリン',0,1,1)+row('葉の裏にワセリン',1,0,1)+row('葉を切る',0,0,1)+'</table></div>';
 var NW='<span style="white-space:nowrap">';
 
 var UP='<svg width="14" height="18" viewBox="0 0 14 18" aria-hidden="true" style="vertical-align:-3px;margin-right:.45rem"><line x1="7" y1="17" x2="7" y2="3" stroke="#1f5fa8" stroke-width="2"/><path d="M2,8 L7,2 L12,8" fill="none" stroke="#1f5fa8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 var POINT='<p>蒸散は、植物の体の水が、水蒸気になって、気孔から出ていくことです。</p>'+figPoint()+
  SMN+'※ 青い矢印は、水蒸気が出ていくようすです。灰色は、ワセリンでふさいだ所です。</p>'+
- '<p style="margin-bottom:0">葉にワセリンをぬる問題では、気孔の開いているところを考えましょう。</p>'+ROWS+
+ ROWS+
  '<div class="formula" style="white-space:normal">'+UP+NW+'減った水の量 ＝</span> '+NW+V('開いている気孔')+'からの</span>'+NW+'蒸散量の合計</span></div>';
 
 function tbl(a,b,c){
