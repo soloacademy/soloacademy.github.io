@@ -31,11 +31,11 @@ function sprig(ox,c){
   if(A){
    if(c.top==="open")s+=arr(ox+70,82,ox+70,64);
    if(c.bot==="open")s+=arr(ox+70,111,ox+70,129)}
-  s+=lab(ox+70,tY,"表",c.top)+lab(ox+70,bY,"裏",c.bot);
+  if(!c.nolab)s+=lab(ox+70,tY,"表",c.top)+lab(ox+70,bY,"裏",c.bot);
  }
  s+='<rect x="'+x(30)+'" y="60" width="8" height="90" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>';
  if(A)s+=arr(ox+28,132,ox+10,132);
- s+=lab(ox+34,164,"茎","open");
+ if(!c.nolab)s+=lab(ox+34,164,"茎","open");
  return s}
 
 /* ---------- 厳選ポイントの図1：ふつうの枝(1つ) ---------- */
@@ -43,22 +43,20 @@ function figPoint(){
  var s=T(170,30,12,"ふつう","g","middle")+sprig(113,{top:"open",bot:"open",arrows:true});
  return svgY(14,162,"ふつうの枝の絵。葉の表、葉の裏、茎の3か所から、水蒸気が出ていく",s)}
 
-/* ---------- 厳選ポイントの図2：表。頭に、処理の名前と枝の図。左に、表・裏・茎 ---------- */
+/* ---------- 厳選ポイントの図2：表。頭(列)に、表・裏・茎。左に、処理の名前と枝の図(文字なし) ---------- */
 function figTable(){
- var C=[{t:["葉の表に","ワセリン"],c:{top:"block",bot:"open"},on:[0,1,1]},
+ var R=[{t:["葉の表に","ワセリン"],c:{top:"block",bot:"open"},on:[0,1,1]},
         {t:["葉の裏に","ワセリン"],c:{top:"open",bot:"block"},on:[1,0,1]},
         {t:["","葉を切る"],c:{cut:true},on:[0,0,1]}],
-  CX=[83,184,285],RL=["表","裏","茎"],Y0=158,RH=32,K=.88,s='',i,k,cy;
- C.forEach(function(col,i){
-  s+=(col.t[0]?T(CX[i],16,13,col.t[0],"b","middle"):'')+T(CX[i],32,13,col.t[1],"b","middle");
-  s+='<g transform="translate('+n(CX[i]*(1-K))+',0) scale('+K+')">'+sprig(CX[i]-57,{top:col.c.top,bot:col.c.bot,cut:col.c.cut,arrows:true})+'</g>'});
+  CX=[196,252,308],H=["表","裏","茎"],Y0=32,RH=90,K=.85,FX=108,s='',k,cy;
+ H.forEach(function(h,i){s+=T(CX[i],21,14,h,"b","middle")});
  for(k=0;k<=3;k++)s+=line(4,Y0+RH*k,336,Y0+RH*k,RULE,1);
- for(k=0;k<3;k++){cy=Y0+RH*k+RH/2;
-  s+=T(16,cy+5,14,RL[k],"b","middle");
-  C.forEach(function(col,i){
-   s+=col.on[k]?'<circle cx="'+CX[i]+'" cy="'+n(cy)+'" r="5.5" fill="'+BLUE+'"/>':line(CX[i]-5,cy,CX[i]+5,cy,"#9aa5b1",1.5)})}
- s+='<circle cx="10" cy="273" r="4.5" fill="'+BLUE+'"/>'+T(20,277,11,"気孔が開いている所","g");
- return svgY(0,284,"表。左から、葉の表にワセリンをぬった枝、葉の裏にワセリンをぬった枝、葉を切った枝の、3列。それぞれの枝の絵の下に、気孔が開いている所の表がある。葉の表にワセリンをぬった枝は、裏と茎が開いている。葉の裏にワセリンをぬった枝は、表と茎が開いている。葉を切った枝は、茎だけが開いている",s)}
+ R.forEach(function(r,k){cy=Y0+RH*k+RH/2;
+  if(r.t[0])s+=T(4,cy-4,13,r.t[0],"b")+T(4,cy+12,13,r.t[1],"b");else s+=T(4,cy+5,13,r.t[1],"b");
+  s+='<g transform="translate('+n(FX*(1-K))+','+n(cy-K*107)+') scale('+K+')">'+sprig(FX-57,{top:r.c.top,bot:r.c.bot,cut:r.c.cut,arrows:true,nolab:true})+'</g>';
+  r.on.forEach(function(o,i){s+=o?'<circle cx="'+CX[i]+'" cy="'+n(cy)+'" r="5.5" fill="'+BLUE+'"/>':line(CX[i]-5,cy,CX[i]+5,cy,"#9aa5b1",1.5)})});
+ s+='<circle cx="10" cy="317" r="4.5" fill="'+BLUE+'"/>'+T(20,321,11,"気孔が開いている所","g");
+ return svgY(0,328,"表。上の列の見出しは、左から、表、裏、茎。左に、3つの枝の絵が縦に並ぶ。上から、葉の表にワセリンをぬった枝は、裏と茎が開いている。葉の裏にワセリンをぬった枝は、表と茎が開いている。葉を切った枝は、茎だけが開いている。開いている所に、青い丸がある",s)}
 
 /* ---------- 問題・解答の図：A(表にワセリン)、B(裏にワセリン)、C(葉を切る)
    arrows=false：問題の図。arrows=true：解答の図(開いている所を青で、減った量を書く) ---------- */
