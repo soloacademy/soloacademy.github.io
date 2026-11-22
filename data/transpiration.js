@@ -1,5 +1,5 @@
 (function(){
-var INK="#26303b",BLUE="#1f5fa8",GRAY="#8a949f",GREEN="#d9edcf",GMID="#5b8a4c",GVEIN="#78a468";
+var INK="#26303b",BLUE="#1f5fa8",GRAY="#8a949f",GREEN="#d9edcf",GMID="#5b8a4c",GVEIN="#78a468",RULE="#c9d0d7";
 function n(v){return Math.round(v*10)/10}
 function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
 function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'+n(x2)+'" y2="'+n(y2)+'" stroke="'+k+'" stroke-width="'+(w||1)+'"/>'}
@@ -38,11 +38,27 @@ function sprig(ox,c){
  s+=lab(ox+34,164,"茎","open");
  return s}
 
-/* ---------- 厳選ポイントの図：ふつうの枝と、表にワセリンをぬった枝 ---------- */
+/* ---------- 厳選ポイントの図1：ふつうの枝(1つ) ---------- */
 function figPoint(){
- var s=line(166,36,166,150,"#c9d0d7",1)+T(76,30,12,"ふつう","g","middle")+T(256,30,12,"葉の表にワセリンをぬる","g","middle")+
-  sprig(20,{top:"open",bot:"open",arrows:true})+sprig(200,{top:"block",bot:"open",arrows:true});
- return svgY(14,162,"枝の絵が2つ。左は、ふつうの枝で、葉の表、葉の裏、茎の3か所から、水蒸気が出ていく。右は、葉の表にワセリンをぬった枝で、表は灰色にふさがれて水蒸気が出ず、葉の裏と茎の2か所から出ていく",s)}
+ var s=T(170,30,12,"ふつう","g","middle")+sprig(113,{top:"open",bot:"open",arrows:true});
+ return svgY(14,162,"ふつうの枝の絵。葉の表、葉の裏、茎の3か所から、水蒸気が出ていく",s)}
+
+/* ---------- 厳選ポイントの図2：表。頭に、処理の名前と枝の図。左に、表・裏・茎 ---------- */
+function figTable(){
+ var C=[{t:["葉の表に","ワセリン"],c:{top:"block",bot:"open"},on:[0,1,1]},
+        {t:["葉の裏に","ワセリン"],c:{top:"open",bot:"block"},on:[1,0,1]},
+        {t:["","葉を切る"],c:{cut:true},on:[0,0,1]}],
+  CX=[83,184,285],RL=["表","裏","茎"],Y0=158,RH=32,K=.88,s='',i,k,cy;
+ C.forEach(function(col,i){
+  s+=(col.t[0]?T(CX[i],16,13,col.t[0],"b","middle"):'')+T(CX[i],32,13,col.t[1],"b","middle");
+  s+='<g transform="translate('+n(CX[i]*(1-K))+',0) scale('+K+')">'+sprig(CX[i]-57,{top:col.c.top,bot:col.c.bot,cut:col.c.cut,arrows:true})+'</g>'});
+ for(k=0;k<=3;k++)s+=line(4,Y0+RH*k,336,Y0+RH*k,RULE,1);
+ for(k=0;k<3;k++){cy=Y0+RH*k+RH/2;
+  s+=T(16,cy+5,14,RL[k],"b","middle");
+  C.forEach(function(col,i){
+   s+=col.on[k]?'<circle cx="'+CX[i]+'" cy="'+n(cy)+'" r="5.5" fill="'+BLUE+'"/>':line(CX[i]-5,cy,CX[i]+5,cy,"#9aa5b1",1.5)})}
+ s+='<circle cx="10" cy="273" r="4.5" fill="'+BLUE+'"/>'+T(20,277,11,"気孔が開いている所","g");
+ return svgY(0,284,"表。左から、葉の表にワセリンをぬった枝、葉の裏にワセリンをぬった枝、葉を切った枝の、3列。それぞれの枝の絵の下に、気孔が開いている所の表がある。葉の表にワセリンをぬった枝は、裏と茎が開いている。葉の裏にワセリンをぬった枝は、表と茎が開いている。葉を切った枝は、茎だけが開いている",s)}
 
 /* ---------- 問題・解答の図：A(表にワセリン)、B(裏にワセリン)、C(葉を切る)
    arrows=false：問題の図。arrows=true：解答の図(開いている所を青で、減った量を書く) ---------- */
@@ -63,18 +79,12 @@ function figABC(A,amts){
 /* ---------- 文章 ---------- */
 var V=function(t){return '<span class="v">'+t+'</span>'};
 var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
-var ON='<span class="v" style="font-size:1.1rem;line-height:1">●</span>',OFF='<span style="color:#9aa5b1">－</span>';
-function row(a,t,u,k){return '<tr><td style="padding:.4rem .5rem .4rem 0">'+a+'</td>'+[t,u,k].map(function(b){return '<td style="padding:.4rem .5rem;min-width:2.6rem">'+(b?ON:OFF)+'</td>'}).join('')+'</tr>'}
-var TH='font-size:.9rem;color:var(--ink);font-weight:700;padding:.1rem .5rem .3rem;text-align:center';
-var ROWS='<div style="overflow-x:auto"><table class="mx" style="margin:.8rem 0 .9rem;font-size:.9rem"><tr><th scope="col" style="padding:.1rem .5rem .3rem 0;font-size:.8rem">気孔が開いている所</th>'+
- '<th scope="col" style="'+TH+'">表</th><th scope="col" style="'+TH+'">裏</th><th scope="col" style="'+TH+'">茎</th></tr>'+
- row('葉の表にワセリン',0,1,1)+row('葉の裏にワセリン',1,0,1)+row('葉を切る',0,0,1)+'</table></div>';
 var NW='<span style="white-space:nowrap">';
 
 var UP='<svg width="14" height="18" viewBox="0 0 14 18" aria-hidden="true" style="vertical-align:-3px;margin-right:.45rem"><line x1="7" y1="17" x2="7" y2="3" stroke="#1f5fa8" stroke-width="2"/><path d="M2,8 L7,2 L12,8" fill="none" stroke="#1f5fa8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 var POINT='<p>蒸散は、植物の体の水が、水蒸気になって、気孔から出ていくことです。</p>'+figPoint()+
  SMN+'※ 青い矢印は、水蒸気が出ていくようすです。灰色は、ワセリンでふさいだ所です。</p>'+
- ROWS+
+ figTable()+
  '<div class="formula" style="white-space:normal">'+UP+NW+'減った水の量 ＝</span> '+NW+V('開いている気孔')+'からの</span>'+NW+'蒸散量の合計</span></div>';
 
 function tbl(a,b,c){
