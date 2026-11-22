@@ -65,15 +65,15 @@ function figBrace(){
 /* ---------- ノート用の図：書く順番を、3つの段で見せる。今の段は色つき、前の段は薄い灰色。棒は、書く場所の目安(答えは書かない) ---------- */
 function bar(x,y,w,h,k){return '<rect x="'+n(x)+'" y="'+n(y)+'" width="'+w+'" height="'+h+'" rx="2" fill="'+k+'"/>'}
 function figNote(){
- var TT=["① 栄養素","② 分解後","③ 消化液と消化酵素"],LG="#c9d0d7",BL="#1f5fa8",RD="#c2410c",s='',k,i,y0,cy;
+ var TT=["① 栄養素","② 矢印と分解後","③ 消化液と消化酵素"],LG="#c9d0d7",BL="#1f5fa8",RD="#c2410c",s='',k,i,y0,cy;
  for(k=0;k<3;k++){y0=k*112;
   if(k)s+=line(4,y0-4,336,y0-4,LG,1);
   s+=T(4,y0+16,13,TT[k],"b");
   for(i=0;i<3;i++){cy=y0+40+28*i;
    s+=bar(9,cy-5,56,10,k===0?INK:LG);
-   if(k>=1)s+=bar(XR-52,cy-5,104,10,k===1?RD:LG);
-   if(k>=2)s+=arrow(XA1,XA2,cy,INK)+bar(XC-38,cy-11,76,5,BL)+bar(XC-38,cy+6,76,5,BL)}}
- return svg(336,"ノート用の図。書く順番を、3つの段で示している。1段目は、栄養素を、左にたてに3つ書く。2段目は、右に、分解後の物質を書く。3段目は、栄養素と分解後の物質の間に、右向きの矢印を書き、矢印の上と下に、消化液と消化酵素を書く",s)}
+   if(k>=1)s+=arrow(XA1,XA2,cy,k===1?INK:LG)+bar(XR-52,cy-5,104,10,k===1?RD:LG);
+   if(k>=2)s+=bar(XC-38,cy-11,76,5,BL)+bar(XC-38,cy+6,76,5,BL)}}
+ return svg(336,"ノート用の図。書く順番を、3つの段で示している。1段目は、栄養素を、左にたてに3つ書く。2段目は、栄養素の右に、右向きの矢印と、分解後の物質を書く。3段目は、矢印の上と下に、消化液と消化酵素を書く",s)}
 
 /* ---------- 文章 ---------- */
 var SM='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
@@ -103,7 +103,7 @@ no:"2-14",title:"消化と吸収",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:POINT},
 {type:"problem",title:"問題",body:QBODY,
- parts:[{type:"tree",svg:fig1("blank"),answers:ANS,choices:CH,reuse:true}]},
+ parts:[{type:"tree",svg:fig1("blank"),answers:ANS,choices:CH,reuse:true,swap:[[["a1","a2"],["a3","a4"]],[["a5","a6"],["a7","a8"]]]}]},
 {type:"answer",html:ANSW},
 {type:"problem",title:"補充問題",body:SBODY,
  parts:[
