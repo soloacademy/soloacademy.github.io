@@ -99,7 +99,7 @@ var NOTE='<p>ノートに、消化の表を書いてみましょう。何も見�
  '<p>書けたら、厳選ポイントの表と見くらべて、まちがいを直しましょう。</p>';
 
 window.UNIT={
-no:"2-14",title:"消化と吸収",
+no:"2-13",title:"消化と吸収",
 sections:[
 {type:"text",point:true,title:"厳選ポイント",html:POINT},
 {type:"problem",title:"問題",body:QBODY,
