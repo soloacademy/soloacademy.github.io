@@ -25,13 +25,13 @@ function figEq(){
 function ray3(x){return line(x,17,x,29,INK,1.5)+'<path d="M'+(x-4)+',24 L'+x+',29 L'+(x+4)+',24" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'}
 function figBoth(){
  var X=180,s=T(X,12,14,"光","b","middle")+ray3(165)+ray3(180)+ray3(195)+
-  '<rect x="135" y="32" width="90" height="76" rx="12" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+
-  '<rect x="145" y="40" width="70" height="30" rx="8" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>'+
+  '<rect x="145" y="32" width="70" height="76" rx="12" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+
+  '<rect x="153" y="40" width="54" height="30" rx="8" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>'+
   TN(X,53,12,"葉緑体",null,"middle")+TN(X,102,13,"細胞",null,"middle")+
   arrow(104,256,62)+larrow(256,104,80)+
-  T(4,76,13,"二酸化炭素＋水","b")+T(264,76,13,"栄養＋酸素","b")+T(264,94,10.5,"(デンプンなど)","g")+
+  T(4,76,13,"二酸化炭素＋水","b")+T(266,76,13,"栄養＋酸素","b")+T(268,91,10.5,"(デンプンなど)","g")+T(108,55,10,"光合成","m b")+T(218,98,10,"細胞呼吸","v b")+
   line(X,108,X,126,INK,1.5)+'<path d="M175,120 L180,126 L185,120" fill="none" stroke="'+INK+'" stroke-width="1.5"/>'+T(X,143,13,"エネルギー","b","middle");
- return svgY(0,150,"光合成と細胞呼吸の式。左の、二酸化炭素と水から、右の、栄養と酸素へ向かう、右向きの矢印が光合成。栄養は、デンプンなど。その下の、右から左へ向かう、左向きの矢印が細胞呼吸。2本の矢印は、細胞の中を通り、右向きの矢印は、細胞の中の薄い葉緑体を通る。葉緑体には、上から光が当たっている。細胞の下へ、エネルギーが出ていく",s)}
+ return svgY(0,150,"光合成と細胞呼吸の式。左の、二酸化炭素と水から、右の、栄養と酸素へ向かう、右向きの矢印が光合成。栄養は、デンプンなど。その下の、右から左へ向かう、左向きの矢印が細胞呼吸。2本の矢印は、細胞の中を通り、右向きの矢印は、細胞の中の薄い葉緑体を通る。葉緑体には、上から光が当たっている。細胞の下へ、エネルギーが出ていく。右向きの矢印の左上に、赤で光合成、左向きの矢印の右下に、青で細胞呼吸と書いてある",s)}
 
 /* ---------- 厳選ポイントの図1：昼と夜(光が当たる・当たらない)で、植物の中のはたらきを並べる。呼吸は、どちらでも行われる ---------- */
 function dnPanel(x0,title,ps,cap){
@@ -89,9 +89,6 @@ var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var NW=function(t){return '<span style="white-space:nowrap">'+t+'</span>'};
 var TIGHT='<style>.pick .pk-bt{gap:.4rem}.pick button.choice{padding:.1rem .55rem;min-width:2.6rem}</style>';
 
-var CMP='<div style="display:grid;grid-template-columns:max-content 1fr;column-gap:.6rem;row-gap:.5rem;align-items:baseline;margin:.8rem 0">'+
- '<b>呼吸</b><span style="font-size:.75rem">◀ からだ全体で、<span style="white-space:nowrap">酸素をとり入れて、</span><span style="white-space:nowrap">二酸化炭素を出す</span></span>'+
- '<b>細胞呼吸</b><span style="font-size:.75rem">◀ 細胞の中で、<span style="white-space:nowrap">栄養を分解して、</span><span style="white-space:nowrap">エネルギーをとり出す</span></span></div>';
 var HD='font-size:1.05rem;font-weight:700;line-height:1.5;margin:1.8rem 0 .3rem;padding-bottom:.2rem;border-bottom:1px solid #c9d0d7';
 function hd(t,first){return '<h3 style="'+HD+(first?';margin-top:.9rem':'')+'">'+t+'</h3>'}
 var POINT=hd('光合成',true)+
@@ -102,10 +99,7 @@ var POINT=hd('光合成',true)+
  '<p>実験では、青色のBTB溶液を入れた水に息を吹き込んで、緑色にした液を使います。</p>'+figTubes()+
  '<p>液の色を見ると、二酸化炭素が増えたか、減ったかが分かります。</p>'+
  hd('細胞呼吸')+
- '<p>細胞呼吸は、細胞の中で、酸素を使って栄養を分解し、エネルギーをとり出すはたらきです。このとき、二酸化炭素と水ができます。</p>'+figBoth()+
- SMN+'※ 細胞呼吸の式は、光合成の式の、左と右を入れかえた形です。</p>'+
- '<p style="margin-bottom:0">呼吸と細胞呼吸の、ちがいに注意しましょう。</p>'+CMP+
- SMN+'※ 呼吸でとり入れた酸素を、細胞呼吸で使います。</p>';
+ '<p>細胞呼吸は、細胞の中で、酸素を使って栄養を分解し、エネルギーをとり出すはたらきです。このとき、二酸化炭素と水ができます。</p>'+figBoth();
 
 var QBODY=TIGHT+'<p>青色のBTB溶液を入れた水に息を吹き込んで、緑色にした。この液を3本の試験管A〜Cに入れ、同じ場所に置いた。しばらくして、液の色を調べた。</p>'+figQ(false);
 
