@@ -37,7 +37,7 @@ function sprig(ox,c){
 
 /* ---------- 厳選ポイントの図：ふつうの枝と、表にワセリンをぬった枝 ---------- */
 function figPoint(){
- var s=line(170,36,170,150,"#c9d0d7",1)+T(76,30,14,"ふつう","b","middle")+T(256,30,14,"葉の表にワセリンをぬる","b","middle")+
+ var s=line(166,36,166,150,"#c9d0d7",1)+T(76,30,12,"ふつう","g","middle")+T(256,30,12,"葉の表にワセリンをぬる","g","middle")+
   sprig(20,{top:"open",bot:"open",arrows:true})+sprig(200,{top:"block",bot:"open",arrows:true});
  return svgY(14,162,"枝の絵が2つ。左は、ふつうの枝で、葉の表、葉の裏、茎の3か所から、水蒸気が出ていく。右は、葉の表にワセリンをぬった枝で、表は灰色にふさがれて水蒸気が出ず、葉の裏と茎の2か所から出ていく",s)}
 
@@ -60,7 +60,7 @@ function figABC(A,amts){
 /* ---------- 文章 ---------- */
 var V=function(t){return '<span class="v">'+t+'</span>'};
 var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
-function rd(k,a,b){return '<div style="display:grid;grid-template-columns:1.7rem 1fr;align-items:baseline;margin:.55rem 0 0"><b style="grid-row:1/3;font-size:1.15rem;line-height:1.5">'+k+'</b><div style="font-size:.8rem;line-height:1.5;color:var(--muted)">'+a+'</div>'+
+function rd(k,a,b){return '<div style="display:grid;grid-template-columns:1.5rem 1fr;align-items:baseline;margin:.55rem 0 0"><b style="grid-row:1/3;font-size:.9rem;line-height:1.7">'+k+'</b><div style="font-size:.8rem;line-height:1.5;color:var(--muted)">'+a+'</div>'+
  '<div style="font-size:.95rem;line-height:1.6">→ 気孔が開いているのは、<span style="white-space:nowrap">'+V(b)+'</span></div></div>'}
 var ROWS='<div style="margin:0 0 .9rem">'+rd('A','葉の表にワセリンをぬった場合','裏と茎')+rd('B','葉の裏にワセリンをぬった場合','表と茎')+rd('C','葉を切った場合','茎だけ')+'</div>';
 var NW='<span style="white-space:nowrap">';
