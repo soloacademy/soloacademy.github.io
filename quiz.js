@@ -81,7 +81,7 @@ function problem(sec){
         x.onclick=function(){
           var t=(sel&&!vals[sel])?sel:ids.filter(function(k){return !vals[k]})[0];
           if(!t)return;
-          put(t,c);x.disabled=true;setSel(nextId());
+          put(t,c);x.disabled=!p.reuse;setSel(nextId());
         };
         cs.appendChild(x);
       });
