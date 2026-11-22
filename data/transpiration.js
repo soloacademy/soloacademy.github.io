@@ -38,25 +38,24 @@ function sprig(ox,c){
  if(!c.nolab)s+=lab(ox+34,164,"茎","open");
  return s}
 
-/* ---------- 厳選ポイントの図1：ふつうの枝(1つ) ---------- */
-function figPoint(){
- var s=T(170,30,12,"ふつう","g","middle")+sprig(113,{top:"open",bot:"open",arrows:true});
- return svgY(14,162,"ふつうの枝の絵。葉の表、葉の裏、茎の3か所から、水蒸気が出ていく",s)}
-
-/* ---------- 厳選ポイントの図2：表。頭(列)に、表・裏・茎。左に、処理の名前と枝の図(文字なし) ---------- */
+/* ---------- 厳選ポイントの図：表。頭(列)に、表・裏・茎。左に、処理の名前と枝の図。1行目＝ふつう(文字つきのお手本) ---------- */
 function figTable(){
- var R=[{t:["葉の表に","ワセリン"],c:{top:"block",bot:"open"},on:[0,1,1]},
-        {t:["葉の裏に","ワセリン"],c:{top:"open",bot:"block"},on:[1,0,1]},
-        {t:["","葉を切る"],c:{cut:true},on:[0,0,1]}],
-  CX=[196,252,308],H=["表","裏","茎"],Y0=32,RH=90,K=.85,FX=108,s='',k,cy;
+ var R=[{t:["","ふつう"],c:{top:"open",bot:"open"},on:[1,1,1],h:112,lab:true},
+        {t:["葉の表に","ワセリン"],c:{top:"block",bot:"open"},on:[0,1,1],h:90},
+        {t:["葉の裏に","ワセリン"],c:{top:"open",bot:"block"},on:[1,0,1],h:90},
+        {t:["","葉を切る"],c:{cut:true},on:[0,0,1],h:90}],
+  CX=[196,252,308],H=["表","裏","茎"],K=.85,FX=108,s='',y=32,cy;
  H.forEach(function(h,i){s+=T(CX[i],21,14,h,"b","middle")});
- for(k=0;k<=3;k++)s+=line(4,Y0+RH*k,336,Y0+RH*k,RULE,1);
- R.forEach(function(r,k){cy=Y0+RH*k+RH/2;
+ s+=line(4,y,336,y,RULE,1);
+ R.forEach(function(r){cy=y+r.h/2;
   if(r.t[0])s+=T(4,cy-4,13,r.t[0],"b")+T(4,cy+12,13,r.t[1],"b");else s+=T(4,cy+5,13,r.t[1],"b");
-  s+='<g transform="translate('+n(FX*(1-K))+','+n(cy-K*107)+') scale('+K+')">'+sprig(FX-57,{top:r.c.top,bot:r.c.bot,cut:r.c.cut,arrows:true,nolab:true})+'</g>';
-  r.on.forEach(function(o,i){s+=o?'<circle cx="'+CX[i]+'" cy="'+n(cy)+'" r="5.5" fill="'+BLUE+'"/>':line(CX[i]-5,cy,CX[i]+5,cy,"#9aa5b1",1.5)})});
- s+='<circle cx="10" cy="317" r="4.5" fill="'+BLUE+'"/>'+T(20,321,11,"気孔が開いている所","g")+'<line x1="142" y1="317" x2="156" y2="317" stroke="'+GRAY+'" stroke-width="4.5" stroke-linecap="round"/>'+T(164,321,11,"ワセリンでふさいだ所","g");
- return svgY(0,328,"表。上の列の見出しは、左から、表、裏、茎。左に、3つの枝の絵が縦に並ぶ。上から、葉の表にワセリンをぬった枝は、裏と茎が開いている。葉の裏にワセリンをぬった枝は、表と茎が開いている。葉を切った枝は、茎だけが開いている。開いている所に、青い丸がある。灰色の太い線は、ワセリンでふさいだ所",s)}
+  s+='<g transform="translate('+n(FX*(1-K))+','+n(cy-K*107)+') scale('+K+')">'+sprig(FX-57,{top:r.c.top,bot:r.c.bot,cut:r.c.cut,arrows:true,nolab:!r.lab})+'</g>';
+  r.on.forEach(function(o,i){s+=o?'<circle cx="'+CX[i]+'" cy="'+n(cy)+'" r="5.5" fill="'+BLUE+'"/>':line(CX[i]-5,cy,CX[i]+5,cy,"#9aa5b1",1.5)});
+  y+=r.h;s+=line(4,y,336,y,RULE,1)});
+ s+='<line x1="7" y1="'+(y+17)+'" x2="21" y2="'+(y+17)+'" stroke="'+GRAY+'" stroke-width="4.5" stroke-linecap="round"/>'+T(29,y+21,11,"ワセリンでふさいだ所","g")+
+  '<circle cx="160" cy="'+(y+17)+'" r="4.5" fill="'+BLUE+'"/>'+T(170,y+21,11,"気孔が開いている所","g")+
+  arr(7,y+35,23,y+35)+T(29,y+39,11,"水蒸気が出る向き","g");
+ return svgY(0,y+46,"表。上の列の見出しは、左から、表、裏、茎。左に、4つの枝の絵が縦に並ぶ。上から、ふつうの枝は、表、裏、茎の3か所が開いている。葉の表にワセリンをぬった枝は、裏と茎が開いている。葉の裏にワセリンをぬった枝は、表と茎が開いている。葉を切った枝は、茎だけが開いている。開いている所に、青い丸がある。灰色の太い線は、ワセリンでふさいだ所。青い矢印は、水蒸気が出る向き",s)}
 
 /* ---------- 問題・解答の図：A(表にワセリン)、B(裏にワセリン)、C(葉を切る)
    arrows=false：問題の図。arrows=true：解答の図(開いている所を青で、減った量を書く) ---------- */
@@ -79,11 +78,9 @@ var V=function(t){return '<span class="v">'+t+'</span>'};
 var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var NW='<span style="white-space:nowrap">';
 
-var UP='<svg width="14" height="18" viewBox="0 0 14 18" aria-hidden="true" style="vertical-align:-3px;margin-right:.45rem"><line x1="7" y1="17" x2="7" y2="3" stroke="#1f5fa8" stroke-width="2"/><path d="M2,8 L7,2 L12,8" fill="none" stroke="#1f5fa8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-var POINT='<p>蒸散は、植物の体の水が、水蒸気になって、気孔から出ていくことです。</p>'+figPoint()+
- SMN+'※ 青い矢印は、水蒸気が出る向きです。</p>'+
+var POINT='<p>蒸散は、植物の体の水が、水蒸気になって、気孔から出ていくことです。</p>'+
  figTable()+
- '<div class="formula" style="white-space:normal">'+UP+NW+'減った水の量 ＝</span> '+NW+V('開いている気孔')+'からの</span>'+NW+'蒸散量の合計</span></div>';
+ '<div class="formula" style="white-space:normal">'+NW+'減った水の量 ＝</span> '+NW+V('開いている気孔')+'からの</span>'+NW+'蒸散量の合計</span></div>';
 
 function tbl(a,b,c){
  return '<table style="margin:.8rem 0"><tr><th></th><th>A</th><th>B</th><th>C</th></tr>'+
