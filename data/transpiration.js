@@ -44,8 +44,9 @@ function figTable(){
         {t:["葉の表に","ワセリン"],c:{top:"block",bot:"open"},on:[0,1,1],h:90},
         {t:["葉の裏に","ワセリン"],c:{top:"open",bot:"block"},on:[1,0,1],h:90},
         {t:["","葉を切る"],c:{cut:true},on:[0,0,1],h:90}],
-  CX=[196,252,308],H=["表","裏","茎"],K=.85,FX=108,s='',y=32,cy;
- H.forEach(function(h,i){s+=T(CX[i],21,14,h,"b","middle")});
+  CX=[196,252,308],H=["表","裏","茎"],K=.85,FX=108,s='',y=46,cy;
+ s+=T(252,13,11,"気孔が開いている所","g","middle")+line(176,20,328,20,RULE,1);
+ H.forEach(function(h,i){s+=T(CX[i],37,14,h,"b","middle")});
  s+=line(4,y,336,y,RULE,1);
  R.forEach(function(r){cy=y+r.h/2;
   if(r.t[0])s+=T(4,cy-4,13,r.t[0],"b")+T(4,cy+12,13,r.t[1],"b");else s+=T(4,cy+5,13,r.t[1],"b");
@@ -53,9 +54,9 @@ function figTable(){
   r.on.forEach(function(o,i){s+=o?'<circle cx="'+CX[i]+'" cy="'+n(cy)+'" r="5.5" fill="'+BLUE+'"/>':line(CX[i]-5,cy,CX[i]+5,cy,"#9aa5b1",1.5)});
   y+=r.h;s+=line(4,y,336,y,RULE,1)});
  s+='<line x1="7" y1="'+(y+17)+'" x2="21" y2="'+(y+17)+'" stroke="'+GRAY+'" stroke-width="4.5" stroke-linecap="round"/>'+T(29,y+21,11,"ワセリンでふさいだ所","g")+
-  '<circle cx="160" cy="'+(y+17)+'" r="4.5" fill="'+BLUE+'"/>'+T(170,y+21,11,"気孔が開いている所","g")+
+  '<circle cx="160" cy="'+(y+17)+'" r="4.5" fill="'+BLUE+'"/>'+T(170,y+21,11,"開いている","g")+
   arr(7,y+35,23,y+35)+T(29,y+39,11,"水蒸気が出る向き","g");
- return svgY(0,y+46,"表。上の列の見出しは、左から、表、裏、茎。左に、4つの枝の絵が縦に並ぶ。上から、ふつうの枝は、表、裏、茎の3か所が開いている。葉の表にワセリンをぬった枝は、裏と茎が開いている。葉の裏にワセリンをぬった枝は、表と茎が開いている。葉を切った枝は、茎だけが開いている。開いている所に、青い丸がある。灰色の太い線は、ワセリンでふさいだ所。青い矢印は、水蒸気が出る向き",s)}
+ return svgY(0,y+46,"表。列の見出しは、左から、表、裏、茎で、その上に、気孔が開いている所、と書いてある。左に、4つの枝の絵が縦に並ぶ。上から、ふつうの枝は、表、裏、茎の3か所が開いている。葉の表にワセリンをぬった枝は、裏と茎が開いている。葉の裏にワセリンをぬった枝は、表と茎が開いている。葉を切った枝は、茎だけが開いている。開いている所に、青い丸がある。灰色の太い線は、ワセリンでふさいだ所。青い矢印は、水蒸気が出る向き",s)}
 
 /* ---------- 問題・解答の図：A(表にワセリン)、B(裏にワセリン)、C(葉を切る)
    arrows=false：問題の図。arrows=true：解答の図(開いている所を青で、減った量を書く) ---------- */
@@ -78,7 +79,7 @@ var V=function(t){return '<span class="v">'+t+'</span>'};
 var SMN='<p class="note" style="font-size:.8rem;margin:.2rem 0">';
 var NW='<span style="white-space:nowrap">';
 
-var POINT='<p>蒸散は、植物の体の水が、水蒸気になって、気孔から出ていくことです。</p>'+
+var POINT='<p>蒸散は、植物の体の水が、水蒸気になって、気孔から出ていくことです。<span style="white-space:nowrap">ワセリンをぬった面の気孔は、</span><span style="white-space:nowrap">ふさがれます。</span></p>'+
  figTable()+
  '<div class="formula" style="white-space:normal">'+NW+'減った水の量 ＝</span> '+NW+V('開いている気孔')+'からの</span>'+NW+'蒸散量の合計</span></div>';
 
