@@ -13,12 +13,12 @@ function leaf(d,mx,my,tx,ty){
  [.22,.42,.62,.82].forEach(function(u){px=mx+vx*u;py=my+vy*u;
   [-1,1].forEach(function(sg){b=a+sg*0.95;k=15*(1-u*.55);ex=px+k*Math.cos(b);ey=py+k*Math.sin(b);s+=line(px,py,ex,ey,GVEIN,1.2,false,true)})});
  return s}
-/* 茎の中の線(中央=道管の青、外側=師管の赤)が、葉に入って、上側=道管、下側=師管になる。(sx,sy)＝葉のつけ根、(tx,ty)＝葉の先、jr＝その側の師管の茎での位置 */
-function vessels(sx,sy,tx,ty,jr){
+/* 茎の左右の端に、維管束が1つずつ(内側=道管の青、外側=師管の赤)。それが、葉に入って、上側=道管、下側=師管になる。(sx,sy)＝葉のつけ根、(tx,ty)＝葉の先、jr＝その側の師管の茎での位置 */
+function vessels(sx,sy,tx,ty,jb,jr){
  var dx=tx-sx,dy=ty-sy,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L,nx=uy,ny=-ux,o=1.6,a=7,s='';
  if(ny>0){nx=-nx;ny=-ny}
  function P(t,q){return [sx+ux*t+nx*q,sy+uy*t+ny*q]}
- [[BLUE,70,o],[RED,jr,-o]].forEach(function(v){
+ [[BLUE,jb,o],[RED,jr,-o]].forEach(function(v){
   var p0=P(a,v[2]),p1=P(L-4,v[2]);
   s+='<path d="M'+v[1]+',238 V'+(sy+12)+' Q'+v[1]+','+sy+' '+n(p0[0])+','+n(p0[1])+' L'+n(p1[0])+','+n(p1[1])+'" fill="none" stroke="'+v[0]+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'});
  return s}
@@ -30,11 +30,11 @@ function plant(){
   path("M70,262 Q52,270 34,296",'none',ROOT,2.2)+path("M70,262 Q92,268 110,300",'none',ROOT,2.2)+
   path("M70,292 Q52,302 44,326",'none',ROOT,2.2)+path("M70,306 Q88,314 98,334",'none',ROOT,2.2);
  /* 茎 */
- s+='<rect x="64" y="100" width="12" height="140" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>';
+ s+='<rect x="62" y="100" width="16" height="140" fill="'+GREEN+'" stroke="'+INK+'" stroke-width="1.2"/>';
  /* 葉(左と右) */
- s+=leaf("M64,122 C52,80 28,66 8,70 C14,100 40,122 64,122 Z",64,122,9,71);
- s+=leaf("M76,108 C72,70 100,40 138,38 C140,70 112,104 76,108 Z",76,108,138,38);
- s+=vessels(64,122,9,71,66.5)+vessels(76,108,138,38,73.5);
+ s+=leaf("M62,122 C52,80 28,66 8,70 C14,100 40,122 62,122 Z",62,122,9,71);
+ s+=leaf("M78,108 C72,70 100,40 138,38 C140,70 112,104 78,108 Z",78,108,138,38);
+ s+=vessels(62,122,9,71,68.5,65)+vessels(78,108,138,38,71.5,75);
  /* 拡大する場所(点線の丸)と、拡大の丸へのつなぎ */
  [[112,66,155,56],[70,190,155,190],[110,300,155,313]].forEach(function(c){
   s+='<circle cx="'+c[0]+'" cy="'+c[1]+'" r="10" fill="none" stroke="'+MUTED+'" stroke-width="1" stroke-dasharray="3 3"/>'+
@@ -76,7 +76,7 @@ var BW=56;
 var LB=[
  {id:"a1",nm:"気孔",x:262,y:56,ls:[[262,56,207,56]]},
  {id:"a7",nm:"孔辺細胞",x:171,y:122,bw:68,fs:12,ls:[[205,112,192,82],[205,112,218,82]]},
- {id:"a2",nm:"葉脈",x:4,y:26,ls:[[32,39,34.7,94.8]]},
+ {id:"a2",nm:"葉脈",x:4,y:26,ls:[[32,39,34.7,95.7]]},
  {id:"a3",nm:"維管束",x:262,y:148,ls:[[262,148,212,160]]},
  {id:"a4",nm:"道管",x:262,y:226,ls:[[262,226,207,214]],c:"v"},
  {id:"a5",nm:"師管",x:262,y:180,ls:[[262,180,238,173]],c:"m"},
@@ -90,7 +90,7 @@ function labels(blank){
   return s+T(cx,ty,fs,b.nm,(b.c?b.c+" ":"")+"b","middle")}).join('')}
 
 function fig(blank){
- var base="植物のからだの図。左に、葉、茎、根のある植物。茎の中は、中央に青い線、外側に赤い線が通る。葉に入ると、青い線は葉の上側、赤い線は葉の下側につながる。右に、拡大した丸が3つ、縦に並ぶ。上は葉の裏の拡大で、2つの細胞が輪のようにならび、真ん中にすき間がある。真ん中は茎の断面の拡大で、6つの維管束が輪のように並び、それぞれの外側が赤、内側が青。下は根の先の拡大で、細い毛が出ている。",
+ var base="植物のからだの図。左に、葉、茎、根のある植物。茎の中は、左右の両側に、内側が青、外側が赤の線が通る。葉に入ると、青い線は葉の上側、赤い線は葉の下側につながる。右に、拡大した丸が3つ、縦に並ぶ。上は葉の裏の拡大で、2つの細胞が輪のようにならび、真ん中にすき間がある。真ん中は茎の断面の拡大で、6つの維管束が輪のように並び、それぞれの外側が赤、内側が青。下は根の先の拡大で、細い毛が出ている。",
   lab=blank?base+"気孔、孔辺細胞、葉脈、維管束、道管、師管、根毛の名前が空欄":
   base+"輪をつくる2つの細胞が孔辺細胞、真ん中のすき間が気孔。左上の葉の線が葉脈。茎の断面では、外側が赤の師管、内側が青の道管。根の先の細い毛が根毛";
  return '<div class="fig"><svg viewBox="0 0 340 372" role="img" aria-label="'+lab+'">'+plant()+inset1()+inset2()+inset3()+labels(blank)+'</svg></div>'}
