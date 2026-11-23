@@ -44,13 +44,13 @@ function plant(){
 /* ---------- 拡大の丸(右) ---------- */
 var CX=205,R=50;
 function frame(cy){return '<circle cx="'+CX+'" cy="'+cy+'" r="'+R+'" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'}
-/* 葉の裏：2つの孔辺細胞が、楕円の輪のようにならび、真ん中に気孔(すき間)。上下のつなぎ目に短い線 */
+/* 葉の裏：角の丸い2つの孔辺細胞(曲がった太い線)が、上下のはしで、少しだけ重なる。真ん中のすき間が気孔 */
 function inset1(){
  var s=frame(56);
- s+='<ellipse cx="205" cy="56" rx="27" ry="40" fill="'+GUARD+'" stroke="'+INK+'" stroke-width="1.5"/>'+
-  line(205,16,205,29,INK,1.2)+line(205,83,205,96,INK,1.2)+
-  '<ellipse cx="205" cy="56" rx="7" ry="27" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>';
- return s}
+ function cell(m){var P=function(x){return m?410-x:x},d='M'+P(199)+',24 Q'+P(172)+',56 '+P(199)+',88';
+  return '<path d="'+d+'" fill="none" stroke="'+INK+'" stroke-width="19" stroke-linecap="round"/>'+
+   '<path d="'+d+'" fill="none" stroke="'+GUARD+'" stroke-width="16" stroke-linecap="round"/>'}
+ return s+cell(0)+cell(1)}
 /* 茎の断面：維管束が輪のように並ぶ。外側が師管(赤)、内側が道管(青) */
 function bundle(a){
  return '<g transform="translate('+CX+',190) rotate('+a+') translate(0,-30)">'+
@@ -74,20 +74,22 @@ function inset3(){
 var BW=56;
 /* id、名前、欄の左はし、中心の高さ、線(出る点x,y、先x,y)、色、幅bw、文字の大きさfs */
 var LB=[
- {id:"a1",nm:"気孔",x:262,y:56,ls:[[262,56,207,56]]},
- {id:"a7",nm:"孔辺細胞",x:171,y:122,bw:68,fs:12,ls:[[205,112,192,82],[205,112,218,82]]},
- {id:"a2",nm:"葉脈",x:4,y:26,ls:[[32,39,34.7,95.7]]},
- {id:"a3",nm:"維管束",x:262,y:148,ls:[[262,148,212,160]]},
- {id:"a4",nm:"道管",x:262,y:226,ls:[[262,226,207,214]],c:"v"},
- {id:"a5",nm:"師管",x:262,y:180,ls:[[262,180,238,173]],c:"m"},
- {id:"a6",nm:"根毛",x:262,y:315,ls:[[262,315,233,312]]}];
+ {id:"a1",nm:"気孔",x:262,y:56,ls:[[262,56,207,56]],ex:["酸素・二酸化炭素","水蒸気の出入り口","葉の裏側に多い"]},
+ {id:"a7",nm:"孔辺細胞",x:171,y:122,bw:68,fs:12,ls:[[205,112,193,80],[205,112,217,80]],ex:["開閉して、気孔の","大きさを変える"],exx:244,eb:119},
+ {id:"a2",nm:"葉脈",x:4,y:26,ls:[[32,39,34.7,95.7]],ex:["維管束が葉で枝分かれ",'<tspan class="v">上が道管</tspan>、<tspan class="m">下が師管</tspan>'],exx:64,eb:21},
+ {id:"a3",nm:"維管束",x:262,y:150,ls:[[262,150,212,160]],ex:["道管と師管の束"]},
+ {id:"a5",nm:"師管",x:262,y:192,ls:[[262,192,238,173]],c:"m",ex:["栄養の通り道"]},
+ {id:"a4",nm:"道管",x:262,y:234,ls:[[262,234,207,214]],c:"v",ex:["水や養分の通り道"]},
+ {id:"a6",nm:"根毛",x:262,y:315,ls:[[262,315,233,312]],ex:["表面積を広げて","吸収効率を上げる"]}];
 function labels(blank){
  return LB.map(function(b){
   var w=b.bw||BW,fs=b.fs||13,cx=b.x+w/2,ty=b.y+4.7,s=b.ls.map(function(l){return ld(l[0],l[1],l[2],l[3])}).join('');
   if(blank)return s+'<g class="bl" data-b="'+b.id+'"><rect x="'+b.x+'" y="'+(b.y-12)+'" width="'+w+'" height="24" rx="4"/>'+
    '<text class="bt" x="'+cx+'" y="'+n(ty)+'" font-size="'+fs+'" text-anchor="middle"></text>'+
    '<text class="bm" x="'+(b.x+w+3)+'" y="'+n(ty)+'" font-size="13"></text></g>';
-  return s+T(cx,ty,fs,b.nm,(b.c?b.c+" ":"")+"b","middle")}).join('')}
+  s+=T(cx,ty,fs,b.nm,(b.c?b.c+" ":"")+"b","middle");
+  b.ex.forEach(function(t,k){s+=T(b.exx||b.x,(b.eb||ty+15)+11*k,9.5,t,"g")});
+  return s}).join('')}
 
 function fig(blank){
  var base="植物のからだの図。左に、葉、茎、根のある植物。茎の中は、左右の両側に、内側が青、外側が赤の線が通る。葉に入ると、青い線は葉の上側、赤い線は葉の下側につながる。右に、拡大した丸が3つ、縦に並ぶ。上は葉の裏の拡大で、2つの細胞が輪のようにならび、真ん中にすき間がある。真ん中は茎の断面の拡大で、6つの維管束が輪のように並び、それぞれの外側が赤、内側が青。下は根の先の拡大で、細い毛が出ている。",
@@ -109,8 +111,7 @@ var ROWS='<div style="'+GRID+'margin:.8rem 0">'+
  rd('根毛','根の先端付近の細い毛のようなもの。表面積を広くして、水や養分の吸収効率を上げる')+'</div>';
 
 var POINT='<p>葉・茎・根のつくりと、はたらきを覚えます。</p>'+fig(false)+
- SM+'※ 右の丸は拡大した図です(上から、葉の裏、茎の断面、根の先)。</p>'+
- SM+'※ 茎の内側の<span class="v">道管(青)</span>は葉の上側に、外側の<span class="m">師管(赤)</span>は葉の下側に、そのままつながります。</p>'+ROWS;
+ SM+'※ 右の丸は拡大した図です(上から、葉の裏、茎の断面、根の先)。</p>';
 
 var QBODY='<p>植物のからだのつくりの名前を、下の語群から選んで、図の空欄に入れなさい。</p>';
 var ANS={a1:"気孔",a2:"葉脈",a3:"維管束",a4:"道管",a5:"師管",a6:"根毛",a7:"孔辺細胞"};
