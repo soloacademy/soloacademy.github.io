@@ -102,10 +102,10 @@ function SV(b){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<s
 var IC5=SV('<circle cx="28" cy="37" r="25" fill="'+GG+'"/><g fill="#fff"><circle cx="20" cy="31" r="7"/><circle cx="34" cy="29" r="7"/><circle cx="30" cy="44" r="7"/><circle cx="19" cy="43" r="4.5"/><circle cx="27" cy="36" r="5"/></g><rect x="41" y="4" width="21" height="10" rx="5" transform="rotate(38 51.5 9)" fill="#c2410c"/>'),
  IC6=SV('<path d="M14,9 H48 A6,6 0 0 1 48,21 H16 A6,6 0 0 0 16,33 H48 A6,6 0 0 1 48,45 H16 A6,6 0 0 0 16,57 H44" fill="none" stroke="'+GG+'" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>'),
  IC7=SV('<path d="M44,5 C56,5 61,17 61,29 C61,45 53,57 41,57 C32,57 28,50 31,44 C33,40 34,38 32,35 C29,31 27,26 29,19 C31,11 36,5 44,5 Z" fill="'+GG+'"/><path d="M5,20 C14,20 22,24 33,26" fill="none" stroke="#c2410c" stroke-width="4.5" stroke-linecap="round"/><path d="M5,38 C14,38 22,34 33,32" fill="none" stroke="#1f5fa8" stroke-width="4.5" stroke-linecap="round"/><path d="M38,53 C36,58 36,60 40,61" fill="none" stroke="'+GG+'" stroke-width="4.5" stroke-linecap="round"/>');
-var GRD='display:grid;grid-template-columns:max-content 1fr;column-gap:.9rem;row-gap:.9rem;align-items:baseline;margin:.6rem 0';
-function gr(a,c,u,gap,w){var m=gap?'margin-top:.7rem;':'';
- return '<span style="'+m+'display:flex;flex-direction:column;align-items:flex-start;gap:.3rem;white-space:nowrap"><b>'+a+'</b>'+(u?'<img src="'+u+'" alt="" aria-hidden="true" style="width:'+(w||'1.9rem')+';height:auto">':'')+'</span>'+
-  '<span style="'+m+'font-size:.88rem;line-height:1.6">'+c+'</span>'}
+var GRD='display:flex;flex-direction:column;gap:.9rem;margin:.8rem 0';
+function gr(a,c,u,gap,w){
+ return '<div><div style="display:flex;align-items:center;gap:.6rem"><b>'+a+'</b>'+(u?'<img src="'+u+'" alt="" aria-hidden="true" style="width:'+(w||'1.9rem')+';height:auto">':'')+'</div>'+
+  '<div style="font-size:.9rem;line-height:1.6;margin-top:.1rem">'+c+'</div></div>'}
 var TB='<div style="'+GRD+'">'+
  gr('赤血球','酸素を運ぶ<br><span style="white-space:nowrap">(ヘモグロビン</span><wbr><span style="white-space:nowrap">＝赤い色素)</span>',IC1)+gr('白血球','<span style="white-space:nowrap">菌やウイルスを</span><wbr><span style="white-space:nowrap">分解する</span>',IC5)+gr('血小板','<span style="white-space:nowrap">出血時に</span><wbr><span style="white-space:nowrap">血を固める</span>',IC2)+
  gr('血しょう','いろいろな物質を運ぶ<br><span style="white-space:nowrap">(栄養、</span><wbr><span style="white-space:nowrap">二酸化炭素、</span><wbr><span style="white-space:nowrap">不要物など)</span>',null,1)+'</div>';

@@ -75,21 +75,21 @@ function inset3(){
 var BW=56;
 /* id、名前、欄の左はし、中心の高さ、線(出る点x,y、先x,y)、色、幅bw、文字の大きさfs */
 var LB=[
- {id:"a1",nm:"気孔",x:262,y:46,ls:[[262,46,207,54]],ex:["酸素・二酸化炭素","水蒸気の出入り口","葉の裏側に多い"]},
- {id:"a7",nm:"孔辺細胞",x:171,y:124,bw:68,fs:12,ls:[[205,114,191,80],[205,114,219,80]],ex:["開閉して、気孔の","大きさを変える"],exx:244,eb:121},
- {id:"a2",nm:"葉脈",x:4,y:14,ls:[[32,26,34.7,95.7]],lsp:[[32,47,34.7,95.7]],ex:["維管束が葉で枝分かれ",'<tspan class="v">上が道管</tspan>、<tspan class="m">下が師管</tspan>'],exx:4,eb:31},
- {id:"a3",nm:"維管束",x:262,y:162,ls:[[262,162,212,172]],ex:["道管と師管の束"]},
- {id:"a5",nm:"師管",x:262,y:204,ls:[[262,204,238,185]],c:"m",ex:["栄養の通り道"]},
- {id:"a4",nm:"道管",x:262,y:246,ls:[[262,246,207,226]],c:"v",ex:["水や養分の通り道"]},
- {id:"a6",nm:"根毛",x:262,y:326,ls:[[262,326,233,331]],ex:["表面積を広げて","吸収効率を上げる"]}];
+ {id:"a1",nm:"気孔",x:259,y:16,tx:263,ls:[[259,16,207,54]],ex:["酸素・二酸化炭素","水蒸気の出入り口","葉の裏側に多い"]},
+ {id:"a7",nm:"孔辺細胞",x:259,y:80,bw:64,fs:12,tx:263,ls:[[259,80,219,76],[259,80,191,82]],ex:["開閉して、気孔の","大きさを変える"]},
+ {id:"a2",nm:"葉脈",x:4,y:14,tx:4,ls:[[32,26,34.7,95.7]],lsp:[[32,47,34.7,95.7]],ex:["維管束が葉で枝分かれ",'<tspan class="v">上が道管</tspan>、<tspan class="m">下が師管</tspan>'],eb:31},
+ {id:"a3",nm:"維管束",x:259,y:162,tx:263,ls:[[259,162,212,172]],ex:["道管と師管の束"]},
+ {id:"a5",nm:"師管",x:259,y:204,tx:263,ls:[[259,204,238,185]],c:"m",ex:["栄養の通り道"]},
+ {id:"a4",nm:"道管",x:259,y:246,tx:263,ls:[[259,246,207,226]],c:"v",ex:["水や養分の通り道"]},
+ {id:"a6",nm:"根毛",x:259,y:326,tx:263,ls:[[259,326,233,331]],ex:["表面積を広げて","吸収効率を上げる"]}];
 function labels(blank){
  return LB.map(function(b){
   var w=b.bw||BW,fs=b.fs||13,cx=b.x+w/2,ty=b.y+4.7,s=(blank?b.ls:(b.lsp||b.ls)).map(function(l){return ld(l[0],l[1],l[2],l[3])}).join('');
   if(blank)return s+'<g class="bl" data-b="'+b.id+'"><rect x="'+b.x+'" y="'+(b.y-12)+'" width="'+w+'" height="24" rx="4"/>'+
    '<text class="bt" x="'+cx+'" y="'+n(ty)+'" font-size="'+fs+'" text-anchor="middle"></text>'+
    '<text class="bm" x="'+(b.x+w+3)+'" y="'+n(ty)+'" font-size="13"></text></g>';
-  s+=T(cx,ty,fs,b.nm,(b.c?b.c+" ":"")+"b","middle");
-  b.ex.forEach(function(t,k){s+=T(b.exx||b.x,(b.eb||ty+15)+11*k,9.5,t,"g")});
+  s+=T(b.tx,ty,13,b.nm,(b.c?b.c+" ":"")+"b");
+  b.ex.forEach(function(t,k){s+=T(b.tx,(b.eb||ty+15)+11*k,9.5,t,"g")});
   return s}).join('')}
 
 function fig(blank){
