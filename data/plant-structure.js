@@ -20,7 +20,7 @@ function vessels(sx,sy,tx,ty,jb,jr){
  function P(t,q){return [sx+ux*t+nx*q,sy+uy*t+ny*q]}
  [[BLUE,jb,o],[RED,jr,-o]].forEach(function(v){
   var p0=P(a,v[2]),p1=P(L-4,v[2]);
-  s+='<path d="M'+v[1]+',238 V'+(sy+12)+' Q'+v[1]+','+sy+' '+n(p0[0])+','+n(p0[1])+' L'+n(p1[0])+','+n(p1[1])+'" fill="none" stroke="'+v[0]+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'});
+  s+='<path d="M'+v[1]+','+(sy+12)+' Q'+v[1]+','+sy+' '+n(p0[0])+','+n(p0[1])+' L'+n(p1[0])+','+n(p1[1])+'" fill="none" stroke="'+v[0]+'" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'});
  return s}
 function plant(){
  var s='';
@@ -34,6 +34,7 @@ function plant(){
  /* 葉(左と右) */
  s+=leaf("M62,122 C52,80 28,66 8,70 C14,100 40,122 62,122 Z",62,122,9,71);
  s+=leaf("M78,108 C72,70 100,40 138,38 C140,70 112,104 78,108 Z",78,108,138,38);
+ [[65,RED],[68.5,BLUE],[71.5,BLUE],[75,RED]].forEach(function(v){s+='<path d="M'+v[0]+',238 V103" fill="none" stroke="'+v[1]+'" stroke-width="1.6" stroke-linecap="round"/>'});
  s+=vessels(62,122,9,71,68.5,65)+vessels(78,108,138,38,71.5,75);
  /* 拡大する場所(点線の丸)と、拡大の丸へのつなぎ */
  [[112,66,155,56],[70,196,155,202],[110,300,155,334]].forEach(function(c){
@@ -44,10 +45,10 @@ function plant(){
 /* ---------- 拡大の丸(右) ---------- */
 var CX=205,R=50;
 function frame(cy){return '<circle cx="'+CX+'" cy="'+cy+'" r="'+R+'" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'}
-/* 葉の裏：角の丸い2つの孔辺細胞(曲がった太い線)が、上下のはしで、少しだけ重なる。真ん中のすき間が気孔 */
+/* 葉の裏：角の丸い2つの孔辺細胞(曲がった太い線)が、上下のはしで、ほとんど接する。真ん中のすき間が気孔 */
 function inset1(){
  var s=frame(56);
- function cell(m){var P=function(x){return m?410-x:x},d='M'+P(199)+',24 Q'+P(172)+',56 '+P(199)+',88';
+ function cell(m){var P=function(x){return m?410-x:x},d='M'+P(196.5)+',24 Q'+P(172)+',56 '+P(196.5)+',88';
   return '<path d="'+d+'" fill="none" stroke="'+INK+'" stroke-width="19" stroke-linecap="round"/>'+
    '<path d="'+d+'" fill="none" stroke="'+GUARD+'" stroke-width="16" stroke-linecap="round"/>'}
  return s+cell(0)+cell(1)}
@@ -75,15 +76,15 @@ var BW=56;
 /* id、名前、欄の左はし、中心の高さ、線(出る点x,y、先x,y)、色、幅bw、文字の大きさfs */
 var LB=[
  {id:"a1",nm:"気孔",x:262,y:46,ls:[[262,46,207,54]],ex:["酸素・二酸化炭素","水蒸気の出入り口","葉の裏側に多い"]},
- {id:"a7",nm:"孔辺細胞",x:171,y:124,bw:68,fs:12,ls:[[205,114,193,80],[205,114,217,80]],ex:["開閉して、気孔の","大きさを変える"],exx:244,eb:121},
- {id:"a2",nm:"葉脈",x:4,y:26,ls:[[32,39,34.7,95.7]],ex:["維管束が葉で枝分かれ",'<tspan class="v">上が道管</tspan>、<tspan class="m">下が師管</tspan>'],exx:64,eb:21},
+ {id:"a7",nm:"孔辺細胞",x:171,y:124,bw:68,fs:12,ls:[[205,114,191,80],[205,114,219,80]],ex:["開閉して、気孔の","大きさを変える"],exx:244,eb:121},
+ {id:"a2",nm:"葉脈",x:4,y:14,ls:[[32,26,34.7,95.7]],lsp:[[32,47,34.7,95.7]],ex:["維管束が葉で枝分かれ",'<tspan class="v">上が道管</tspan>、<tspan class="m">下が師管</tspan>'],exx:4,eb:31},
  {id:"a3",nm:"維管束",x:262,y:162,ls:[[262,162,212,172]],ex:["道管と師管の束"]},
  {id:"a5",nm:"師管",x:262,y:204,ls:[[262,204,238,185]],c:"m",ex:["栄養の通り道"]},
  {id:"a4",nm:"道管",x:262,y:246,ls:[[262,246,207,226]],c:"v",ex:["水や養分の通り道"]},
  {id:"a6",nm:"根毛",x:262,y:326,ls:[[262,326,233,331]],ex:["表面積を広げて","吸収効率を上げる"]}];
 function labels(blank){
  return LB.map(function(b){
-  var w=b.bw||BW,fs=b.fs||13,cx=b.x+w/2,ty=b.y+4.7,s=b.ls.map(function(l){return ld(l[0],l[1],l[2],l[3])}).join('');
+  var w=b.bw||BW,fs=b.fs||13,cx=b.x+w/2,ty=b.y+4.7,s=(blank?b.ls:(b.lsp||b.ls)).map(function(l){return ld(l[0],l[1],l[2],l[3])}).join('');
   if(blank)return s+'<g class="bl" data-b="'+b.id+'"><rect x="'+b.x+'" y="'+(b.y-12)+'" width="'+w+'" height="24" rx="4"/>'+
    '<text class="bt" x="'+cx+'" y="'+n(ty)+'" font-size="'+fs+'" text-anchor="middle"></text>'+
    '<text class="bm" x="'+(b.x+w+3)+'" y="'+n(ty)+'" font-size="13"></text></g>';
