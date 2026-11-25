@@ -47,12 +47,36 @@ function mcCss(){
   st.textContent=".mx button.sq::before{border-radius:3px}.mx.mxm{margin:0 0 .8rem}";
   document.head.appendChild(st);
 }
+var slDone=false;
+function slCss(){
+  if(slDone)return;slDone=true;
+  var st=document.createElement("style");
+  st.textContent=".sl{position:absolute;margin:0}.sl input{width:100%;height:100%;box-sizing:border-box;font:inherit;font-size:16px;text-align:center;padding:0;border:1.5px dashed #9aa5b1;border-radius:4px;background:#fff}.sl .mark{position:absolute;right:-.5rem;top:-.6rem;width:1.1rem;height:1.1rem;font-size:0;display:block}.sl .mark.ok::after{border-width:.16rem}";
+  document.head.appendChild(st);
+}
 function problem(sec){
   var box=h("div","problem",sec.body);
   var mx=null,gw=null,mxm=null,grps={};
   function gb(k){prCss();if(!grps[k]){grps[k]=h("div","prow");box.appendChild(grps[k])}return grps[k]}
   var rows=sec.parts.map(function(p){
     if(p.head)box.appendChild(h("p",null,p.head));
+    if(p.type==="slots"){
+      slCss();
+      var sw=h("div","fig",p.svg),sres=[];
+      sw.style.position="relative";sw.style.maxWidth="21rem";
+      p.fields.forEach(function(f,k){
+        var d=h("div","sl"),i=h("input"),m=h("span","mark");
+        d.style.left=(f.x/p.W*100)+"%";d.style.top=(f.y/p.H*100)+"%";d.style.width=(f.w/p.W*100)+"%";d.style.height=(f.h/p.H*100)+"%";
+        i.type="text";i.autocomplete="off";i.setAttribute("autocapitalize","off");i.setAttribute("autocorrect","off");i.spellcheck=false;i.inputMode="decimal";
+        i.setAttribute("aria-label",f.aria||("空欄 "+(k+1)));
+        i.onkeydown=function(e){if(e.key==="Enter"&&!e.isComposing){e.preventDefault();b.click()}};
+        m.setAttribute("aria-live","polite");
+        d.appendChild(i);d.appendChild(m);sw.appendChild(d);
+        sres.push({p:{type:"number",accept:f.accept,tol:f.tol||0},i:i,m:m});
+      });
+      box.appendChild(sw);
+      return sres;
+    }
     if(p.type==="tree"){
       var wrap=h("div",null,p.svg),vals={},marks={},sel=null,ids=Object.keys(p.answers),bs={};
       box.appendChild(wrap);
