@@ -32,5 +32,6 @@ window.UNITS=[
   {id:"photosynthesis",grade:2,no:"2-12",title:"光合成と呼吸"},
   {id:"digestion",grade:2,no:"2-13",title:"消化と吸収"},
   {id:"blood-heart",grade:2,no:"2-14",title:"血液と心臓"},
-  {id:"nerve",grade:2,no:"2-15",title:"神経と反射"}
+  {id:"nerve",grade:2,no:"2-15",title:"神経と反射"},
+  {id:"circuit",grade:2,no:"2-16",title:"電流と回路"}
 ];
