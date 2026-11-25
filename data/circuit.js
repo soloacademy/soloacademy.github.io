@@ -8,30 +8,31 @@ function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'
 /* ---------- 回路図：kind＝"s"(直列)か"p"(並列)。lab＝{t,a,b}それぞれ名前の下に書く行。cls＝その行の色(厳選ポイントは灰色 g、問題は黒) ---------- */
 var NM={t:"全体",a:"抵抗1",b:"抵抗2"};
 function res(cx,cy,w,h){return '<rect x="'+n(cx-w/2)+'" y="'+n(cy-h/2)+'" width="'+w+'" height="'+h+'" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'}
-function bat(x,y){return line(x-10,y,x+10,y,INK,1.5)+line(x-5,y+8,x+5,y+8,INK,4)}
+function batH(x,y){return line(x-4,y-12,x-4,y+12,INK,1.5)+line(x+4,y-7,x+4,y+7,INK,4)}
 function lbl(x,y,it,lab,cls,anchor){
  var s=T(x,y,13,NM[it],"b",anchor),l=lab[it]||[];
  l.forEach(function(t,k){s+=T(x,y+14*(k+1),11.5,t,cls,anchor)});
  return s}
+/* 電源は上。直列：抵抗は下で左右に並ぶ。並列：抵抗は上下に並ぶ(名前は右の列) */
 function fig(kind,title,lab,cls){
- var s=T(4,14,14,title,"b"),h,yT,yB;
+ var s=T(4,14,14,title,"b"),h,L=50,R=230,yT=34,al;
+ s+=line(L,yT,136,yT,INK,1.5)+batH(140,yT)+line(144,yT,R,yT,INK,1.5)+lbl(244,yT-6,"t",lab,cls);
  if(kind==="s"){
-  yT=38;yB=108;h=116;
-  s+=line(40,yT,110,yT,INK,1.5)+line(170,yT,210,yT,INK,1.5)+line(270,yT,300,yT,INK,1.5)+
-   line(300,yT,300,yB,INK,1.5)+line(40,yB,300,yB,INK,1.5)+
-   line(40,yT,40,68,INK,1.5)+bat(40,68)+line(40,76,40,yB,INK,1.5)+
-   res(140,yT,60,24)+res(240,yT,60,24)+
-   lbl(52,66,"t",lab,cls)+lbl(140,68,"a",lab,cls,"middle")+lbl(240,68,"b",lab,cls,"middle");
+  var yB=100;h=170;
+  s+=line(L,yT,L,yB,INK,1.5)+line(R,yT,R,yB,INK,1.5)+
+   line(L,yB,70,yB,INK,1.5)+line(130,yB,150,yB,INK,1.5)+line(210,yB,R,yB,INK,1.5)+
+   res(100,yB,60,24)+res(180,yB,60,24)+
+   lbl(100,yB+30,"a",lab,cls,"middle")+lbl(180,yB+30,"b",lab,cls,"middle");
+  al="直列回路の図。上に電池があり、下に抵抗1と抵抗2が、左右に一列につながっている";
  }else{
-  yT=30;yB=130;h=140;
-  s+=line(40,yT,240,yT,INK,1.5)+line(40,yB,240,yB,INK,1.5)+
-   line(40,yT,40,76,INK,1.5)+bat(40,76)+line(40,84,40,yB,INK,1.5)+
-   line(140,yT,140,55,INK,1.5)+res(140,80,22,50)+line(140,105,140,yB,INK,1.5)+
-   line(240,yT,240,55,INK,1.5)+res(240,80,22,50)+line(240,105,240,yB,INK,1.5)+
-   '<circle cx="140" cy="'+yT+'" r="3" fill="'+INK+'"/><circle cx="140" cy="'+yB+'" r="3" fill="'+INK+'"/>'+
-   lbl(52,72,"t",lab,cls)+lbl(158,72,"a",lab,cls)+lbl(258,72,"b",lab,cls);
+  var y1=90,y2=146;h=180;
+  s+=line(L,yT,L,y2,INK,1.5)+line(R,yT,R,y2,INK,1.5)+
+   line(L,y1,110,y1,INK,1.5)+res(140,y1,60,24)+line(170,y1,R,y1,INK,1.5)+
+   line(L,y2,110,y2,INK,1.5)+res(140,y2,60,24)+line(170,y2,R,y2,INK,1.5)+
+   '<circle cx="'+L+'" cy="'+y1+'" r="3" fill="'+INK+'"/><circle cx="'+R+'" cy="'+y1+'" r="3" fill="'+INK+'"/>'+
+   lbl(244,y1-6,"a",lab,cls)+lbl(244,y2-6,"b",lab,cls);
+  al="並列回路の図。上に電池があり、その下に、抵抗1と抵抗2が、上下に並んで、並列につながっている";
  }
- var al=kind==="s"?"直列回路の図。電池に、抵抗1と抵抗2が、一列につながっている":"並列回路の図。電池に、抵抗1と抵抗2が、枝分かれして、別々につながっている";
  var info=[];["t","a","b"].forEach(function(it){if((lab[it]||[]).length)info.push(NM[it]+"："+lab[it].join("、"))});
  return '<div class="fig"><svg viewBox="0 0 340 '+h+'" role="img" aria-label="'+title+'。'+al+(info.length?"。"+info.join("。"):"")+'">'+s+'</svg></div>'}
 
@@ -45,21 +46,21 @@ function ohm(){
   TN(CX-30,CY+33,20,"抵抗","b","middle")+TN(CX-30,CY+49,12,"(Ω)","g","middle")+
   TN(CX+30,CY+33,20,"電流","b","middle")+TN(CX+30,CY+49,12,"(A)","g","middle");
  var lb="電圧・電流・抵抗の図。1つの円に、横の直径と、中心から下への半径がある。上半分に電圧(V)、左下に抵抗(Ω)、右下に電流(A)。抵抗と電流の間は×、電圧と抵抗の間と、電圧と電流の間は÷";
- return '<div class="fig" style="margin:0;width:9.5rem;flex:0 0 auto"><svg viewBox="70 18 160 150" role="img" aria-label="'+lb+'">'+s+'</svg></div>'}
+ return '<div class="fig" style="margin:.4rem 0 .6rem;width:12rem"><svg viewBox="70 18 160 150" role="img" aria-label="'+lb+'">'+s+'</svg></div>'}
 
 /* ---------- 関係の表(厳選ポイント)：等しい＝青、和＝赤 ---------- */
 var E='<span class="v">等しい</span>',S='<span class="m">和</span>';
-function fr(d){return '<span class="frac" style="margin:0 .1rem;line-height:1.35"><span style="padding:0 .1rem">1</span><span style="padding:0 .1rem">'+d+'</span></span>'}
-function cell(h,st){return '<div style="text-align:center;padding:.5rem .1rem;line-height:1.45;border-top:1px solid #dde2e7;'+(st||'')+'">'+h+'</div>'}
-function rel(cls,formula,word){return '<span class="'+cls+'"><b>'+formula+'</b></span><br><span class="'+cls+'" style="font-size:.75rem">'+word+'</span>'}
+function fr(d){return '<span class="frac" style="margin:0 .05rem;line-height:1.3"><span style="padding:0 .05rem">1</span><span style="padding:0 .05rem">'+d+'</span></span>'}
+function cell(h,st){return '<div style="display:flex;flex-direction:column;justify-content:center;text-align:center;padding:.5rem .1rem;line-height:1.45;border-top:1px solid #dde2e7;'+(st||'')+'">'+h+'</div>'}
+/* 「等しい」「和」を大きく、式を小さく */
+function rl(cls,word,f){return cell('<span class="'+cls+'" style="font-weight:700;font-size:.95rem">'+word+'</span><br><span class="'+cls+'" style="font-size:.7rem">'+f+'</span>')}
 function relTable(){
- var G='display:grid;grid-template-columns:3rem 1fr 1fr;align-items:center;margin:.6rem 0 .4rem',h=function(t){return '<div style="text-align:center;font-weight:700;padding:.1rem 0 .3rem">'+t+'</div>'};
- var nm=function(a,b){return cell(a+'<br><span style="font-size:.75rem;color:var(--muted)">'+b+'</span>','text-align:left;font-weight:700;font-size:.9rem')};
- return '<div style="'+G+'"><div></div>'+h('直列')+h('並列')+
-  nm('電流','(A)')+cell(rel('v','A₁＝A₂＝A','等しい'))+cell(rel('m','A₁＋A₂＝A','和'))+
-  nm('電圧','(V)')+cell(rel('m','V₁＋V₂＝V','和'))+cell(rel('v','V₁＝V₂＝V','等しい'))+
-  nm('抵抗','(Ω)')+cell(rel('m','Ω₁＋Ω₂＝Ω','和'))+
-  cell('<span class="m" style="font-size:.85rem"><b>'+fr('Ω₁')+'＋'+fr('Ω₂')+'＝'+fr('Ω')+'</b></span><br><span class="m" style="font-size:.75rem">逆数の和</span>')+
+ var G='display:grid;grid-template-columns:2.6rem repeat(3,1fr);align-items:stretch;margin:.6rem 0 .4rem',
+  h=function(a,b){return '<div style="text-align:center;font-weight:700;line-height:1.3;padding:.1rem 0 .4rem">'+a+'<br><span style="font-size:.75rem;color:var(--muted);font-weight:400">'+b+'</span></div>'},
+  nm=function(t){return cell(t,'text-align:left;font-weight:700')};
+ return '<div style="'+G+'"><div></div>'+h('電流','(A)')+h('電圧','(V)')+h('抵抗','(Ω)')+
+  nm('直列')+rl('v','等しい','A₁＝A₂＝A')+rl('m','和','V₁＋V₂＝V')+rl('m','和','Ω₁＋Ω₂＝Ω')+
+  nm('並列')+rl('m','和','A₁＋A₂＝A')+rl('v','等しい','V₁＝V₂＝V')+rl('m','逆数の和',fr('Ω₁')+'＋'+fr('Ω₂')+'＝'+fr('Ω'))+
   '</div>'}
 
 /* ---------- 問題・補充の回路 ----------
@@ -120,11 +121,7 @@ var POINT=hd('直列回路と並列回路',true)+
  '<p>回路全体の値(A・V・Ω)と、抵抗1・抵抗2 の値(A₁・V₁・Ω₁、A₂・V₂・Ω₂)の関係は、次のとおりです。</p>'+
  fig("s","直列回路",LB0,"g")+fig("p","並列回路",LB0,"g")+relTable()+
  SM+'※ 並列回路の全体の抵抗は、どの抵抗よりも小さくなります。</p>'+
- hd('オームの法則')+
- '<p>電圧・電流・抵抗の間には、次の関係があります。</p>'+
- '<div style="display:flex;align-items:center;gap:1rem;margin:.4rem 0 .6rem">'+ohm()+
- '<div style="line-height:2;font-size:.95rem;white-space:nowrap">V ＝ Ω × A<br>Ω ＝ V ÷ A<br>A ＝ V ÷ Ω</div></div>'+
- SM+'※ 求めたい文字をかくします。残りが横に並んでいれば ×、上下なら ÷ です。</p>';
+ hd('オームの法則')+ohm();
 
 var QBODY='<p>次の回路で、空欄に入る値を求めなさい。図に書いてあるのは、最初から分かっている値です。</p>';
 var GRAYNOTE=SM+'※ 灰色の数字は、最初から分かっている値です。</p>';
