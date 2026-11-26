@@ -11,49 +11,56 @@ function line(x1,y1,x2,y2,k,w){return '<line x1="'+n(x1)+'" y1="'+n(y1)+'" x2="'
    分かっている値は灰色の枠、求める値は入力欄(図の上に重ねる) */
 var NM={t:"全体",a:"抵抗1",b:"抵抗2"},LB0={t:"A・V・Ω",a:"A₁・V₁・Ω₁",b:"A₂・V₂・Ω₂"};
 var Q=["A","V","R"],SY={A:"A",V:"V",R:"Ω"},QN={A:"電流",V:"電圧",R:"抵抗"};
-var SW=36,SH=30,PITCH=52;
+var SW=36,SH=30,PITCH=63;
 function fmt(q,v){return (q==="A"&&v%1===0)?v.toFixed(1):String(v)}
 function res(cx,cy,w,h){return '<rect x="'+n(cx-w/2)+'" y="'+n(cy-h/2)+'" width="'+w+'" height="'+h+'" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'}
 function batH(x,y){return line(x-4,y-12,x-4,y+12,INK,1.5)+line(x+4,y-7,x+4,y+7,INK,1.5)}
+function resN(cx,cy,it){return res(cx,cy,60,24)+TN(cx,cy+5,13,NM[it],"b","middle")}
 function circ(kind,title,c){
- var slot=!!c,s=T(4,14,14,title,"b"),flds=[],H,al,L=30,R=310,yT,yB,y1,y2;
- /* 名前と A・V・Ω は、記号(上の端 ys)のすぐ上。slot＝入力枠、そうでなければ文字。sx＝記号の中心、x0＝枠の列の左はし */
+ var slot=!!c,two=slot&&kind==="s",s=T(4,14,14,title,"b"),flds=[],H,al,L=30,R=310,yT,yB,y1,y2;
+ /* A・V・Ω は記号(上の端 ys)のすぐ上。名前は、抵抗は白い四角の中、全体は電源の近く。slot＝入力枠(単位は枠の後ろ)、そうでなければ文字 */
  function put(it,sx,ys,x0){
   var o='',ry=ys-36;
-  if(!slot)return T(sx,ys-19,13,NM[it],"b","middle")+T(sx,ys-5,11.5,LB0[it],"g","middle");
-  o+=T(x0+75.5,ys-42,13,NM[it],"b","middle");
-  Q.forEach(function(q,qi){
-   var x=x0+PITCH*qi,bx=x+12;
-   o+=T(x,ry+SH/2+6,15,SY[q],"b");
+  if(!slot){
+   if(it==="t")return T(sx,ys-6,13,'<tspan class="b">全体</tspan>　<tspan class="g" font-size="11.5">'+LB0.t+'</tspan>',null,"middle");
+   return T(sx,ys-6,11.5,LB0[it],"g","middle")}
+  /* 枠の後ろに単位(A・V・Ω)。直列は狭いので「V が上、下に Ω と A」、並列は横一列 */
+  var W=SW+13,pos={},nx,ny;
+  if(two){pos={V:[sx-W/2,ys-70],R:[sx-56,ys-36],A:[sx+7,ys-36]};nx=sx-W/2-6;ny=ys-70+SH/2+5}
+  else{Q.forEach(function(q,qi){pos[q]=[x0+PITCH*qi,ry]});nx=x0-6;ny=ry+SH/2+5}
+  if(it==="t")o+=T(nx,ny,13,"全体","b","end");
+  Q.forEach(function(q){
+   var bx=pos[q][0],by=pos[q][1];
+   o+=T(bx+SW+3,by+SH/2+6,15,SY[q],"b");
    if(c.given[it].indexOf(q)>=0)
-    o+='<rect x="'+bx+'" y="'+ry+'" width="'+SW+'" height="'+SH+'" rx="4" fill="#eceff2" stroke="#c9d0d7" stroke-width="1"/>'+TN(bx+SW/2,ry+SH/2+6,16,fmt(q,c.full[it][q]),null,"middle");
-   else flds.push({x:bx,y:ry,w:SW,h:SH,accept:[c.full[it][q]],tol:.005,aria:NM[it]+" "+QN[q]});
+    o+='<rect x="'+n(bx)+'" y="'+by+'" width="'+SW+'" height="'+SH+'" rx="4" fill="#eceff2" stroke="#c9d0d7" stroke-width="1"/>'+TN(bx+SW/2,by+SH/2+6,16,fmt(q,c.full[it][q]),null,"middle");
+   else flds.push({x:bx,y:by,w:SW,h:SH,accept:[c.full[it][q]],tol:.005,aria:NM[it]+" "+QN[q]});
   });
   return o}
  if(kind==="s"){
   /* 下の線：導線の左はし、抵抗1、抵抗2、導線の右はしの間を、3か所とも同じ長さ(g)にする */
   L=8;R=332;var g=(R-L-120)/3,b1=L+g+30,b2=L+2*g+90;
-  yT=slot?86:66;yB=slot?170:140;H=slot?188:156;
+  yT=slot?104:53;yB=slot?206:116;H=slot?228:140;
   s+=line(L,yT,166,yT,INK,1.5)+batH(170,yT)+line(174,yT,R,yT,INK,1.5)+
    line(L,yT,L,yB,INK,1.5)+line(R,yT,R,yB,INK,1.5)+
    line(L,yB,L+g,yB,INK,1.5)+line(L+g+60,yB,L+2*g+60,yB,INK,1.5)+line(L+2*g+120,yB,R,yB,INK,1.5)+
-   res(b1,yB,60,24)+res(b2,yB,60,24)+
-   put("t",170,yT-12,94)+put("a",b1,yB-12,12)+put("b",b2,yB-12,172);
-  al="直列回路の図。上に電池があり、下に抵抗1と抵抗2が、左右に一列につながっている。電池と、各抵抗の上に、";
+   resN(b1,yB,"a")+resN(b2,yB,"b")+
+   put("t",170,yT-12,94)+put("a",b1,yB-12,0)+put("b",b2,yB-12,0);
+  al="直列回路の図。上に電池があり、下に抵抗1と抵抗2が、左右に一列につながっている。抵抗の名前は、四角の中にある。電池と、各抵抗の上に、";
  }else{
   /* 電源・抵抗1・抵抗2は、回路の中央にそろえる */
-  yT=slot?86:66;y1=slot?170:126;y2=slot?254:186;H=slot?270:206;
+  yT=slot?72:56;y1=slot?138:108;y2=slot?204:160;H=slot?222:176;
   s+=line(L,yT,166,yT,INK,1.5)+batH(170,yT)+line(174,yT,R,yT,INK,1.5)+
    line(L,yT,L,y2,INK,1.5)+line(R,yT,R,y2,INK,1.5)+
-   line(L,y1,140,y1,INK,1.5)+res(170,y1,60,24)+line(200,y1,R,y1,INK,1.5)+
-   line(L,y2,140,y2,INK,1.5)+res(170,y2,60,24)+line(200,y2,R,y2,INK,1.5)+
+   line(L,y1,140,y1,INK,1.5)+resN(170,y1,"a")+line(200,y1,R,y1,INK,1.5)+
+   line(L,y2,140,y2,INK,1.5)+resN(170,y2,"b")+line(200,y2,R,y2,INK,1.5)+
    '<circle cx="'+L+'" cy="'+y1+'" r="3" fill="'+INK+'"/><circle cx="'+R+'" cy="'+y1+'" r="3" fill="'+INK+'"/>'+
-   put("t",170,yT-12,94)+put("a",170,y1-12,94)+put("b",170,y2-12,94);
-  al="並列回路の図。上に電池があり、その下に、抵抗1と抵抗2が、上下に並んでいる。電池と抵抗は、回路の中央にそろっている。電池と、各抵抗の上に、";
+   put("t",170,yT-12,82)+put("a",170,y1-12,82)+put("b",170,y2-12,82);
+  al="並列回路の図。上に電池があり、その下に、抵抗1と抵抗2が、上下に並んでいる。電池と抵抗は、回路の中央にそろっている。抵抗の名前は、四角の中にある。電池と、各抵抗の上に、";
  }
  var info="";
  if(c){["t","a","b"].forEach(function(it){var g=Q.filter(function(q){return c.given[it].indexOf(q)>=0}).map(function(q){return QN[q]+fmt(q,c.full[it][q])+SY[q]});info+=NM[it]+(g.length?"は、最初から分かっている値が、"+g.join("、"):"は、すべて空欄")+"。"});}
- var lab=title+"。"+al+(c?"A・V・Ωの枠がある。灰色の枠は、最初から分かっている値。"+info:"全体、抵抗1、抵抗2と、A・V・Ωの名前がある");
+ var lab=title+"。"+al+(c?"A・V・Ωの枠がある。灰色の枠は、最初から分かっている値。"+info:"A・V・Ωの名前がある");
  return {svg:'<svg viewBox="0 0 340 '+H+'" role="img" aria-label="'+lab+'">'+s+'</svg>',H:H,fields:flds}}
 function figL(kind,title){return '<div class="fig">'+circ(kind,title,null).svg+'</div>'}
 
