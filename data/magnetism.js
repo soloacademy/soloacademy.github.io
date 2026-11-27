@@ -1,5 +1,5 @@
 (function(){
-var INK="#26303b",FLD="#c2410c",CUR="#1f5fa8",GRAY="#8a949f",RULE="#c9d0d7",SOFT="#9aa5b1",SIDE="#cfd5db",HAND="#efe6dc";
+var INK="#26303b",FLD="#1f5fa8",CUR="#c2410c",GRAY="#8a949f",RULE="#c9d0d7",SOFT="#9aa5b1",SIDE="#cfd5db",HAND="#efe6dc";
 /* 色の約束(2-18 rev13)：電流＝青、磁界＝赤。CUR＝電流の色(青 #1f5fa8)、FLD＝磁界の色(赤 #c2410c) */
 function n(v){return Math.round(v*10)/10}
 function T(x,y,size,txt,cls,anchor){return '<text x="'+n(x)+'" y="'+n(y)+'" font-size="'+size+'"'+(anchor?' text-anchor="'+anchor+'"':'')+(cls?' class="'+cls+'"':'')+'>'+txt+'</text>'}
@@ -10,6 +10,9 @@ function svgY(h,label,body){return '<div class="fig"><svg viewBox="0 0 340 '+h+'
 function arr(x1,y1,x2,y2,k,w){var a=Math.atan2(y2-y1,x2-x1),L=(w||1.5)>2.5?10:7;w=w||1.5;
  function p(t){return n(x2-L*Math.cos(a+t))+','+n(y2-L*Math.sin(a+t))}
  return line(x1,y1,x2,y2,k,w)+'<path d="M'+p(.5)+' L'+n(x2)+','+n(y2)+' L'+p(-.5)+'" fill="none" stroke="'+k+'" stroke-width="'+w+'" stroke-linecap="round" stroke-linejoin="round"/>'}
+function needle(cx,cy,dx,dy,L,w){var l=Math.hypot(dx,dy),ux=dx/l,uy=dy/l,px=-uy,py=ux;
+ function P(t,q){return n(cx+ux*t+px*q)+','+n(cy+uy*t+py*q)}
+ return '<polygon points="'+P(L,0)+' '+P(0,w)+' '+P(0,-w)+'" fill="'+CUR+'"/><polygon points="'+P(-L,0)+' '+P(0,w)+' '+P(0,-w)+'" fill="'+SOFT+'"/>'}
 function chev(x,y,a,k){var L=7;function p(t){return n(x-L*Math.cos(a+t))+','+n(y-L*Math.sin(a+t))}
  return '<path d="M'+p(.55)+' L'+n(x)+','+n(y)+' L'+p(-.55)+'" fill="none" stroke="'+k+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'}
 /* 立体の見せ方：奥行き(手前向き)を、左下の斜めで表す。手前向き＝(-0.6,+0.45)の向き */
@@ -18,10 +21,10 @@ function tube(d,w){return '<path d="'+d+'" fill="none" stroke="'+INK+'" stroke-w
 function palm(x,y,w,h){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="16" fill="'+HAND+'" stroke="'+INK+'" stroke-width="1.5"/>'}
 function runs(a,k,w,dash){return a.map(function(r){return '<polyline points="'+r.map(function(p){return n(p[0])+','+n(p[1])}).join(' ')+'" fill="none" stroke="'+k+'" stroke-width="'+w+'" stroke-linecap="round" stroke-linejoin="round"'+(dash?' stroke-dasharray="4 3"':'')+'/>' }).join('')}
 /* コイル(らせん)：手前側(front)と奥側(back)に分ける。軸は横。巻き始めは、下のはし */
-function helix(xs,cy,R,pitch,turns){
+function helix(xs,cy,R,pitch,turns,ph0){var P0=(ph0==null?-Math.PI/2:ph0);
  var N=turns*60,back=[],front=[],cur=[],side=null,i,ph,z,sx,sy,f;
- for(i=0;i<=N;i++){ph=-Math.PI/2+2*Math.PI*turns*i/N;z=Math.cos(ph);
-  sx=xs+pitch*(ph+Math.PI/2)/(2*Math.PI)+DX*R*z;sy=cy-R*Math.sin(ph)+DY*R*z;f=z>=0;
+ for(i=0;i<=N;i++){ph=P0+2*Math.PI*turns*i/N;z=Math.cos(ph);
+  sx=xs+pitch*(ph-P0)/(2*Math.PI)+DX*R*z;sy=cy-R*Math.sin(ph)+DY*R*z;f=z>=0;
   if(side===null)side=f;
   if(f!==side){cur.push([sx,sy]);(side?front:back).push(cur);cur=[[sx,sy]];side=f}else cur.push([sx,sy])}
  (side?front:back).push(cur);return {back:back,front:front}}
@@ -45,8 +48,8 @@ function figStraight(){
   [Math.PI/4,5*Math.PI/4].forEach(function(t){
    s+=chev(170+r*Math.cos(t),112-K*r*Math.sin(t),Math.atan2(-K*Math.cos(t),-Math.sin(t)),FLD)})});
  /* 方位磁針：外側の輪の左斜め奥(135°)の点に、円盤の中心が接する。針は、その点での接線の向きで、中心から両側へ同じ長さ(N極は左・少し下寄り) */
- s+=line(cx,cy,cx+22.9,cy-7.3,GRAY,4)+arr(cx,cy,cx-22.9,cy+7.3,FLD,3)+
-  T(cx-38,cy+17,13,"N","v b","middle")+T(112,70,11.5,"方位磁針","g","middle")+
+ s+=needle(cx,cy,-22.9,7.3,22,6)+
+  T(cx-38,cy+17,13,"N","m b","middle")+T(112,70,11.5,"方位磁針","g","middle")+
   T(184,40,13,"電流","m b")+T(252,86,13,"磁界","v b");
  s+='</g>';
  /* 右側：手のひら側から見た手の画像(ChatGPTソロ作)。親指＝電流の向き(上)、4本の指＝導線をにぎる向き */
@@ -70,12 +73,12 @@ function figHandR(){
 
 /* ---------- 図3：コイル。o.cur＝手前側の電流(up/down)、o.ends＝{l,r}のN・S、o.ask＝手前側に「?」 ---------- */
 function figCoil(o){
- var R=34,pitch=30,turns=4,xs=105,cy=85,h=helix(xs,cy,R,pitch,turns),s='',i,a,sx,sy;
- s+=line(62,cy+R,xs,cy+R,INK,2)+line(xs+turns*pitch,cy+R,298,cy+R,INK,2)+runs(h.back,SOFT,1.8,true)+runs(h.front,INK,2.4);
- for(i=0;i<turns;i++){sx=xs+pitch*(i+.25)+DX*R;sy=cy+DY*R;
+ var R=34,pitch=30,turns=4,xs=128,cy=85,P0=Math.atan(DY),h=helix(xs,cy,R,pitch,turns,P0),s='',i,a,sx,sy,sx0=xs+DX*R*Math.cos(P0),sx1=xs+pitch*turns+DX*R*Math.cos(P0);
+ s+=line(sx0-40,cy,sx0,cy,INK,2)+line(sx1,cy,sx1+40,cy,INK,2)+runs(h.back,SOFT,1.8,true)+runs(h.front,INK,2.4);
+ for(i=0;i<turns;i++){sx=xs+pitch*(i+1-P0/(2*Math.PI))+DX*R;sy=cy+DY*R;
   if(o.cur){a=Math.atan2(-R,pitch/(2*Math.PI));if(o.cur==="down")a+=Math.PI;s+=chev(sx+5*Math.cos(a),sy+5*Math.sin(a),a,CUR)}
   if(o.ask)s+=T(sx+12,sy+6,18,"?","m b","middle")}
- if(o.ends)s+=T(58,cy+6,22,o.ends.l,"b","middle")+T(290,cy+6,22,o.ends.r,"b","middle");
+ if(o.ends)s+=T(sx0-55,cy+7,22,o.ends.l,"b","middle")+T(sx1+55,cy+7,22,o.ends.r,"b","middle");
  if(o.hand){var hx=126,hy=156,hw=88,hh=90,hcx=hx+hw/2,hcy=hy+hh/2;
   s+='<image href="'+HANDIMG+'" x="'+hx+'" y="'+hy+'" width="'+hw+'" height="'+hh+'" transform="rotate('+(o.hand==="r"?90:-90)+' '+hcx+' '+hcy+')"/>';
   if(o.hand==="r")s+=T(222,hcy+4,11,"親指","g b")+T(128,178,11,"4本の指","g b","end");
@@ -90,16 +93,16 @@ function disc(cx,cy,ask,dir,lab){
  var s='<ellipse cx="'+cx+'" cy="'+cy+'" rx="20" ry="11" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>';
  if(ask)return s+T(cx,cy+6,18,"?","b","middle");
  var k=dir==="toward"?1:-1;
- return s+line(cx,cy,cx-k*DX*14,cy-k*DY*14,SIDE,4)+arr(cx,cy,cx+k*DX*38,cy+k*DY*38,FLD,3)}
+ return s+needle(cx,cy,k*DX,k*DY,24,5)}
 function figWire(orient,ans){
  var s,h,lab;
  if(orient==="down"){h=ans?170:150;
   s=arr(100,20,100,150,CUR,3.5)+T(114,56,13,"電流","m b")+disc(230,92,!ans,"toward")+
-   (ans?T(203,126,13,"N","v b","end"):"")+T(236,136,12,"方位磁針","g","middle")+(ans?T(236,160,13,"N極は手前向き","v b","middle"):"");
+   (ans?T(203,126,13,"N","m b","end"):"")+T(236,136,12,"方位磁針","g","middle")+(ans?T(236,160,13,"N極は手前向き","m b","middle"):"");
   lab="下向きの電流が流れる導線の立体図。導線の右側に、方位磁針がある"+(ans?"。N極は、手前(左下の斜め)向きを指す":"")}
  else{h=ans?176:152;
   s=arr(40,40,300,40,CUR,3.5)+T(60,26,13,"電流","m b")+disc(170,110,!ans,"away")+
-   (ans?T(200,92,13,"N","v b"):"")+T(170,140,12,"方位磁針","g","middle")+(ans?T(170,164,13,"N極は奥向き","v b","middle"):"");
+   (ans?T(200,92,13,"N","m b"):"")+T(170,140,12,"方位磁針","g","middle")+(ans?T(170,164,13,"N極は奥向き","m b","middle"):"");
   lab="右向きの電流が流れる導線の立体図。導線の真下に、方位磁針がある"+(ans?"。N極は、奥(右上の斜め)向きを指す":"")}
  return svgY(h,lab,s)}
 
@@ -167,7 +170,7 @@ var HD='font-size:1.05rem;font-weight:700;line-height:1.5;margin:1.8rem 0 .3rem;
 function hd(x,first){return '<h3 style="'+HD+(first?';margin-top:.9rem':'')+'">'+x+'</h3>'}
 var TIGHT='<style>.pick .pk-bt{gap:.4rem}.pick button.choice{padding:.1rem .55rem;min-width:2.6rem}</style>';
 /* 2-18だけ文字色を入れ替える：.m(電流・電気)＝青、.v(磁界)＝赤。style.cssの既定は逆 */
-var SWAP='<style>.m{color:#1f5fa8}.v{color:#c2410c}.fig .m{fill:#1f5fa8}.fig .v{fill:#c2410c}</style>';
+var SWAP='';
 var DIR4=["上","下","手前","奥"];
 
 var POINT=SWAP+hd('右ネジの法則',true)+
