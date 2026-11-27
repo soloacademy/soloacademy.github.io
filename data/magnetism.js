@@ -29,18 +29,31 @@ function helix(xs,cy,R,pitch,turns){
 function P3(x,y,z){return [170+x+DX*z,112-y+DY*z]}
 function ell(r,t0,t1){var s='',t,k=0,K=.32;for(t=t0;t<=t1+.001;t+=Math.PI/18){s+=(k++?'L':'M')+n(170+r*Math.cos(t))+','+n(112-K*r*Math.sin(t))}return '<path d="'+s+'" fill="none" stroke="'+BLUE+'" stroke-width="1.5"/>'}
 function figStraight(){
- var s='',R2=[44,74],cx=96,cy=112,K=.32;
+ var s='',R2=[44,74],K=.32,cx=96,cy=112;
+ /* 左側(導線と磁界)：全体を左へ34ずらして、右に手の場所をあける */
+ s+='<g transform="translate(-34,0)">';
  /* 奥側の半円(導線の後ろ) */
  R2.forEach(function(r){s+=ell(r,0,Math.PI)});
  s+=arr(170,182,170,24,RED,3.5);
- /* 手前側の半円(導線の前)と、磁界の向きの矢じるし：右は奥へ、手前の点は右へ */
- R2.forEach(function(r){s+=ell(r,Math.PI,2*Math.PI)+
-  chev(170+r,112,-Math.PI/2,BLUE)+chev(170,112+K*r,0,BLUE)});
+ /* 手前側の半円と、磁界の向きの矢じるし：右斜め奥(右上45°)と、左斜め手前(左下45°)。向きは、円の接線 */
+ R2.forEach(function(r){
+  s+=ell(r,Math.PI,2*Math.PI);
+  [Math.PI/4,5*Math.PI/4].forEach(function(t){
+   s+=chev(170+r*Math.cos(t),112-K*r*Math.sin(t),Math.atan2(-K*Math.cos(t),-Math.sin(t)),BLUE)})});
+ /* 方位磁針：外側の円の左はしに接する。針は、そこでの接線の向き(真下)。N極は下 */
  s+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="17" ry="9.5" fill="#fff" stroke="'+GRAY+'" stroke-width="1.2"/>'+
-  line(cx,cy,cx+8,cy-6,SIDE,4)+arr(cx,cy,cx+DX*34,cy+DY*34,BLUE,3)+
-  T(cx+DX*34-4,cy+DY*34+14,13,"N","v b","end")+T(64,94,11.5,"方位磁針","g","middle")+
-  T(184,40,13,"電流","m b")+T(262,126,13,"磁界","v b");
- return svgY(196,"直線の導線の立体図。導線を上向きに電流が流れる(赤い矢印)。導線を中心に、導線に垂直な水平の円状の磁界が巻き、上から見て反時計まわり(青い横長の楕円の矢印)。導線の左側では、磁界は手前向きで、そこに置いた方位磁針のN極は、手前向きを指す",s)}
+  line(cx,cy,cx,cy-8,SIDE,4)+arr(cx,cy,cx,cy+34,BLUE,3)+
+  T(cx,cy+34+14,13,"N","v b","middle")+T(64,94,11.5,"方位磁針","g","middle")+
+  T(184,40,13,"電流","m b")+T(252,86,13,"磁界","v b");
+ s+='</g>';
+ /* 右側：右手を、向こう側から見た図(親指立てのアイコンの左右反転)。親指＝電流の向き(上)、4本の指＝導線をにぎる向き */
+ s+='<g transform="translate(254,60) scale(.85)">'+
+  '<path d="M78,64 C66,62 54,50 49,30 C47,16 49,6 40,6 C32,6 30,14 30,24 C30,36 28,44 24,52 C14,52 4,58 6,66 C0,68 0,76 7,78 C2,82 3,90 9,91 C8,100 18,104 28,104 C50,108 64,108 78,108 Z" fill="'+HAND+'" stroke="'+INK+'" stroke-width="2.2" stroke-linejoin="round"/>'+
+  '<path d="M8,66 H22 M9,79 H22 M12,91 H24" fill="none" stroke="'+INK+'" stroke-width="1.8" stroke-linecap="round"/>'+
+  '<rect x="78" y="62" width="18" height="48" rx="3" fill="'+INK+'"/><circle cx="87" cy="100" r="2.6" fill="'+HAND+'"/></g>';
+ s+=arr(288,56,288,22,RED,3)+T(302,72,11.5,"親指","g b")+T(295,168,11.5,"4本の指","g b","middle");
+ return svgY(196,"直線の導線と右手の図。左側は、導線の立体図。導線を上向きに電流が流れる(赤い矢印)。導線を中心に、導線に垂直な水平の円状の磁界が巻き、上から見て反時計まわり(青い横長の楕円)。2つの輪それぞれに、右斜め奥と左斜め手前に、磁界の向きの矢じるしがある。導線の左側に方位磁針があり、針は円の接線の向きの真下を指し、下の先がN極。右側は、向こう側から見た右手で、親指を上向き(電流の向き)に立て、ほかの4本の指で導線をにぎる。親指の上に、電流の赤い矢印がある",s)}
+
 
 /* ---------- 図2：右手(親指＝電流の向き、ほかの指＝磁界の向き) ---------- */
 function figHandR(){
@@ -156,7 +169,7 @@ var DIR4=["上","下","手前","奥"];
 
 var POINT=hd('右ネジの法則',true)+
  '<p>導線に'+M('電流')+'が流れると、まわりに'+V('磁界')+'ができます。磁界は同心円状で、方位磁針のN極は、磁界の向きを指します。</p>'+figStraight()+
- '<p>右手の親指を'+M('電流')+'の向きに合わせると、ほかの4本の指が'+V('磁界')+'の向きです。</p>'+figHandR()+
+ '<p>右手の親指を'+M('電流')+'の向きに合わせると、ほかの4本の指が'+V('磁界')+'の向きです。</p>'+
  '<p>コイルでは、4本の指を'+M('電流')+'の向きに合わせると、親指が向いた側の端が<b>N極</b>です。</p>'+figCoil({cur:"down",ends:{l:"S",r:"N"}})+
  SM+'※ 直線の導線は、親指が電流の向き。コイルは、親指がN極(磁界の向き)です。</p>'+
  hd('フレミングの左手の法則')+
