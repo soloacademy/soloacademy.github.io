@@ -45,7 +45,7 @@ function figStraight(){
   [Math.PI/4,5*Math.PI/4].forEach(function(t){
    s+=chev(170+r*Math.cos(t),112-K*r*Math.sin(t),Math.atan2(-K*Math.cos(t),-Math.sin(t)),FLD)})});
  /* 方位磁針：外側の輪の左斜め奥(135°)の点に、円盤の中心が接する。針は、その点での接線の向きで、中心から両側へ同じ長さ(N極は左・少し下寄り) */
- s+=line(cx,cy,cx+22.9,cy-7.3,SIDE,4)+arr(cx,cy,cx-22.9,cy+7.3,FLD,3)+
+ s+=line(cx,cy,cx+22.9,cy-7.3,GRAY,4)+arr(cx,cy,cx-22.9,cy+7.3,FLD,3)+
   T(cx-38,cy+17,13,"N","v b","middle")+T(112,70,11.5,"方位磁針","g","middle")+
   T(184,40,13,"電流","m b")+T(252,86,13,"磁界","v b");
  s+='</g>';
