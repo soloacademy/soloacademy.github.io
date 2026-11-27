@@ -21,6 +21,66 @@ function ohm(o){
   (o.t?"。電圧は"+o.t:"")+(o.l?"。抵抗は"+o.l:"")+(o.r?"。電流は"+o.r:"");
  return '<div class="fig" style="margin:.4rem 0;width:13rem;flex:0 0 auto"><svg viewBox="-24 18 348 158" role="img" aria-label="'+lab+'">'+b+'</svg></div>'}
 
+/* ---------- 図の共通(この3つの図だけで使う) ---------- */
+var INK="#26303b",RED="#c2410c",BLUE="#1f5fa8",GL="#8a949f",LIGHT="#b7791f";
+function figBox(y0,h,label,body){return '<div class="fig" style="margin:.4rem 0"><svg viewBox="0 '+y0+' 340 '+h+'" role="img" aria-label="'+label+'">'+body+'</svg></div>'}
+function rays(cx,cy,angles,r0,r1,w){
+ return angles.map(function(g){var a=g*Math.PI/180;
+  return '<line x1="'+n(cx+r0*Math.cos(a))+'" y1="'+n(cy+r0*Math.sin(a))+'" x2="'+n(cx+r1*Math.cos(a))+'" y2="'+n(cy+r1*Math.sin(a))+'" stroke="'+LIGHT+'" stroke-width="'+w+'" stroke-linecap="round"/>'}).join('')}
+
+/* ---------- 電力：電球の明るさ比べ(光の線の数と長さで見せる) ---------- */
+function bulb(cx,cy,fill){
+ return '<circle cx="'+cx+'" cy="'+cy+'" r="22" fill="'+fill+'" stroke="'+INK+'" stroke-width="1.5"/>'+
+  '<path d="M'+(cx-8)+','+(cy+9)+' L'+(cx-4)+','+(cy-1)+' L'+cx+','+(cy+9)+' L'+(cx+4)+','+(cy-1)+' L'+(cx+8)+','+(cy+9)+'" fill="none" stroke="'+INK+'" stroke-width="1.2" stroke-linejoin="round"/>'+
+  '<rect x="'+(cx-9)+'" y="'+(cy+20)+'" width="18" height="14" rx="2" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'+
+  line(cx-9,cy+27,cx+9,cy+27,INK,1)}
+function figPower(){
+ var cy=70,s=
+  rays(90,cy,[-180,-157.5,-135,-112.5,-90,-67.5,-45,-22.5,0],28,48,2)+bulb(90,cy,"#fdf0b8")+
+  rays(250,cy,[-135,-90,-45],28,36,1.5)+bulb(250,cy,"#f7f3e3")+
+  T(90,134,18,"100W","m b","middle")+T(90,154,12,"明るい","g","middle")+
+  T(250,134,18,"40W","m b","middle")+T(250,154,12,"暗い","g","middle");
+ return figBox(0,162,"電力の図。電球が2つ並ぶ。左は100Wの電球で、光の線が多くて長く、明るい。右は40Wの電球で、光の線が少なくて短く、暗い。電力が大きいほど、明るい",s)}
+
+/* ---------- 熱量(J)：電熱線で水が温まる ---------- */
+function ar(x,y1,y2){return line(x,y1,x,y2,RED,1.5)+'<path d="M'+(x-4)+','+(y2+6)+' L'+x+','+y2+' L'+(x+4)+','+(y2+6)+'" fill="none" stroke="'+RED+'" stroke-width="1.5"/>'}
+function ld(x1,y1,x2,y2){return line(x1,y1,x2,y2,INK,1)+'<circle cx="'+x2+'" cy="'+y2+'" r="2.5" fill="'+INK+'"/>'}
+function figHeat(){
+ var s='<rect x="71" y="72" width="178" height="57" fill="#cfe0f3"/>'+
+  '<path d="M70,48 V130 H250 V48" fill="none" stroke="'+INK+'" stroke-width="1.5" stroke-linejoin="round"/>'+
+  /* 電熱線(コイル)と、外へ出る2本の線 */
+  line(90,112,90,34,INK,1.5)+line(150,112,150,34,INK,1.5)+
+  '<circle cx="90" cy="34" r="3" fill="'+INK+'"/><circle cx="150" cy="34" r="3" fill="'+INK+'"/>'+
+  '<path d="M90,112 L95,104 L105,120 L115,104 L125,120 L135,104 L145,120 L150,112" fill="none" stroke="'+INK+'" stroke-width="2" stroke-linejoin="round"/>'+
+  /* 熱(赤い矢印) */
+  ar(105,100,90)+ar(120,100,90)+ar(135,100,90)+TN(120,85,12,"熱量(J)","m b","middle")+
+  /* 温度計 */
+  '<rect x="201" y="30" width="8" height="82" rx="4" fill="#fff" stroke="'+INK+'" stroke-width="1.2"/>'+
+  '<circle cx="205" cy="118" r="7" fill="'+RED+'" stroke="'+INK+'" stroke-width="1.2"/>'+
+  line(205,118,205,62,RED,3)+
+  T(4,117,13,"電熱線","b")+ld(48,113,92,113)+
+  T(262,64,13,"温度計","b")+ld(258,60,211,62);
+ return figBox(24,120,"熱量の図。水の入った容器の中に、電熱線と温度計がある。電熱線に電流を流すと、熱が出て、水が温まる。温度計の液が上がる。熱の量の単位はジュール(J)",s)}
+
+/* ---------- 電力量(Wh)：家電(ドライヤー) × 時計 ＝ 電力量 ---------- */
+function figWh(){
+ var s=
+  /* ドライヤー(本体・ふき出し口・にぎり・風) */
+  '<rect x="39" y="28" width="48" height="26" rx="10" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'+
+  '<rect x="29" y="32" width="10" height="18" rx="2" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'+
+  '<rect x="56" y="54" width="12" height="26" rx="3" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'+
+  line(12,35,22,35,GL,1.5)+line(12,41,22,41,GL,1.5)+line(12,47,22,47,GL,1.5)+
+  T(58,106,18,"1200W","m b","middle")+
+  T(118,60,22,"×","b","middle")+
+  /* 時計 */
+  '<circle cx="175" cy="52" r="26" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'+
+  line(175,28,175,33,INK,1.5)+line(175,71,175,76,INK,1.5)+line(151,52,156,52,INK,1.5)+line(194,52,199,52,INK,1.5)+
+  line(175,52,175,37,INK,2)+line(175,52,188,59,INK,1.5)+
+  T(175,106,18,"2時間","v b","middle")+
+  T(232,60,22,"＝","b","middle")+
+  T(290,59,20,"2400Wh","m b","middle");
+ return figBox(0,116,"電力量の図。左はドライヤーで1200W。その右に、かけ算の記号と、2時間を表す時計。さらに右に、等号と2400Wh。電力量は、電力に、使った時間をかけたもの",s)}
+
 /* 文章。 */
 function M(t){return '<span class="m">'+t+'</span>'}
 function V(t){return '<span class="v">'+t+'</span>'}
@@ -31,14 +91,17 @@ function F(h){return '<div class="formula" style="white-space:normal">'+h+'</div
 
 var POINT=
  hd('電力',true)+
+ figPower()+
  F('Ω(抵抗) ＝ V(電圧) <b>÷</b> A(電流)<br><span style="color:var(--muted)">↓ ÷を×に変える</span><br>'+M('W(電力)')+' ＝ V(電圧) <b>×</b> '+V('A(電流)'))+
  '<p>(例) 100V × 12A ＝ <b>1200W</b></p>'+
  SM+'※ 電力は、1秒あたりに消費される電気エネルギーの量です。</p>'+
  hd('電力量・熱量(J)')+
+ figHeat()+
  F(M('J(電力量・熱量)')+' ＝ W(電力) × '+V('秒'))+
  '<p>(例) 20W × 15秒 ＝ <b>300J</b></p>'+
  SM+'※ 時間は、秒に直します。1分 ＝ 60秒</p>'+
  hd('電力量(Wh)')+
+ figWh()+
  F(M('Wh(電力量)')+' ＝ W(電力) × '+V('h(時間)'))+
  F('1Wh ＝ 3600J')+
  SM+'※ Jを忘れたら、Whを思い出す。時間を秒に変えたものが、Jです。</p>';
