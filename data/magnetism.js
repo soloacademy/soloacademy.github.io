@@ -44,9 +44,9 @@ function figStraight(){
   s+=ell(r,Math.PI,2*Math.PI);
   [Math.PI/4,5*Math.PI/4].forEach(function(t){
    s+=chev(170+r*Math.cos(t),112-K*r*Math.sin(t),Math.atan2(-K*Math.cos(t),-Math.sin(t)),FLD)})});
- /* 方位磁針：外側の輪の左斜め奥(135°)の点に接する。針は、そこでの接線の向き。N極は左(少し下寄り) */
- s+=line(cx,cy,cx+9.5,cy-3,SIDE,4)+arr(cx,cy,cx-34.3,cy+11,FLD,3)+
-  T(cx-46,cy+20,13,"N","v b","middle")+T(112,70,11.5,"方位磁針","g","middle")+
+ /* 方位磁針：外側の輪の左斜め奥(135°)の点に、円盤の中心が接する。針は、その点での接線の向きで、中心から両側へ同じ長さ(N極は左・少し下寄り) */
+ s+=line(cx,cy,cx+22.9,cy-7.3,SIDE,4)+arr(cx,cy,cx-22.9,cy+7.3,FLD,3)+
+  T(cx-38,cy+17,13,"N","v b","middle")+T(112,70,11.5,"方位磁針","g","middle")+
   T(184,40,13,"電流","m b")+T(252,86,13,"磁界","v b");
  s+='</g>';
  /* 右側：手のひら側から見た手の画像(ChatGPTソロ作)。親指＝電流の向き(上)、4本の指＝導線をにぎる向き */
