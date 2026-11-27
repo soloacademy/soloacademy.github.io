@@ -37,4 +37,3 @@ window.UNITS=[
   {id:"power",grade:2,no:"2-17",title:"電力と電力量"},
   {id:"magnetism",grade:2,no:"2-18",title:"電流と磁界"}
 ];
-
