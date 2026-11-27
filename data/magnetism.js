@@ -27,19 +27,20 @@ function helix(xs,cy,R,pitch,turns){
 
 /* ---------- 図1：直線の導線の立体図。同心円状の磁界(楕円の矢印)と、方位磁針 ---------- */
 function P3(x,y,z){return [170+x+DX*z,112-y+DY*z]}
-function ell(r,t0,t1){var s='',t,p,k=0;for(t=t0;t<=t1+.001;t+=Math.PI/18){p=P3(r*Math.cos(t),0,-r*Math.sin(t));s+=(k++?'L':'M')+n(p[0])+','+n(p[1])}return '<path d="'+s+'" fill="none" stroke="'+BLUE+'" stroke-width="1.5"/>'}
+function ell(r,t0,t1){var s='',t,k=0,K=.32;for(t=t0;t<=t1+.001;t+=Math.PI/18){s+=(k++?'L':'M')+n(170+r*Math.cos(t))+','+n(112-K*r*Math.sin(t))}return '<path d="'+s+'" fill="none" stroke="'+BLUE+'" stroke-width="1.5"/>'}
 function figStraight(){
- var s='',R2=[44,74],cx=96,cy=112;
+ var s='',R2=[44,74],cx=96,cy=112,K=.32;
+ /* 奥側の半円(導線の後ろ) */
  R2.forEach(function(r){s+=ell(r,0,Math.PI)});
  s+=arr(170,182,170,24,RED,3.5);
+ /* 手前側の半円(導線の前)と、磁界の向きの矢じるし：右は奥へ、手前の点は右へ */
  R2.forEach(function(r){s+=ell(r,Math.PI,2*Math.PI)+
-  chev(170+r,112,Math.atan2(-DY,-DX),BLUE)});
- R2.forEach(function(r){var p=P3(0,0,r);s+=chev(p[0],p[1],0,BLUE)});
+  chev(170+r,112,-Math.PI/2,BLUE)+chev(170,112+K*r,0,BLUE)});
  s+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="17" ry="9.5" fill="#fff" stroke="'+GRAY+'" stroke-width="1.2"/>'+
   line(cx,cy,cx+8,cy-6,SIDE,4)+arr(cx,cy,cx+DX*34,cy+DY*34,BLUE,3)+
   T(cx+DX*34-4,cy+DY*34+14,13,"N","v b","end")+T(64,94,11.5,"方位磁針","g","middle")+
   T(184,40,13,"電流","m b")+T(262,126,13,"磁界","v b");
- return svgY(196,"直線の導線の立体図。導線を上向きに電流が流れる(赤い矢印)。導線を中心に、同心円状の磁界が水平に巻き、上から見て反時計まわり(青い楕円の矢印)。導線の左側では、磁界は手前向きで、そこに置いた方位磁針のN極は、手前向きを指す",s)}
+ return svgY(196,"直線の導線の立体図。導線を上向きに電流が流れる(赤い矢印)。導線を中心に、導線に垂直な水平の円状の磁界が巻き、上から見て反時計まわり(青い横長の楕円の矢印)。導線の左側では、磁界は手前向きで、そこに置いた方位磁針のN極は、手前向きを指す",s)}
 
 /* ---------- 図2：右手(親指＝電流の向き、ほかの指＝磁界の向き) ---------- */
 function figHandR(){
@@ -102,12 +103,19 @@ function figFl(o){
 
 /* ---------- 図6：左手(中指＝電流、人差し指＝磁界、親指＝力) ---------- */
 function figHandL(){
-  /* 手：人差し指を上に立てたアイコンが土台。中指は右へ、親指は手前(左下の斜め)へ開く。薬指と小指は曲げる */
-  var s = '<path d="M150,128 L108,157 Q100,163 106,171 Q112,178 120,174 L160,152 Q164,168 184,168 H194 Q206,168 206,156 V126 Q206,122 212,122 H244 Q254,122 254,113 Q254,104 244,104 H172 V56 Q172,46 161,46 Q150,46 150,56 Z" fill="' + HAND + '" stroke="' + INK + '" stroke-width="2" stroke-linejoin="round"/>' + '<path d="M180,138 H206 M180,153 H206" fill="none" stroke="' + INK + '" stroke-width="1.5" stroke-linecap="round"/>';
-  /* 矢印とラベル：電流＝赤(中指)、磁界＝青(人差し指)、力＝黒(親指) */
-  s += arr(260, 113, 322, 113, RED, 3.5) + T(291, 99, 13, "電流", "m b", "middle") + T(232, 142, 11, "中指", "g b", "middle") + arr(161, 40, 161, 8, BLUE, 3) + T(176, 26, 13, "磁界", "v b") + T(142, 80, 11, "人差し指", "g b", "end") + arr(100, 172, 56, 203, INK, 3.5) + T(50, 196, 13, "力", "b", "end") + T(118, 138, 11, "親指", "g b", "end");
-  return svgY(210, "左手の図。人差し指を上向き、中指を右向き、親指を手前向き(左下の斜め)に、たがいに直角に開いた左手。薬指と小指は曲げている。人差し指の先に磁界の青い矢印、中指の先に電流の赤い矢印、親指の先に力の黒い矢印がある", s);
-}
+ /* 手の輪郭：人差し指は上、中指は右、親指は左下の斜め */
+ var s='<path d="M152,60 Q152,48 163,48 Q174,48 174,60 V98 H242 Q252,98 252,108 Q252,118 242,118 H214 V150 Q214,166 198,166 H172 L160,160 L112,176 Q100,180 94,170 Q90,162 98,157 L152,112 Z" fill="'+HAND+'" stroke="'+INK+'" stroke-width="2" stroke-linejoin="round"/>';
+ /* 曲げた薬指と小指：重ねて、手のひらの右下に */
+ s+='<rect x="186" y="139" width="32" height="18" rx="9" fill="'+HAND+'" stroke="'+INK+'" stroke-width="2"/>'+
+  '<rect x="186" y="120" width="34" height="18" rx="9" fill="'+HAND+'" stroke="'+INK+'" stroke-width="2"/>';
+ /* 袖口 */
+ s+='<rect x="164" y="173" width="44" height="24" rx="4" fill="'+INK+'"/>';
+ /* 矢印とラベル：電流＝赤(中指)、磁界＝青(人差し指)、力＝黒(親指) */
+ s+=arr(258,108,320,108,RED,3.5)+T(289,94,13,"電流","m b","middle")+T(222,90,11,"中指","g b","middle")+
+  arr(163,42,163,8,BLUE,3)+T(178,26,13,"磁界","v b")+T(144,80,11,"人差し指","g b","end")+
+  arr(90,178,48,206,INK,3.5)+T(42,198,13,"力","b","end")+T(104,140,11,"親指","g b","end");
+ return svgY(210,"左手の図。人差し指を上向き、中指を右向き、親指を手前向き(左下の斜め)に、たがいに直角に開いた左手。薬指と小指は曲げて重ねている。手首には袖口がある。人差し指の先に磁界の青い矢印、中指の先に電流の赤い矢印、親指の先に力の黒い矢印がある",s)}
+
 
 /* ---------- 図7：向きの関係を、2×2で大きく並べる。list＝[{t,cur,fld,force}] ---------- */
 function figMini(list){
