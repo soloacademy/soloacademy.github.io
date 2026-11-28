@@ -62,7 +62,7 @@ function circ(kind,title,c){
  if(c){["t","a","b"].forEach(function(it){var g=Q.filter(function(q){return c.given[it].indexOf(q)>=0}).map(function(q){return QN[q]+fmt(q,c.full[it][q])+SY[q]});info+=NM[it]+(g.length?"は、最初から分かっている値が、"+g.join("、"):"は、すべて空欄")+"。"});}
  var lab=title+"。"+al+(c?"A・V・Ωの枠がある。灰色の枠は、最初から分かっている値。"+info:"A・V・Ωの名前がある");
  return {svg:'<svg viewBox="0 0 340 '+H+'" role="img" aria-label="'+lab+'">'+s+'</svg>',H:H,fields:flds}}
-function figL(kind,title){return '<div class="fig">'+circ(kind,title,null).svg+'</div>'}
+function figL(kind,title){return '<div class="fig cfig">'+circ(kind,title,null).svg+'</div>'}
 
 /* ---------- オームの法則の円(1-1「密度」と同じ大きさ・同じ形)：上＝電圧、左下＝抵抗、右下＝電流 ---------- */
 function ohm(){
@@ -85,7 +85,7 @@ function cell(h,st){return '<div style="display:flex;flex-direction:column;justi
 var BIG='font-weight:700;font-size:1.3rem;line-height:1.2';
 function rl(cls,word,f){return cell('<span class="'+cls+'" style="'+BIG+'">'+word+'</span><span class="'+cls+'" style="font-size:.7rem">'+f+'</span>')}
 function relTable(){
- var G='display:grid;grid-template-columns:2.6rem repeat(3,1fr);align-items:stretch;margin:.6rem 0 .4rem',
+ var G='display:grid;grid-template-columns:2.6rem repeat(3,1fr);align-items:stretch;margin:.6rem 0 .4rem;max-width:21rem',
   h=function(a,b){return '<div style="text-align:center;font-weight:700;line-height:1.3;padding:.1rem 0 .3rem">'+a+'<br><span style="font-size:.75rem;color:var(--muted);font-weight:400">'+b+'</span></div>'},
   nm=function(t){return cell(t,'text-align:left;font-weight:700')};
  return '<div style="'+G+'"><div></div>'+h('電流','(A)')+h('電圧','(V)')+h('抵抗','(Ω)')+
@@ -139,7 +139,8 @@ var BASIC='<div style="display:grid;grid-template-columns:max-content 1fr;column
  bs('電圧','V','電流を流そうとするはたらき。単位は V(ボルト)')+
  bs('抵抗','Ω','電流の流れにくさ。単位は Ω(オーム)')+'</div>';
 
-var POINT=hd('電流・電圧・抵抗',true)+BASIC+
+var PCFIX='<style>@media (min-width:700px){.cfig svg{max-width:18rem}}</style>';
+var POINT=PCFIX+hd('電流・電圧・抵抗',true)+BASIC+
  hd('直列回路と並列回路')+
  figL("s","直列回路")+figL("p","並列回路")+relTable()+
  SM+'※ 並列回路の全体の抵抗は、どの抵抗よりも小さくなります。</p>'+

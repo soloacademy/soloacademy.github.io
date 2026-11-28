@@ -13,6 +13,14 @@ function arr(x1,y1,x2,y2,k,w){var a=Math.atan2(y2-y1,x2-x1),L=(w||1.5)>2.5?10:7;
 function needle(cx,cy,dx,dy,L,w){var l=Math.hypot(dx,dy),ux=dx/l,uy=dy/l,px=-uy,py=ux;
  function P(t,q){return n(cx+ux*t+px*q)+','+n(cy+uy*t+py*q)}
  return '<polygon points="'+P(L,0)+' '+P(0,w)+' '+P(0,-w)+'" fill="'+CUR+'"/><polygon points="'+P(-L,0)+' '+P(0,w)+' '+P(0,-w)+'" fill="'+SOFT+'"/>'}
+function tg(R,pt,ph){var dx=pt/(2*Math.PI)-DX*R*Math.sin(ph),dy=-R*Math.cos(ph)-DY*R*Math.sin(ph),l=Math.hypot(dx,dy);return [dx/l,dy/l]}
+function leads(xs,cy,R,pt,P0,turns,len,s,w){
+ var ph1=P0+2*Math.PI*turns,sx0=xs+DX*R*Math.cos(P0),sx1=xs+pt*turns+DX*R*Math.cos(ph1),t0=tg(R,pt,P0),t1=tg(R,pt,ph1),
+  c0=[sx0-s*t0[0],cy-s*t0[1]],c1=[sx1+s*t1[0],cy+s*t1[1]],
+  st='" fill="none" stroke="'+INK+'" stroke-width="'+(w||2.4)+'" stroke-linecap="round" stroke-linejoin="round"/>';
+ return {x0:c0[0],x1:c1[0],
+  p:'<path d="M'+n(c0[0])+','+n(cy+len)+' Q'+n(c0[0])+','+n(c0[1])+' '+n(sx0)+','+n(cy)+st+
+    '<path d="M'+n(sx1)+','+n(cy)+' Q'+n(c1[0])+','+n(c1[1])+' '+n(c1[0])+','+n(cy+len)+st}}
 function chev(x,y,a,k){var L=7;function p(t){return n(x-L*Math.cos(a+t))+','+n(y-L*Math.sin(a+t))}
  return '<path d="M'+p(.55)+' L'+n(x)+','+n(y)+' L'+p(-.55)+'" fill="none" stroke="'+k+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'}
 /* 立体の見せ方：奥行き(手前向き)を、左下の斜めで表す。手前向き＝(-0.6,+0.45)の向き */
@@ -48,14 +56,17 @@ function figStraight(){
   [Math.PI/4,5*Math.PI/4].forEach(function(t){
    s+=chev(170+r*Math.cos(t),112-K*r*Math.sin(t),Math.atan2(-K*Math.cos(t),-Math.sin(t)),FLD)})});
  /* 方位磁針：外側の輪の左斜め奥(135°)の点に、円盤の中心が接する。針は、その点での接線の向きで、中心から両側へ同じ長さ(N極は左・少し下寄り) */
- s+=needle(cx,cy,DX,DY,19,5)+
-  T(cx-26,cy+36,13,"N","m b","middle")+T(cx-6,cy-30,11.5,"方位磁針","g","middle")+
+ s+=needle(cx,cy,0,1,13,4.5)+
+  T(cx,cy+34,13,"N","m b","middle")+T(cx-6,cy-30,11.5,"方位磁針","g","middle")+
   T(184,40,13,"電流","m b")+T(252,86,13,"磁界","v b");
  s+='</g>';
  /* 右側：手のひら側から見た手の画像(ChatGPTソロ作)。親指＝電流の向き(上)、4本の指＝導線をにぎる向き */
  s+='<image href="'+HANDIMG+'" x="238" y="58" width="100" height="102"/>';
- s+=arr(285,182,285,24,CUR,3.5)+arr(248,126,312,126,FLD,3.5);
- return svgY(196,"直線の導線と右手の図。左側は、導線の立体図。導線を上向きに電流が流れる(青い矢印)。導線を中心に、導線に垂直な水平の円状の磁界が巻き、上から見て反時計まわり(赤い横長の楕円)。輪に、右斜め奥と左斜め手前に、磁界の向きの矢じるしがある。輪の左はしに方位磁針があり、針の中心が輪の上にある。N極は、手前(左下の斜め)向きを指す。右側は、手のひら側から見た手で、親指を上向き(電流の向き)に立て、ほかの4本の指で導線をにぎる。親指の上に、電流の青い矢印がある",s)}
+ var hcx=285,hcy=126,hr=36,Kh=.32,pa='',tt;
+ for(tt=Math.PI;tt<=2*Math.PI+.001;tt+=Math.PI/18)pa+=(pa?'L':'M')+n(hcx+hr*Math.cos(tt))+','+n(hcy-Kh*hr*Math.sin(tt));
+ s+=arr(285,182,285,24,CUR,3.5)+'<path d="'+pa+'" fill="none" stroke="'+FLD+'" stroke-width="2.5" stroke-linecap="round"/>';
+ [5*Math.PI/4,7*Math.PI/4].forEach(function(t){s+=chev(hcx+hr*Math.cos(t),hcy-Kh*hr*Math.sin(t),Math.atan2(-Kh*Math.cos(t),-Math.sin(t)),FLD)});
+ return svgY(196,"直線の導線と右手の図。左側は、導線の立体図。導線を上向きに電流が流れる(赤い矢印)。導線のまわりに、水平な円状の磁界(青い横長の楕円)があり、上から見て反時計まわり。輪に、右斜め奥と左斜め手前に、磁界の向きの矢じるしがある。輪の左はしに方位磁針があり、針の中心が輪の上にある。針は輪の接線の向きで、N極(赤)は手前を指す。右側は、手のひら側から見た手で、親指を上向きに立て、ほかの4本の指で導線をにぎる。親指に重ねた赤い矢印が電流の向き。そのまわりを回る青い矢印が磁界の向きで、手の手前側だけに描いてある",s)}
 
 
 /* ---------- 図2：右手(親指＝電流の向き、ほかの指＝磁界の向き) ---------- */
@@ -73,12 +84,12 @@ function figHandR(){
 
 /* ---------- 図3：コイル。o.cur＝手前側の電流(up/down)、o.ends＝{l,r}のN・S、o.ask＝手前側に「?」 ---------- */
 function figCoil(o){
- var R=34,pitch=30,turns=4,xs=102.5,cy=85,P0=Math.atan(DY),h=helix(xs,cy,R,pitch,turns+.5,P0),s='',i,a,sx,sy,sx0=xs+DX*R*Math.cos(P0),sx1=xs+pitch*(turns+.5)-DX*R*Math.cos(P0);
- s+=line(sx0,cy,sx0,cy+36,INK,2)+line(sx1,cy,sx1,cy+36,INK,2)+runs(h.back,SOFT,1.8,true)+runs(h.front,INK,2.4);
+ var R=34,pitch=30,turns=4,xs=102.5,cy=85,P0=Math.atan(DY),h=helix(xs,cy,R,pitch,turns+.5,P0),s='',i,a,sx,sy,sx0=xs+DX*R*Math.cos(P0),sx1=xs+pitch*(turns+.5)-DX*R*Math.cos(P0),ld=leads(xs,cy,R,pitch,P0,turns+.5,36,24);
+ s+=ld.p+runs(h.back,SOFT,1.8,true)+runs(h.front,INK,2.4);
  for(i=0;i<turns;i++){sx=xs+pitch*(i+1-P0/(2*Math.PI))+DX*R;sy=cy+DY*R;
   if(o.cur){a=Math.atan2(-R,pitch/(2*Math.PI));if(o.cur==="down")a+=Math.PI;s+=chev(sx+5*Math.cos(a),sy+5*Math.sin(a),a,CUR)}
   if(o.ask)s+=T(sx+12,sy+6,18,"?","m b","middle")}
- if(o.ends)s+=T(sx0,cy+60,22,o.ends.l,"b","middle")+T(sx1,cy+60,22,o.ends.r,"b","middle");
+ if(o.ends)s+=T(ld.x0,cy+60,22,o.ends.l,"b","middle")+T(ld.x1,cy+60,22,o.ends.r,"b","middle");
  if(o.hand){var hx=126,hy=156,hw=88,hh=90,hcx=hx+hw/2,hcy=hy+hh/2;
   s+='<image href="'+HANDIMG+'" x="'+hx+'" y="'+hy+'" width="'+hw+'" height="'+hh+'" transform="rotate('+(o.hand==="r"?90:-90)+' '+hcx+' '+hcy+')"/>';
   }
@@ -151,10 +162,10 @@ function figInd(list,o){
  list.forEach(function(p,i){var x0=o.big?0:2+113*i,mx=p.mv==="stop"?x0+10:x0+2,R=14,pt=9,cy=52,P0=Math.atan(DY),xs=x0+55.7,h=helix(xs,cy,R,pt,4.5,P0),
   sx0=xs+DX*R*Math.cos(P0),sx1=xs+pt*4.5-DX*R*Math.cos(P0),mc=(sx0+sx1)/2,a=p.pole==="N"?["S","N"]:["N","S"],d=6,ox=-DX*d,oy=-DY*d,g='',r,i2;
   function pg(q,f){return '<polygon points="'+q.map(function(v){return n(v[0])+','+n(v[1])}).join(' ')+'" fill="'+f+'" stroke="'+INK+'" stroke-width="1.2" stroke-linejoin="round"/>'}
-  g+=T(x0+56,12,13,p.t,"g b","middle")+line(sx0,cy,sx0,98,INK,2)+line(sx1,cy,sx1,98,INK,2)+runs(h.back,SOFT,1.4,true);
-  [0,1].forEach(function(j){var X=mx+16*j;g+=pg([[X,45],[X+16,45],[X+16+ox,45+oy],[X+ox,45+oy]],a[j]==="N"?"#fff":SIDE)});
-  g+=pg([[mx+32,45],[mx+32+ox,45+oy],[mx+32+ox,59+oy],[mx+32,59]],a[1]==="N"?"#e3e7eb":"#aab2bb");
-  [0,1].forEach(function(j){g+='<rect x="'+(mx+16*j)+'" y="45" width="16" height="14" fill="'+(a[j]==="N"?"#fff":SIDE)+'" stroke="'+INK+'" stroke-width="1.2"/>'+TN(mx+16*j+8,56,10,a[j],"b","middle")});
+  g+=T(x0+56,12,13,p.t,"g b","middle")+leads(xs,cy,R,pt,P0,4.5,98-cy,10,1.8).p+runs(h.back,SOFT,1.4,true);
+  [0,1].forEach(function(j){var X=mx+16*j;g+=pg([[X,45],[X+16,45],[X+16+ox,45+oy],[X+ox,45+oy]],a[j]==="N"?"#dc7a54":"#e2e6ea")});
+  g+=pg([[mx+32,45],[mx+32+ox,45+oy],[mx+32+ox,59+oy],[mx+32,59]],a[1]==="N"?"#a3350a":"#aab2bb");
+  [0,1].forEach(function(j){g+='<rect x="'+(mx+16*j)+'" y="45" width="16" height="14" fill="'+(a[j]==="N"?"#c2410c":SIDE)+'" stroke="'+INK+'" stroke-width="1.2"/>'+(a[j]==="N"?'<text x="'+(mx+16*j+8)+'" y="56" font-size="10" text-anchor="middle" class="b" style="stroke:none;fill:#fff">N</text>':TN(mx+16*j+8,56,10,"S","b","middle"))});
   g+=runs(h.front,INK,1.8,false);
   if(p.mv==="in")g+=arr(x0+8,26,x0+34,26,INK,2);
   if(p.mv==="out")g+=arr(x0+34,26,x0+8,26,INK,2);
@@ -186,14 +197,15 @@ var POINT=SWAP+hd('右ねじの法則',true)+
  SMT+'コイルでは、4本の指を'+M('電流')+'の向きに合わせると、親指が'+V('磁界')+'の向きです。</p>'+
  hd('フレミングの左手の法則')+
  '<p>磁界の中の導線に'+M('電流')+'を流すと、導線に<b>力</b>が働きます。</p>'+figHandL()+
- '<p>左手の中指＝'+M('電流')+'、人差し指＝'+V('磁界')+'、親指＝力の向きです。</p>'+
- '<p>中指・人差し指・親指の順に、<b>'+M('電')+'・'+V('磁')+'・力</b>と覚えます。親指は、力強い指です。</p>'+
+ SMT+'左手の中指＝'+M('電流')+'、人差し指＝'+V('磁界')+'、親指＝力の向きです。</p>'+
+ SMT+'中指・人差し指・親指の順に、<b>'+M('電')+'・'+V('磁')+'・力</b>と覚えます。親指は、力強い指です。</p>'+
  hd('電磁誘導')+
  '<p>コイルの中で磁石を動かすと、コイルに<b>誘導電流</b>が流れます。流れるのは、動かしている間だけです。</p>'+
  figInd([{t:"N極を近づける",mv:"in",pole:"N",deg:-40}],{big:1})+
- '<p>N極を近づけたとき、針が左に振れたとします。近づける・遠ざける、N極・S極のうち、どれか1つを逆にすると、電流の向きが逆になり、針は反対に振れます。止めると、振れません。</p>'+
- '<table style="margin:.8rem 0"><tr><th style="text-align:center">磁極</th><th style="text-align:center">動き</th><th style="text-align:center">針</th></tr>'+
- [['N極','近づける','左'],['N極','遠ざける','右'],['S極','遠ざける','左'],['S極','近づける','右']].map(function(r){return '<tr><td style="text-align:center">'+r.join('</td><td style="text-align:center">')+'</td></tr>'}).join('')+'</table>';
+ '<div style="display:flex;flex-wrap:wrap;gap:.6rem .8rem;align-items:flex-start;margin:.8rem 0">'+
+ '<style>.tb4 td,.tb4 th{padding:.3rem .45rem;font-size:.85rem}</style><table class="tb4" style="margin:0;flex:none"><tr><th style="text-align:center">磁極</th><th style="text-align:center">動き</th><th style="text-align:center">針</th></tr>'+
+ [['N極','近づける','左'],['N極','遠ざける','右'],['S極','遠ざける','左'],['S極','近づける','右']].map(function(r){return '<tr><td style="text-align:center">'+r.join('</td><td style="text-align:center">')+'</td></tr>'}).join('')+'</table>'+
+ '<div style="flex:1 1 6rem;font-size:.75rem;line-height:1.65">N極を近づけたとき、針が左に振れたとします。<br>近づける・遠ざける、N極・S極のうち、どれか1つを逆にすると、電流の向きが逆になり、針は反対に振れます。<br>磁石を止めると、振れません。</div></div>';
 
 var QBODY=SWAP+TIGHT+'<p>(1) 下向きの電流が流れる導線の、右側に方位磁針を置いた。</p>'+figWire("down",false)+
  '<p>(2) 右向きの電流が流れる導線の、真下に方位磁針を置いた。</p>'+figWire("right",false)+
