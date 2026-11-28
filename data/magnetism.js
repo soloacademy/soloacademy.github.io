@@ -56,17 +56,17 @@ function figStraight(){
   [Math.PI/4,5*Math.PI/4].forEach(function(t){
    s+=chev(170+r*Math.cos(t),112-K*r*Math.sin(t),Math.atan2(-K*Math.cos(t),-Math.sin(t)),FLD)})});
  /* 方位磁針：外側の輪の左斜め奥(135°)の点に、円盤の中心が接する。針は、その点での接線の向きで、中心から両側へ同じ長さ(N極は左・少し下寄り) */
- s+='<polygon points="'+cx+','+(cy-11)+' '+(cx+5)+','+cy+' '+(cx-5)+','+cy+'" fill="'+SOFT+'"/><polygon points="'+cx+','+(cy+17)+' '+(cx+5)+','+cy+' '+(cx-5)+','+cy+'" fill="'+CUR+'"/>'+
+ s+='<polygon points="'+cx+','+(cy-14)+' '+(cx+5)+','+cy+' '+(cx-5)+','+cy+'" fill="'+SOFT+'"/><polygon points="'+cx+','+(cy+14)+' '+(cx+5)+','+cy+' '+(cx-5)+','+cy+'" fill="'+CUR+'"/>'+
   T(cx,cy+38,13,"N","m b","middle")+T(cx-6,cy-30,11.5,"方位磁針","g","middle")+
   T(184,40,13,"電流","m b")+T(232,80,13,"磁界","v b");
  s+='</g>';
  /* 右側：手のひら側から見た手の画像(ChatGPTソロ作)。親指＝電流の向き(上)、4本の指＝導線をにぎる向き */
  s+='<image href="'+HANDIMG+'" x="215" y="58" width="100" height="102"/>';
  var hcx=262,hcy=126,hr=66,Kh=.32,pa='',tt;
- for(tt=Math.PI;tt<=2*Math.PI+.001;tt+=Math.PI/18)pa+=(pa?'L':'M')+n(hcx+hr*Math.cos(tt))+','+n(hcy-Kh*hr*Math.sin(tt));
+ for(tt=230.5*Math.PI/180;tt<=318*Math.PI/180+.001;tt+=Math.PI/90)pa+=(pa?'L':'M')+n(hcx+hr*Math.cos(tt))+','+n(hcy-Kh*hr*Math.sin(tt));
  s+=arr(262,182,262,24,CUR,3.5)+'<path d="'+pa+'" fill="none" stroke="'+FLD+'" stroke-width="2.5" stroke-linecap="round"/>';
- [5*Math.PI/4,7*Math.PI/4].forEach(function(t){s+=chev(hcx+hr*Math.cos(t),hcy-Kh*hr*Math.sin(t),Math.atan2(-Kh*Math.cos(t),-Math.sin(t)),FLD)});
- return svgY(196,"直線の導線と右手の図。左側は、導線の立体図。導線を上向きに電流が流れる(赤い矢印)。導線のまわりに、水平な円状の磁界(青い横長の楕円)があり、上から見て反時計まわり。輪に、右斜め奥と左斜め手前に、磁界の向きの矢じるしがある。輪の左はしに方位磁針があり、針の中心が輪の上にある。針は、S極(灰色)が奥、N極(赤)が手前に傾いている。右側は、手のひら側から見た手で、親指を上向きに立て、ほかの4本の指で導線をにぎる。親指に重ねた赤い矢印が電流の向き。そのまわりを回る青い矢印が磁界の向きで、手の手前側だけに描いてある",s)}
+ [252*Math.PI/180,298*Math.PI/180].forEach(function(t){s+=chev(hcx+hr*Math.cos(t),hcy-Kh*hr*Math.sin(t),Math.atan2(-Kh*Math.cos(t),-Math.sin(t)),FLD)});
+ return svgY(196,"直線の導線と右手の図。左側は、導線の立体図。導線を上向きに電流が流れる(赤い矢印)。導線のまわりに、水平な円状の磁界(青い横長の楕円)があり、上から見て反時計まわり。輪に、右斜め奥と左斜め手前に、磁界の向きの矢じるしがある。輪の左はしに方位磁針があり、針の中心が輪の上にある。針は、S極(灰色)が奥、N極(赤)が手前を向き、上下は同じ大きさ。右側は、手のひら側から見た手で、親指を上向きに立て、ほかの4本の指で導線をにぎる。親指に重ねた赤い矢印が電流の向き。そのまわりを回る青い矢印が磁界の向きで、手の手前側だけに描いてある",s)}
 
 
 /* ---------- 図2：右手(親指＝電流の向き、ほかの指＝磁界の向き) ---------- */
