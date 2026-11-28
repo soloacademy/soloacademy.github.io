@@ -13,15 +13,14 @@ function arr(x1,y1,x2,y2,k,w){var a=Math.atan2(y2-y1,x2-x1),L=(w||1.5)>2.5?10:7;
 function needle(cx,cy,dx,dy,L,w){var l=Math.hypot(dx,dy),ux=dx/l,uy=dy/l,px=-uy,py=ux;
  function P(t,q){return n(cx+ux*t+px*q)+','+n(cy+uy*t+py*q)}
  return '<polygon points="'+P(L,0)+' '+P(0,w)+' '+P(0,-w)+'" fill="'+CUR+'"/><polygon points="'+P(-L,0)+' '+P(0,w)+' '+P(0,-w)+'" fill="'+SOFT+'"/>'}
-/* 方位磁針(立体)：地面に置いた平らな針を、斜め上から見た形。k=1：N極が手前(下)、S極が奥(上)。k=-1：逆。厚みは、下にずらした濃い色で見せる */
-function needle3d(cx,cy,k,L,w){
- var ux=-0.3*k,uy=0.8*k,th=3;
- function P(t,q,dy){return [n(cx+ux*t+q),n(cy+uy*t+(dy||0))]}
- function pg(a,f){return '<polygon points="'+a.map(function(v){return v[0]+','+v[1]}).join(' ')+'" fill="'+f+'" stroke="'+f+'" stroke-width=".8" stroke-linejoin="round"/>'}
- var N=[P(L,0),P(0,w),P(0,-w)],S=[P(-L,0),P(0,w),P(0,-w)];
- function dn(a){return a.map(function(v){return [v[0],n(v[1]+th)]})}
- return pg(dn(N),"#8f3410")+pg(dn(S),"#6b7480")+pg(N,CUR)+pg(S,SOFT)+
-  '<circle cx="'+n(cx)+'" cy="'+n(cy)+'" r="1.6" fill="#fff" stroke="'+INK+'" stroke-width=".8"/>'}
+function tg(R,pt,ph){var dx=pt/(2*Math.PI)-DX*R*Math.sin(ph),dy=-R*Math.cos(ph)-DY*R*Math.sin(ph),l=Math.hypot(dx,dy);return [dx/l,dy/l]}
+function leads(xs,cy,R,pt,P0,turns,len,s,w){
+ var ph1=P0+2*Math.PI*turns,sx0=xs+DX*R*Math.cos(P0),sx1=xs+pt*turns+DX*R*Math.cos(ph1),t0=tg(R,pt,P0),t1=tg(R,pt,ph1),
+  c0=[sx0-s*t0[0],cy-s*t0[1]],c1=[sx1+s*t1[0],cy+s*t1[1]],
+  st='" fill="none" stroke="'+INK+'" stroke-width="'+(w||2.4)+'" stroke-linecap="round" stroke-linejoin="round"/>';
+ return {x0:c0[0],x1:c1[0],
+  p:'<path d="M'+n(c0[0])+','+n(cy+len)+' Q'+n(c0[0])+','+n(c0[1])+' '+n(sx0)+','+n(cy)+st+
+    '<path d="M'+n(sx1)+','+n(cy)+' Q'+n(c1[0])+','+n(c1[1])+' '+n(c1[0])+','+n(cy+len)+st}}
 function chev(x,y,a,k){var L=7;function p(t){return n(x-L*Math.cos(a+t))+','+n(y-L*Math.sin(a+t))}
  return '<path d="M'+p(.55)+' L'+n(x)+','+n(y)+' L'+p(-.55)+'" fill="none" stroke="'+k+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>'}
 /* 立体の見せ方：奥行き(手前向き)を、左下の斜めで表す。手前向き＝(-0.6,+0.45)の向き */
@@ -43,11 +42,11 @@ function P3(x,y,z){return [170+x+DX*z,112-y+DY*z]}
 function ell(r,t0,t1){var s='',t,k=0,K=.32;for(t=t0;t<=t1+.001;t+=Math.PI/18){s+=(k++?'L':'M')+n(170+r*Math.cos(t))+','+n(112-K*r*Math.sin(t))}return '<path d="'+s+'" fill="none" stroke="'+FLD+'" stroke-width="1.5"/>'}
 var HANDIMG="data:image/png;base64,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";
 function figStraight(){
- var s='',R2=[74],K=.32,cx=96,cy=112;
+ var s='',R2=[66],K=.32,cx=104,cy=112;
  /* 左側(導線と磁界)：全体を左へ34ずらして、右に手の場所をあける */
- s+='<g transform="translate(-34,0)">';
+ s+='<g transform="translate(-60,0)">';
  /* 方位磁針の円盤：いちばん先に描く。磁界の輪(奥側)が円盤の上を通り、針の中心が輪に接して見えるようにする */
- s+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="24" ry="13" fill="#fff" stroke="'+GRAY+'" stroke-width="1.2"/>';
+ s+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="28" ry="16" fill="#fff" stroke="'+GRAY+'" stroke-width="1.2"/>';
  /* 奥側の半円(導線の後ろ) */
  R2.forEach(function(r){s+=ell(r,0,Math.PI)});
  s+=arr(170,182,170,24,CUR,3.5);
@@ -57,14 +56,17 @@ function figStraight(){
   [Math.PI/4,5*Math.PI/4].forEach(function(t){
    s+=chev(170+r*Math.cos(t),112-K*r*Math.sin(t),Math.atan2(-K*Math.cos(t),-Math.sin(t)),FLD)})});
  /* 方位磁針：外側の輪の左斜め奥(135°)の点に、円盤の中心が接する。針は、その点での接線の向きで、中心から両側へ同じ長さ(N極は左・少し下寄り) */
- s+=needle3d(cx,cy,1,25,7)+
-  T(cx-16,cy+34,13,"N","m b","middle")+T(cx+14,cy-20,12,"S","g b","middle")+T(cx-8,cy-40,11.5,"方位磁針","g","middle")+
-  T(184,40,13,"電流","m b")+T(252,86,13,"磁界","v b");
+ s+='<polygon points="'+cx+','+(cy-11)+' '+(cx+5)+','+cy+' '+(cx-5)+','+cy+'" fill="'+SOFT+'"/><polygon points="'+cx+','+(cy+17)+' '+(cx+5)+','+cy+' '+(cx-5)+','+cy+'" fill="'+CUR+'"/>'+
+  T(cx,cy+38,13,"N","m b","middle")+T(cx-6,cy-30,11.5,"方位磁針","g","middle")+
+  T(184,40,13,"電流","m b")+T(232,80,13,"磁界","v b");
  s+='</g>';
  /* 右側：手のひら側から見た手の画像(ChatGPTソロ作)。親指＝電流の向き(上)、4本の指＝導線をにぎる向き */
- s+=arr(288,166,288,24,CUR,3.5);
- s+='<image href="'+HANDIMG+'" x="238" y="66" width="100" height="102"/>';
- return svgY(196,"直線の導線と右手の図。左側は、導線の立体図。導線を上向きに電流が流れる(青い矢印)。導線を中心に、導線に垂直な水平の円状の磁界が巻き、上から見て反時計まわり(赤い横長の楕円)。輪に、右斜め奥と左斜め手前に、磁界の向きの矢じるしがある。輪の左はしに方位磁針があり、針の中心が輪の上にある。N極は、手前(左下の斜め)向きを指す。右側は、手のひら側から見た手で、親指を上向き(電流の向き)に立て、ほかの4本の指で導線をにぎる。親指の上に、電流の青い矢印がある",s)}
+ s+='<image href="'+HANDIMG+'" x="215" y="58" width="100" height="102"/>';
+ var hcx=262,hcy=126,hr=66,Kh=.32,pa='',tt;
+ for(tt=Math.PI;tt<=2*Math.PI+.001;tt+=Math.PI/18)pa+=(pa?'L':'M')+n(hcx+hr*Math.cos(tt))+','+n(hcy-Kh*hr*Math.sin(tt));
+ s+=arr(262,182,262,24,CUR,3.5)+'<path d="'+pa+'" fill="none" stroke="'+FLD+'" stroke-width="2.5" stroke-linecap="round"/>';
+ [5*Math.PI/4,7*Math.PI/4].forEach(function(t){s+=chev(hcx+hr*Math.cos(t),hcy-Kh*hr*Math.sin(t),Math.atan2(-Kh*Math.cos(t),-Math.sin(t)),FLD)});
+ return svgY(196,"直線の導線と右手の図。左側は、導線の立体図。導線を上向きに電流が流れる(赤い矢印)。導線のまわりに、水平な円状の磁界(青い横長の楕円)があり、上から見て反時計まわり。輪に、右斜め奥と左斜め手前に、磁界の向きの矢じるしがある。輪の左はしに方位磁針があり、針の中心が輪の上にある。針は、S極(灰色)が奥、N極(赤)が手前に傾いている。右側は、手のひら側から見た手で、親指を上向きに立て、ほかの4本の指で導線をにぎる。親指に重ねた赤い矢印が電流の向き。そのまわりを回る青い矢印が磁界の向きで、手の手前側だけに描いてある",s)}
 
 
 /* ---------- 図2：右手(親指＝電流の向き、ほかの指＝磁界の向き) ---------- */
@@ -82,12 +84,12 @@ function figHandR(){
 
 /* ---------- 図3：コイル。o.cur＝手前側の電流(up/down)、o.ends＝{l,r}のN・S、o.ask＝手前側に「?」 ---------- */
 function figCoil(o){
- var R=34,pitch=30,turns=4,xs=102.5,cy=85,P0=Math.atan(DY),h=helix(xs,cy,R,pitch,turns+.5,P0),s='',i,a,sx,sy,sx0=xs+DX*R*Math.cos(P0),sx1=xs+pitch*(turns+.5)-DX*R*Math.cos(P0);
- s+=line(sx0-40,cy,sx0,cy,INK,2)+line(sx1,cy,sx1+40,cy,INK,2)+runs(h.back,SOFT,1.8,true)+runs(h.front,INK,2.4);
+ var R=34,pitch=30,turns=4,xs=102.5,cy=85,P0=Math.atan(DY),h=helix(xs,cy,R,pitch,turns+.5,P0),s='',i,a,sx,sy,sx0=xs+DX*R*Math.cos(P0),sx1=xs+pitch*(turns+.5)-DX*R*Math.cos(P0),ld=leads(xs,cy,R,pitch,P0,turns+.5,36,24);
+ s+=ld.p+runs(h.back,SOFT,1.8,true)+runs(h.front,INK,2.4);
  for(i=0;i<turns;i++){sx=xs+pitch*(i+1-P0/(2*Math.PI))+DX*R;sy=cy+DY*R;
   if(o.cur){a=Math.atan2(-R,pitch/(2*Math.PI));if(o.cur==="down")a+=Math.PI;s+=chev(sx+5*Math.cos(a),sy+5*Math.sin(a),a,CUR)}
   if(o.ask)s+=T(sx+12,sy+6,18,"?","m b","middle")}
- if(o.ends)s+=T(sx0-55,cy+9,22,o.ends.l,"b","middle")+T(sx1+55,cy+9,22,o.ends.r,"b","middle");
+ if(o.ends)s+=T(sx0-26,cy+8,22,o.ends.l,"b","middle")+T(sx1+26,cy+8,22,o.ends.r,"b","middle");
  if(o.hand){var hx=126,hy=156,hw=88,hh=90,hcx=hx+hw/2,hcy=hy+hh/2;
   s+='<image href="'+HANDIMG+'" x="'+hx+'" y="'+hy+'" width="'+hw+'" height="'+hh+'" transform="rotate('+(o.hand==="r"?90:-90)+' '+hcx+' '+hcy+')"/>';
   }
@@ -98,10 +100,10 @@ function figCoil(o){
 
 /* ---------- 図4：直線の導線と方位磁針。orient＝down(下向き電流・右に磁針) / right(右向き電流・真下に磁針)。ans＝答えを書く ---------- */
 function disc(cx,cy,ask,dir,lab){
- var s='<ellipse cx="'+cx+'" cy="'+cy+'" rx="20" ry="11" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>';
+ var s='<ellipse cx="'+cx+'" cy="'+cy+'" rx="26" ry="15" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>';
  if(ask)return s+T(cx,cy+6,18,"?","b","middle");
  var k=dir==="toward"?1:-1;
- return s+needle3d(cx,cy,k,20,6)}
+ return s+needle(cx,cy,k*DX,k*DY,19,5)}
 function figWire(orient,ans){
  var s,h,lab;
  if(orient==="down"){h=ans?170:150;
@@ -138,7 +140,7 @@ function figHandL(){
  s+='<circle cx="174" cy="89" r="3.2" fill="'+INK+'"/>'+
   arr(174,89,262,89,CUR,3.5)+T(250,75,13,"電流","m b","middle")+
   arr(174,89,174,6,FLD,3.5)+T(189,20,13,"磁界","v b")+
-  arr(174,89,142,158,INK,3.5)+T(134,170,13,"力","b","end");
+  arr(174,89,134,129,INK,3.5)+T(128,146,13,"力","b","end");
  return svgY(210,"左手の図。人差し指を上向き、中指を右向き、親指を手前向き(指先がこちらを向いている)に、たがいに直角に開いた左手。薬指と小指は曲げている。手首には袖口がある。指の付け根の1点から、磁界の赤い矢印が人差し指に沿って上へ、電流の青い矢印が中指に沿って右へ、力の黒い矢印が親指の向きに左下へ出ていて、3つの向きはたがいに直角になっている",s)}
 
 
@@ -157,22 +159,25 @@ function figMini(list){
 /* ---------- 図8：電磁誘導。list＝[{t,mv(in/out/stop),pole(N/S),deg(針の角度。nullで「?」),cap}]。磁石は、pole の極を、コイルに向ける ---------- */
 function figInd(list,o){
  o=o||{};var s='',lab=[],k=o.big?1.7:1;
- list.forEach(function(p,i){var x0=o.big?0:2+113*i,cx=x0+80,cy=118,mx=p.mv==="stop"?x0+8:x0+2,h=helix(x0+58,52,16,9,5),a=p.pole==="N"?["S","N"]:["N","S"],d=7,ox=-DX*d,oy=-DY*d,g='';
+ list.forEach(function(p,i){var x0=o.big?0:2+113*i,mx=p.mv==="stop"?x0+10:x0+2,R=14,pt=9,cy=52,P0=Math.atan(DY),xs=x0+55.7,h=helix(xs,cy,R,pt,4.5,P0),
+  sx0=xs+DX*R*Math.cos(P0),sx1=xs+pt*4.5-DX*R*Math.cos(P0),mc=(sx0+sx1)/2,a=p.pole==="N"?["S","N"]:["N","S"],d=6,ox=-DX*d,oy=-DY*d,g='',r,i2;
   function pg(q,f){return '<polygon points="'+q.map(function(v){return n(v[0])+','+n(v[1])}).join(' ')+'" fill="'+f+'" stroke="'+INK+'" stroke-width="1.2" stroke-linejoin="round"/>'}
-  g+=T(x0+56,12,13,p.t,"g b","middle")+
-   '<path d="M'+(x0+58)+',68 V'+cy+' H'+(x0+65)+' M'+(x0+103)+',68 V'+cy+' H'+(x0+95)+'" fill="none" stroke="'+INK+'" stroke-width="2"/>'+runs(h.back,SOFT,1.5,false);
-  [0,1].forEach(function(j){var X=mx+20*j,f=a[j]==="N"?"#fff":SIDE;g+=pg([[X,44],[X+20,44],[X+20+ox,44+oy],[X+ox,44+oy]],f)});
-  g+=pg([[mx+40,44],[mx+40+ox,44+oy],[mx+40+ox,60+oy],[mx+40,60]],a[1]==="N"?"#e3e7eb":"#aab2bb");
-  [0,1].forEach(function(j){g+='<rect x="'+(mx+20*j)+'" y="44" width="20" height="16" fill="'+(a[j]==="N"?"#fff":SIDE)+'" stroke="'+INK+'" stroke-width="1.2"/>'+TN(mx+20*j+10,56,11,a[j],"b","middle")});
+  g+=T(x0+56,12,13,p.t,"g b","middle")+leads(xs,cy,R,pt,P0,4.5,98-cy,10,1.8).p+runs(h.back,SOFT,1.4,true);
+  [0,1].forEach(function(j){var X=mx+16*j;g+=pg([[X,45],[X+16,45],[X+16+ox,45+oy],[X+ox,45+oy]],a[j]==="N"?"#dc7a54":"#e2e6ea")});
+  g+=pg([[mx+32,45],[mx+32+ox,45+oy],[mx+32+ox,59+oy],[mx+32,59]],a[1]==="N"?"#a3350a":"#aab2bb");
+  [0,1].forEach(function(j){g+='<rect x="'+(mx+16*j)+'" y="45" width="16" height="14" fill="'+(a[j]==="N"?"#c2410c":SIDE)+'" stroke="'+INK+'" stroke-width="1.2"/>'+(a[j]==="N"?'<text x="'+(mx+16*j+8)+'" y="56" font-size="10" text-anchor="middle" class="b" style="stroke:none;fill:#fff">N</text>':TN(mx+16*j+8,56,10,"S","b","middle"))});
   g+=runs(h.front,INK,1.8,false);
-  if(p.mv==="in")g+=arr(x0+8,26,x0+40,26,INK,2);
-  if(p.mv==="out")g+=arr(x0+40,26,x0+8,26,INK,2);
-  g+='<circle cx="'+cx+'" cy="'+cy+'" r="15" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'+line(cx,104,cx,108,GRAY,1);
-  if(p.deg==null)g+=TN(cx,125,18,"?","b","middle");
-  else{var r=p.deg*Math.PI/180;g+=line(cx,125,cx+11*Math.sin(r),125-11*Math.cos(r),INK,2)+'<circle cx="'+cx+'" cy="125" r="2" fill="'+INK+'"/>'}
-  s+=o.big?'<g transform="translate('+n(170-k*54)+',0) scale('+k+')">'+g+'</g>':g;
+  if(p.mv==="in")g+=arr(x0+8,26,x0+34,26,INK,2);
+  if(p.mv==="out")g+=arr(x0+34,26,x0+8,26,INK,2);
+  /* 検流計：角の丸い四角。0が中心の電流計(針は、中心から左右に振れる) */
+  g+='<rect x="'+n(sx0-6)+'" y="98" width="'+n(sx1-sx0+12)+'" height="38" rx="9" fill="#fff" stroke="'+INK+'" stroke-width="1.5"/>'+
+   '<path d="M'+n(mc+20*Math.sin(-.87))+','+n(130-20*Math.cos(.87))+' A20,20 0 0 1 '+n(mc+20*Math.sin(.87))+','+n(130-20*Math.cos(.87))+'" fill="none" stroke="'+GRAY+'" stroke-width="1.2"/>'+
+   TN(mc,107,9,"0","g b","middle");
+  if(p.deg==null)g+=TN(mc,126,18,"?","b","middle");
+  else{r=p.deg*Math.PI/180;g+=line(mc,130,mc+17*Math.sin(r),130-17*Math.cos(r),INK,2)+'<circle cx="'+n(mc)+'" cy="130" r="2.4" fill="'+INK+'"/>'}
+  s+=o.big?'<g transform="translate('+n(170-k*56)+',0) scale('+k+')">'+g+'</g>':g;
   lab.push(p.t+"：磁石は"+p.pole+"極をコイルに向けている。"+(p.cap||""))});
- return svgY(o.big?240:142,"磁石と、何回も巻いたコイルと、検流計の図"+(o.big?"":"が並ぶ")+"。"+lab.join("。"),s)}
+ return svgY(o.big?240:142,"磁石と、何回も巻いたコイルと、検流計の図"+(o.big?"":"が並ぶ")+"。検流計は、0が中心の電流計で、針が左右に振れる。"+lab.join("。"),s)}
 
 /* ---------- 文章 ---------- */
 var M=function(t){return '<span class="m">'+t+'</span>'},V=function(t){return '<span class="v">'+t+'</span>'};
@@ -184,24 +189,23 @@ var TIGHT='<style>.pick .pk-bt{gap:.4rem}.pick button.choice{padding:.1rem .55re
 var SWAP='';
 var DIR4=["上","下","手前","奥"];
 
+var SMT='<p style="font-size:.9rem;margin:.3rem 0 .8rem">';
 var POINT=SWAP+hd('右ねじの法則',true)+
  '<p>導線に'+M('電流')+'が流れると、まわりに'+V('磁界')+'ができます。磁界は同心円状で、方位磁針のN極は、磁界の向きを指します。</p>'+figStraight()+
- '<p>右手の親指を'+M('電流')+'の向きに合わせると、ほかの4本の指が'+V('磁界')+'の向きです。</p>'+
- '<p>コイルでは、4本の指を'+M('電流')+'の向きに合わせると、親指が向いた側の端が<b>N極</b>です。</p>'+figCoil({cur:"down",ends:{l:"S",r:"N"},hand:"r"})+
- SM+'※ 直線の導線は、親指が電流の向き。コイルは、親指がN極(磁界の向き)です。</p>'+
+ SMT+'右手の親指を'+M('電流')+'の向きに合わせると、ほかの4本の指が'+V('磁界')+'の向きです。</p>'+
+ figCoil({cur:"down",ends:{l:"S",r:"N"},hand:"r"})+
+ SMT+'コイルでは、4本の指を'+M('電流')+'の向きに合わせると、親指が'+V('磁界')+'の向きです。</p>'+
  hd('フレミングの左手の法則')+
  '<p>磁界の中の導線に'+M('電流')+'を流すと、導線に<b>力</b>が働きます。</p>'+figHandL()+
- '<p>左手の中指＝'+M('電流')+'、人差し指＝'+V('磁界')+'、親指＝力の向きです。</p>'+
- '<p>'+M('電流')+'か'+V('磁界')+'の、どちらか一方を逆にすると、力も逆になります。両方を逆にすると、力は同じ向きです。</p>'+
- SM+'※ この力で回るのが、<b>モーター</b>です。</p>'+
+ SMT+'左手の中指＝'+M('電流')+'、人差し指＝'+V('磁界')+'、親指＝力の向きです。</p>'+
+ SMT+'中指・人差し指・親指の順に、<b>'+M('電')+'・'+V('磁')+'・力</b>と覚えます。親指は、力強い指です。</p>'+
  hd('電磁誘導')+
  '<p>コイルの中で磁石を動かすと、コイルに<b>誘導電流</b>が流れます。流れるのは、動かしている間だけです。</p>'+
  figInd([{t:"N極を近づける",mv:"in",pole:"N",deg:-40}],{big:1})+
- '<p>N極を近づけると、針は左に振れます。極と動きを変えると、振れる向きが変わります。</p>'+
-'<table style="margin:.8rem 0"><tr><th style="text-align:center">磁極</th><th style="text-align:center">動き</th><th style="text-align:center">針</th></tr>'+
+ '<div style="display:flex;flex-wrap:wrap;gap:.6rem .8rem;align-items:flex-start;margin:.8rem 0">'+
+ '<style>.tb4 td,.tb4 th{padding:.3rem .45rem;font-size:.85rem}</style><table class="tb4" style="margin:0;flex:none"><tr><th style="text-align:center">磁極</th><th style="text-align:center">動き</th><th style="text-align:center">針</th></tr>'+
  [['N極','近づける','左'],['N極','遠ざける','右'],['S極','遠ざける','左'],['S極','近づける','右']].map(function(r){return '<tr><td style="text-align:center">'+r.join('</td><td style="text-align:center">')+'</td></tr>'}).join('')+'</table>'+
- '<p>近づける・遠ざける、N極・S極の、どれか1つを逆にすると、電流の向きは逆になります。止めると、振れません。</p>'+
- SM+'※ この原理を使うのが、<b>発電機</b>です。</p>';
+ '<div style="flex:1 1 6rem;font-size:.75rem;line-height:1.65">N極を近づけたとき、針が左に振れたとします。<br>近づける・遠ざける、N極・S極のうち、どれか1つを逆にすると、電流の向きが逆になり、針は反対に振れます。<br>磁石を止めると、振れません。</div></div>';
 
 var QBODY=SWAP+TIGHT+'<p>(1) 下向きの電流が流れる導線の、右側に方位磁針を置いた。</p>'+figWire("down",false)+
  '<p>(2) 右向きの電流が流れる導線の、真下に方位磁針を置いた。</p>'+figWire("right",false)+
